@@ -1,15 +1,22 @@
 // App.tsx
-import React from "react";
+import React, { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "./website/Home";
 import Provider from "./providers/Provider";
+import Layout from "./layout/Layout";
+
+// Lazy-loaded page
+const Home = React.lazy(() => import("./website/Home"));
 
 const App = () => {
   return (
     <Provider>
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </Provider>
   );
 };
