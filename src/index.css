@@ -2,7 +2,7 @@
 --color-secondary-black: #262222; */
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roundica&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 @import 'tailwindcss';
 
@@ -10,15 +10,14 @@
 
 @custom-variant dark (&:is(.dark *));
 /* @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *)); */
+@font-face {
+  font-family: 'Roundica';
+  src: url('assets/fonts/Roundica-Regular.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
-/* @font-face {
-  font-family: 'Gilroy-Medium';
-  src: url('assets/fonts/Gilroy-Medium.ttf') format('woff2'),
-  url('assets/fonts/Gilroy-Medium.ttf') format('woff'),
-  url('assets/fonts/Gilroy-Medium.ttf') format('truetype');
-  font-weight: 400;
-  font-style: 400;
-} */
+
  html{
   scroll-behavior: smooth;
  }
@@ -26,9 +25,14 @@
   font-family: "Montserrat", sans-serif;
 }
  .roundica{
-  font-family: "Roundica", sans-serif;
+  font-family: 'Roundica', sans-serif;
 }
 
+.lato{
+  
+  font-family: "Lato", sans-serif;
+
+}
 .inter {
   font-family: "Inter", sans-serif;
 } */
@@ -323,3 +327,10 @@
   }
 }
 
+.border-dash-custom {
+  border-style: dashed;
+  border-width: 3px;
+  border-color: black;
+  border-spacing: 50px; /* Optional visual fallback */
+  
+}

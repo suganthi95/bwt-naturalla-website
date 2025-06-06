@@ -42,7 +42,9 @@ export default function Nav() {
         </Slider>
       </div>
       {/* navbar */}
-      <nav className="container mx-auto  py-5 bg-offWhite">
+   
+      <nav className=" py-5 bg-offWhite">
+           <div className="container mx-auto ">
         <div className="flex  items-center justify-between px-10">
           <img src={ASSETS.LOGO} alt="hero-image" className="w-40" />
           <ul>
@@ -91,6 +93,8 @@ export default function Nav() {
             </Avatar>
           </div>
         </div>
+        
+      </div>
       </nav>
     </header>
   );
