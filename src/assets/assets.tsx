@@ -27,5 +27,10 @@ export const ASSETS = {
   BLOG1:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%201597883702%20(2).png?updatedAt=1749205703036',
   BLOG2:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%201597883702%20(1).png?updatedAt=1749205704457',
   BLOG3:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%201597883702.png?updatedAt=1749205704597',
-  LOGO_FOOTER:'https://ik.imagekit.io/3t9llb0gx/Naturella/preloader.png?updatedAt=1749212179469'
+  LOGO_FOOTER:'https://ik.imagekit.io/3t9llb0gx/Naturella/preloader.png?updatedAt=1749212179469',
+  PAYTM:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame.png?updatedAt=1749548196234',
+  GPAY:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%20(2).png?updatedAt=1749548196145',
+  PHONEPAY:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%20(1).png?updatedAt=1749548196446',
+  FRAMEPAY:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%20(3).png?updatedAt=1749548196356'
+
 }

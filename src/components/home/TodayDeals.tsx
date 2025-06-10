@@ -1,7 +1,9 @@
 import { ASSETS } from "@/assets/assets";
 import { Button } from "../ui/button";
+import { useNavigate } from "react-router-dom";
 
 export default function TodayDeals() {
+  const naviage  =  useNavigate()
   const Prodcuts = [
     {
       id: "1",
@@ -38,7 +40,7 @@ export default function TodayDeals() {
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 md:gap-x-14 lg:gap-x-20 mt-4 md:mt-8">
         {Prodcuts.map((item, index) => {
           return (
-            <li className="space-y-2 relative">
+            <li className="space-y-2 relative" onClick={()=>naviage('/product/12')}>
               <img src={item.img} alt={`img-${index}`} className="rounded-xl" />
               <div className="absolute bg-[#E95144] text-white rounded  text-sm font-medium top-4 left-3  px-4">20 % off</div>
               <p className="text-lead text-lg">{item.name}</p>

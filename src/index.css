@@ -8,6 +8,7 @@
 
 @plugin "tailwindcss-animate";
 
+
 @custom-variant dark (&:is(.dark *));
 /* @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *)); */
 @font-face {
@@ -321,9 +322,19 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+      input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
   }
   body {
     @apply bg-background text-foreground;
+    
   }
 }
 

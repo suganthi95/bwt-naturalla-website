@@ -28,7 +28,7 @@ export default function Home() {
 
       {/* best selling section */}
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
-        <BestSelling />
+        <BestSelling title={"Best Selling Product"} />
       </section>
 
       {/* feature on section */}
@@ -74,7 +74,7 @@ export default function Home() {
 
         {/* latest products section */}
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
-        <LatestProduct />
+        <LatestProduct title={"Latest Products"} />
       </section>
 
           {/* Blogs section */}

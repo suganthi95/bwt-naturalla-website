@@ -1,8 +1,12 @@
 import { ASSETS } from "@/assets/assets";
 import { Button } from "../ui/button";
 import { ShoppingCart } from "lucide-react";
-
-export default function LatestProduct() {
+import { useNavigate } from "react-router-dom";
+ interface Props{
+  title :string
+ }
+export default function LatestProduct({title}:Props) {
+  const navigate = useNavigate()
   const Prodcuts = [
     {
       id: "1",
@@ -41,13 +45,13 @@ export default function LatestProduct() {
     <div className="">
       <div className="container mx-auto">
         <div className="flex justify-between font-semibold text-xl items-center">
-          <p className="text-title cursor-pointer ">Lates Product</p>
+          <p className="text-title cursor-pointer ">{title}</p>
           <p className="text-title cursor-pointer ">View more</p>
         </div>
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 md:gap-x-14 lg:gap-x-20 mt-4 md:mt-8 mb-14 md:mb-20">
           {Prodcuts.map((item, index) => {
             return (
-              <li className="space-y-2 relative">
+              <li className="space-y-2 relative" onClick={()=>navigate('/product/12')}>
                 <img
                   src={item.img}
                   alt={`img-${index}`}
