@@ -6,10 +6,12 @@ import { Icons } from "@/assets/icons";
 import { ScrollArea } from "../ui/scroll-area";
 import { useNavigate } from "react-router-dom";
 
-export default function CartSheet() {
+interface Props{
+    onClose:(val:boolean)=>void
+}
+export default function CartSheet({onClose}:Props) {
     const navigae = useNavigate()
   const [quantity, setQuantity] = useState(1);
-
   const handleDecrease = () => {
     if (quantity > 1) setQuantity(quantity - 1);
   };
@@ -242,8 +244,10 @@ export default function CartSheet() {
             <span className="font-semibold text-[#0B130B]">Total</span>
             <span className="text-[#0B130B] font-bold">₹1,150</span>
           </div>
-          <Button className="w-full h-10" onClick={()=>{
+          <Button className="w-full h-10  cursor-pointer" onClick={()=>{
             navigae('/checkout')
+            onClose(false)
+
           }}>
             Checkout{" "}
             <ul className="flex -space-x-2 ">

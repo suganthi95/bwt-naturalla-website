@@ -14,6 +14,7 @@ import { ASSETS } from "../../assets/assets";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import CartSheet from "../addToCartProducts/CartSheet";
+import { useState } from "react";
 
 const messages = [
   "🎉 Flat 30% Off on Selected Products | Use Code : DEAL30 🎉",
@@ -23,6 +24,7 @@ const messages = [
 
 export default function Nav() {
   const { pathname } = useLocation();
+  const [Isopen,setIsopen] = useState(false)
   const settings = {
     arrows: true,
     autoplay: true,
@@ -88,15 +90,15 @@ export default function Nav() {
                 <Heart className="w-5 h-5 text-primary transition" />
               </button>
 
-              <Sheet>
-                <SheetTrigger className="cursor-pointer">
+              <Sheet open={Isopen} onOpenChange={setIsopen}>
+                <SheetTrigger className="cursor-pointer" onClick={()=>setIsopen(true)}>
                     <ShoppingCart className="w-5 h-5 text-primary transition" />
                     {/* <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1 rounded-full">
                 2
               </span> */}
                 </SheetTrigger>
                 <SheetContent>
-                  <CartSheet />
+                  <CartSheet onClose={setIsopen} />
                 </SheetContent>
               </Sheet>
 
