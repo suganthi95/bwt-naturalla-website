@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { NavData } from "./data";
 import { Link, useLocation } from "react-router-dom";
-import { ASSETS } from "../assets/assets";
+import { ASSETS } from "../../assets/assets";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const messages = [

@@ -2,10 +2,12 @@
 import React, { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import Provider from "./providers/Provider";
-import Layout from "./layout/Layout";
+import Layout from "./components/layout/Layout";
 
 // Lazy-loaded page
 const Home = React.lazy(() => import("./website/Home"));
+const ProductById = React.lazy(() => import("@/pages/ProductById"));
+
 
 const App = () => {
   return (
@@ -13,7 +15,8 @@ const App = () => {
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
+          <Route index element={<Home />} />
+          <Route path="/prodcut/:id" element={<ProductById/>}/>
           </Route>
         </Routes>
       </Suspense>
