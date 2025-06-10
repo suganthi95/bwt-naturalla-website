@@ -38,14 +38,6 @@ export default function Footer() {
         <div className="space-y-7">
 
         <div className="w-full sm:w-1/2 lg:w-full space-y-3">
-          <h4 className="text-lg font-semibold">Seller Options</h4>
-          <ul className="space-y-2 text-sm">
-            <li><Link to="/" className="text-white/50">Login as Seller</Link></li>
-            <li><Link to="/partner-login" className="text-white/50">Signup as Seller</Link></li>
-          </ul>
-        </div>
-
-        <div className="w-full sm:w-1/2 lg:w-full space-y-3">
           <h4 className="text-lg font-semibold">My Account</h4>
           <ul className="space-y-2 text-sm">
             <li><Link to="/" className="text-white/50">Login</Link></li>
