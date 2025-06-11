@@ -15,7 +15,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import CartSheet from "../addToCartProducts/CartSheet";
 import { useState } from "react";
-
+import {
+  motion,
+  useMotionValueEvent,
+  useScroll,
+  AnimatePresence,
+} from "framer-motion";
+import MenuToggle from "@/animation/MenuToggle";
 const messages = [
   "🎉 Flat 30% Off on Selected Products | Use Code : DEAL30 🎉",
   "🚚 Free Shipping on Orders Above ₹999 🚚",
@@ -24,7 +30,7 @@ const messages = [
 
 export default function Nav() {
   const { pathname } = useLocation();
-  const [Isopen,setIsopen] = useState(false)
+  const [Isopen, setIsopen] = useState(false);
   const settings = {
     arrows: true,
     autoplay: true,
@@ -36,9 +42,27 @@ export default function Nav() {
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
   };
-
+  const [IsMenuopen, setIsMenuopen] = useState<boolean>(false);
+  const [hidden, Sethidden] = useState<boolean>(false);
+  const handleclick = () => {
+    setIsMenuopen((prev) => !prev);
+  };
+  const { scrollY } = useScroll();
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    if (latest > previous && latest > 200) {
+      Sethidden(true);
+    } else {
+      Sethidden(false);
+    }
+  });
   return (
-    <header className="">
+    <motion.header   variants={{
+          visible: { y: 0 },
+          hidden: { y: "-100%" },
+        }}
+        animate={hidden ? "hidden" : "visible"}
+        transition={{ duration: 0.35, ease: "easeInOut" }} className="">
       {/* offer slider  */}
       <div className="w-full bg-primary  mx-auto px-4 py-1 overflow-hidden">
         <Slider {...settings}>
@@ -53,31 +77,38 @@ export default function Nav() {
       </div>
       {/* navbar */}
 
-      <nav className=" py-5 bg-offWhite">
+      <motion.nav
+      
+        className=" py-5 bg-offWhite"
+      >
         <div className="container mx-auto ">
-          <div className="flex  items-center justify-between px-10">
+          <div className="flex  items-center justify-between  xl:px-10">
+            {/* <div className="xl:hidden">
+              <Menu />
+            </div> */}
+            <div className="flex items-center gap-3">
+              <MenuToggle open={IsMenuopen} handleclick={handleclick} />
+            </div>
             <img src={ASSETS.LOGO} alt="hero-image" className="w-40" />
-            <ul>
-              <ul className="flex items-center justify-center gap-x-3.5">
-                {NavData.map((item) => {
-                  return (
-                    <Link
-                      key={item.id}
-                      to={item.link}
-                      className={`text-primary    tracking-wide  ${
-                        pathname === item.link
-                          ? "font-bold underline underline-offset-8 decoration-2"
-                          : "font-normal no-underline"
-                      } py-2`}
-                    >
-                      {item.name}
-                    </Link>
-                  );
-                })}
-              </ul>
+            <ul className="xl:flex items-center hidden  justify-center gap-x-3.5">
+              {NavData.map((item) => {
+                return (
+                  <Link
+                    key={item.id}
+                    to={item.link}
+                    className={`text-primary    tracking-wide  ${
+                      pathname === item.link
+                        ? "font-bold underline underline-offset-8 decoration-2"
+                        : "font-normal no-underline"
+                    } py-2`}
+                  >
+                    {item.name}
+                  </Link>
+                );
+              })}
             </ul>
             <div className="flex items-center gap-4">
-              <div className="relative">
+              <div className="relative  hidden lg:block">
                 <input
                   type="text"
                   placeholder="Search..."
@@ -85,15 +116,20 @@ export default function Nav() {
                 />
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4" />
               </div>
-
+              <button className="block md:hidden">
+                <Search className="w-5 h-5 text-primary transition" />
+              </button>
               <button>
                 <Heart className="w-5 h-5 text-primary transition" />
               </button>
 
               <Sheet open={Isopen} onOpenChange={setIsopen}>
-                <SheetTrigger className="cursor-pointer" onClick={()=>setIsopen(true)}>
-                    <ShoppingCart className="w-5 h-5 text-primary transition" />
-                    {/* <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1 rounded-full">
+                <SheetTrigger
+                  className="cursor-pointer"
+                  onClick={() => setIsopen(true)}
+                >
+                  <ShoppingCart className="w-5 h-5 text-primary transition" />
+                  {/* <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1 rounded-full">
                 2
               </span> */}
                 </SheetTrigger>
@@ -111,8 +147,39 @@ export default function Nav() {
             </div>
           </div>
         </div>
-      </nav>
-    </header>
+      </motion.nav>
+
+      {/* mobile menu */}
+      <AnimatePresence>
+        {IsMenuopen && (
+          <motion.div
+            initial={{ x: -100 }}
+            animate={{ x: 0 }}
+            exit={{ x: -100 }}
+            transition={{ duration: 0.5 }}
+            className="block xl:hidden sticky top-0 z-20   bg-white h-svh py-4  "
+          >
+            <ul className="flex flex-col p-2 px-4 items-start gap-y-6 ">
+              {NavData.map((item) => {
+                return (
+                  <Link
+                    key={item.id}
+                    to={item.link}
+                    className={`text-primary    tracking-wide  ${
+                      pathname === item.link
+                        ? "font-bold underline underline-offset-8 decoration-2"
+                        : "font-normal no-underline"
+                    } py-2`}
+                  >
+                    {item.name}
+                  </Link>
+                );
+              })}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 }
 

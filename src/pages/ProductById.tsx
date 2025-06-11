@@ -1,5 +1,4 @@
 import ProductSection from "@/components/individualProductPage/ProductSection";
-import group from "@/assets/Group 3590.png";
 import {
   Accordion,
   AccordionContent,
@@ -7,36 +6,40 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import CustomerReview from "@/components/individualProductPage/CustomerReview";
-import BestSelling from "@/components/home/BestSelling";
+import { useProductDetailsById } from "@/services/product";
+import { useParams } from "react-router-dom";
+import { ASSETS } from "@/assets/assets";
 export default function ProductById() {
-  // const params = useParams();
-  // const { id } = params || {};
+  const params = useParams();
+  const { id } = params || {};
+  const {data} = useProductDetailsById(id ??'')
+  console.log('data: ', data?.gallery_image_url);
   const whatsout = [
     {
       id: "1",
-      Img: group,
+      Img: ASSETS.SULPHATE,
       title: "Sulphates",
     },
     {
       id: "2",
-      Img: group,
-      title: "Sulphates",
+      Img: ASSETS.PHATHALATES,
+      title: "Phthalates",
     },
     {
       id: "3",
-      Img: group,
-      title: "Sulphates",
+      Img: ASSETS.PARABENS,
+      title: "Parabens",
     },
     {
       id: "4",
-      Img: group,
-      title: "Sulphates",
+      Img:ASSETS.AIRTIFICIAL_COLURS ,
+      title: "Artificial Colours",
     },
   ];
   return (
     <main>
       <section className=" mt-10 mb-10  ">
-        <ProductSection />
+        <ProductSection  products={data} media={data?.gallery_image_url}/>
       </section>
       <section className="mt-10 mb-10 md:mt-20 md:mb-20  ">
         <div className="container mx-auto  flex  w-full">
@@ -46,7 +49,7 @@ export default function ProductById() {
               {whatsout.map((item, index) => (
                 <li
                   key={index}
-                  className="flex flex-col items-center w-fit border p-4 px-8 rounded-lg  text-center"
+                  className="flex flex-col items-center py-6 px-3 border w-10/12 rounded-lg  text-center"
                 >
                   <img
                     src={item.Img}
@@ -100,11 +103,11 @@ export default function ProductById() {
         </div>
       </section>
       <section className=" mt-10 mb-10 md:mt-20 md:mb-20  ">
-        <CustomerReview />
+        <CustomerReview  Product={data}/>
       </section>
-      <section className=" mt-10 mb-10 md:mt-20 md:mb-20  ">
+      {/* <section className=" mt-10 mb-10 md:mt-20 md:mb-20  ">
         <BestSelling title="Related Products" />
-      </section>
+      </section> */}
     </main>
   );
 }

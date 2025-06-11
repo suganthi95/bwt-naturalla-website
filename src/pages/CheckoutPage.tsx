@@ -43,7 +43,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 
 
-// Form validation schema
 const formSchema = z.object({
   firstName: z
     .string()

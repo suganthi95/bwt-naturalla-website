@@ -31,6 +31,13 @@ export const ASSETS = {
   PAYTM:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame.png?updatedAt=1749548196234',
   GPAY:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%20(2).png?updatedAt=1749548196145',
   PHONEPAY:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%20(1).png?updatedAt=1749548196446',
-  FRAMEPAY:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%20(3).png?updatedAt=1749548196356'
-
+  FRAMEPAY:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%20(3).png?updatedAt=1749548196356',
+  ORDER_SUCCESS:'https://ik.imagekit.io/3t9llb0gx/Naturella/pana.png',
+  ORDER_FAILURE:'https://ik.imagekit.io/3t9llb0gx/Naturella/rafiki.png',
+  RECTANGLE:'https://ik.imagekit.io/3t9llb0gx/Naturella/Rectangle%2066.png?updatedAt=1749618957982',
+  USER:'https://ik.imagekit.io/3t9llb0gx/Naturella/unsplash_QXevDflbl8A.png?updatedAt=1749619219706',
+  PHATHALATES:'https://ik.imagekit.io/3t9llb0gx/Naturella/Group%203589.png',
+  PARABENS:'https://ik.imagekit.io/3t9llb0gx/Naturella/Group%203588.png',
+  AIRTIFICIAL_COLURS:'https://ik.imagekit.io/3t9llb0gx/Naturella/Artificial%20Colours.png',
+  SULPHATE:'https://ik.imagekit.io/3t9llb0gx/Naturella/Group%203590%20(1).png'
 }

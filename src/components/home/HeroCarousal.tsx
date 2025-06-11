@@ -18,7 +18,7 @@ export default function HeroCarousal() {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 4000,
-    arrows: false, // Or set true to show arrows
+    arrows: false, 
   };
 
   return (

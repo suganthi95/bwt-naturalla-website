@@ -1,0 +1,76 @@
+export type MediaItem = {
+  media_url: string;
+};
+
+type ProductReview = {
+  review_id: number;
+  product_id: number;
+  review_author_id: number;
+  review_txt: string;
+  ratings: number;
+  created_at: string; 
+  first_name: string;
+  last_name: string;
+  email: string | null;
+};
+type ProductRatingSummary = {
+  total_reviews: string; // number as string
+  total_ratings: number;
+  five_star: number;
+  four_star: number;
+  three_star: number;
+  two_star: number;
+  one_star: number;
+};
+
+
+
+export type Product = {
+  product_id: number;
+  admin_id: number | null;
+  product_name: string;
+  category_id: number | null;
+  brand: string | null;
+  tags: string | null;
+  slug: string;
+  barcode: string | null;
+  units: string | null;
+  min_order_quantity: number;
+  unit_price: number;
+  created_at: string;
+  is_discounted: boolean;
+  short_description: string;
+  long_description: string;
+  benefits: string;
+  how_to_use: string;
+  ingredients: string;
+  strike_through_price:string
+  product_specification_pdf: string | null;
+  is_featured: boolean;
+  isin_todays_deal: boolean;
+  created_by: string | null;
+  discount_type: string | null;
+  start_at: string | null;
+  end_at: string | null;
+  vat_tax: number | null;
+  meta_title: string | null;
+  meta_description: string | null;
+  meta_keywords: string | null;
+  meta_image_url: string | null;
+  cash_on_delivery: boolean;
+  shipping_days: number | null;
+  best_selling: boolean;
+  offer_ending_soon: boolean;
+  description_images: number[];
+  thumbnail_image: number;
+  discount_amount: number | null;
+  discount_percent: number | null;
+  discounted_price: number | null;
+  gallery_images: number[];
+  reviews:ProductReview[]
+  review_count:ProductRatingSummary[];
+  gallery_image_url:MediaItem[];
+  product_videos: string | null;
+  category_title: string | null;
+  thumbnail_image_url: string;
+};

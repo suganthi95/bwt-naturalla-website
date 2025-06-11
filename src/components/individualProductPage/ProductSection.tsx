@@ -1,30 +1,45 @@
 import Slider from "react-slick";
 import { useRef, useState, useEffect } from "react";
-import { Heart, Share2 } from "lucide-react";
+import { Heart, Loader2, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ASSETS } from "@/assets/assets";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Icons } from "@/assets/icons";
 import { Input } from "../ui/input";
+import type { Product } from "@/types/Home";
+import { usePincodeEnquiry } from "@/services/product";
+import { toast } from "sonner";
 
-const productImages = [
-  ASSETS.PRODUCT1,
-  ASSETS.PRODUCT2,
-  ASSETS.PRODUCT3,
-  ASSETS.PRODUCT1,
-  ASSETS.PRODUCT2,
-  ASSETS.PRODUCT3,
-];
+// const productImages = [
+//   ASSETS.PRODUCT1,
+//   ASSETS.PRODUCT2,
+//   ASSETS.PRODUCT3,
+//   ASSETS.PRODUCT1,
+//   ASSETS.PRODUCT2,
+//   ASSETS.PRODUCT3,
+// ];
+type MediaItem = {
+  media_url: string;
+};
 
-export default function ProductSection() {
+type Props = {
+  media: MediaItem[];
+  products: Product;
+};
+
+export default function ProductSection({ media, products }: Props) {
   const mainSliderRef = useRef<Slider>(null);
   const thumbSliderRef = useRef<Slider>(null);
   const [nav1, setNav1] = useState<Slider | null>(null);
   const [nav2, setNav2] = useState<Slider | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [quantity, setQuantity] = useState(1);
-
+  const [Pincode, setPincode] = useState(() => localStorage.getItem("pincode"));
+  const [Messages, setMessage] = useState(() =>
+    localStorage.getItem("delivery")
+  );
+  const [Isloading, setIsloading] = useState(false);
+  const { refetch ,isError} = usePincodeEnquiry(Pincode ?? "");
   const handleDecrease = () => {
     if (quantity > 1) setQuantity(quantity - 1);
   };
@@ -68,30 +83,33 @@ export default function ProductSection() {
             ref={thumbSliderRef}
             className="h-full"
           >
-            {productImages.map((src, index) => (
-              <div key={index}>
-                <img
-                  src={src}
-                  alt={`Thumb ${index + 1}`}
-                  className={`h-24 w-32 object-cover rounded-lg border cursor-pointer transition-opacity duration-300 ${
-                    index === activeSlide
-                      ? "opacity-100 border-2 border-black"
-                      : "opacity-60"
-                  }`}
-                />
-              </div>
-            ))}
+            {media?.map((src, index) => {
+              console.log(src);
+              return (
+                <div key={index}>
+                  <img
+                    src={src.media_url}
+                    alt={`Thumb ${index + 1}`}
+                    className={`h-24 w-32 object-cover rounded-lg border cursor-pointer transition-opacity duration-300 ${
+                      index === activeSlide
+                        ? "opacity-100 border-2 border-black"
+                        : "opacity-60"
+                    }`}
+                  />
+                </div>
+              );
+            })}
           </Slider>
         </div>
 
         <div className="flex-1   overflow-hidden">
           <Slider {...mainSliderSettings} ref={mainSliderRef}>
-            {productImages.map((src, index) => (
+            {media?.map((src, index) => (
               <div key={index}>
                 <img
-                  src={src}
+                  src={src?.media_url}
                   alt={`Product ${index + 1}`}
-                  className="w-11/12  rounded-2xl h-auto object-cover"
+                  className="w-11/12  rounded-2xl h-[484px] object-cover"
                 />
               </div>
             ))}
@@ -103,12 +121,10 @@ export default function ProductSection() {
         <div className="flex items-start w-full justify-between">
           <div>
             <h2 className="text-[32px] font-semibold ">
-              Red Wine Face Wash -Brightening - Anti-oxidant - Hydration -pure
-              natural
+              {products?.product_name}
             </h2>
             <p className="text-lead font-medium text-lg">
-              Brightening Effect | Antioxidant Protection | Anti-Aging
-              Properties | Hydration & Soothing | Pore Cleansing & Minimization
+              {products?.short_description}
             </p>
           </div>
           <div className="flex flex-col gap-y-5">
@@ -126,8 +142,12 @@ export default function ProductSection() {
           <Icons.Star /> <span className="font-medium">4/5</span>
         </p>
         <div className="flex items-center gap-x-2">
-          <p className=" font-bold text-title md:text-[32px]">₹ 168</p>
-          <p className="md:text-2xl line-through text-lead">₹ 199</p>
+          <p className=" font-bold text-title md:text-[32px]">
+            Rs. {products?.unit_price}
+          </p>
+          <p className="md:text-2xl line-through text-lead">
+            Rs. {products?.strike_through_price}
+          </p>
 
           <p className="md:text-2xl font-bold text-green-600">20% OFF</p>
           <p className="md:text-xl text-orange-600 font-semibold">
@@ -137,12 +157,19 @@ export default function ProductSection() {
         <div>
           <p className="flex items-center gap-x-1.5 text-lead">
             Price <span> : </span>{" "}
-            <span className="text-title font-bold t">Rs 168</span>
+            <span className="text-title font-bold t">
+              Rs {products?.unit_price}
+            </span>
           </p>
         </div>
         <div className="flex items-center gap-2 border w-fit p-1 px-4 rounded-lg">
-          <Button variant="outline" size="icon" className="border-none cursor-pointer  w-fit text-xl font-semibold" onClick={handleDecrease}>
-           {' −'}
+          <Button
+            variant="outline"
+            size="icon"
+            className="border-none cursor-pointer  w-fit text-xl font-semibold"
+            onClick={handleDecrease}
+          >
+            {" −"}
           </Button>
           <Input
             type="number"
@@ -150,8 +177,13 @@ export default function ProductSection() {
             onChange={(e) => setQuantity(Number(e.target.value))}
             className="w-10  text-2xl  font-semibold border-none text-center"
             min={1}
-          /> 
-          <Button variant="outline" size="icon"   className="cursor-pointer  border-none  w-fit text-xl font-semibold"  onClick={handleIncrease}>
+          />
+          <Button
+            variant="outline"
+            size="icon"
+            className="cursor-pointer  border-none  w-fit text-xl font-semibold"
+            onClick={handleIncrease}
+          >
             +
           </Button>
         </div>{" "}
@@ -165,15 +197,44 @@ export default function ProductSection() {
             <Icons.Swap className="text-xl" />
           </Button>
         </div>
-     <div className="flex items-center gap-2 border rounded-md px-2 py-1 w-fit">
-  <Input
-    type="number"
-    placeholder="Enter PIN code to check delivery date"
-    className="border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-8 md:w-72 text-sm px-2"
-  />
-  <Button className="h-6 rounded px-3  text-sm">Check</Button>
-</div>
+        <div className="flex items-center gap-2 border rounded-md px-2 py-1 w-fit">
+          <Input
+            type="number"
+            value={Pincode ?? ""}
+            placeholder="Enter PIN code to check delivery date"
+            onChange={(e) => setPincode(e.target.value)}
+            className="border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-8 md:w-72 text-sm px-2"
+          />
+          <Button
+            onClick={async () => {
+              setIsloading(true);
+              localStorage.setItem("pincode", Pincode ?? "");
 
+              try {
+                const { data ,isError,error } = await refetch(); 
+                
+                if (data?.status === true) {
+                  setMessage(data.message);
+                  localStorage.setItem("delivery", data?.message);
+                } 
+                if(isError || error) {
+                  toast.error("We are not shipping for this Location")
+                  setMessage("We are not shipping for this Location");
+                    localStorage.setItem("delivery","We are not shipping for this Location");
+
+                }
+              } catch (error) {
+                setMessage("Something went wrong");
+              } finally {
+                setIsloading(false);
+              }
+            }}
+            className="h-6 rounded cursor-pointer px-3  text-sm"
+          >
+            {Isloading ? <Loader2 className="animate-spin" /> : "Check"}
+          </Button>
+        </div>
+        <p className={`${isError ? 'text-red-500':'text-green-500'} text-sm font-medium`}>{Messages}</p>
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
 import { Component, type  ReactNode, type ErrorInfo } from "react";
-import errorIllustarte from '@/assets/react.svg'
 interface Props {
   children: ReactNode;
 }
@@ -32,16 +31,16 @@ export default class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-6 text-center">
           <div className="max-w-md space-y-4">
-            <img
+            {/* <img
               src={errorIllustarte}
               alt="Error Illustration"
               className="w-40 mx-auto"
-            />
+            /> */}
             <h1 className="text-2xl font-bold text-red-600">
               Oops! Something went wrong.
             </h1>
             <p className="text-gray-600">
-              We’re sorry for the inconvenience. Please try refreshing the page.
+              We{'’'}re sorry for the inconvenience. Please try refreshing the page.
               If the problem persists, contact our support team.
             </p>
             <button

@@ -7,8 +7,12 @@ import LatestProduct from "@/components/home/LatestProduct";
 import OfferEnding from "@/components/home/OfferEnding";
 import TodayDeals from "@/components/home/TodayDeals";
 import TopCategories from "@/components/home/TopCategories";
+import { useGetLandingPageDetails } from "@/services/home";
 
 export default function Home() {
+
+  const {data} = useGetLandingPageDetails()
+  console.log('data: ', data);
   return (
     <main>
       {/* hero section */}
@@ -18,7 +22,7 @@ export default function Home() {
 
       {/* todays deal section */}
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
-        <TodayDeals />
+        <TodayDeals Products={data?.todays_deal} />
       </section>
 
       {/* top category section */}
@@ -28,7 +32,7 @@ export default function Home() {
 
       {/* best selling section */}
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
-        <BestSelling title={"Best Selling Product"} />
+        <BestSelling title={"Best Selling Product"} Products={data?.best_selling} />
       </section>
 
       {/* feature on section */}
@@ -74,7 +78,7 @@ export default function Home() {
 
         {/* latest products section */}
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
-        <LatestProduct title={"Latest Products"} />
+        <LatestProduct title={"Latest Products"} Products={data?.latestProduct}/>
       </section>
 
           {/* Blogs section */}
