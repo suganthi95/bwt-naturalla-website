@@ -3,12 +3,18 @@ import { Button } from "../ui/button";
 import { ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import type { Product } from "@/types/Home";
- interface Props{
-  title :string
-  Products:Product[]
- }
-export default function LatestProduct({title,Products}:Props) {
-  const navigate = useNavigate()
+import { useAddToCart } from "@/services/cart";
+import { useDispatch } from "react-redux";
+import { addItem } from "@/redux/slices/cartSlice";
+interface Props {
+  title: string;
+  Products: Product[];
+}
+export default function LatestProduct({ title, Products }: Props) {
+  const navigate = useNavigate();
+  const { mutate } = useAddToCart();
+  const dispatch = useDispatch()
+
   // const Prodcuts = [
   //   {
   //     id: "1",
@@ -51,29 +57,41 @@ export default function LatestProduct({title,Products}:Props) {
           <p className="text-title cursor-pointer ">View more</p>
         </div>
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 md:gap-x-14 lg:gap-x-20 mt-4 md:mt-8 mb-14 md:mb-20">
-          {Products?.slice(0,4)?.map((item, index) => {
+          {Products?.slice(0, 4)?.map((item, index) => {
             return (
               <li className="space-y-2 relative">
                 <img
                   src={item?.thumbnail_image_url}
                   alt={`img-${index}`}
                   className="rounded-xl  cursor-pointer md:w-80"
-                  onClick={()=>                  navigate(`/product/${item.product_id}`)}
+                  onClick={() => navigate(`/product/${item.product_id}`)}
                 />
-                <p                   onClick={()=>                  navigate(`/product/${item.product_id}`)}
- className="text-title text-xl  cursor-pointer hover:text-primary transition-colors duration-300 font-medium line-clamp-1">
+                <p
+                  onClick={() => navigate(`/product/${item.product_id}`)}
+                  className="text-title text-xl  cursor-pointer hover:text-primary transition-colors duration-300 font-medium line-clamp-1"
+                >
                   {item?.product_name}
                 </p>
                 <div className="flex items-center justify-between w-full">
                   <p className="flex items-center gap-x-2.5 text-textPrimary text-xl lato font-bold">
-                   Rs. {item?.unit_price}
+                    Rs. {item?.unit_price}
                     <span className=" text-lead  font-normal line-through">
-                    Rs. {item?.strike_through_price}
-                    
+                      Rs. {item?.strike_through_price}
                     </span>
                   </p>
-                  <Button className="rounded-md font-bold hover:bg-transparent cursor-pointer  px-5 bg-white text-primary border border-primary">
-                    <ShoppingCart />
+  <Button
+                  onClick={() => {
+                    mutate({
+                      product_id: item.product_id,
+                      quantity: 1,
+                      token:
+                        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg",
+                    });
+                    dispatch(addItem(item))
+                  }}
+                  className="rounded-md font-bold transition-all duration-300 ease-in-out px-5 py-2 bg-white text-primary border border-primary hover:bg-primary hover:text-white shadow-sm hover:shadow-lg"
+                >
+                  <ShoppingCart className="w-5 h-5" />
                   </Button>
                 </div>
               </li>
@@ -94,7 +112,7 @@ export default function LatestProduct({title,Products}:Props) {
             src={ASSETS.ALOWERA_FRAME}
             alt="img"
             className="absolute w-8/12 z-50 2xl:w-1/4  lg:left-44 -top-10 lg:-top-24 "
-          /> 
+          />
           <div className="absolute left-12 xl:left-96  top-7 ">
             <img
               src={ASSETS.PRODUCT_BANNER}
@@ -107,16 +125,15 @@ export default function LatestProduct({title,Products}:Props) {
               </p>
             </div>{" "}
           </div>
-        </div><div className="p-2 px-4 h-auto sm:h-14 w-full sm:w-7/12 rounded-xl bg-white border-2 border-dashed border-black flex items-center justify-center">
-  <p className="font-semibold text-title text-[20px] sm:text-[28px] md:text-[32px] flex  gap-x-2 text-center">
-    Use Code :
-    <span className="text-title font-bold text-[20px] sm:text-[28px] md:text-[32px]">
-      NATURA20
-    </span>
-  </p>
-</div>
-
-
+        </div>
+        <div className="p-2 px-4 h-auto sm:h-14 w-full sm:w-7/12 rounded-xl bg-white border-2 border-dashed border-black flex items-center justify-center">
+          <p className="font-semibold text-title text-[20px] sm:text-[28px] md:text-[32px] flex  gap-x-2 text-center">
+            Use Code :
+            <span className="text-title font-bold text-[20px] sm:text-[28px] md:text-[32px]">
+              NATURA20
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );

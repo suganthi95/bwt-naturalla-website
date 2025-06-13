@@ -1,13 +1,19 @@
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import type { Product } from "@/types/Home";
-import { useAddToCart } from "@/services/product";
+import { useAddToCart } from "@/services/cart";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addItem } from "@/redux/slices/cartSlice";
 interface Props {
   Products: Product[];
 }
 export default function TodayDeals({ Products }: Props) {
   const navigate = useNavigate();
-  const {mutate} = useAddToCart()
+  const { mutate } = useAddToCart();
+  const dispatch = useDispatch();
+  const [clicked, setClicked] = useState(false);
+
   // const Prodcuts = [
   //   {
   //     id: "1",
@@ -70,12 +76,21 @@ export default function TodayDeals({ Products }: Props) {
                     Rs.{item?.strike_through_price}
                   </span>
                 </p>
-                <Button onClick={()=>{
-                  mutate({
-                    product_id:item.product_id,
-                    quantity:1
-                  })
-                }} className="rounded-full hover:bg-transparent cursor-pointer  px-5 bg-white text-primary border border-primary">
+                <Button
+                  onClick={() => {
+                    mutate({
+                      product_id: item.product_id,
+                      quantity: 1,
+                      token:
+                        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg",
+                    });
+                    dispatch(addItem(item));
+                    setTimeout(() => setClicked(false), 300);
+                  }}
+                  className={`rounded-full font-semibold px-5 py-2 border transition-all duration-300 ease-in-out
+        ${clicked ? "animate-glitch" : ""}
+        bg-white text-primary border-primary hover:bg-primary hover:text-white hover:shadow-md hover:scale-105`}
+                >
                   Add Cart
                 </Button>
               </div>

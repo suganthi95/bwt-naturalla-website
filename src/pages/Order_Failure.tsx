@@ -8,7 +8,7 @@ export default function Order_Failure() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       navigate("/");
-    }, 3000);
+    }, 5000);
 
     return () => clearTimeout(timeout);
   }, []);

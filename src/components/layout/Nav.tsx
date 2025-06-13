@@ -14,7 +14,7 @@ import { ASSETS } from "../../assets/assets";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import CartSheet from "../addToCartProducts/CartSheet";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   motion,
   useMotionValueEvent,
@@ -22,6 +22,10 @@ import {
   AnimatePresence,
 } from "framer-motion";
 import MenuToggle from "@/animation/MenuToggle";
+import { useGetCartItems } from "@/services/cart";
+import { useDispatch, useSelector } from "react-redux";
+import { setCartItems, setTaxDetails } from "@/redux/slices/cartSlice";
+import type { RootState } from "@/redux/store";
 const messages = [
   "🎉 Flat 30% Off on Selected Products | Use Code : DEAL30 🎉",
   "🚚 Free Shipping on Orders Above ₹999 🚚",
@@ -30,7 +34,16 @@ const messages = [
 
 export default function Nav() {
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
+  const { items} = useSelector((state: RootState) => state.cart);
+  const { data, isSuccess, isLoading, isError, isFetching } = useGetCartItems(
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg"
+  );
   const [Isopen, setIsopen] = useState(false);
+  useEffect(() => {
+    dispatch(setCartItems(data?.data));
+    dispatch(setTaxDetails(data?.tax_detail));
+  }, [data, isSuccess]);
   const settings = {
     arrows: true,
     autoplay: true,
@@ -57,12 +70,15 @@ export default function Nav() {
     }
   });
   return (
-    <motion.header   variants={{
-          visible: { y: 0 },
-          hidden: { y: "-100%" },
-        }}
-        animate={hidden ? "hidden" : "visible"}
-        transition={{ duration: 0.35, ease: "easeInOut" }} className="">
+    <motion.header
+      variants={{
+        visible: { y: 0 },
+        hidden: { y: "-100%" },
+      }}
+      animate={hidden ? "hidden" : "visible"}
+      transition={{ duration: 0.35, ease: "easeInOut" }}
+      className=""
+    >
       {/* offer slider  */}
       <div className="w-full bg-primary  mx-auto px-4 py-1 overflow-hidden">
         <Slider {...settings}>
@@ -77,10 +93,7 @@ export default function Nav() {
       </div>
       {/* navbar */}
 
-      <motion.nav
-      
-        className=" py-5 bg-offWhite"
-      >
+      <motion.nav className=" py-5 bg-offWhite">
         <div className="container mx-auto ">
           <div className="flex  items-center justify-between  xl:px-10">
             {/* <div className="xl:hidden">
@@ -125,16 +138,24 @@ export default function Nav() {
 
               <Sheet open={Isopen} onOpenChange={setIsopen}>
                 <SheetTrigger
-                  className="cursor-pointer"
+                  className="cursor-pointer relative"
                   onClick={() => setIsopen(true)}
                 >
-                  <ShoppingCart className="w-5 h-5 text-primary transition" />
-                  {/* <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1 rounded-full">
-                2
-              </span> */}
+                  <ShoppingCart className="w-5 h-5  text-primary transition" />
+                  {Array.isArray(items) && items.length > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1 rounded-full">
+                      {items.length}
+                    </span>
+                  )}
                 </SheetTrigger>
                 <SheetContent>
-                  <CartSheet onClose={setIsopen} />
+                  <CartSheet
+                    onClose={setIsopen}
+                    isLoading={isLoading}
+                    isError={isError}
+                    isFetching={isFetching}
+                    Product={data}
+                  />
                 </SheetContent>
               </Sheet>
 

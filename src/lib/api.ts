@@ -1,22 +1,125 @@
-import { api } from "./axiosInstance"
+import type { OrderPayload } from "@/types/type";
+import { api } from "./axiosInstance";
 
-export const landingPageDetails = async()=>{
-const response = await api.get('v1/product/deals-sellings')
+export const landingPageDetails = async () => {
+  const response = await api.get("v1/product/deals-sellings");
+  return response.data;
+};
+
+export const productDetailById = async (id: string) => {
+  const response = await api.get(`v1/product/detail/${id}`);
+  return response.data;
+};
+
+export const pincodeEnquiry = async (pincode: string) => {
+  const response = await api.get(`v1/order/check/delivery/${pincode}`);
+  return response.data;
+};
+
+export const addToCart = async (
+  product_id: number,
+  quantity: number,
+  token: string
+) => {
+  const response = await api.post(
+    "v1/cart",
+    { product_id, quantity },
+    {
+      headers: {
+        Authorization: `${token}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+export const getCartItems = async (token: string) => {
+  const response = await api.get("v1/cart", {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
+
+export const updateCartItems = async (cart_id:number,  quantity:number,token: string) => {
+  const response = await api.put("v1/cart",{cart_id,quantity}, {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
+
+export const deleteCartItems = async (cart_id:number,  quantity:number,token: string) => {
+  const response = await api.delete(`v1/cart/${cart_id}`,{
+    data:{
+        cart_id,
+        quantity
+    },
+    headers:{
+        Authorization:token
+    }
+  });
+  return response.data;
+};
+
+export const createOrder = async(OrderPayload:OrderPayload,token:string)=>{
+const response = await api.post('v1/order',{OrderPayload},{
+    headers:{
+        Authorization:token
+    }
+
+})
 return response.data
 }
 
-export const productDetailById = async(id:string)=>{
-    const response = await api.get(`v1/product/detail/${id}`)
+
+export const verifyPhonePayPayment = async(merchantTransactionId:string,token:string)=>{
+    const response = await api.post('v1/order/verify/phonepe/payment', {merchantTransactionId},{
+        headers:{
+            Authorization:token
+        }
+    })
+
+    return response.data
+}
+export const verifyRazorPayPayment = async(razorpay_payment_id:string, razorpay_signature:string ,razorpay_order_id:string,token:string)=>{
+    const response = await api.post('v1/order/verify/razorpay/payment', {razorpay_order_id,razorpay_payment_id,razorpay_signature},{
+        headers:{
+            Authorization:token
+        }
+    })
+
     return response.data
 }
 
-export const pincodeEnquiry = async(pincode:string)=>{
-    const response = await api.get(`v1/order/check/delivery/${pincode}`)
-    return response.data
+export const  checkCoupoCode  = async (couponCode:string,token:string)=>{
+  const response  = await api.get(`v1/order/coupon/${couponCode}`,{
+    headers:{
+      Authorization:token
+    }
+  })
+  return response.data
+
 }
 
-export const addToCart = async(product_id:number,quantity:number)=>{
-    const response =  await api.post('v1/cart',{product_id,quantity})
-    return response.data
-
+export const filterValues = async(token:string)=>{
+ const response = await api.get('v1/product/filter/values',{
+  headers:{
+    Authorization:token
+  }
+ })
+ return response.data
 }
+ 
+
+export const filterbyFeatureProducts =async(param:string,token:string)=>{
+  const response = await api.get(`v1/product/filter/by-feature/?${param}`,{
+    headers:{
+      Authorization:token
+    }
+  })
+  return response.data
+  
+} 

@@ -9,11 +9,11 @@ import CustomerReview from "@/components/individualProductPage/CustomerReview";
 import { useProductDetailsById } from "@/services/product";
 import { useParams } from "react-router-dom";
 import { ASSETS } from "@/assets/assets";
+import BestSelling from "@/components/home/BestSelling";
 export default function ProductById() {
   const params = useParams();
   const { id } = params || {};
-  const {data} = useProductDetailsById(id ??'')
-  console.log('data: ', data?.gallery_image_url);
+  const { data } = useProductDetailsById(id ?? "");
   const whatsout = [
     {
       id: "1",
@@ -32,14 +32,14 @@ export default function ProductById() {
     },
     {
       id: "4",
-      Img:ASSETS.AIRTIFICIAL_COLURS ,
+      Img: ASSETS.AIRTIFICIAL_COLURS,
       title: "Artificial Colours",
     },
   ];
   return (
     <main>
       <section className=" mt-10 mb-10  ">
-        <ProductSection  products={data} media={data?.gallery_image_url}/>
+        <ProductSection products={data} media={data?.gallery_image_url} />
       </section>
       <section className="mt-10 mb-10 md:mt-20 md:mb-20  ">
         <div className="container mx-auto  flex  w-full">
@@ -73,11 +73,31 @@ export default function ProductById() {
                   Details
                 </AccordionTrigger>
                 <AccordionContent className="font-medium text-[#494F49]">
-                  Red wine face wash is a skincare product that incorporates the
-                  benefits of red wine extracts, often combined with other
-                  natural ingredients, to cleanse, rejuvenate, and enhance the
-                  skin’s appearance. It is particularly popular for its
-                  antioxidant properties and anti-aging benefits.{" "}
+                  {data?.long_description}
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-2">
+                <AccordionTrigger className="text-lg font-semibold text-title cursor-pointer ">
+                  Benefits
+                </AccordionTrigger>
+                <AccordionContent className="font-medium text-[#494F49]">
+                  {data?.benefits}
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-3">
+                <AccordionTrigger className="text-lg font-semibold text-title cursor-pointer ">
+                  How to Use
+                </AccordionTrigger>
+                <AccordionContent className="font-medium text-[#494F49]">
+                  {data?.how_to_use}
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-4">
+                <AccordionTrigger className="text-lg font-semibold text-title cursor-pointer ">
+                  Ingredients
+                </AccordionTrigger>
+                <AccordionContent className="font-medium text-[#494F49]">
+                  {data?.ingredients}
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -103,11 +123,11 @@ export default function ProductById() {
         </div>
       </section>
       <section className=" mt-10 mb-10 md:mt-20 md:mb-20  ">
-        <CustomerReview  Product={data}/>
+        <CustomerReview Product={data} />
       </section>
-      {/* <section className=" mt-10 mb-10 md:mt-20 md:mb-20  ">
-        <BestSelling title="Related Products" />
-      </section> */}
+      <section className=" mt-10 mb-10 md:mt-20 md:mb-20  ">
+        <BestSelling title="Related Products" Products={data?.relatedProducts} />
+      </section>
     </main>
   );
 }

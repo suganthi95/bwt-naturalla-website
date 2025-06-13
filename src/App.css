@@ -1,0 +1,22 @@
+@keyframes glitch {
+  0% {
+    box-shadow: 0 0 0px #ff0000, 0 0 0px #00ffea;
+    transform: translate(0);
+  }
+  25% {
+    box-shadow: 0 0 4px #ff0000, 0 0 4px #00ffea;
+    transform: translate(1px, -1px);
+  }
+  50% {
+    box-shadow: 0 0 2px #ff0000, 0 0 2px #00ffea;
+    transform: translate(-1px, 1px);
+  }
+  100% {
+    box-shadow: 0 0 0px #ff0000, 0 0 0px #00ffea;
+    transform: translate(0);
+  }
+}
+
+.animate-glitch {
+  animation: glitch 0.3s ease-in-out;
+}

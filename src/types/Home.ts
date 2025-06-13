@@ -27,6 +27,10 @@ type ProductRatingSummary = {
 
 export type Product = {
   product_id: number;
+  user_id:number;
+  quantity:number;
+  cart_id:number
+  product_size:string
   admin_id: number | null;
   product_name: string;
   category_id: number | null;
@@ -73,4 +77,5 @@ export type Product = {
   product_videos: string | null;
   category_title: string | null;
   thumbnail_image_url: string;
+  total_amount ? :number
 };

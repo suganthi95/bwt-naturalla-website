@@ -8,11 +8,10 @@ import OfferEnding from "@/components/home/OfferEnding";
 import TodayDeals from "@/components/home/TodayDeals";
 import TopCategories from "@/components/home/TopCategories";
 import { useGetLandingPageDetails } from "@/services/home";
-
+import '../App.css'
 export default function Home() {
 
   const {data} = useGetLandingPageDetails()
-  console.log('data: ', data);
   return (
     <main>
       {/* hero section */}

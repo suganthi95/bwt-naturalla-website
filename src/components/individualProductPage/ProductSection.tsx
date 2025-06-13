@@ -39,7 +39,7 @@ export default function ProductSection({ media, products }: Props) {
     localStorage.getItem("delivery")
   );
   const [Isloading, setIsloading] = useState(false);
-  const { refetch ,isError} = usePincodeEnquiry(Pincode ?? "");
+  const { refetch, isError } = usePincodeEnquiry(Pincode ?? "");
   const handleDecrease = () => {
     if (quantity > 1) setQuantity(quantity - 1);
   };
@@ -73,7 +73,10 @@ export default function ProductSection({ media, products }: Props) {
     dots: false,
     verticalSwiping: true,
   };
-
+  const averageRatings = Math.round(
+    products?.review_count[0].total_ratings /
+      Number(products?.review_count[0].total_reviews)
+  );
   return (
     <div className="flex flex-col container mx-auto lg:flex-row  ">
       <div className="flex w-full lg:w-1/2 gap-4 ">
@@ -136,10 +139,20 @@ export default function ProductSection({ media, products }: Props) {
             </Button>
           </div>
         </div>
-        <p className="flex items-center gap-x-0.5 text-sm">
+        {/* <p className="flex items-center gap-x-0.5 text-sm">
           <Icons.Star /> <Icons.Star />
           <Icons.Star />
-          <Icons.Star /> <span className="font-medium">4/5</span>
+          <Icons.Star /> <span className="font-medium">{averageRatings}/5</span>
+        </p> */}
+        <p className="flex items-center gap-x-0.5 text-sm">
+          {Array.from({ length: 5 }).map((_, i) =>
+            i < averageRatings ? (
+              <Icons.Star key={i} className="text-yellow-500 w-4 h-4" />
+            ) : (
+              <Icons.Un_Star key={i} className="text-gray-300 w-4 h-4" />
+            )
+          )}
+          <span className="font-medium ml-1">{averageRatings}/5</span>
         </p>
         <div className="flex items-center gap-x-2">
           <p className=" font-bold text-title md:text-[32px]">
@@ -211,17 +224,19 @@ export default function ProductSection({ media, products }: Props) {
               localStorage.setItem("pincode", Pincode ?? "");
 
               try {
-                const { data ,isError,error } = await refetch(); 
-                
+                const { data, isError, error } = await refetch();
+
                 if (data?.status === true) {
                   setMessage(data.message);
                   localStorage.setItem("delivery", data?.message);
-                } 
-                if(isError || error) {
-                  toast.error("We are not shipping for this Location")
+                }
+                if (isError || error) {
+                  toast.error("We are not shipping for this Location");
                   setMessage("We are not shipping for this Location");
-                    localStorage.setItem("delivery","We are not shipping for this Location");
-
+                  localStorage.setItem(
+                    "delivery",
+                    "We are not shipping for this Location"
+                  );
                 }
               } catch (error) {
                 setMessage("Something went wrong");
@@ -234,7 +249,13 @@ export default function ProductSection({ media, products }: Props) {
             {Isloading ? <Loader2 className="animate-spin" /> : "Check"}
           </Button>
         </div>
-        <p className={`${isError ? 'text-red-500':'text-green-500'} text-sm font-medium`}>{Messages}</p>
+        <p
+          className={`${
+            isError ? "text-red-500" : "text-green-500"
+          } text-sm font-medium`}
+        >
+          {Messages}
+        </p>
       </div>
     </div>
   );

@@ -39,5 +39,7 @@ export const ASSETS = {
   PHATHALATES:'https://ik.imagekit.io/3t9llb0gx/Naturella/Group%203589.png',
   PARABENS:'https://ik.imagekit.io/3t9llb0gx/Naturella/Group%203588.png',
   AIRTIFICIAL_COLURS:'https://ik.imagekit.io/3t9llb0gx/Naturella/Artificial%20Colours.png',
-  SULPHATE:'https://ik.imagekit.io/3t9llb0gx/Naturella/Group%203590%20(1).png'
+  SULPHATE:'https://ik.imagekit.io/3t9llb0gx/Naturella/Group%203590%20(1).png',
+  RAZORPAY:'https://ik.imagekit.io/3t9llb0gx/Naturella/image%2047.png?updatedAt=1749725477929',
+  PHONEPAY2:'https://ik.imagekit.io/3t9llb0gx/Naturella/image%2046.png?updatedAt=1749725477780'
 }
