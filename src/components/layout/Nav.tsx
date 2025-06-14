@@ -180,7 +180,7 @@ export default function Nav() {
                   <Avatar className="w-8 h-8 cursor-pointer bg-primary">
                     <AvatarImage src="/avatar.jpg" alt="profile" />
                     <AvatarFallback className="bg-primary text-white font-semibold">
-                      B
+                      {auth.first_name.charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                 </PopoverTrigger>
