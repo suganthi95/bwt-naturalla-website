@@ -6,8 +6,8 @@ interface FilterState {
   minPrice: number;
   maxPrice: number;
   categories: string[];
-  sortByPrice: "priceLowHigh" | "priceHighLow";
-  sortByDate: "dateNewOld" | "dateOldNew";
+  sortByPrice: string;
+  sortByDate: string;
   sorybyAlphabetic: string;
 }
 
@@ -17,8 +17,8 @@ const initialState: FilterState = {
   minPrice: 0,
   maxPrice: 10000,
   categories: [],
-  sortByPrice: "priceLowHigh",
-  sortByDate: "dateNewOld",
+  sortByPrice: "price-asc",
+  sortByDate: "date-desc",
   sorybyAlphabetic: "",
 };
 
@@ -40,7 +40,7 @@ const filterSlice = createSlice({
     removeKeyword: (state, action: PayloadAction<string>) => {
       state.keywords = state.keywords.filter((k) => k !== action.payload);
     },
-    setPriceRange: (
+    setPriceRanges: (
       state,
       action: PayloadAction<{ min: number; max: number }>
     ) => {
@@ -61,7 +61,7 @@ const filterSlice = createSlice({
     ) => {
       state.sortByPrice = action.payload;
     },
-    setSortByDate: (
+    setSortDate: (
       state,
       action: PayloadAction<FilterState["sortByDate"]>
     ) => {
@@ -81,12 +81,12 @@ export const {
   setSearchInput,
   addKeywords,
   removeKeyword,
-  setPriceRange,
+  setPriceRanges,
   setCategories,
   toggleCategory,
   setSortByPrice,
   setSortByAlphabetic,
-  setSortByDate,
+  setSortDate,
   clearFilters,
 } = filterSlice.actions;
 

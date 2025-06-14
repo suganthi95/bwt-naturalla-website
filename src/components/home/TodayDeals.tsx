@@ -14,7 +14,7 @@ export default function TodayDeals({ Products }: Props) {
   const { mutate } = useAddToCart();
   const dispatch = useDispatch();
   const [clicked, setClicked] = useState(false);
-  const {token} = useSelector((state:RootState)=>state.auth)
+  const { token } = useSelector((state: RootState) => state.auth);
 
   // const Prodcuts = [
   //   {
@@ -47,18 +47,26 @@ export default function TodayDeals({ Products }: Props) {
     <div className="container mx-auto">
       <div className="flex justify-between font-semibold text-xl items-center">
         <p className="text-title cursor-pointer ">Todays Deals</p>
-        <p className="text-title cursor-pointer ">View more</p>
+        <p
+          className="text-title cursor-pointer hover:underline underline-primary"
+          onClick={() =>
+            navigate("/products", { state: { param: "sin_todays_deal=true" } })
+          }
+        >
+          View more
+        </p>
       </div>
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 md:gap-x-14 lg:gap-x-20 mt-4 md:mt-8">
         {Products?.slice(0, 3)?.map((item, index) => {
           return (
-            <li  key={index}  className="space-y-2 relative">
+            <li key={index} className="space-y-2 relative">
               <img
                 src={item.thumbnail_image_url}
                 alt={item?.product_name}
-                className="rounded-xl cursor-pointer w-full"
+                className="w-[388px] h-[388px] rounded-[16px] object-coover  mx-auto cursor-pointer"
                 onClick={() => navigate(`/product/${item.product_id}`)}
               />
+
               <div className="absolute bg-[#E95144] text-white rounded  text-sm font-medium top-4 left-3  px-4">
                 20 % off
               </div>
@@ -83,8 +91,8 @@ export default function TodayDeals({ Products }: Props) {
                     mutate({
                       product_id: item.product_id,
                       quantity: 1,
-                      token:token
-                                        });
+                      token: token,
+                    });
                     dispatch(addItem(item));
                     setTimeout(() => setClicked(false), 300);
                   }}

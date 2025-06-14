@@ -14,9 +14,17 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../ui/accordion2";
-import { useDispatch } from "react-redux";
-import { addKeywords } from "@/redux/slices/filterSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addKeywords,
+  clearFilters,
+  setCategories,
+  setPriceRanges,
+  setSortByPrice,
+  setSortDate,
+} from "@/redux/slices/filterSlice";
 import type { FilterData } from "@/types/type";
+import type { RootState } from "@/redux/store";
 interface Props {
   filterValues: FilterData;
 }
@@ -32,17 +40,26 @@ const sortOptions2 = [
 export default function FilterSidebar({ filterValues }: Props) {
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
-  const [badges, setBadges] = useState<string[]>([]);
+    const {
+    categories,
+    keywords,
+    maxPrice,
+    minPrice,
+    sortByDate,
+    sortByPrice,
+  } = useSelector((state: RootState) => state.filter);
+  const [badges, setBadges] = useState<string[]>(keywords);
   const defaultMin = filterValues?.price_range[0]?.min_price ?? 164;
   const defaultMax = filterValues?.price_range[0]?.max_price ?? 5000;
   const [priceRange, setPriceRange] = useState<[number, number]>([
-    defaultMin,
-    defaultMax,
+    minPrice,
+    maxPrice,
   ]);
   const [open, setOpen] = useState(false);
   const [min, max] = priceRange;
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [sortBy, setSortBy] = useState("price-asc");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(categories);
+  const [sortBy, setSortBy] = useState(sortByPrice);
+  const [sortDate, setSortByDate] = useState(    sortByDate  );
 
   const toggleCategory = (category: string) => {
     setSelectedCategories((prev) =>
@@ -51,6 +68,8 @@ export default function FilterSidebar({ filterValues }: Props) {
         : [...prev, category]
     );
   };
+
+  
   const handlePriceInput = (value: number, type: "min" | "max") => {
     if (type === "min") {
       if (value <= priceRange[1]) {
@@ -66,14 +85,18 @@ export default function FilterSidebar({ filterValues }: Props) {
   const clearAll = () => {
     setSearchTerm("");
     setBadges([]);
+    dispatch(clearFilters())
     setPriceRange([100, 1000]);
     setSelectedCategories([]);
     setSortBy("price-asc");
   };
 
   const applyFilters = () => {
-    console.log({ badges, priceRange, selectedCategories, sortBy });
     dispatch(addKeywords(badges));
+    dispatch(setCategories(selectedCategories));
+    dispatch(setSortByPrice(sortBy));
+    dispatch(setSortDate(sortDate));
+    dispatch(setPriceRanges({ min, max }));
   };
 
   return (
@@ -138,9 +161,10 @@ export default function FilterSidebar({ filterValues }: Props) {
             >
               {badge}
               <span
-                onClick={() =>
-                  setBadges((prev) => prev.filter((item) => item !== badge))
-                }
+                onClick={() => {
+                  setBadges((prev) => prev.filter((item) => item !== badge));
+                  // dispatch(removeKeyword(badge))
+                }}
               >
                 <X className="w-4 h-4 cursor-pointer ml-1" />
               </span>
@@ -161,7 +185,7 @@ export default function FilterSidebar({ filterValues }: Props) {
                 onValueChange={(val) => setPriceRange([val[0], val[1]])}
                 min={defaultMin}
                 max={defaultMax}
-                step={50}
+                step={1}
                 className="mb-4"
               />
               <div className="flex gap-4">
@@ -228,7 +252,7 @@ export default function FilterSidebar({ filterValues }: Props) {
             <AccordionContent>
               <RadioGroup
                 value={sortBy}
-                onValueChange={setSortBy}
+                onValueChange={(val)=>setSortBy(val)}
                 className="space-y-2 mt-2"
               >
                 {sortOptions.map((opt) => (
@@ -252,8 +276,8 @@ export default function FilterSidebar({ filterValues }: Props) {
             </AccordionTrigger>
             <AccordionContent>
               <RadioGroup
-                value={sortBy}
-                onValueChange={setSortBy}
+                value={sortByDate}
+                onValueChange={setSortByDate}
                 className="space-y-2 mt-2"
               >
                 {sortOptions2.map((opt) => (

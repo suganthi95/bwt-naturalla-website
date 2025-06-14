@@ -1,5 +1,6 @@
 import Slider from "react-slick";
 import {
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
   Heart,
@@ -114,18 +115,23 @@ export default function Nav() {
               className="w-40"
             />
             <ul className="xl:flex items-center hidden  justify-center gap-x-3.5">
-              {NavData.map((item) => {
+              {NavData.map((item,index) => {
+                const IsDropDown = [2,3,4].includes(index)
+
                 return (
                   <Link
                     key={item.id}
-                    to={item.link}
-                    className={`text-primary    tracking-wide  ${
-                      pathname === item.link
+                    to={IsDropDown ? "#":item.link}
+                    state={{param:''}}
+                    className={`text-primary  flex items-center gap-x-1   tracking-wide  ${
+                    (  pathname === item.link )
                         ? "font-bold underline underline-offset-8 decoration-2"
                         : "font-normal no-underline"
                     } py-2`}
                   >
                     {item.name}
+                       {IsDropDown && (
+          <ChevronDown className="w-3 "/> )}
                   </Link>
                 );
               })}
@@ -193,12 +199,12 @@ export default function Nav() {
                   >
                     <div className="space-y-2">
                       <p className="text-sm font-medium text-gray-800">
-                        Welcome, Bava
+                        Welcome, {auth?.first_name}
                       </p>
                       <hr />
                       <div className="space-y-1 text-sm text-muted-foreground">
                         <Link
-                          to="/profile"
+                          to="/my-profile"
                           className="block hover:text-primary"
                         >
                           Profile

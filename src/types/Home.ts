@@ -79,4 +79,6 @@ export type Product = {
   thumbnail_image_url: string;
   total_amount ? :number
   tax_percent: number;
+  current_stock:number
+  benefit_keys:string[]
 };

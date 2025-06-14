@@ -13,8 +13,8 @@ interface Props {
 export default function BestSelling({ title, Products }: Props) {
   const navigate = useNavigate();
   const { mutate } = useAddToCart();
-  const dispatch = useDispatch()
-    const {token} = useSelector((state:RootState)=>state.auth)
+  const dispatch = useDispatch();
+  const { token } = useSelector((state: RootState) => state.auth);
   // const Prodcuts = [
   //   {
   //     id: "1",
@@ -53,20 +53,27 @@ export default function BestSelling({ title, Products }: Props) {
     <div className="container mx-auto">
       <div className="flex justify-between font-semibold text-xl items-center">
         <p className="text-title cursor-pointer ">{title}</p>
-        <p className="text-title cursor-pointer ">View more</p>
+        <p
+          className="text-title cursor-pointer hover:underline underline-primary"
+          onClick={() =>
+            navigate("/products", { state: { param: "best_selling=true" } })
+          }
+        >
+          View more
+        </p>
       </div>
-      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 md:gap-x-14 lg:gap-x-20 mt-4 md:mt-8">
-        {Products?.slice(0, 4)?.map((item, index) => {
+
+      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-x-8 md:gap-x-14 lg:gap-x-10 mt-4 md:mt-8">
+        {Products?.slice(0, 5)?.map((item, index) => {
           return (
             <li key={index} className="space-y-2 relative">
               <img
                 src={item?.thumbnail_image_url}
                 alt={item?.product_name}
-                className="rounded-xl md:w-80 cursor-pointer"
-                onClick={() => {
-                  navigate(`/product/${item.product_id}`);
-                }}
+                className="w-60 h-60 md:w-[240px] md:h-[240px] rounded-[20px] object-cover mx-auto cursor-pointer"
+                onClick={() => navigate(`/product/${item.product_id}`)}
               />
+
               <p
                 className="text-title  hover:text-primary transition-colors duration-300 text-xl font-medium line-clamp-1 cursor-pointer"
                 onClick={() => {
@@ -87,8 +94,9 @@ export default function BestSelling({ title, Products }: Props) {
                     mutate({
                       product_id: item.product_id,
                       quantity: 1,
-                      token:token                    });
-                    dispatch(addItem(item))
+                      token: token,
+                    });
+                    dispatch(addItem(item));
                   }}
                   className="rounded-md font-bold transition-all duration-300 ease-in-out px-5 py-2 bg-white text-primary border border-primary hover:bg-primary hover:text-white shadow-sm hover:shadow-lg"
                 >

@@ -3,10 +3,12 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import type { Category } from "@/types/type";
+import { useNavigate } from "react-router-dom";
 interface Props {
   categories:Category[]
 }
 export default function TopCategories({categories}:Props) {
+  const navigate = useNavigate()
   const settings = {
     dots: false,
     infinite: true,
@@ -101,7 +103,9 @@ export default function TopCategories({categories}:Props) {
           </h1>
           <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-8 lg:gap-x-14 lg:px-40  mt-8">
             {categories?.map((item, index) => (
-              <li key={index} className="text-center cursor-pointer space-y-2">
+              <li key={index} onClick={()=>{
+                navigate('/products',{state:{param:`${item.category_id}`}})
+              }} className="text-center cursor-pointer space-y-2">
                 <img
                   src={item?.category_thumbnail_image}
                   alt={`img-${item?.category_id}`}
