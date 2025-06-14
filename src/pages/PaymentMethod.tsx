@@ -218,9 +218,9 @@ export default function PaymentMethod() {
   };
 
 useEffect(() => {
-  if (!merchantTransactionId || !shouldPoll) return;
+  if (!merchantTransactionId && !shouldPoll) return;
 
-  setLoading(true); // Show loader immediately when polling starts
+  setLoading(true);
 
   const interval = setInterval(async () => {
     try {
@@ -242,7 +242,6 @@ useEffect(() => {
         clearInterval(interval);
         setShouldPoll(false);
       }
-      // Otherwise keep polling...
     } catch (error) {
       console.error("Polling error:", error);
     }
@@ -250,7 +249,10 @@ useEffect(() => {
 
   return () => clearInterval(interval);
 }, [merchantTransactionId, shouldPoll]);
-{loading && <FullScreenLoader />}
+
+if(loading){
+return <FullScreenLoader />
+}
 
   return (
     <main className="container mx-auto py-6 h-screen">
