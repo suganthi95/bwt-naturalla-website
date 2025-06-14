@@ -2,8 +2,11 @@ import { ASSETS } from "@/assets/assets";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-export default function TopCategories() {
+import type { Category } from "@/types/type";
+interface Props {
+  categories:Category[]
+}
+export default function TopCategories({categories}:Props) {
   const settings = {
     dots: false,
     infinite: true,
@@ -29,28 +32,7 @@ export default function TopCategories() {
     ],
   };
 
-  const Products = [
-    {
-      id: "1",
-      img: ASSETS.SHAMPOO,
-      name: "Shampoo",
-    },
-    {
-      id: "2",
-      img: ASSETS.SHOAP,
-      name: "Soaps",
-    },
-    {
-      id: "3",
-      img: ASSETS.FASHWASH,
-      name: "Face wash",
-    },
-    {
-      id: "4",
-      img: ASSETS.FASHGEL,
-      name: "Face gel",
-    },
-  ];
+
 
   const Description = [
     {
@@ -118,15 +100,15 @@ export default function TopCategories() {
             Top Categories of This Month
           </h1>
           <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-8 lg:gap-x-14 lg:px-40  mt-8">
-            {Products.map((item, index) => (
-              <li key={index} className="text-center space-y-2">
+            {categories?.map((item, index) => (
+              <li key={index} className="text-center cursor-pointer space-y-2">
                 <img
-                  src={item.img}
-                  alt={`img-${item.id}`}
+                  src={item?.category_thumbnail_image}
+                  alt={`img-${item?.category_id}`}
                   className= {`rounded-2xl `}
                 />
                 <p className="text-textPrimary font-medium text-base sm:text-lg md:text-xl">
-                  {item.name}
+                  {item?.category_title}
                 </p>
               </li>
             ))}

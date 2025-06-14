@@ -12,6 +12,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Icons } from "@/assets/icons"; // Replace this with your actual India icon import
+import { useSignup } from "@/services/auth";
+import axios from "axios";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z
   .object({
@@ -33,6 +38,8 @@ const formSchema = z
 type FormValues = z.infer<typeof formSchema>;
 
 export default function Signup() {
+  const { mutate, isPending } = useSignup();
+  const navigate = useNavigate();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -47,7 +54,29 @@ export default function Signup() {
   });
 
   const onSubmit = (values: FormValues) => {
-    console.log(values);
+    mutate(
+      {
+        first_name: values.firstName,
+        last_name: values.lastName,
+        phone_no: Number(values.phoneNumber),
+        email:values.email, 
+        password:values.password
+      },
+      {
+        onSuccess(data) {
+          toast.success(data.message);
+
+          navigate("/sign-up-verify", {
+            state: { phone_no: Number(values.phoneNumber) },
+          });
+        },
+        onError(error) {
+          if (axios.isAxiosError(error)) {
+            toast.error(error?.response?.data?.message);
+          }
+        },
+      }
+    );
   };
 
   return (
@@ -76,12 +105,7 @@ export default function Signup() {
                       First Name <span className="text-red-500 -ml-2">*</span>{" "}
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        className="h-11"
-                        
-                        placeholder="John"
-                        {...field}
-                      />
+                      <Input className="h-11" placeholder="John" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -110,7 +134,7 @@ export default function Signup() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                     <FormLabel className="text-textPrimary font-semibold ">
+                    <FormLabel className="text-textPrimary font-semibold ">
                       Email<span className="text-red-500 -ml-2">*</span>{" "}
                     </FormLabel>
                     <FormControl>
@@ -131,11 +155,15 @@ export default function Signup() {
                 name="phoneNumber"
                 render={({ field }) => (
                   <FormItem>
-                      <FormLabel className="text-textPrimary font-semibold ">
+                    <FormLabel className="text-textPrimary font-semibold ">
                       Phone Number<span className="text-red-500 -ml-2">*</span>{" "}
                     </FormLabel>
                     <FormControl>
-                      <div className={`flex items-center gap-2 border rounded-md h-11 px-3 shadow-sm bg-white ${form.formState.errors.phoneNumber && 'border-red-500'}`}>
+                      <div
+                        className={`flex items-center gap-2 border rounded-md h-11 px-3 shadow-sm bg-white ${
+                          form.formState.errors.phoneNumber && "border-red-500"
+                        }`}
+                      >
                         <div className="flex items-center gap-1 text-sm text-muted-foreground">
                           <Icons.India className="w-5 h-5" />
                           <span>+91</span>
@@ -160,8 +188,8 @@ export default function Signup() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                        <FormLabel className="text-textPrimary font-semibold ">
-                     Password<span className="text-red-500 -ml-2">*</span>{" "}
+                    <FormLabel className="text-textPrimary font-semibold ">
+                      Password<span className="text-red-500 -ml-2">*</span>{" "}
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -180,8 +208,9 @@ export default function Signup() {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                       <FormLabel className="text-textPrimary font-semibold ">
-                    Confirm Password<span className="text-red-500 -ml-2">*</span>{" "}
+                    <FormLabel className="text-textPrimary font-semibold ">
+                      Confirm Password
+                      <span className="text-red-500 -ml-2">*</span>{" "}
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -201,31 +230,27 @@ export default function Signup() {
               control={form.control}
               name="agree"
               render={({ field }) => (
-                <FormItem >
-                    <div className="flex items-center space-x-2">
-                  <FormControl>
-                    <input
-                      type="checkbox"
-                      className="h-4 w-4"
-                      checked={field.value}
-                      onChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel className="text-xs cursor-pointer text-textPrimary">
-                    I agree with the{" "}
-                    <span className="">
-                      privacy policy
-                    </span>
-                  </FormLabel>
-
-                    </div>
+                <FormItem>
+                  <div className="flex items-center space-x-2">
+                    <FormControl>
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4"
+                        checked={field.value}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel className="text-xs cursor-pointer text-textPrimary">
+                      I agree with the <span className="">privacy policy</span>
+                    </FormLabel>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
             <Button type="submit" className="w-full">
-              Sign Up
+              {isPending ? <Loader2 className="animate-spin" /> : "Sign Up"}
             </Button>
           </form>
         </Form>

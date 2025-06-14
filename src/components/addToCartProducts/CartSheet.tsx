@@ -16,6 +16,7 @@ import {
   increaseQuantity,
   removeItem,
 } from "@/redux/slices/cartSlice";
+import EmptyCart from "./EmptyCart";
 
 interface Props {
   onClose: (val: boolean) => void;
@@ -29,19 +30,19 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
   const { items, tax_detail } = useSelector((state: RootState) => state.cart);
-
+  const { token } = useSelector((state: RootState) => state.auth);
   const [quantity, setQuantity] = useState(1);
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
   const { mutate } = useUpdateCart();
   const { mutate: removeCart } = useDeleteCart();
-  const handleDecrease = (cart_id: number) => {
+  const handleDecrease = (cart_id: number, quan: number) => {
+    if (quan <= 1) return;
     const newQuantity = quantity - 1;
     setQuantity(newQuantity);
     mutate({
       cart_id,
       quantity: -1,
-      token:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg",
+      token: token,
     });
     dispatch(decreaseQuantity(cart_id));
   };
@@ -52,8 +53,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
     mutate({
       cart_id,
       quantity: 1,
-      token:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg",
+      token: token,
     });
     dispatch(increaseQuantity(cart_id));
   };
@@ -63,8 +63,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
     removeCart({
       cart_id,
       quantity,
-      token:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg",
+      token: token,
     });
     dispatch(removeItem(cart_id));
   };
@@ -78,16 +77,22 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
     (acc, item) => acc + item.unit_price * item.quantity,
     0
   );
-  const tax = 0;
+  const tax = items?.reduce((acc, item) => {
+    const productTax =
+      (item.unit_price * item.quantity * item.tax_percent) / 100;
+    return acc + Math.round(productTax);
+  }, 0);
   const discount = 0;
   const shipping =
-    tax_detail.min_amount <= subtotal ? 0 : tax_detail.shipping_fee;
+    tax_detail?.min_amount <= subtotal ? 0 : tax_detail?.shipping_fee;
 
-  const total = Math.round(subtotal + tax + shipping - discount);
+  const total = Math.round(subtotal + shipping - discount);
 
   return (
     <ScrollArea className="space-y-6 p-4  h-screen">
       <h2 className="text-lg font-bold text-title"> Cart</h2>
+      {items?.length === 0 ? <EmptyCart/>:
+      <>
       {shipping === 0 && (
         <div className="space-y-1.5 mb-4">
           <p className="font-semibold  text-sm">
@@ -145,7 +150,9 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                       variant="outline"
                       size="icon"
                       className="border-none cursor-pointer  w-fit text-xl font-semibold"
-                      onClick={() => handleDecrease(item.cart_id)}
+                      onClick={() =>
+                        handleDecrease(item.cart_id, item.quantity)
+                      }
                     >
                       {" −"}
                     </Button>
@@ -184,7 +191,10 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
         })}
       </ul>
 
-      <div style={{ boxShadow: '-10px -10px 30px -4px rgba(0,0,0,0.1)' }} className="py-2 mt-5 backdrop-blur-2xl">
+      <div
+        style={{ boxShadow: "-10px -10px 30px -4px rgba(0,0,0,0.1)" }}
+        className="py-2 mt-5 backdrop-blur-2xl"
+      >
         <div className="space-y-2 text-sm font-medium text-title">
           <h3 className="font-semibold text-xl">Price Details</h3>
           <div className="flex justify-between">
@@ -193,7 +203,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
           </div>
           <div className="flex justify-between">
             <span>Tax</span>
-            <span className="font-semibold">₹1,200</span>
+            <span className="font-semibold">₹{tax}</span>
           </div>
           {discount > 0 && (
             <div className="flex justify-between">
@@ -257,6 +267,8 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
           </Button>
         </div>
       </div>
+      </>
+}
     </ScrollArea>
   );
 }

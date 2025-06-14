@@ -78,4 +78,5 @@ export type Product = {
   category_title: string | null;
   thumbnail_image_url: string;
   total_amount ? :number
+  tax_percent: number;
 };

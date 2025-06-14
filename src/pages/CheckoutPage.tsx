@@ -107,6 +107,7 @@ export default function CheckoutPage() {
   const [quantity, setQuantity] = useState(1);
   const [CouponDetails, setCouponDetails] = useState<CouponState>();
   const [couponCode, setCouponCode] = useState("");
+  const {token} = useSelector((state:RootState)=>state.auth)
 
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
 
@@ -136,15 +137,14 @@ export default function CheckoutPage() {
     },
   });
 
-  const handleDecrease = (cart_id: number) => {
+  const handleDecrease = (cart_id: number , quan:number) => {
+      if (quan <= 1) return; 
     const newQuantity = quantity - 1;
     setQuantity(newQuantity);
     mutate({
       cart_id,
       quantity: -1,
-      token:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg",
-    });
+      token:token    });
     dispatch(decreaseQuantity(cart_id));
   };
 
@@ -154,9 +154,7 @@ export default function CheckoutPage() {
     mutate({
       cart_id,
       quantity: 1,
-      token:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg",
-    });
+      token:token    });
     dispatch(increaseQuantity(cart_id));
   };
   const handleRemoveProduct = (cart_id: number, quantity: number) => {
@@ -164,18 +162,14 @@ export default function CheckoutPage() {
     removeCart({
       cart_id,
       quantity,
-      token:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg",
-    });
+      token:token    });
   };
 
   const handleCheckCoupon = () => {
     CheckCoupon(
       {
         couponCode: couponCode,
-        token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg",
-      },
+        token:token      },
       {
         onSuccess(data) {
           // dispatch(setCoupon(data));
@@ -201,7 +195,11 @@ export default function CheckoutPage() {
     0
   );
 
-  const tax = 0;
+  const tax = items?.reduce((acc, item) => {
+    const productTax =
+      (item.unit_price * item.quantity * item.tax_percent) / 100;
+    return acc + Math.round(productTax);
+  }, 0);
 
   // Default shipping
   const shipping =
@@ -229,7 +227,7 @@ export default function CheckoutPage() {
   }
 
   // Final total
-  const total = Math.round(subtotal + tax + shipping - discount);
+  const total = Math.round(subtotal  + shipping - discount);
 
   return (
     <main>
@@ -267,6 +265,13 @@ export default function CheckoutPage() {
                 <AccordionContent>
                   <ul>
                     {items?.map((product: Product) => {
+
+                      const productTaxprice = Number( (product.unit_price *
+                              
+                              product.tax_percent) /
+                            100)
+                            console.log(productTaxprice)
+                            
                       let productDiscount = 0;
 
                       const isProductInCoupon =
@@ -366,7 +371,7 @@ export default function CheckoutPage() {
                                 variant="ghost"
                                 size="icon"
                                 className="p-0 cursor-pointer w-5 h-5 text-lg text-gray-700"
-                                onClick={() => handleDecrease(product.cart_id)}
+                                onClick={() => handleDecrease(product.cart_id,product.quantity)}
                               >
                                 −
                               </Button>
@@ -866,7 +871,7 @@ export default function CheckoutPage() {
                     </div>
                     <div className="flex justify-between">
                       <span>Tax</span>
-                      <span className="font-semibold">₹1,200</span>
+                      <span className="font-semibold">₹{tax}</span>
                     </div>
                     {discount > 0 && (
                       <div className="flex justify-between">

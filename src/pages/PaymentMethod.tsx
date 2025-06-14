@@ -34,22 +34,21 @@ export default function PaymentMethod() {
   const RazorpayConstructor = Razorpay.Razorpay;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { shippingAddress, items } = useSelector(
+  const { shippingAddress, items, tax_detail } = useSelector(
     (state: RootState) => state.cart
   );
   const CouponDetails = useSelector((state: RootState) => state.coupon);
   const { mutate, isPending } = useCreateOrder();
   const { mutate: verifyRazorpay } = useVerifyrazorpay();
   const [shouldPoll, setShouldPoll] = useState(false);
+  const { token } = useSelector((state: RootState) => state.auth);
+
   const [finalData, setFinalData] = useState(null);
   console.log("finalData: ", finalData);
   const [merchantTransactionId, SetmerchantTransactionId] = useState(() =>
     localStorage.getItem("merchantTransactionId")
   );
-  const { refetch } = useVerifyPhonepay(
-    merchantTransactionId ?? "",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg"
-  );
+  const { refetch } = useVerifyPhonepay(merchantTransactionId ?? "", token);
 
   const { setValue, watch } = useForm({
     defaultValues: {
@@ -63,10 +62,14 @@ export default function PaymentMethod() {
     0
   );
 
-  const tax = 0;
+  const tax = items?.reduce((acc, item) => {
+    const productTax =
+      (item.unit_price * item.quantity * item.tax_percent) / 100;
+    return acc + Math.round(productTax);
+  }, 0);
 
-  // Default shipping
-  const shipping = 50;
+  const shipping =
+    tax_detail.min_amount <= subtotal ? 0 : tax_detail.shipping_fee;
 
   let discount = 0;
 
@@ -91,7 +94,7 @@ export default function PaymentMethod() {
   }
 
   // Final total
-  const total = Math.round(subtotal + tax + shipping - discount);
+  const total = Math.round(subtotal  + shipping - discount);
   const handleCreateOrder = () => {
     if (!items || !shippingAddress) return;
 
@@ -122,8 +125,7 @@ export default function PaymentMethod() {
     mutate(
       {
         OrderPayload: orderPayload,
-        token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg",
+        token: token,
       },
       {
         onSuccess(data) {
@@ -140,17 +142,27 @@ export default function PaymentMethod() {
               description: "Payment",
               image: ASSETS.LOGO,
               handler: function (response: any) {
-                verifyRazorpay({
-                  token:
-                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg",
-                  razorpay_payment_id: response.razorpay_payment_id,
-                  razorpay_signature: response.razorpay_signature,
-                  razorpay_order_id: data.orderId,
-                });
-                navigate("/order-success");
-                dispatch(removeCartItems());
-                dispatch(removeTaxDetails());
-                dispatch(removeCoupon());
+                verifyRazorpay(
+                  {
+                    token: token,
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_signature: response.razorpay_signature,
+                    razorpay_order_id: data.orderId,
+                  },
+                  {
+                    onSuccess: () => {
+                      navigate("/order-success");
+                      dispatch(removeCartItems());
+                      dispatch(removeTaxDetails());
+                      dispatch(removeCoupon());
+                    },
+                    onError(error) {
+                      if (axios.isAxiosError(error)) {
+                        toast.error(error?.response?.data?.message);
+                      }
+                    },
+                  }
+                );
               },
 
               theme: {
@@ -298,15 +310,35 @@ export default function PaymentMethod() {
             </div>
             <div className="flex justify-between">
               <span className="text-lead">Tax</span>
-              <span className="font-semibold">{tax}</span>
+              <span className="font-semibold">₹{tax}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-lead">Discount</span>
-              <span className="">-₹{discount}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-lead">Shipping</span>
-              <span className="font-semibold">₹{shipping}</span>
+            {discount > 0 && (
+              <div className="flex justify-between">
+                <span className="text-lead">Discount</span>
+                <span className="">-₹{discount}</span>
+              </div>
+            )}
+            <div className="flex justify-between items-center">
+              <span className="">
+                Shipping
+                {shipping === 0 ? (
+                  <span className="ml-2 text-green-600 font-semibold animate-pulse">
+                    (Free Delivery 🎉)
+                  </span>
+                ) : (
+                  <span className="ml-2 text-red-500 text-xs font-medium italic animate-shake">
+                    (Spend ₹{tax_detail.min_amount - subtotal} more for free
+                    shipping)
+                  </span>
+                )}
+              </span>
+              <span
+                className={`font-semibold ${
+                  shipping === 0 ? "text-green-600" : "text-primary"
+                }`}
+              >
+                ₹{shipping === 0 ? "0" : shipping}
+              </span>
             </div>
             <hr className="my-2 border-gray-300" />
             <div className="flex justify-between font-semibold text-base">

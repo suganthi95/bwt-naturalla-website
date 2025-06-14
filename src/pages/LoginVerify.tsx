@@ -1,5 +1,3 @@
-
-
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,26 +11,54 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { Icons } from "@/assets/icons"; 
+import { Icons } from "@/assets/icons";
+import { useVerifyAccount } from "@/services/auth";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Loader2 } from "lucide-react";
+import axios from "axios";
+import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { Userlogin } from "@/redux/slices/authSlice";
 
-const formSchema = z
-  .object({
-    otp: z.string().nonempty('Enter a otp'),
-
-  })
- 
+const formSchema = z.object({
+  otp: z.string().nonempty("Enter a otp"),
+});
 
 type FormValues = z.infer<typeof formSchema>;
 
 export default function LoginVerify() {
+  const { mutate, isPending } = useVerifyAccount();
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { phone_no } = state || {};
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-     otp:''
+      otp: "",
     },
   });
 
   const onSubmit = (values: FormValues) => {
+    mutate(
+      {
+        otp: Number(values.otp),
+        phone_no: phone_no,
+        signup: false,
+      },
+      {
+        onSuccess(data) {
+          navigate("/");
+          toast.success(data.message);
+          dispatch(Userlogin(data));
+        },
+        onError(error) {
+          if (axios.isAxiosError(error)) {
+            toast.error(error?.response?.data?.message);
+          }
+        },
+      }
+    );
     console.log(values);
   };
 
@@ -45,49 +71,37 @@ export default function LoginVerify() {
         </div>
         <div className="grid place-items-center">
           <p className="text-xl font-bold">Login to your account</p>
-     
         </div>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="otp"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-textPrimary font-semibold ">
-                      Enter Otp
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="h-11"
-                        
-                        placeholder=""
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-          
-
-        
+            <FormField
+              control={form.control}
+              name="otp"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-textPrimary font-semibold ">
+                    Enter Otp
+                  </FormLabel>
+                  <FormControl>
+                    <Input className="h-11" placeholder="" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <Button type="submit" className="w-full">
-              Sign In
+              {isPending ? <Loader2 className="animate-spin" /> : "Sign In"}
             </Button>
           </form>
         </Form>
 
         <p className="text-center flex justify-between items-center text-sm text-textPrimary">
-       Didn{'’'}t receive the OTP?
-          <a  className="font-bold text-blue-600 ">
-           Resend
-          </a>
+          Didn{"’"}t receive the OTP?
+          <a className="font-bold text-blue-600 ">Resend</a>
         </p>
       </div>
     </section>
   );
 }
-

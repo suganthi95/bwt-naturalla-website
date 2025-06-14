@@ -1,6 +1,20 @@
 import type { OrderPayload } from "@/types/type";
 import { api } from "./axiosInstance";
 
+
+
+export const signup = async(first_name:string,last_name:string,phone_no:number,email:string,password:string)=>{
+const response = await api.post('v1/auth/signup',{first_name,last_name,phone_no,email,password})
+return response.data
+}
+export const login =async(phone_no:number)=>{
+ const response = await api.post('v1/auth/login',{phone_no})
+ return response.data
+}
+export const verifyAccount = async(otp:number,phone_no:number,signup:boolean)=>{
+const response  = await api.post('v1/auth/verify-otp',{otp,phone_no,signup})
+return response.data
+}
 export const landingPageDetails = async () => {
   const response = await api.get("v1/product/deals-sellings");
   return response.data;

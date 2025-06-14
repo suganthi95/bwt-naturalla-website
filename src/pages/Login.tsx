@@ -12,14 +12,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Icons } from "@/assets/icons";
+import { useLogin } from "@/services/auth";
+import axios from "axios";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
-  inputValue: z.string().email("Invalid email"),
+  inputValue:  z.string().min(10, "Phone number is too short"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 export default function Login() {
+    const {mutate,isPending} = useLogin()
+    const navigate = useNavigate()
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -28,7 +35,16 @@ export default function Login() {
   });
 
   const onSubmit = (values: FormValues) => {
-    console.log(values);
+    mutate(Number(values.inputValue),{
+        onSuccess:()=>{
+navigate('/login-verify',{state:{phone_no:Number(values.inputValue)}})
+        },
+        onError(error) {
+            if(axios.isAxiosError(error)){
+                toast.error(error?.response?.data?.message)
+            }
+        },
+    })
   };
 
   return (
@@ -61,7 +77,7 @@ export default function Login() {
             />
 
             <Button type="submit" className="w-full">
-              Continue
+             {isPending  ? <Loader2 className="animate-spin"/>: 'Continue'} 
             </Button>
           </form>
         </Form>

@@ -15,11 +15,12 @@ import storage from "redux-persist/lib/storage";
 import couponReducer from './slices/couponSlice'
 import cartReducer from "./slices/cartSlice";
 import filterReducer from './slices/filterSlice'
-
+import authReducer from  './slices/authSlice'
 const rootReducer = combineReducers({
   cart: cartReducer,
   coupon:couponReducer,
-  filter:filterReducer
+  filter:filterReducer,
+  auth:authReducer
  
 });
 
@@ -27,7 +28,7 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: ["cart","coupon","filter"], 
+  whitelist: ["cart","coupon","filter","auth"], 
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

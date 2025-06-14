@@ -1,14 +1,16 @@
 import FullScreenLoader from "@/common/FullScreenLoader";
 import FilterSidebar from "@/components/products/FilterSidebar";
 import ProductsList from "@/components/products/ProductsList";
+import type { RootState } from "@/redux/store";
 import { useFilterByFeatureProducts, useFilterValues } from "@/services/product";
+import { useSelector } from "react-redux";
 
 export default function Products() {
     // const {state} = useLocation()
     // const param= state || {}
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg";
-  const { data } = useFilterValues(token);
+      const {token} = useSelector((state:RootState)=>state.auth)
+
+    const { data } = useFilterValues(token);
   const  {data:Products,isLoading,isFetching,isError}  =useFilterByFeatureProducts('',token)
   if(isLoading || isFetching){
     return <FullScreenLoader/>

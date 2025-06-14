@@ -3,8 +3,9 @@ import { ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import type { Product } from "@/types/Home";
 import { useAddToCart } from "@/services/cart";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "@/redux/slices/cartSlice";
+import type { RootState } from "@/redux/store";
 interface Props {
   title: string;
   Products: Product[];
@@ -13,6 +14,7 @@ export default function BestSelling({ title, Products }: Props) {
   const navigate = useNavigate();
   const { mutate } = useAddToCart();
   const dispatch = useDispatch()
+    const {token} = useSelector((state:RootState)=>state.auth)
   // const Prodcuts = [
   //   {
   //     id: "1",
@@ -85,9 +87,7 @@ export default function BestSelling({ title, Products }: Props) {
                     mutate({
                       product_id: item.product_id,
                       quantity: 1,
-                      token:
-                        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg",
-                    });
+                      token:token                    });
                     dispatch(addItem(item))
                   }}
                   className="rounded-md font-bold transition-all duration-300 ease-in-out px-5 py-2 bg-white text-primary border border-primary hover:bg-primary hover:text-white shadow-sm hover:shadow-lg"

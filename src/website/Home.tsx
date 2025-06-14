@@ -26,7 +26,7 @@ export default function Home() {
 
       {/* top category section */}
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
-        <TopCategories />
+        <TopCategories categories={data?.category} />
       </section>
 
       {/* best selling section */}

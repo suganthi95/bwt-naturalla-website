@@ -67,3 +67,21 @@ export interface CouponState {
   product_id: number | null;
   product_ids: number[];
 }
+
+export interface AuthState {
+  token: string;
+  message:string
+  first_name: string;
+  last_name: string;
+  role: string;
+  phone_no ?: string;
+  status:boolean
+}
+
+export interface Category {
+  category_id: number;
+  category_title: string;
+  category_thumbnail_image: string;
+}
+
+

@@ -10,9 +10,10 @@ import type { Product } from "@/types/Home";
 import { usePincodeEnquiry } from "@/services/product";
 import { toast } from "sonner";
 import { useAddToCart } from "@/services/cart";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "@/redux/slices/cartSlice";
 import { useNavigate } from "react-router-dom";
+import type { RootState } from "@/redux/store";
 
 // const productImages = [
 //   ASSETS.PRODUCT1,
@@ -34,6 +35,7 @@ type Props = {
 export default function ProductSection({ media, products }: Props) {
   const mainSliderRef = useRef<Slider>(null);
   const thumbSliderRef = useRef<Slider>(null);
+    const {token} = useSelector((state:RootState)=>state.auth)
   const { mutate } = useAddToCart();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -215,9 +217,7 @@ export default function ProductSection({ media, products }: Props) {
               mutate({
                 product_id: products.product_id,
                 quantity: 1,
-                token:
-                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg",
-              });
+                token:token              });
               dispatch(addItem(products));
               navigate("/checkout");
             }}
@@ -230,9 +230,7 @@ export default function ProductSection({ media, products }: Props) {
               mutate({
                 product_id: products.product_id,
                 quantity: 1,
-                token:
-                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg",
-              });
+                token:token              });
               dispatch(addItem(products));
             }}
             className="bg-primary/10  py-3 px-11 text-primary border border-primary"

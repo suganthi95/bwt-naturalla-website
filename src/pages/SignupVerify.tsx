@@ -13,6 +13,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Icons } from "@/assets/icons"; 
+import { useVerifyAccount } from "@/services/auth";
+import { toast } from "sonner";
+import axios from "axios";
+import { Loader2 } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Userlogin } from "@/redux/slices/authSlice";
 
 const formSchema = z
   .object({
@@ -24,6 +31,11 @@ const formSchema = z
 type FormValues = z.infer<typeof formSchema>;
 
 export default function SignupVerify() {
+    const {mutate,isPending} = useVerifyAccount()
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const {state} = useLocation()
+    const {phone_no} = state || {}
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,7 +44,23 @@ export default function SignupVerify() {
   });
 
   const onSubmit = (values: FormValues) => {
-    console.log(values);
+    mutate({
+        otp:Number(values.otp),
+        phone_no:phone_no,
+        signup:true
+    },{
+        onSuccess(data) {
+            toast.success(data.message)
+                      navigate("/");
+
+            dispatch(Userlogin(data))
+        },
+        onError(error) {
+            if(axios.isAxiosError(error)){
+                toast.error(error?.response?.data?.message)
+            }
+        },
+    })
   };
 
   return (
@@ -74,7 +102,7 @@ export default function SignupVerify() {
         
 
             <Button type="submit" className="w-full">
-              Sign In
+            {isPending ? <Loader2 className="animate-spin"/>:' Sign In'} 
             </Button>
           </form>
         </Form>
