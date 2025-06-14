@@ -64,7 +64,7 @@ export default function SignupVerify() {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gray-50 ">
+    <section className="min-h-screen flex items-center justify-center bg-[#F7F7F7] ">
       <div className="  md:w-[400px] p-6 space-y-6 shadow-2xl bg-white rounded-xl">
         <div className=" flex items-center justify-center gap-x-1.5">
           <Icons.Logo className="" />

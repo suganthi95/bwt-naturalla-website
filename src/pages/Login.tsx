@@ -48,7 +48,7 @@ navigate('/login-verify',{state:{phone_no:Number(values.inputValue)}})
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gray-50 ">
+    <section className="min-h-screen flex items-center justify-center bg-[#F7F7F7] ">
       <div className="  md:w-[400px] p-6 space-y-6 shadow-2xl bg-white rounded-xl">
         <div className=" flex items-center justify-center gap-x-1.5">
           <Icons.Logo className="" />
@@ -84,7 +84,7 @@ navigate('/login-verify',{state:{phone_no:Number(values.inputValue)}})
 
         <p className="text-center  justify-center flex items-center gap-x-1 text-sm text-textPrimary">
           You don't have an account ?{" "}
-          <a href="/login" className="font-bold underline">
+          <a href="/sign-up" className="font-bold underline">
               Register Now
           </a>
         </p>

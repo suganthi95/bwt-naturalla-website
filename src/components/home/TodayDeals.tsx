@@ -52,10 +52,10 @@ export default function TodayDeals({ Products }: Props) {
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 md:gap-x-14 lg:gap-x-20 mt-4 md:mt-8">
         {Products?.slice(0, 3)?.map((item, index) => {
           return (
-            <li className="space-y-2 relative">
+            <li  key={index}  className="space-y-2 relative">
               <img
                 src={item.thumbnail_image_url}
-                alt={`img-${index}`}
+                alt={item?.product_name}
                 className="rounded-xl cursor-pointer w-full"
                 onClick={() => navigate(`/product/${item.product_id}`)}
               />

@@ -20,6 +20,7 @@ export default function ProductsList({ Products }: Props) {
 //   const { mutate } = useAddToCart();
   return (
     <div className="space-y-4 w-full">
+      <div className="flex justify-between   !w-full items-center">
       <h1 className="font-semibold text-2xl">Products</h1>
 
       <div className="flex  flex-row w-full items-center gap-4">
@@ -35,6 +36,8 @@ export default function ProductsList({ Products }: Props) {
         </Select>
       </div>
 
+      </div>
+
       <ul className="grid md:grid-cols-4 gap-4">
         {Products?.slice()
           ?.sort((a, b) => {
@@ -45,10 +48,10 @@ export default function ProductsList({ Products }: Props) {
             return 0;
           })
           .map((item, index) => (
-            <li className="space-y-2 md:w-fit relative ">
+            <li key={index} className="space-y-2 md:w-fit relative ">
               <img
                 src={item?.thumbnail_image_url}
-                alt={`img-${index}`}
+                alt={item?.product_name}
                 className="rounded-xl md:w-60 mx-auto cursor-pointer"
                 onClick={() => {
                   navigate(`/product/${item.product_id}`);

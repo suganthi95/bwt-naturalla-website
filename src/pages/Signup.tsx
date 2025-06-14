@@ -80,7 +80,7 @@ export default function Signup() {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <section className="min-h-screen flex items-center justify-center bg-[#F7F7F7] px-4">
       <div className="max-w-lg mx-auto  m-0  p-6 space-y-6 shadow-xl bg-white rounded-xl">
         <div className=" flex items-center justify-center gap-x-1.5">
           <Icons.Logo className="" />
