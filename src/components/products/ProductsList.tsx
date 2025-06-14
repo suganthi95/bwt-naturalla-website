@@ -130,7 +130,7 @@ export default function ProductsList({ Products }: Props) {
                 <img
                   src={item?.thumbnail_image_url}
                   alt={item?.product_name}
-                  className="rounded-xl md:w-60 mx-auto cursor-pointer"
+                  className="w-60 h-60 md:w-[240px] md:h-[240px] rounded-xl object-cover mx-auto cursor-pointer"
                   onClick={() => navigate(`/product/${item.product_id}`)}
                 />
 
