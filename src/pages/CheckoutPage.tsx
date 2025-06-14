@@ -3,8 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   BadgePercent,
-  ChevronDown,
-  ChevronUp,
+ 
   Loader2,
   TicketPercent,
 } from "lucide-react";
@@ -697,7 +696,7 @@ export default function CheckoutPage() {
                                     className="w-full pr-10  cursor-pointer"
                                   />
 
-                                  <div
+                                  {/* <div
                                     className={`absolute   w-fit left-64  flex items-center cursor-pointer ${showDropdown ? '-bottom-13':'-bottom-13'}`}
                                     onClick={() =>
                                       setShowDropdown((prev) => !prev)
@@ -708,7 +707,7 @@ export default function CheckoutPage() {
                                     ) : (
                                       <ChevronDown className="w-4 h-4 text-gray-500" />
                                     )}
-                                  </div>
+                                  </div> */}
 
                                   {showDropdown && (
                                     <ul className="absolute  z-[999] w-52  bg-white dark:bg-gray-800 border dark:border-gray-700 max-h-80 overflow-auto mt-1 shadow-md rounded">
@@ -762,7 +761,7 @@ export default function CheckoutPage() {
                                     }}
                                     className="w-full pr-10 cursor-pointer"
                                   />  
-                                  <div
+                                  {/* <div
                                     className={`absolute   w-fit left-[480px]  flex items-center cursor-pointer ${showStateDropdown ? '-bottom-17':'-bottom-13'}`}
                                     onClick={() =>
                                       setShowSatteDropdown((prev) => !prev)
@@ -773,9 +772,9 @@ export default function CheckoutPage() {
                                     ) : (
                                       <ChevronDown className="w-4 h-4 text-gray-500" />
                                     )}
-                                  </div>
+                                  </div> */}
                                   {showStateDropdown && (
-                                    <ul className="absolute  w-full bg-white dark:bg-gray-800 border dark:border-gray-700 max-h-60 overflow-auto mt-1 shadow-md rounded">
+                                    <ul className="absolute   w-52   bg-white dark:bg-gray-800 border dark:border-gray-700 max-h-80 overflow-auto mt-1 shadow-md rounded">
                                       {filteredStates.length === 0 ? (
                                         <li className="p-2 text-sm text-muted-foreground">
                                           No state found.

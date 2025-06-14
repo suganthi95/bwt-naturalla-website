@@ -43,7 +43,7 @@ export default function PaymentMethod() {
   const { mutate: verifyRazorpay } = useVerifyrazorpay();
   const [shouldPoll, setShouldPoll] = useState(false);
   const { token } = useSelector((state: RootState) => state.auth);
-
+  // const localPaymentmethod = localStorage.getItem('payment')
   const [finalData, setFinalData] = useState(null);
   console.log("finalData: ", finalData);
   const [merchantTransactionId, SetmerchantTransactionId] = useState(() =>
