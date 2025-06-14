@@ -27,6 +27,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCartItems, setTaxDetails } from "@/redux/slices/cartSlice";
 import type { RootState } from "@/redux/store";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { logout } from "@/redux/slices/authSlice";
+import { toast } from "sonner";
 const messages = [
   "🎉 Flat 30% Off on Selected Products | Use Code : DEAL30 🎉",
   "🚚 Free Shipping on Orders Above ₹999 🚚",
@@ -37,9 +39,10 @@ export default function Nav() {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const auth = useSelector((state: RootState) => state.auth);
   const { items } = useSelector((state: RootState) => state.cart);
   const { data, isSuccess, isLoading, isError, isFetching } = useGetCartItems(
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg"
+    auth?.token
   );
   const [Isopen, setIsopen] = useState(false);
   useEffect(() => {
@@ -178,7 +181,7 @@ export default function Nav() {
                 </PopoverTrigger>
 
                 <PopoverContent
-                                    sideOffset={8}
+                  sideOffset={8}
                   className="z-50 w-56 rounded-xl bg-white shadow-xl p-4 outline-none"
                   asChild
                 >
@@ -194,13 +197,32 @@ export default function Nav() {
                       </p>
                       <hr />
                       <div className="space-y-1 text-sm text-muted-foreground">
-                        <Link to="/profile" className="block hover:text-primary">
+                        <Link
+                          to="/profile"
+                          className="block hover:text-primary"
+                        >
                           Profile
                         </Link>
-                       
-                        <p className="block cursor-pointer w-full text-left hover:text-red-500">
-                          Logout
-                        </p>
+                        {auth?.status ? (
+                          <p
+                            onClick={() => {
+                              dispatch(logout());
+                              toast.success("logout successfull");
+                            }}
+                            className="block cursor-pointer w-full text-left hover:text-red-500"
+                          >
+                            Logout
+                          </p>
+                        ) : (
+                          <p
+                            onClick={() => {
+                              navigate("/login");
+                            }}
+                            className="block cursor-pointer w-full text-left hover:text-primary"
+                          >
+                            Login
+                          </p>
+                        )}
                       </div>
                     </div>
                   </motion.div>
