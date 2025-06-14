@@ -115,23 +115,22 @@ export default function Nav() {
               className="w-40"
             />
             <ul className="xl:flex items-center hidden  justify-center gap-x-3.5">
-              {NavData.map((item,index) => {
-                const IsDropDown = [2,3,4,5].includes(index)
+              {NavData.map((item, index) => {
+                const IsDropDown = [2, 3, 4, 5].includes(index);
 
                 return (
                   <Link
                     key={item.id}
-                    to={IsDropDown ? "#":item.link}
-                    state={{param:''}}
+                    to={IsDropDown ? "#" : item.link}
+                    state={{ param: "" }}
                     className={`text-primary  flex items-center gap-x-1   tracking-wide  ${
-                    (  pathname === item.link )
+                      pathname === item.link
                         ? "font-bold underline underline-offset-8 decoration-2"
                         : "font-normal no-underline"
                     } py-2`}
                   >
                     {item.name}
-                       {IsDropDown && (
-          <ChevronDown className="w-3 "/> )}
+                    {IsDropDown && <ChevronDown className="w-3 " />}
                   </Link>
                 );
               })}
@@ -198,10 +197,14 @@ export default function Nav() {
                     transition={{ duration: 0.2 }}
                   >
                     <div className="space-y-2">
-                      <p className="text-sm font-medium text-gray-800">
-                        Welcome, {auth?.first_name}
-                      </p>
-                      <hr />
+                      {auth.status && (
+                        <>
+                          <p className="text-sm font-medium text-gray-800">
+                            Welcome, {auth?.first_name}
+                          </p>
+                          <hr />
+                        </>
+                      )}
                       <div className="space-y-1 text-sm text-muted-foreground">
                         <Link
                           to="/my-profile"

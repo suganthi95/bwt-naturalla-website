@@ -30,6 +30,8 @@ import { removeCoupon } from "@/redux/slices/couponSlice";
 export default function PaymentMethod() {
   // const { state } = useLocation();
   // const { product } = state || {};
+  const [loading, setLoading] = useState(false);
+
 
   const { Razorpay: RazorpayConstructor } = useRazorpay();
   // const payment =
@@ -43,7 +45,7 @@ export default function PaymentMethod() {
   const { mutate: verifyRazorpay } = useVerifyrazorpay();
   const [shouldPoll, setShouldPoll] = useState(false);
   const { token } = useSelector((state: RootState) => state.auth);
-  // const localPaymentmethod = localStorage.getItem('payment')
+  const localPaymentmethod = localStorage.getItem("payment");
   const [finalData, setFinalData] = useState(null);
   console.log("finalData: ", finalData);
   const [merchantTransactionId, SetmerchantTransactionId] = useState(() =>
@@ -137,9 +139,12 @@ export default function PaymentMethod() {
       },
       {
         onSuccess(data) {
-          toast.success("order created");
           setShouldPoll(true);
-          if (selectedRole === "razorpay") {
+          if (localPaymentmethod === "razorpay") {
+            localStorage.removeItem("merchantTransactionId");
+            setShouldPoll(false);
+          toast.success("order created");
+
             const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
             const options = {
               key: razorpayKey,
@@ -161,6 +166,9 @@ export default function PaymentMethod() {
                     onSuccess: () => {
                       navigate("/order-success");
                       dispatch(removeCartItems());
+                      localStorage.removeItem("merchantTransactionId");
+                      setShouldPoll(false);
+
                       // dispatch(removeTaxDetails());
                       dispatch(removeCoupon());
                     },
@@ -209,33 +217,41 @@ export default function PaymentMethod() {
     );
   };
 
-  useEffect(() => {
-    if (!merchantTransactionId && !shouldPoll) return;
+useEffect(() => {
+  if (!merchantTransactionId || !shouldPoll) return;
 
-    const interval = setInterval(async () => {
+  setLoading(true); // Show loader immediately when polling starts
+
+  const interval = setInterval(async () => {
+    try {
       const { data } = await refetch();
-      if (data.resp.state !== "COMPLETED") return <FullScreenLoader />;
+
       if (data.resp.state === "COMPLETED") {
+        setLoading(false);
         navigate("/order-success");
         localStorage.removeItem("merchantTransactionId");
         setFinalData(data);
         setShouldPoll(false);
         clearInterval(interval);
         dispatch(removeCartItems());
-        // dispatch(removeTaxDetails());
         dispatch(removeCoupon());
       } else if (data.resp.state === "FAILED") {
+        setLoading(false);
         localStorage.removeItem("merchantTransactionId");
         navigate("/order-failure");
         clearInterval(interval);
         setShouldPoll(false);
-      } else {
-        return <FullScreenLoader />;
       }
-    }, 2000);
+      // Otherwise keep polling...
+    } catch (error) {
+      console.error("Polling error:", error);
+    }
+  }, 2000);
 
-    return () => clearInterval(interval);
-  }, [merchantTransactionId, shouldPoll]);
+  return () => clearInterval(interval);
+}, [merchantTransactionId, shouldPoll]);
+{loading && <FullScreenLoader />}
+
   return (
     <main className="container mx-auto py-6 h-screen">
       <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
