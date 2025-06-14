@@ -179,9 +179,11 @@ export default function Nav() {
                 <PopoverTrigger asChild>
                   <Avatar className="w-8 h-8 cursor-pointer bg-primary">
                     <AvatarImage src="/avatar.jpg" alt="profile" />
-                    <AvatarFallback className="bg-primary text-white font-semibold">
-                      {auth.first_name.charAt(0).toUpperCase()}
-                    </AvatarFallback>
+                    {auth?.status && (
+                      <AvatarFallback className="bg-primary text-white font-semibold">
+                        {auth.first_name.charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    )}
                   </Avatar>
                 </PopoverTrigger>
 
