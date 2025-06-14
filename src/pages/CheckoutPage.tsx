@@ -70,7 +70,6 @@ const formSchema = z.object({
 
   email: z.string().min(1, "Email is required").email("Invalid email address"),
 
-
   phoneNumber: z
     .string()
     .min(1, "Phone number is required")
@@ -103,14 +102,13 @@ export default function CheckoutPage() {
   const { mutate: CheckCoupon, isPending } = useCheckCouponCode();
   const { mutate: removeCart } = useDeleteCart();
   const dispatch = useDispatch();
-  const { items } = useSelector((state: RootState) => state.cart);
+  const { items, tax_detail } = useSelector((state: RootState) => state.cart);
   // const CouponDetails = useSelector((state: RootState) => state.coupon);
   const [quantity, setQuantity] = useState(1);
-  const [CouponDetails , setCouponDetails] = useState<CouponState>()
+  const [CouponDetails, setCouponDetails] = useState<CouponState>();
   const [couponCode, setCouponCode] = useState("");
 
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
-
 
   const [query, setQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -122,7 +120,6 @@ export default function CheckoutPage() {
   const filteredStates = states.filter((city) =>
     city.name.toLowerCase().includes(Statequery.toLowerCase())
   );
-
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -138,7 +135,6 @@ export default function CheckoutPage() {
       pinCode: "",
     },
   });
-
 
   const handleDecrease = (cart_id: number) => {
     const newQuantity = quantity - 1;
@@ -183,7 +179,7 @@ export default function CheckoutPage() {
       {
         onSuccess(data) {
           // dispatch(setCoupon(data));
-          setCouponDetails(data)
+          setCouponDetails(data);
           toast.success("coupon applied");
         },
         onError(error) {
@@ -208,8 +204,8 @@ export default function CheckoutPage() {
   const tax = 0;
 
   // Default shipping
-  const shipping = 50;
-
+  const shipping =
+    tax_detail.min_amount <= subtotal ? 0 : tax_detail.shipping_fee;
   let discount = 0;
 
   if (
@@ -872,13 +868,33 @@ export default function CheckoutPage() {
                       <span>Tax</span>
                       <span className="font-semibold">₹1,200</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span>Discount</span>
-                      <span className="">-₹{discount}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Shipping</span>
-                      <span className="font-semibold">₹{shipping}</span>
+                    {discount > 0 && (
+                      <div className="flex justify-between">
+                        <span>Discount</span>
+                        <span className="">-₹{discount}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between items-center">
+                      <span className="">
+                        Shipping
+                        {shipping === 0 ? (
+                          <span className="ml-2 text-green-600 font-semibold animate-pulse">
+                            (Free Delivery 🎉)
+                          </span>
+                        ) : (
+                          <span className="ml-2 text-red-500 text-xs font-medium italic animate-shake">
+                            (Spend ₹{tax_detail.min_amount - subtotal} more for
+                            free shipping)
+                          </span>
+                        )}
+                      </span>
+                      <span
+                        className={`font-semibold ${
+                          shipping === 0 ? "text-green-600" : "text-primary"
+                        }`}
+                      >
+                        ₹{shipping === 0 ? "0" : shipping}
+                      </span>
                     </div>
                     <hr className="my-2 border-gray-300" />
                     <div className="flex justify-between font-semibold text-base">
