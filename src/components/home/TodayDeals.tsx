@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "@/redux/slices/cartSlice";
 import type { RootState } from "@/redux/store";
+import { toast } from "sonner";
 interface Props {
   Products: Product[];
 }
@@ -14,7 +15,7 @@ export default function TodayDeals({ Products }: Props) {
   const { mutate } = useAddToCart();
   const dispatch = useDispatch();
   const [clicked, setClicked] = useState(false);
-  const { token } = useSelector((state: RootState) => state.auth);
+  const { token ,status} = useSelector((state: RootState) => state.auth);
 
   // const Prodcuts = [
   //   {
@@ -88,12 +89,17 @@ export default function TodayDeals({ Products }: Props) {
                 </p>
                 <Button
                   onClick={() => {
-                    mutate({
-                      product_id: item.product_id,
-                      quantity: 1,
-                      token: token,
-                    });
-                    dispatch(addItem(item));
+                    if (status) {
+                      mutate({
+                        product_id: item.product_id,
+                        quantity: 1,
+                        token: token,
+                      });
+                      dispatch(addItem(item));
+                    } else {
+                      toast.error("Please login to continue");
+                      navigate("/login");
+                    }
                     setTimeout(() => setClicked(false), 300);
                   }}
                   className={`rounded-full font-semibold px-5 py-2 border transition-all duration-300 ease-in-out

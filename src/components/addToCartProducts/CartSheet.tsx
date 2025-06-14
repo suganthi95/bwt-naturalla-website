@@ -219,9 +219,14 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                 <span>Subtotal</span>
                 <span className="font-semibold">₹{subtotal}</span>
               </div>
-              <div className="flex justify-between">
-                <span>Tax</span>
-                <span className="font-semibold">₹{tax}</span>
+              <div className="flex justify-between items-start text-sm text-muted-foreground">
+                <p className="flex flex-col leading-tight">
+                  <span className="text-foreground font-medium">Tax</span>
+                  <span className="text-xs">Inclusive of 18% tax</span>
+                </p>
+                <span className="text-foreground font-semibold text-base">
+                  ₹{tax}
+                </span>
               </div>
               {discount > 0 && (
                 <div className="flex justify-between">
@@ -230,27 +235,25 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                 </div>
               )}
               <div className="flex justify-between items-center">
-                <span className="">
-                  Shipping
-                  {shipping === 0 ? (
-                    <span className="ml-2 text-green-600 font-semibold animate-pulse">
-                      (Free Delivery 🎉)
-                    </span>
-                  ) : (
-                    <span className="ml-2 text-red-500 text-xs font-medium italic animate-shake">
-                      (Spend ₹{tax_detail.min_amount - subtotal} more for free
-                      shipping)
-                    </span>
-                  )}
-                </span>
+                <span className="">Shipping</span>
                 <span
-                  className={`font-semibold ${
-                    shipping === 0 ? "text-green-600" : "text-primary"
+                  className={`font-semibold  ${
+                    shipping === 0 ? "text-green-600 " : "text-primary"
                   }`}
                 >
-                  ₹{shipping === 0 ? "0" : shipping}
+                  ₹{shipping === 0 ? shipping : shipping}
                 </span>
               </div>
+              {shipping === 0 ? (
+                <span className=" text-green-600 font-semibold text-xs animate-pulse">
+                  (Free Delivery 🎉)
+                </span>
+              ) : (
+                <span className=" text-red-500 text-xs font-medium italic animate-shake">
+                  (Spend ₹{tax_detail.min_amount - subtotal} more for free
+                  shipping)
+                </span>
+              )}
 
               <hr className="my-2 border-gray-300" />
               <div className="flex justify-between font-semibold text-base">

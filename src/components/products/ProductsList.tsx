@@ -14,6 +14,9 @@ import { Heart } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
 import { setSortByAlphabetic } from "@/redux/slices/filterSlice";
+import { useAddToCart } from "@/services/cart";
+import { addItem } from "@/redux/slices/cartSlice";
+import { toast } from "sonner";
 interface Props {
   Products: Product[];
 }
@@ -30,10 +33,10 @@ export default function ProductsList({ Products }: Props) {
   } = useSelector((state: RootState) => state.filter);
   const [sortBy, setSortBy] = useState("a-z");
   const [filteredProducts, setFiltered] = useState<Product[]>();
+  const { token, status } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  //   const { mutate } = useAddToCart();
-
+  const { mutate } = useAddToCart();
   useEffect(() => {
     let filtered = Products;
 
@@ -138,7 +141,19 @@ export default function ProductsList({ Products }: Props) {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     className="bg-white text-black cursor-pointer hover:bg-primary hover:text-white px-4 py-2 rounded-md font-semibold"
-                    onClick={() => {}}
+                    onClick={() => {
+                      if (status) {
+                        mutate({
+                          product_id: item.product_id,
+                          quantity: 1,
+                          token: token,
+                        });
+                        dispatch(addItem(item));
+                      } else {
+                     toast.error("Please login to continue");
+                        navigate("/login");
+                      }
+                    }}
                   >
                     Add to Cart
                   </motion.button>
@@ -157,7 +172,7 @@ export default function ProductsList({ Products }: Props) {
                 </span>
               </p>
 
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col ">
                 <p className="text-textPrimary text-xl lato font-bold">
                   Rs. {item?.unit_price}
                   <span className="text-lg text-lead font-normal line-through ml-2">

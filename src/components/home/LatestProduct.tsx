@@ -7,6 +7,7 @@ import { useAddToCart } from "@/services/cart";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "@/redux/slices/cartSlice";
 import type { RootState } from "@/redux/store";
+import { toast } from "sonner";
 interface Props {
   title: string;
   Products: Product[];
@@ -14,8 +15,8 @@ interface Props {
 export default function LatestProduct({ title, Products }: Props) {
   const navigate = useNavigate();
   const { mutate } = useAddToCart();
-  const dispatch = useDispatch()
-  const {token} = useSelector((state:RootState)=>state.auth)
+  const dispatch = useDispatch();
+  const { token ,status} = useSelector((state: RootState) => state.auth);
 
   // const Prodcuts = [
   //   {
@@ -56,18 +57,25 @@ export default function LatestProduct({ title, Products }: Props) {
       <div className="container mx-auto">
         <div className="flex justify-between font-semibold text-xl items-center">
           <p className="text-title cursor-pointer ">{title}</p>
-        <p className="text-title cursor-pointer hover:underline underline-primary" onClick={()=> navigate('/products',{state:{param:'is_featured=true'}})}>View more</p>
+          <p
+            className="text-title cursor-pointer hover:underline underline-primary"
+            onClick={() =>
+              navigate("/products", { state: { param: "is_featured=true" } })
+            }
+          >
+            View more
+          </p>
         </div>
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-x-8 md:gap-x-14 lg:gap-x-10 mt-4 md:mt-8 mb-14 md:mb-20">
           {Products?.slice(0, 5)?.map((item, index) => {
             return (
-              <li  key={index}  className="space-y-2 relative">
-               <img
-                src={item?.thumbnail_image_url}
-                alt={item?.product_name}
-                className="w-60 h-60 md:w-[240px] md:h-[240px] rounded-[20px] object-cover mx-auto cursor-pointer"
-                onClick={() => navigate(`/product/${item.product_id}`)}
-              />
+              <li key={index} className="space-y-2 relative">
+                <img
+                  src={item?.thumbnail_image_url}
+                  alt={item?.product_name}
+                  className="w-60 h-60 md:w-[240px] md:h-[240px] rounded-[20px] object-cover mx-auto cursor-pointer"
+                  onClick={() => navigate(`/product/${item.product_id}`)}
+                />
                 <p
                   onClick={() => navigate(`/product/${item.product_id}`)}
                   className="text-title text-xl  cursor-pointer hover:text-primary transition-colors duration-300 font-medium line-clamp-1"
@@ -81,18 +89,23 @@ export default function LatestProduct({ title, Products }: Props) {
                       Rs. {item?.strike_through_price}
                     </span>
                   </p>
-  <Button
-                  onClick={() => {
-                    mutate({
-                      product_id: item.product_id,
-                      quantity: 1,
-                      token:token
-                                        });
-                    dispatch(addItem(item))
-                  }}
-                  className="rounded-md font-bold transition-all duration-300 ease-in-out px-5 py-2 bg-white text-primary border border-primary hover:bg-primary hover:text-white shadow-sm hover:shadow-lg"
-                >
-                  <ShoppingCart className="w-5 h-5" />
+                  <Button
+                    onClick={() => {
+                      if (status) {
+                        mutate({
+                          product_id: item.product_id,
+                          quantity: 1,
+                          token: token,
+                        });
+                        dispatch(addItem(item));
+                      } else {
+                        toast.error("Please login to continue");
+                        navigate("/login");
+                      }
+                    }}
+                    className="rounded-md font-bold transition-all duration-300 ease-in-out px-5 py-2 bg-white text-primary border border-primary hover:bg-primary hover:text-white shadow-sm hover:shadow-lg"
+                  >
+                    <ShoppingCart className="w-5 h-5" />
                   </Button>
                 </div>
               </li>

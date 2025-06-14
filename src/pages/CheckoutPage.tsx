@@ -1,4 +1,3 @@
-import { ASSETS } from "@/assets/assets";
 import { Icons } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -107,7 +106,7 @@ export default function CheckoutPage() {
   const [quantity, setQuantity] = useState(1);
   const [CouponDetails, setCouponDetails] = useState<CouponState>();
   const [couponCode, setCouponCode] = useState("");
-  const {token} = useSelector((state:RootState)=>state.auth)
+  const { token } = useSelector((state: RootState) => state.auth);
 
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
 
@@ -137,14 +136,15 @@ export default function CheckoutPage() {
     },
   });
 
-  const handleDecrease = (cart_id: number , quan:number) => {
-      if (quan <= 1) return; 
+  const handleDecrease = (cart_id: number, quan: number) => {
+    if (quan <= 1) return;
     const newQuantity = quantity - 1;
     setQuantity(newQuantity);
     mutate({
       cart_id,
       quantity: -1,
-      token:token    });
+      token: token,
+    });
     dispatch(decreaseQuantity(cart_id));
   };
 
@@ -154,7 +154,8 @@ export default function CheckoutPage() {
     mutate({
       cart_id,
       quantity: 1,
-      token:token    });
+      token: token,
+    });
     dispatch(increaseQuantity(cart_id));
   };
   const handleRemoveProduct = (cart_id: number, quantity: number) => {
@@ -162,14 +163,16 @@ export default function CheckoutPage() {
     removeCart({
       cart_id,
       quantity,
-      token:token    });
+      token: token,
+    });
   };
 
   const handleCheckCoupon = () => {
     CheckCoupon(
       {
         couponCode: couponCode,
-        token:token      },
+        token: token,
+      },
       {
         onSuccess(data) {
           // dispatch(setCoupon(data));
@@ -202,15 +205,15 @@ export default function CheckoutPage() {
   }, 0);
 
   // Default shipping
-let shipping = 0;
+  let shipping = 0;
 
-if (tax_detail && typeof tax_detail.min_amount === "number") {
-  if (subtotal >= tax_detail.min_amount) {
-    shipping = 0;
-  } else if (typeof tax_detail.shipping_fee === "number") {
-    shipping = tax_detail.shipping_fee;
+  if (tax_detail && typeof tax_detail.min_amount === "number") {
+    if (subtotal >= tax_detail.min_amount) {
+      shipping = 0;
+    } else if (typeof tax_detail.shipping_fee === "number") {
+      shipping = tax_detail.shipping_fee;
+    }
   }
-}
 
   let discount = 0;
 
@@ -235,7 +238,7 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
   }
 
   // Final total
-  const total = Math.round(subtotal  + shipping - discount);
+  const total = Math.round(subtotal + shipping - discount);
 
   return (
     <main>
@@ -258,8 +261,8 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
           </Accordion>
         </div> */}
 
-        <div className="flex w-full gap-x-10 flex-col lg:flex-row">
-          <div className="w-full lg:w-8/12">
+        <div className="flex  w-full gap-x-10 flex-col lg:flex-row">
+          <div className="w-full h-full lg:w-8/12">
             <Accordion
               type="single"
               defaultValue="item-1"
@@ -273,13 +276,11 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
                 <AccordionContent>
                   <ul>
                     {items?.map((product: Product) => {
+                      const productTaxprice = Number(
+                        (product.unit_price * product.tax_percent) / 100
+                      );
+                      console.log(productTaxprice);
 
-                      const productTaxprice = Number( (product.unit_price *
-                              
-                              product.tax_percent) /
-                            100)
-                            console.log(productTaxprice)
-                            
                       let productDiscount = 0;
 
                       const isProductInCoupon =
@@ -379,7 +380,12 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
                                 variant="ghost"
                                 size="icon"
                                 className="p-0 cursor-pointer w-5 h-5 text-lg text-gray-700"
-                                onClick={() => handleDecrease(product.cart_id,product.quantity)}
+                                onClick={() =>
+                                  handleDecrease(
+                                    product.cart_id,
+                                    product.quantity
+                                  )
+                                }
                               >
                                 −
                               </Button>
@@ -515,7 +521,7 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
             </ul>
           </AccordionContent> */}
             <Accordion type="single" defaultValue="item-2" collapsible>
-              <AccordionItem value="item-2" className="border-none">
+              <AccordionItem value="item-2" className="border-none ">
                 <AccordionTrigger className="cursor-pointer">
                   <h1 className="md:text-2xl font-semibold ">
                     Shipping Details
@@ -529,7 +535,7 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
 
                     <Form {...form}>
                       <form
-                        className="space-y-4"
+                        className="space-y-4  h-full"
                         onSubmit={form.handleSubmit(onSubmit)}
                       >
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -609,14 +615,18 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
                             >
                               Phone Number
                             </Label>
-                            <div className="flex items-center gap-2 border rounded-md h-10 px-3  bg-white   transition">
+                            <div
+                              className={`flex items-center gap-2 border rounded-md h-10 px-3 shadow-sm bg-white ${
+                                form.formState.errors.phoneNumber &&
+                                "border-red-500"
+                              }`}
+                            >
+                              {" "}
                               <div className="flex items-center gap-1 text-sm text-muted-foreground">
                                 <Icons.India className="w-5 h-5" />
                                 <span className="whitespace-nowrap">+91</span>
                               </div>
-
                               <div className="h-6 w-px bg-border" />
-
                               <FormField
                                 control={form.control}
                                 name="phoneNumber"
@@ -630,11 +640,16 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
                                         {...field}
                                       />
                                     </FormControl>
-                                    <FormMessage />
                                   </FormItem>
                                 )}
                               />
                             </div>
+                            {form.formState.errors.phoneNumber && (
+                              <p className="text-red-500 mt-3">
+                                {form.formState.errors.phoneNumber &&
+                                  form.formState.errors.phoneNumber.message}
+                              </p>
+                            )}
                           </div>
                         </div>
 
@@ -661,16 +676,16 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
                           )}
                         />
 
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-1 h-full md:grid-cols-4 gap-4">
                           <FormField
                             control={form.control}
                             name="city"
                             render={({ field }) => (
-                              <FormItem>
-                                <Label className="text-title font-semibold text-sm">
+                              <FormItem className="h-full   ">
+                                <Label className="text-title   font-semibold text-sm">
                                   City
                                 </Label>
-                                <div className="relative">
+                                <div className=" overflow-visible ">
                                   <Input
                                     placeholder="Search city..."
                                     value={query}
@@ -679,11 +694,11 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
                                       setShowDropdown(true);
                                     }}
                                     onFocus={() => setShowDropdown(true)}
-                                    className="w-full pr-10 cursor-pointer"
+                                    className="w-full pr-10  cursor-pointer"
                                   />
 
                                   <div
-                                    className="absolute inset-y-0 right-2 flex items-center cursor-pointer"
+                                    className={`absolute   w-fit left-64  flex items-center cursor-pointer ${showDropdown ? '-bottom-13':'-bottom-13'}`}
                                     onClick={() =>
                                       setShowDropdown((prev) => !prev)
                                     }
@@ -696,7 +711,7 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
                                   </div>
 
                                   {showDropdown && (
-                                    <ul className="absolute z-10 w-full bg-white dark:bg-gray-800 border dark:border-gray-700 max-h-60 overflow-auto mt-1 shadow-md rounded">
+                                    <ul className="absolute  z-[999] w-52  bg-white dark:bg-gray-800 border dark:border-gray-700 max-h-80 overflow-auto mt-1 shadow-md rounded">
                                       {filteredCities.length === 0 ? (
                                         <li className="p-2 text-sm text-muted-foreground">
                                           No city found.
@@ -732,7 +747,7 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
                                 <Label className="text-title font-semibold text-sm">
                                   State
                                 </Label>
-                                <div className="relative">
+                                <div className="">
                                   <Input
                                     placeholder="Search state..."
                                     value={Statequery}
@@ -746,9 +761,9 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
                                       setShowDropdown(false);
                                     }}
                                     className="w-full pr-10 cursor-pointer"
-                                  />
+                                  />  
                                   <div
-                                    className="absolute inset-y-0 right-2 flex items-center cursor-pointer"
+                                    className={`absolute   w-fit left-[480px]  flex items-center cursor-pointer ${showStateDropdown ? '-bottom-17':'-bottom-13'}`}
                                     onClick={() =>
                                       setShowSatteDropdown((prev) => !prev)
                                     }
@@ -760,7 +775,7 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
                                     )}
                                   </div>
                                   {showStateDropdown && (
-                                    <ul className="absolute z-10 w-full bg-white dark:bg-gray-800 border dark:border-gray-700 max-h-60 overflow-auto mt-1 shadow-md rounded">
+                                    <ul className="absolute  w-full bg-white dark:bg-gray-800 border dark:border-gray-700 max-h-60 overflow-auto mt-1 shadow-md rounded">
                                       {filteredStates.length === 0 ? (
                                         <li className="p-2 text-sm text-muted-foreground">
                                           No state found.
@@ -836,7 +851,7 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
             {/* Shipping Details Form */}
           </div>
 
-          <div className="w-full lg:w-4/12 mt-8 lg:mt-0">
+          <div className="w-full h-full lg:w-4/12 mt-8 lg:mt-0">
             <Accordion type="single" collapsible defaultValue="price">
               <AccordionItem value="price" className="border-none">
                 <AccordionTrigger className="cursor-pointer">
@@ -877,10 +892,16 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
                       <span>Subtotal</span>
                       <span className="font-semibold">₹{subtotal}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span>Tax</span>
-                      <span className="font-semibold">₹{tax}</span>
+                    <div className="flex justify-between items-start text-sm text-muted-foreground">
+                      <p className="flex flex-col leading-tight">
+                        <span className="text-foreground font-medium">Tax</span>
+                        <span className="text-xs">Inclusive of 18% tax</span>
+                      </p>
+                      <span className="text-foreground font-semibold text-base">
+                        ₹{tax}
+                      </span>
                     </div>
+
                     {discount > 0 && (
                       <div className="flex justify-between">
                         <span>Discount</span>
@@ -888,14 +909,14 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
                       </div>
                     )}
                     <div className="flex justify-between items-center">
-                      <span className="">
+                      <span className="flex flex-col">
                         Shipping
                         {shipping === 0 ? (
-                          <span className="ml-2 text-green-600 font-semibold animate-pulse">
+                          <span className=" text-green-600  text-xs mt-1 font-semibold animate-pulse">
                             (Free Delivery 🎉)
                           </span>
                         ) : (
-                          <span className="ml-2 text-red-500 text-xs font-medium italic animate-shake">
+                          <span className=" text-red-500 text-xs font-medium italic animate-shake">
                             (Spend ₹{tax_detail.min_amount - subtotal} more for
                             free shipping)
                           </span>
@@ -933,23 +954,7 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
                 }
               }}
             >
-              PayNow
-              <ul className="flex -space-x-2 ">
-                <li>
-                  <img src={ASSETS.PAYTM} alt="" className="w-6" />
-                </li>
-                <li>
-                  <img src={ASSETS.PHONEPAY} alt="" className="w-6" />
-                </li>
-
-                <li>
-                  <img src={ASSETS.GPAY} alt="" className="w-6" />
-                </li>
-
-                <li>
-                  <img src={ASSETS.FRAMEPAY} alt="" className="w-6" />
-                </li>
-              </ul>{" "}
+              Pay Now
             </Button>
           </div>
         </div>

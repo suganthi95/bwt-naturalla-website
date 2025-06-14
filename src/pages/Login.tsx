@@ -89,6 +89,7 @@ navigate('/login-verify',{state:{phone_no:Number(values.inputValue)}})
           </a>
         </p>
       </div>
+      <p className="fixed bottom-2.5 text-sm text-title">Copyrights © All Rights Reserved ® 2025 Naturalla Stores</p>
     </section>
   );
 }

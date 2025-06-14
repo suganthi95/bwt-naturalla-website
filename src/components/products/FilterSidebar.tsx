@@ -268,7 +268,7 @@ export default function FilterSidebar({ filterValues }: Props) {
       </div>
       <div>
         <Accordion collapsible type="single">
-          <AccordionItem value="price" className="underline-none">
+          <AccordionItem value="date" className="underline-none">
             <AccordionTrigger className="underline-none cursor-pointer">
               <label className="text-sm text-textPrimary font-medium">
                 Launched Date
@@ -276,7 +276,7 @@ export default function FilterSidebar({ filterValues }: Props) {
             </AccordionTrigger>
             <AccordionContent>
               <RadioGroup
-                value={sortByDate}
+                value={sortDate}
                 onValueChange={setSortByDate}
                 className="space-y-2 mt-2"
               >

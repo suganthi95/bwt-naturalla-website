@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useRazorpay } from "react-razorpay";
-import { removeCartItems, } from "@/redux/slices/cartSlice";
+import { removeCartItems } from "@/redux/slices/cartSlice";
 import { removeCoupon } from "@/redux/slices/couponSlice";
 
 export default function PaymentMethod() {
@@ -32,6 +32,7 @@ export default function PaymentMethod() {
   // const { product } = state || {};
 
   const { Razorpay: RazorpayConstructor } = useRazorpay();
+  // const payment =
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { shippingAddress, items, tax_detail } = useSelector(
@@ -68,16 +69,15 @@ export default function PaymentMethod() {
     return acc + Math.round(productTax);
   }, 0);
 
-let shipping = 0;
+  let shipping = 0;
 
-if (tax_detail && typeof tax_detail.min_amount === "number") {
-  if (subtotal >= tax_detail.min_amount) {
-    shipping = 0;
-  } else if (typeof tax_detail.shipping_fee === "number") {
-    shipping = tax_detail.shipping_fee;
+  if (tax_detail && typeof tax_detail.min_amount === "number") {
+    if (subtotal >= tax_detail.min_amount) {
+      shipping = 0;
+    } else if (typeof tax_detail.shipping_fee === "number") {
+      shipping = tax_detail.shipping_fee;
+    }
   }
-}
-
 
   let discount = 0;
 
@@ -213,14 +213,14 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
     if (!merchantTransactionId && !shouldPoll) return;
 
     const interval = setInterval(async () => {
-      const { data, isLoading, isFetching } = await refetch();
-      if (isFetching || isLoading) return <FullScreenLoader />;
+      const { data } = await refetch();
+      if (data.resp.state !== "COMPLETED") return <FullScreenLoader />;
       if (data.resp.state === "COMPLETED") {
+        navigate("/order-success");
         localStorage.removeItem("merchantTransactionId");
         setFinalData(data);
         setShouldPoll(false);
         clearInterval(interval);
-        navigate("/order-success");
         dispatch(removeCartItems());
         // dispatch(removeTaxDetails());
         dispatch(removeCoupon());
@@ -255,6 +255,7 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
                 value={selectedRole}
                 onValueChange={(val) => {
                   localStorage.removeItem("merchantTransactionId");
+                  localStorage.setItem("payment", val);
                   setValue("payment", val);
                 }}
                 className="w-[380px] mt-4"
@@ -314,9 +315,14 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
               <span className="text-lead">Subtotal</span>
               <span className="font-semibold">₹{subtotal}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-lead">Tax</span>
-              <span className="font-semibold">₹{tax}</span>
+            <div className="flex justify-between items-start text-sm text-muted-foreground">
+              <p className="flex flex-col leading-tight">
+                <span className="text-foreground font-medium">Tax</span>
+                <span className="text-xs">Inclusive of 18% tax</span>
+              </p>
+              <span className="text-foreground font-semibold text-base">
+                ₹{tax}
+              </span>
             </div>
             {discount > 0 && (
               <div className="flex justify-between">
@@ -325,14 +331,14 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
               </div>
             )}
             <div className="flex justify-between items-center">
-              <span className="">
+              <span className="flex flex-col">
                 Shipping
                 {shipping === 0 ? (
-                  <span className="ml-2 text-green-600 font-semibold animate-pulse">
+                  <span className=" text-green-600  text-xs mt-1 font-semibold animate-pulse">
                     (Free Delivery 🎉)
                   </span>
                 ) : (
-                  <span className="ml-2 text-red-500 text-xs font-medium italic animate-shake">
+                  <span className=" text-red-500 text-xs font-medium italic animate-shake">
                     (Spend ₹{tax_detail.min_amount - subtotal} more for free
                     shipping)
                   </span>
@@ -346,6 +352,7 @@ if (tax_detail && typeof tax_detail.min_amount === "number") {
                 ₹{shipping === 0 ? "0" : shipping}
               </span>
             </div>
+
             <hr className="my-2 border-gray-300" />
             <div className="flex justify-between font-semibold text-base">
               <span className="font-semibold text-[#0B130B] text-[22px] ">

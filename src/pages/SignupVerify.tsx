@@ -114,6 +114,8 @@ export default function SignupVerify() {
           </a>
         </p>
       </div>
+            <p className="fixed bottom-2.5 text-sm text-title">Copyrights © All Rights Reserved ® 2025 Naturalla Stores</p>
+
     </section>
   );
 }
