@@ -78,7 +78,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
     (acc, item) => acc + item.unit_price * item.quantity,
     0
   );
-  const tax = subtotal * 0.18;
+  const tax = 0;
   const discount = 0;
   const shipping =
     tax_detail.min_amount <= subtotal ? 0 : tax_detail.shipping_fee;

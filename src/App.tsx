@@ -9,7 +9,11 @@ import FullScreenLoader from "./common/FullScreenLoader";
 // Lazy-loaded page
 
 const Home = React.lazy(() => import("./website/Home"));
-const SignUp = React.lazy(()=>import("./pages/Signup"))
+const SignUp = React.lazy(() => import("./pages/Signup"));
+const Login = React.lazy(() => import("./pages/Login"));
+const SignupVerify = React.lazy(() => import("./pages/SignupVerify"));
+const LoginVerify = React.lazy(() => import("./pages/LoginVerify"));
+
 const ProductById = React.lazy(() => import("@/pages/ProductById"));
 const Products = React.lazy(() => import("@/website/Products"));
 const CheckoutPage = React.lazy(() => import("@/pages/CheckoutPage"));
@@ -21,10 +25,14 @@ const PaymentMethod = React.lazy(() => import("@/pages/PaymentMethod"));
 const App = () => {
   return (
     <Provider>
-      <Suspense fallback={<FullScreenLoader/>}>
-          <ScrollToTop/>
+      <Suspense fallback={<FullScreenLoader />}>
+        <ScrollToTop />
         <Routes>
-          <Route path="/sign-up" element={<SignUp/>}/>
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/sign-up-verify" element={<SignupVerify />} />
+          <Route path="/login-verify" element={<LoginVerify />} />
+
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="/product/:id" element={<ProductById />} />

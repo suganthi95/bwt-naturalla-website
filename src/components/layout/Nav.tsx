@@ -26,6 +26,7 @@ import { useGetCartItems } from "@/services/cart";
 import { useDispatch, useSelector } from "react-redux";
 import { setCartItems, setTaxDetails } from "@/redux/slices/cartSlice";
 import type { RootState } from "@/redux/store";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 const messages = [
   "🎉 Flat 30% Off on Selected Products | Use Code : DEAL30 🎉",
   "🚚 Free Shipping on Orders Above ₹999 🚚",
@@ -35,7 +36,7 @@ const messages = [
 export default function Nav() {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
-  const navigate   = useNavigate()
+  const navigate = useNavigate();
   const { items } = useSelector((state: RootState) => state.cart);
   const { data, isSuccess, isLoading, isError, isFetching } = useGetCartItems(
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg"
@@ -103,7 +104,12 @@ export default function Nav() {
             <div className="flex items-center gap-3">
               <MenuToggle open={IsMenuopen} handleclick={handleclick} />
             </div>
-            <img onClick={()=>navigate('/')} src={ASSETS.LOGO} alt="hero-image" className="w-40" />
+            <img
+              onClick={() => navigate("/")}
+              src={ASSETS.LOGO}
+              alt="hero-image"
+              className="w-40"
+            />
             <ul className="xl:flex items-center hidden  justify-center gap-x-3.5">
               {NavData.map((item) => {
                 return (
@@ -161,12 +167,45 @@ export default function Nav() {
                 </SheetContent>
               </Sheet>
 
-              <Avatar className="w-8 h-8 cursor-pointer bg-primary">
-                <AvatarImage src="/avatar.jpg" alt="profile" />
-                <AvatarFallback className="bg-primary text-white font-semibold">
-                  B
-                </AvatarFallback>
-              </Avatar>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Avatar className="w-8 h-8 cursor-pointer bg-primary">
+                    <AvatarImage src="/avatar.jpg" alt="profile" />
+                    <AvatarFallback className="bg-primary text-white font-semibold">
+                      B
+                    </AvatarFallback>
+                  </Avatar>
+                </PopoverTrigger>
+
+                <PopoverContent
+                                    sideOffset={8}
+                  className="z-50 w-56 rounded-xl bg-white shadow-xl p-4 outline-none"
+                  asChild
+                >
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95, y: -4 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: -4 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-gray-800">
+                        Welcome, Bava
+                      </p>
+                      <hr />
+                      <div className="space-y-1 text-sm text-muted-foreground">
+                        <Link to="/profile" className="block hover:text-primary">
+                          Profile
+                        </Link>
+                       
+                        <p className="block cursor-pointer w-full text-left hover:text-red-500">
+                          Logout
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
         </div>

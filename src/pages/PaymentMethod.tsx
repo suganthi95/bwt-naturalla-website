@@ -63,7 +63,7 @@ export default function PaymentMethod() {
     0
   );
 
-  const tax = Math.round(subtotal * 0.18);
+  const tax = 0;
 
   // Default shipping
   const shipping = 50;

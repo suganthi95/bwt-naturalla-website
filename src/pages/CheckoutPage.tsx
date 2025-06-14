@@ -52,8 +52,8 @@ import {
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import type { RootState } from "@/redux/store";
-import { setCoupon } from "@/redux/slices/couponSlice";
 import axios from "axios";
+import type { CouponState } from "@/types/type";
 
 // Country data
 
@@ -104,8 +104,9 @@ export default function CheckoutPage() {
   const { mutate: removeCart } = useDeleteCart();
   const dispatch = useDispatch();
   const { items } = useSelector((state: RootState) => state.cart);
-  const CouponDetails = useSelector((state: RootState) => state.coupon);
+  // const CouponDetails = useSelector((state: RootState) => state.coupon);
   const [quantity, setQuantity] = useState(1);
+  const [CouponDetails , setCouponDetails] = useState<CouponState>()
   const [couponCode, setCouponCode] = useState("");
 
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
@@ -181,7 +182,8 @@ export default function CheckoutPage() {
       },
       {
         onSuccess(data) {
-          dispatch(setCoupon(data));
+          // dispatch(setCoupon(data));
+          setCouponDetails(data)
           toast.success("coupon applied");
         },
         onError(error) {
@@ -203,7 +205,7 @@ export default function CheckoutPage() {
     0
   );
 
-  const tax = Math.round(subtotal * 0.18);
+  const tax = 0;
 
   // Default shipping
   const shipping = 50;
@@ -227,7 +229,7 @@ export default function CheckoutPage() {
       );
     }
   } else {
-    discount = CouponDetails.discount;
+    discount = CouponDetails?.discount ?? 0;
   }
 
   // Final total

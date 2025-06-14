@@ -50,3 +50,20 @@ export interface FilterData {
   price_range: PriceRange[];
   benefits: string[];
 }
+
+export interface CouponState {
+  status: boolean;
+  coupon_id: number | null;
+  coupon_type: string;
+  coupon_code: string;
+  start_at: string;
+  end_at: string;
+  discount_type: string;
+  discount: number;
+  created_at: string;
+  created_by: string | null;
+  mini_shipping: number;
+  max_discount: number;
+  product_id: number | null;
+  product_ids: number[];
+}
