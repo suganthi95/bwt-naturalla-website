@@ -23,15 +23,15 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useRazorpay, type RazorpayOrderOptions } from "react-razorpay";
-import { removeCartItems, removeTaxDetails } from "@/redux/slices/cartSlice";
+import { useRazorpay } from "react-razorpay";
+import { removeCartItems, } from "@/redux/slices/cartSlice";
 import { removeCoupon } from "@/redux/slices/couponSlice";
 
 export default function PaymentMethod() {
   // const { state } = useLocation();
   // const { product } = state || {};
-  const Razorpay = useRazorpay();
-  const RazorpayConstructor = Razorpay.Razorpay;
+
+  const { Razorpay: RazorpayConstructor } = useRazorpay();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { shippingAddress, items, tax_detail } = useSelector(
@@ -58,7 +58,7 @@ export default function PaymentMethod() {
   const selectedRole = watch("payment");
 
   const subtotal = items?.reduce(
-    (acc: number, item: any) => acc + item.unit_price * item.quantity,
+    (acc: number, item: any) => acc + item?.unit_price * item.quantity,
     0
   );
 
@@ -69,7 +69,9 @@ export default function PaymentMethod() {
   }, 0);
 
   const shipping =
-    tax_detail.min_amount <= subtotal ? 0 : tax_detail.shipping_fee;
+    tax_detail && tax_detail?.min_amount <= subtotal
+      ? 0
+      : tax_detail?.shipping_fee;
 
   let discount = 0;
 
@@ -94,7 +96,7 @@ export default function PaymentMethod() {
   }
 
   // Final total
-  const total = Math.round(subtotal  + shipping - discount);
+  const total = Math.round(subtotal + shipping - discount);
   const handleCreateOrder = () => {
     if (!items || !shippingAddress) return;
 
@@ -131,13 +133,13 @@ export default function PaymentMethod() {
         onSuccess(data) {
           toast.success("order created");
           setShouldPoll(true);
-          if (data.orderId) {
+          if (selectedRole === "razorpay") {
             const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
             const options = {
               key: razorpayKey,
               order_id: data.orderId,
               amount: total,
-              currency: "INR",
+              currency: "INR" as const,
               name: "Naturella",
               description: "Payment",
               image: ASSETS.LOGO,
@@ -153,7 +155,7 @@ export default function PaymentMethod() {
                     onSuccess: () => {
                       navigate("/order-success");
                       dispatch(removeCartItems());
-                      dispatch(removeTaxDetails());
+                      // dispatch(removeTaxDetails());
                       dispatch(removeCoupon());
                     },
                     onError(error) {
@@ -176,9 +178,7 @@ export default function PaymentMethod() {
               },
             };
 
-            const rzp = new RazorpayConstructor(
-              options as RazorpayOrderOptions
-            );
+            const rzp = new RazorpayConstructor(options);
             rzp.open();
           } else {
             SetmerchantTransactionId(data.merchantTransactionId);
@@ -216,7 +216,7 @@ export default function PaymentMethod() {
         clearInterval(interval);
         navigate("/order-success");
         dispatch(removeCartItems());
-        dispatch(removeTaxDetails());
+        // dispatch(removeTaxDetails());
         dispatch(removeCoupon());
       } else if (data.resp.state === "FAILED") {
         localStorage.removeItem("merchantTransactionId");

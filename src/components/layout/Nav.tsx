@@ -116,7 +116,7 @@ export default function Nav() {
             />
             <ul className="xl:flex items-center hidden  justify-center gap-x-3.5">
               {NavData.map((item,index) => {
-                const IsDropDown = [2,3,4].includes(index)
+                const IsDropDown = [2,3,4,5].includes(index)
 
                 return (
                   <Link
