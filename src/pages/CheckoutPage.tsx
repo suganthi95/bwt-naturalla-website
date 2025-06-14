@@ -202,8 +202,16 @@ export default function CheckoutPage() {
   }, 0);
 
   // Default shipping
-  const shipping =
-    tax_detail.min_amount <= subtotal ? 0 : tax_detail.shipping_fee;
+let shipping = 0;
+
+if (tax_detail && typeof tax_detail.min_amount === "number") {
+  if (subtotal >= tax_detail.min_amount) {
+    shipping = 0;
+  } else if (typeof tax_detail.shipping_fee === "number") {
+    shipping = tax_detail.shipping_fee;
+  }
+}
+
   let discount = 0;
 
   if (
