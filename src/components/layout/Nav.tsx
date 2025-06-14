@@ -9,7 +9,7 @@ import {
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { NavData } from "./data";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ASSETS } from "../../assets/assets";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
@@ -35,7 +35,8 @@ const messages = [
 export default function Nav() {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
-  const { items} = useSelector((state: RootState) => state.cart);
+  const navigate   = useNavigate()
+  const { items } = useSelector((state: RootState) => state.cart);
   const { data, isSuccess, isLoading, isError, isFetching } = useGetCartItems(
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg"
   );
@@ -102,7 +103,7 @@ export default function Nav() {
             <div className="flex items-center gap-3">
               <MenuToggle open={IsMenuopen} handleclick={handleclick} />
             </div>
-            <img src={ASSETS.LOGO} alt="hero-image" className="w-40" />
+            <img onClick={()=>navigate('/')} src={ASSETS.LOGO} alt="hero-image" className="w-40" />
             <ul className="xl:flex items-center hidden  justify-center gap-x-3.5">
               {NavData.map((item) => {
                 return (
@@ -141,13 +142,14 @@ export default function Nav() {
                   className="cursor-pointer relative"
                   onClick={() => setIsopen(true)}
                 >
-                  <ShoppingCart className="w-5 h-5  text-primary transition" />
+                  <ShoppingCart className="w-5 h-5 text-primary transition" />
                   {Array.isArray(items) && items.length > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1 rounded-full">
+                    <span className="absolute -top-1   -right-2 w-4 h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center">
                       {items.length}
                     </span>
                   )}
                 </SheetTrigger>
+
                 <SheetContent>
                   <CartSheet
                     onClose={setIsopen}

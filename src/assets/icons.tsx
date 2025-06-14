@@ -199,4 +199,47 @@ export const Icons = {
       </defs>
     </svg>
   ),
+    India: (props: IconProps) => (
+      <svg
+        {...props}
+        xmlns="http://www.w3.org/2000/svg"
+        width="22"
+        height="16"
+        fill="none"
+        viewBox="0 0 22 16"
+      >
+        <g clipPath="url(#clip0_2475_3529)">
+          <rect width="22" height="15" y="0.5" fill="#fff" rx="3"></rect>
+          <path
+            fill="#249F58"
+            fillRule="evenodd"
+            d="M0 10.5h22v5H0z"
+            clipRule="evenodd"
+          ></path>
+          <path
+            fill="#FF6C2D"
+            fillRule="evenodd"
+            d="M0 .5h22v5H0z"
+            clipRule="evenodd"
+          ></path>
+          <circle
+            cx="11.5"
+            cy="8"
+            r="2.35"
+            stroke="#1A47B8"
+            strokeWidth="0.3"
+          ></circle>
+          <path
+            stroke="#1A47B8"
+            strokeWidth="0.208"
+            d="M11.5 5.5v5M9 8h5M9.285 9.158l4.43-2.316M9.34 6.741l4.32 2.518M10.393 5.759l2.214 4.483M10.259 10.17l2.482-4.34"
+          ></path>
+        </g>
+        <defs>
+          <clipPath id="clip0_2475_3529">
+            <rect width="22" height="15" y="0.5" fill="#fff" rx="3"></rect>
+          </clipPath>
+        </defs>
+      </svg>
+    ),
 };

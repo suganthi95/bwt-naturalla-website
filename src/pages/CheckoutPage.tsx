@@ -24,21 +24,8 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Command,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import { Check } from "lucide-react";
+
 import { Textarea } from "@/components/ui/textarea";
-import countryCode from "@/json/country.json";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   useCheckCouponCode,
@@ -83,7 +70,6 @@ const formSchema = z.object({
 
   email: z.string().min(1, "Email is required").email("Invalid email address"),
 
-  callingCode: z.string().min(1, "Calling code is required"),
 
   phoneNumber: z
     .string()
@@ -124,9 +110,7 @@ export default function CheckoutPage() {
 
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
 
-  const [selectedCountryCode, setSelectedCountryCode] = useState(
-    countryCode.find((c) => c.dial_code === "+91")
-  );
+
   const [query, setQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [Statequery, setStateQuery] = useState("");
@@ -138,7 +122,6 @@ export default function CheckoutPage() {
     city.name.toLowerCase().includes(Statequery.toLowerCase())
   );
 
-  const [value, setValue] = useState("India");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -146,7 +129,6 @@ export default function CheckoutPage() {
       firstName: "",
       lastName: "",
       email: "",
-      callingCode: "+91",
       phoneNumber: "",
       address: "",
       city: "",
@@ -156,7 +138,6 @@ export default function CheckoutPage() {
     },
   });
 
-  const { setValue: setFormValue } = form;
 
   const handleDecrease = (cart_id: number) => {
     const newQuantity = quantity - 1;
@@ -617,94 +598,24 @@ export default function CheckoutPage() {
                             >
                               Phone Number
                             </Label>
-                            <div className="border h-10 rounded-md flex">
-                              <FormField
-                                control={form.control}
-                                name="callingCode"
-                                render={() => (
-                                  <FormItem className="flex flex-col">
-                                    <Popover>
-                                      <PopoverTrigger asChild>
-                                        <Button
-                                          variant="outline"
-                                          role="combobox"
-                                          className="border-none"
-                                        >
-                                          {selectedCountryCode ? (
-                                            <div className="flex items-center gap-2">
-                                              <img
-                                                src={selectedCountryCode.image}
-                                                alt={selectedCountryCode.name}
-                                                className="w-5 h-5"
-                                              />
-                                              <span>
-                                                {selectedCountryCode.dial_code}
-                                              </span>
-                                            </div>
-                                          ) : (
-                                            "Select country code"
-                                          )}
-                                        </Button>
-                                      </PopoverTrigger>
-                                      <PopoverContent className="w-[300px] p-0">
-                                        <Command>
-                                          <CommandInput placeholder="Search country..." />
-                                          <CommandList>
-                                            <CommandGroup>
-                                              {countryCode.map((country) => (
-                                                <CommandItem
-                                                  key={country.code}
-                                                  value={country.name}
-                                                  onSelect={() => {
-                                                    setSelectedCountryCode(
-                                                      country
-                                                    );
-                                                    setValue(country.name);
-                                                    setFormValue(
-                                                      "callingCode",
-                                                      country.dial_code
-                                                    );
-                                                  }}
-                                                >
-                                                  <div className="flex items-center gap-2">
-                                                    <img
-                                                      src={country.image}
-                                                      alt={country.name}
-                                                      className="w-5 h-5"
-                                                    />
-                                                    <span>
-                                                      {country.dial_code} -{" "}
-                                                      {country.name}
-                                                    </span>
-                                                  </div>
-                                                  <Check
-                                                    className={`ml-auto h-4 w-4 ${
-                                                      value === country.name
-                                                        ? "opacity-100"
-                                                        : "opacity-0"
-                                                    }`}
-                                                  />
-                                                </CommandItem>
-                                              ))}
-                                            </CommandGroup>
-                                          </CommandList>
-                                        </Command>
-                                      </PopoverContent>
-                                    </Popover>
-                                    <FormMessage />
-                                  </FormItem>
-                                )}
-                              />
+                            <div className="flex items-center gap-2 border rounded-md h-10 px-3  bg-white   transition">
+                              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                                <Icons.India className="w-5 h-5" />
+                                <span className="whitespace-nowrap">+91</span>
+                              </div>
+
+                              <div className="h-6 w-px bg-border" />
 
                               <FormField
                                 control={form.control}
                                 name="phoneNumber"
                                 render={({ field }) => (
-                                  <FormItem className="w-full">
+                                  <FormItem className="flex-1">
                                     <FormControl>
                                       <Input
                                         placeholder="Enter your phone number"
-                                        className="w-full border-none"
+                                        className="border-none focus-visible:ring-0 focus-visible:ring-offset-0 p-0 text-sm"
+                                        type="tel"
                                         {...field}
                                       />
                                     </FormControl>

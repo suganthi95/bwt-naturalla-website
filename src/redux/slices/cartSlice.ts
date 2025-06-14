@@ -6,7 +6,6 @@ type Address = {
   firstName: string;
   lastName: string;
   email: string;
-  callingCode: string;
   phoneNumber: string;
   address: string;
   city: string;
@@ -68,6 +67,9 @@ export const cartSlice = createSlice({
       state.items = action.payload;
       Object.assign(state, calculateTotals(state.items));
     },
+    removeCartItems:(state)=>{
+    state.items = []
+    },
     addItem: (state, action: PayloadAction<Product>) => {
       const existingItem = state.items.find(
         (item) => item.cart_id === action.payload.cart_id
@@ -97,6 +99,20 @@ export const cartSlice = createSlice({
 
     setTaxDetails: (state, action: PayloadAction<ShippingTaxDetail>) => {
       state.tax_detail = action.payload;
+    },
+       removeTaxDetails: (state) => {
+      state.tax_detail = {
+          shipping_type_id: 0,
+    shipping_fee_type: "invoice_based",
+    default_rate: 0,
+    cash_on_delivery: false,
+    created_at: new Date().toISOString(),
+    shipping_days: 0,
+    min_amount: 0,
+    max_amount: null,
+    shipping_fee: 0,
+    status: "inactive",
+      };
     },
     increaseQuantity: (state, action: PayloadAction<number>) => {
       const item = state.items.find((item) => item.cart_id === action.payload);
@@ -130,6 +146,8 @@ export const cartSlice = createSlice({
 export const {
   setCartItems,
   addItemTotalAmount,
+  removeTaxDetails,
+  removeCartItems,
   addItem,
   setTaxDetails,
   decreaseQuantity,

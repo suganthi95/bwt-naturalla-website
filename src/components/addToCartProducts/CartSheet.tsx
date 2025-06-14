@@ -88,17 +88,17 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
   return (
     <ScrollArea className="space-y-6 p-4  h-screen">
       <h2 className="text-lg font-bold text-title"> Cart</h2>
-      {shipping === 0 &&
-      <div className="space-y-1.5 mb-4">
-        <p className="font-semibold  text-sm">
-          🎉 Congrats!
-          <span className="text-[#111411]">
-            You{"’"}ve earned free shipping!
-          </span>
-        </p>
-        <div className="bg-primary h-2 rounded-2xl w-full"></div>
-      </div>
-}
+      {shipping === 0 && (
+        <div className="space-y-1.5 mb-4">
+          <p className="font-semibold  text-sm">
+            🎉 Congrats!
+            <span className="text-[#111411]">
+              You{"’"}ve earned free shipping!
+            </span>
+          </p>
+          <div className="bg-primary h-2 rounded-2xl w-full"></div>
+        </div>
+      )}
       <ul>
         {items?.map((item, index) => {
           return (
@@ -184,7 +184,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
         })}
       </ul>
 
-      <div className="">
+      <div style={{ boxShadow: '-10px -10px 30px -4px rgba(0,0,0,0.1)' }} className="py-2 mt-5 backdrop-blur-2xl">
         <div className="space-y-2 text-sm font-medium text-title">
           <h3 className="font-semibold text-xl">Price Details</h3>
           <div className="flex justify-between">
@@ -195,10 +195,12 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
             <span>Tax</span>
             <span className="font-semibold">₹1,200</span>
           </div>
-          <div className="flex justify-between">
-            <span>Discount</span>
-            <span className="">-₹{discount}</span>
-          </div>
+          {discount > 0 && (
+            <div className="flex justify-between">
+              <span>Discount</span>
+              <span className="">-₹{discount}</span>
+            </div>
+          )}
           <div className="flex justify-between items-center">
             <span className="">
               Shipping

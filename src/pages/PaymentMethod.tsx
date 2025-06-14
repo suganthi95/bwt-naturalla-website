@@ -20,10 +20,12 @@ import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useRazorpay, type RazorpayOrderOptions } from "react-razorpay";
+import { removeCartItems, removeTaxDetails } from "@/redux/slices/cartSlice";
+import { removeCoupon } from "@/redux/slices/couponSlice";
 
 export default function PaymentMethod() {
   // const { state } = useLocation();
@@ -31,13 +33,16 @@ export default function PaymentMethod() {
   const Razorpay = useRazorpay();
   const RazorpayConstructor = Razorpay.Razorpay;
   const navigate = useNavigate();
-  const { shippingAddress , items} = useSelector((state: RootState) => state.cart);
-  const CouponDetails = useSelector((state:RootState)=>state.coupon)
+  const dispatch = useDispatch();
+  const { shippingAddress, items } = useSelector(
+    (state: RootState) => state.cart
+  );
+  const CouponDetails = useSelector((state: RootState) => state.coupon);
   const { mutate, isPending } = useCreateOrder();
   const { mutate: verifyRazorpay } = useVerifyrazorpay();
   const [shouldPoll, setShouldPoll] = useState(false);
   const [finalData, setFinalData] = useState(null);
-  console.log('finalData: ', finalData);
+  console.log("finalData: ", finalData);
   const [merchantTransactionId, SetmerchantTransactionId] = useState(() =>
     localStorage.getItem("merchantTransactionId")
   );
@@ -95,7 +100,6 @@ export default function PaymentMethod() {
         product_id: item.product_id,
         quantity: item.quantity,
         order_amount: item.total_amount,
-        
       })),
       address: shippingAddress.address,
       discount_amount: discount,
@@ -144,6 +148,9 @@ export default function PaymentMethod() {
                   razorpay_order_id: data.orderId,
                 });
                 navigate("/order-success");
+                dispatch(removeCartItems());
+                dispatch(removeTaxDetails());
+                dispatch(removeCoupon());
               },
 
               theme: {
@@ -196,6 +203,9 @@ export default function PaymentMethod() {
         setShouldPoll(false);
         clearInterval(interval);
         navigate("/order-success");
+        dispatch(removeCartItems());
+        dispatch(removeTaxDetails());
+        dispatch(removeCoupon());
       } else if (data.resp.state === "FAILED") {
         localStorage.removeItem("merchantTransactionId");
         navigate("/order-failure");

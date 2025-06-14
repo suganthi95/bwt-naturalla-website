@@ -41,9 +41,11 @@ const couponSlice = createSlice({
     setCoupon(state, action: PayloadAction<CouponState>) {
       return { ...state, ...action.payload };
     },
-   
+    removeCoupon() {
+      return initialState;
+    },
   },
 });
 
-export const { setCoupon } = couponSlice.actions;
+export const { setCoupon,removeCoupon } = couponSlice.actions;
 export default couponSlice.reducer;

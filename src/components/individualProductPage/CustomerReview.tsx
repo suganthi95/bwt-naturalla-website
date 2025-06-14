@@ -206,7 +206,7 @@ export default function CustomerReview({ Product }: Props) {
       </div>
       <div className="mt-10">
         <div className="flex items-center justify-between w-full">
-          <h2 className="font-bold text-xl text-title">16 Comments</h2>
+          <h2 className="font-bold text-xl text-title">{Product?.review_count[0].total_reviews} Comments</h2>
           <div className="relative">
             <Input
               type="text"

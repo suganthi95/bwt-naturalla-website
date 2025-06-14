@@ -9,6 +9,10 @@ import { Input } from "../ui/input";
 import type { Product } from "@/types/Home";
 import { usePincodeEnquiry } from "@/services/product";
 import { toast } from "sonner";
+import { useAddToCart } from "@/services/cart";
+import { useDispatch } from "react-redux";
+import { addItem } from "@/redux/slices/cartSlice";
+import { useNavigate } from "react-router-dom";
 
 // const productImages = [
 //   ASSETS.PRODUCT1,
@@ -30,6 +34,9 @@ type Props = {
 export default function ProductSection({ media, products }: Props) {
   const mainSliderRef = useRef<Slider>(null);
   const thumbSliderRef = useRef<Slider>(null);
+  const { mutate } = useAddToCart();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [nav1, setNav1] = useState<Slider | null>(null);
   const [nav2, setNav2] = useState<Slider | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
@@ -77,6 +84,8 @@ export default function ProductSection({ media, products }: Props) {
     products?.review_count[0].total_ratings /
       Number(products?.review_count[0].total_reviews)
   );
+  const savings = Math.round((Number(products?.strike_through_price) * Number( products?.discount_percent)) / 100);
+
   return (
     <div className="flex flex-col container mx-auto lg:flex-row  ">
       <div className="flex w-full lg:w-1/2 gap-4 ">
@@ -87,7 +96,6 @@ export default function ProductSection({ media, products }: Props) {
             className="h-full"
           >
             {media?.map((src, index) => {
-              console.log(src);
               return (
                 <div key={index}>
                   <img
@@ -162,9 +170,10 @@ export default function ProductSection({ media, products }: Props) {
             Rs. {products?.strike_through_price}
           </p>
 
-          <p className="md:text-2xl font-bold text-green-600">20% OFF</p>
+          <p className="md:text-2xl font-bold text-green-600">{products?.discount_percent}% OFF</p>
           <p className="md:text-xl text-orange-600 font-semibold">
-            You{"’"}ll save ₹ 32.00{" "}
+            
+            You{"’"}ll save ₹ {savings}.00{" "}
           </p>
         </div>
         <div>
@@ -201,8 +210,33 @@ export default function ProductSection({ media, products }: Props) {
           </Button>
         </div>{" "}
         <div className="flex items-center gap-x-2">
-          <Button className=" py-3 px-11">Buy Now</Button>
-          <Button className="bg-primary/10  py-3 px-11 text-primary border border-primary">
+          <Button
+            onClick={() => {
+              mutate({
+                product_id: products.product_id,
+                quantity: 1,
+                token:
+                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg",
+              });
+              dispatch(addItem(products));
+              navigate("/checkout");
+            }}
+            className=" py-3 px-11"
+          >
+            Buy Now
+          </Button>
+          <Button
+            onClick={() => {
+              mutate({
+                product_id: products.product_id,
+                quantity: 1,
+                token:
+                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg",
+              });
+              dispatch(addItem(products));
+            }}
+            className="bg-primary/10  py-3 px-11 text-primary border border-primary"
+          >
             Add to Cart
           </Button>
 

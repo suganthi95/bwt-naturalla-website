@@ -7,9 +7,11 @@ import ScrollToTop from "./common/ScrollToTop";
 import FullScreenLoader from "./common/FullScreenLoader";
 
 // Lazy-loaded page
+
 const Home = React.lazy(() => import("./website/Home"));
+const SignUp = React.lazy(()=>import("./pages/Signup"))
 const ProductById = React.lazy(() => import("@/pages/ProductById"));
-const Products = React.lazy(() => import("@/pages/Products"));
+const Products = React.lazy(() => import("@/website/Products"));
 const CheckoutPage = React.lazy(() => import("@/pages/CheckoutPage"));
 const OrderSuccess = React.lazy(() => import("@/pages/Order_Success"));
 const OrderFailure = React.lazy(() => import("@/pages/Order_Failure"));
@@ -22,6 +24,7 @@ const App = () => {
       <Suspense fallback={<FullScreenLoader/>}>
           <ScrollToTop/>
         <Routes>
+          <Route path="/sign-up" element={<SignUp/>}/>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="/product/:id" element={<ProductById />} />
