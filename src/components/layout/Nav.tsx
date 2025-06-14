@@ -178,7 +178,7 @@ export default function Nav() {
               <Popover>
                 <PopoverTrigger asChild>
                   <Avatar className="w-8 h-8 cursor-pointer bg-primary">
-                    <AvatarImage src="/avatar.jpg" alt="profile" />
+                    <AvatarImage src="https://ik.imagekit.io/nd8r7mpaev/Atlants/user.png?updatedAt=1738227108834" alt="profile" />
                     {auth?.status && (
                       <AvatarFallback className="bg-primary text-white font-semibold">
                         {auth.first_name.charAt(0).toUpperCase()}
