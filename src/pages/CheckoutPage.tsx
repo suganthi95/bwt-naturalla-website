@@ -883,6 +883,7 @@ export default function CheckoutPage() {
                     <TicketPercent className="absolute left-3 w-4 h-4 text-gray-400" />
                     <Input
                       type="text"
+                      value={couponCode}
                       placeholder="Apply Coupon Code"
                       onChange={(e) => setCouponCode(e.target.value)}
                       className="pl-10 pr-24 py-2 text-sm border border-gray-300 w-full"
