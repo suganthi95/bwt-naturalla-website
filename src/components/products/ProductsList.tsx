@@ -9,7 +9,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import type { Product } from "@/types/Home";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Heart } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
@@ -17,6 +17,8 @@ import { setSortByAlphabetic } from "@/redux/slices/filterSlice";
 import { useAddToCart } from "@/services/cart";
 import { addItem } from "@/redux/slices/cartSlice";
 import { toast } from "sonner";
+import { useDeleteWishlist } from "@/services/whistlist";
+import { addWishItem, removeWishlistItem } from "@/redux/slices/wishSlice";
 interface Props {
   Products: Product[];
 }
@@ -37,6 +39,10 @@ export default function ProductsList({ Products }: Props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { mutate } = useAddToCart();
+  // const { mutate: addWishlist } = useAddToWishList();
+  const { mutate: deleteWishlist } = useDeleteWishlist();
+  const [liked, setLiked] = useState(false);
+
   useEffect(() => {
     let filtered = Products;
 
@@ -127,7 +133,61 @@ export default function ProductsList({ Products }: Props) {
                   whileHover={{ rotate: 360 }}
                   transition={{ duration: 0.6 }}
                 >
-                  <Heart className="w-5 h-5 opacity-0 group-hover:opacity-100" />
+                  {/* <Heart className="w-5 h-5 opacity-0 group-hover:opacity-100" /> */}
+                  <button
+                    onClick={() => {
+                      setLiked((prev) => !prev);
+                      if (status && !liked) {
+                        mutate({
+                          product_id: item.product_id,
+                          quantity: 1,
+                          token: token,
+                        });
+                        dispatch(addWishItem(item));
+                      } else if (liked && status) {
+                        deleteWishlist({
+                          cart_id: item.product_id,
+                          token: token,
+                        });
+                        dispatch(removeWishlistItem(item.cart_id));
+                      } else {
+                        toast.error("Please login to continue");
+                        navigate("/login");
+                      }
+                    }}
+                    className="relative w-10 h-10  cursor-pointer flex items-center justify-center"
+                  >
+                    <motion.div
+                      initial={false}
+                      animate={{
+                        scale: liked ? 1.3 : 1,
+                      }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 10,
+                      }}
+                    >
+                      <Heart
+                        className={`w-5 h-5 transition-colors duration-300 ${
+                          liked ? "fill-red-500 text-red-500" : "text-red-500"
+                        }`}
+                      />
+                    </motion.div>
+
+                    <AnimatePresence>
+                      {liked && (
+                        <motion.div
+                          key="pulse"
+                          initial={{ scale: 1, opacity: 0.5 }}
+                          animate={{ scale: 2, opacity: 0 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.6, ease: "easeOut" }}
+                          className="absolute w-5 h-5 rounded-full bg-red-500"
+                        />
+                      )}
+                    </AnimatePresence>
+                  </button>
                 </motion.div>
 
                 <img
@@ -150,7 +210,7 @@ export default function ProductsList({ Products }: Props) {
                         });
                         dispatch(addItem(item));
                       } else {
-                     toast.error("Please login to continue");
+                        toast.error("Please login to continue");
                         navigate("/login");
                       }
                     }}

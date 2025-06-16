@@ -9,11 +9,14 @@ import { Input } from "../ui/input";
 import type { Product } from "@/types/Home";
 import { usePincodeEnquiry } from "@/services/product";
 import { toast } from "sonner";
-import { useAddToCart } from "@/services/cart";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "@/redux/slices/cartSlice";
 import { useNavigate } from "react-router-dom";
 import type { RootState } from "@/redux/store";
+import { AnimatePresence, motion } from "framer-motion";
+import { useAddToWishList, useDeleteWishlist } from "@/services/whistlist";
+import { addWishItem, removeWishlistItem } from "@/redux/slices/wishSlice";
+import { useAddToCart } from "@/services/cart";
 
 // const productImages = [
 //   ASSETS.PRODUCT1,
@@ -35,9 +38,10 @@ type Props = {
 export default function ProductSection({ media, products }: Props) {
   const mainSliderRef = useRef<Slider>(null);
   const thumbSliderRef = useRef<Slider>(null);
-    const {token} = useSelector((state:RootState)=>state.auth)
-    console.log('pathname: ', window.location.href);
-  const { mutate } = useAddToCart();
+  const { token, status } = useSelector((state: RootState) => state.auth);
+  const {mutate:addtoCart} = useAddToCart()
+  const { mutate } = useAddToWishList();
+  const { mutate: deleteWishlist } = useDeleteWishlist();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [nav1, setNav1] = useState<Slider | null>(null);
@@ -49,6 +53,8 @@ export default function ProductSection({ media, products }: Props) {
     localStorage.getItem("delivery")
   );
   const [Isloading, setIsloading] = useState(false);
+  const [liked, setLiked] = useState(false);
+
   const { refetch, isError } = usePincodeEnquiry(Pincode ?? "");
   const handleDecrease = () => {
     if (quantity > 1) setQuantity(quantity - 1);
@@ -64,11 +70,10 @@ export default function ProductSection({ media, products }: Props) {
       setNav2(thumbSliderRef.current);
     }
   }, []);
-  const handleCopyurl = async()=>{
-  await navigator.clipboard.writeText(window.location.href)
-  toast.info('product url copied')
- 
-  }
+  const handleCopyurl = async () => {
+    await navigator.clipboard.writeText(window.location.href);
+    toast.info("product url copied");
+  };
   const mainSliderSettings = {
     asNavFor: nav2!,
     arrows: false,
@@ -91,7 +96,11 @@ export default function ProductSection({ media, products }: Props) {
     products?.review_count[0].total_ratings /
       Number(products?.review_count[0].total_reviews)
   );
-  const savings = Math.round((Number(products?.strike_through_price) * Number( products?.discount_percent)) / 100);
+  const savings = Math.round(
+    (Number(products?.strike_through_price) *
+      Number(products?.discount_percent)) /
+      100
+  );
 
   return (
     <div className="flex flex-col container mx-auto lg:flex-row  ">
@@ -146,12 +155,71 @@ export default function ProductSection({ media, products }: Props) {
             </p>
           </div>
           <div className="flex flex-col gap-y-5">
-            <Button variant="outline" size="icon" className="hover:scale-90" onClick={handleCopyurl}>
+            <Button
+              variant="outline"
+              size="icon"
+              className="hover:scale-90"
+              onClick={handleCopyurl}
+            >
               <Share2 className="w-5 h-5" />
             </Button>
-            <Button variant="outline" size="icon">
+            {/* <Button variant="outline" size="icon">
               <Heart className="w-5 h-5" />
-            </Button>
+            </Button> */}
+            <button
+              onClick={() => {
+                setLiked((prev) => !prev);
+                if (status && !liked) {
+                  mutate({
+                    product_id: products.product_id,
+                    quantity: 1,
+                    token: token,
+                  });
+                  dispatch(addWishItem(products));
+                } else if (liked && status) {
+                  deleteWishlist({
+                    cart_id: products.product_id,
+                    token: token,
+                  });
+                  dispatch(removeWishlistItem(products.cart_id))
+                } else {
+                  toast.error("Please login to continue");
+                  navigate("/login");
+                }
+              }}
+              className="relative w-10 h-10  cursor-pointer flex items-center justify-center"
+            >
+              <motion.div
+                initial={false}
+                animate={{
+                  scale: liked ? 1.3 : 1,
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 10,
+                }}
+              >
+                <Heart
+                  className={`w-5 h-5 transition-colors duration-300 ${
+                    liked ? "fill-red-500 text-red-500" : "text-gray-400"
+                  }`}
+                />
+              </motion.div>
+
+              <AnimatePresence>
+                {liked && (
+                  <motion.div
+                    key="pulse"
+                    initial={{ scale: 1, opacity: 0.5 }}
+                    animate={{ scale: 2, opacity: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    className="absolute w-5 h-5 rounded-full bg-red-500"
+                  />
+                )}
+              </AnimatePresence>
+            </button>
           </div>
         </div>
         {/* <p className="flex items-center gap-x-0.5 text-sm">
@@ -177,9 +245,10 @@ export default function ProductSection({ media, products }: Props) {
             Rs. {products?.strike_through_price}
           </p>
 
-          <p className="md:text-3xl font-bold text-green-600">{products?.discount_percent}% OFF</p>
+          <p className="md:text-3xl font-bold text-green-600">
+            {products?.discount_percent}% OFF
+          </p>
           <p className="md:text-xl text-orange-600 font-semibold">
-            
             You{"’"}ll save ₹ {savings}.00{" "}
           </p>
         </div>
@@ -219,10 +288,11 @@ export default function ProductSection({ media, products }: Props) {
         <div className="flex items-center gap-x-2">
           <Button
             onClick={() => {
-              mutate({
+              addtoCart({
                 product_id: products.product_id,
                 quantity: 1,
-                token:token              });
+                token: token,
+              });
               dispatch(addItem(products));
               navigate("/checkout");
             }}
@@ -232,10 +302,11 @@ export default function ProductSection({ media, products }: Props) {
           </Button>
           <Button
             onClick={() => {
-              mutate({
+              addtoCart({
                 product_id: products.product_id,
                 quantity: 1,
-                token:token              });
+                token: token,
+              });
               dispatch(addItem(products));
             }}
             className="bg-primary/10  py-3 px-11 text-primary border border-primary"

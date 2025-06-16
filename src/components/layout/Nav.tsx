@@ -31,6 +31,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { logout } from "@/redux/slices/authSlice";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
+import { useGetWishListItems } from "@/services/whistlist";
+import WishlistItemes from "../wishlist/WishlistItemes";
+import { setWishItems } from "@/redux/slices/wishSlice";
 const messages = [
   "🎉 Flat 30% Off on Selected Products | Use Code : DEAL30 🎉",
   "🚚 Free Shipping on Orders Above ₹999 🚚",
@@ -46,11 +49,24 @@ export default function Nav() {
   const { data, isSuccess, isLoading, isError, isFetching } = useGetCartItems(
     auth?.token
   );
+  const {
+    data: wishlist,
+    isSuccess: iswishisSuccess,
+    isLoading: iswishishLoading,
+    isError: iswishishError,
+    isFetching: iswishishFetching,
+  } = useGetWishListItems(auth?.token);
   const [Isopen, setIsopen] = useState(false);
+  const [IsopenWishlist, setIsopenWishlist] = useState(false);
+
   useEffect(() => {
     dispatch(setCartItems(data?.data));
     dispatch(setTaxDetails(data?.tax_detail));
   }, [data, isSuccess]);
+
+  useEffect(() => {
+    dispatch(setWishItems(wishlist?.data));
+  }, [wishlist, iswishisSuccess]);
   const settings = {
     arrows: true,
     autoplay: true,
@@ -148,9 +164,31 @@ export default function Nav() {
               <button className="block md:hidden">
                 <Search className="w-5 h-5 text-primary transition" />
               </button>
-              <button>
-                <Heart className="w-5 h-5 text-primary transition" />
-              </button>
+              <Sheet open={IsopenWishlist} onOpenChange={setIsopenWishlist}>
+                <SheetTrigger
+                  className="cursor-pointer relative"
+                  onClick={() => setIsopenWishlist(true)}
+                >
+                  <Heart className="w-5 h-5 text-primary transition" />
+                 
+
+                  {Array.isArray(items) && items.length > 0 && (
+                    <span className="absolute -top-1   -right-2 w-4 h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center">
+                      {items.length}
+                    </span>
+                  )}
+                </SheetTrigger>
+
+                <SheetContent>
+                  <WishlistItemes
+                    onClose={setIsopenWishlist}
+                    isLoading={iswishishLoading}
+                    isError={iswishishError}
+                    isFetching={iswishishFetching}
+                    Product={wishlist?.data}
+                  />
+                </SheetContent>
+              </Sheet>
 
               <Sheet open={Isopen} onOpenChange={setIsopen}>
                 <SheetTrigger

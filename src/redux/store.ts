@@ -16,11 +16,13 @@ import couponReducer from './slices/couponSlice'
 import cartReducer from "./slices/cartSlice";
 import filterReducer from './slices/filterSlice'
 import authReducer from  './slices/authSlice'
+import wishReducer from './slices/wishSlice'
 const rootReducer = combineReducers({
   cart: cartReducer,
   coupon:couponReducer,
   filter:filterReducer,
-  auth:authReducer
+  auth:authReducer,
+  wish:wishReducer
  
 });
 
@@ -28,7 +30,7 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: ["cart","coupon","filter","auth"], 
+  whitelist: ["cart","coupon","filter","auth","wishReducer"], 
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
