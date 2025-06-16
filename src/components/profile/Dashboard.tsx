@@ -60,29 +60,7 @@ export default function Dashboard() {
           </ul>
         </div>
       </div>
-      <div className="w-6/12 ">
-        <h2 className="text-lg font-semibold mb-3">Default Billing</h2>
-        <div className="space-y-2 text-sm border font-medium p-4 text-title">
-          <div className="grid grid-cols-2">
-            <span className="text-[#524646]">Credit Card Brand</span>
-            <span className="font-semibold text-[#0B130B]">VISA</span>
-          </div>
-          <div className="grid grid-cols-2">
-            <span className="text-[#524646]">Credit Card Number</span>
-            <span className="font-semibold text-[#0B130B]">
-              ****-****-****-8723
-            </span>
-          </div>
-          <div className="grid grid-cols-2">
-            <span className="text-[#524646]">Expire</span>
-            <span className="font-semibold text-[#0B130B]">2027/10</span>
-          </div>
-          <div className="grid grid-cols-2">
-            <span className="text-[#524646]">CW</span>
-            <span className="font-semibold text-[#0B130B]">***</span>
-          </div>
-        </div>
-      </div>
+     
     </div>
   );
 }
