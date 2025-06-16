@@ -74,6 +74,7 @@ export type Product = {
   reviews:ProductReview[]
   review_count:ProductRatingSummary[];
   gallery_image_url:MediaItem[];
+  in_wishlist:boolean;
   product_videos: string | null;
   category_title: string | null;
   thumbnail_image_url: string;

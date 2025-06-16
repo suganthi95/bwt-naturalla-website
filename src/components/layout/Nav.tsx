@@ -46,6 +46,8 @@ export default function Nav() {
   const navigate = useNavigate();
   const auth = useSelector((state: RootState) => state.auth);
   const { items } = useSelector((state: RootState) => state.cart);
+    const { items:wishlistitems } = useSelector((state: RootState) => state.wish);
+
   const { data, isSuccess, isLoading, isError, isFetching } = useGetCartItems(
     auth?.token
   );
@@ -172,9 +174,9 @@ export default function Nav() {
                   <Heart className="w-5 h-5 text-primary transition" />
                  
 
-                  {Array.isArray(items) && items.length > 0 && (
+                  {Array.isArray(wishlistitems) && wishlistitems.length > 0 && (
                     <span className="absolute -top-1   -right-2 w-4 h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center">
-                      {items.length}
+                      {wishlistitems.length}
                     </span>
                   )}
                 </SheetTrigger>
