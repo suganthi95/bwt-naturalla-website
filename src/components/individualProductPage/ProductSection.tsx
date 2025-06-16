@@ -36,6 +36,7 @@ export default function ProductSection({ media, products }: Props) {
   const mainSliderRef = useRef<Slider>(null);
   const thumbSliderRef = useRef<Slider>(null);
     const {token} = useSelector((state:RootState)=>state.auth)
+    console.log('pathname: ', window.location.href);
   const { mutate } = useAddToCart();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -63,7 +64,11 @@ export default function ProductSection({ media, products }: Props) {
       setNav2(thumbSliderRef.current);
     }
   }, []);
-
+  const handleCopyurl = async()=>{
+  await navigator.clipboard.writeText(window.location.href)
+  toast.info('product url copied')
+ 
+  }
   const mainSliderSettings = {
     asNavFor: nav2!,
     arrows: false,
@@ -141,7 +146,7 @@ export default function ProductSection({ media, products }: Props) {
             </p>
           </div>
           <div className="flex flex-col gap-y-5">
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" className="hover:scale-90" onClick={handleCopyurl}>
               <Share2 className="w-5 h-5" />
             </Button>
             <Button variant="outline" size="icon">
@@ -172,7 +177,7 @@ export default function ProductSection({ media, products }: Props) {
             Rs. {products?.strike_through_price}
           </p>
 
-          <p className="md:text-2xl font-bold text-green-600">{products?.discount_percent}% OFF</p>
+          <p className="md:text-3xl font-bold text-green-600">{products?.discount_percent}% OFF</p>
           <p className="md:text-xl text-orange-600 font-semibold">
             
             You{"’"}ll save ₹ {savings}.00{" "}

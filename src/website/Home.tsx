@@ -1,7 +1,6 @@
 import { ASSETS } from "@/assets/assets";
 import BestSelling from "@/components/home/BestSelling";
 import Blogs from "@/components/home/Blogs";
-import FeaturedOn from "@/components/home/FeaturedOn";
 import HeroCarousal from "@/components/home/HeroCarousal";
 import LatestProduct from "@/components/home/LatestProduct";
 import OfferEnding from "@/components/home/OfferEnding";
@@ -35,9 +34,9 @@ export default function Home() {
       </section>
 
       {/* feature on section */}
-      <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
+      {/* <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
         <FeaturedOn />
-      </section>
+      </section> */}
 
       {/* offer ending section */}
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">

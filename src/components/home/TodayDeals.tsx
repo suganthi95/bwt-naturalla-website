@@ -15,7 +15,7 @@ export default function TodayDeals({ Products }: Props) {
   const { mutate } = useAddToCart();
   const dispatch = useDispatch();
   const [clicked, setClicked] = useState(false);
-  const { token ,status} = useSelector((state: RootState) => state.auth);
+  const { token, status } = useSelector((state: RootState) => state.auth);
 
   // const Prodcuts = [
   //   {
@@ -65,14 +65,14 @@ export default function TodayDeals({ Products }: Props) {
                 src={item.thumbnail_image_url}
                 alt={item?.product_name}
                 className="w-[388px] h-[388px] rounded-[16px] object-coover  mx-auto cursor-pointer"
-                onClick={() => navigate(`/product/${item.product_id}`)}
+                onClick={() => navigate(`/product/${item.slug}`)}
               />
 
               <div className="absolute bg-[#E95144] text-white rounded  text-sm font-medium top-4 left-3  px-4">
                 20 % off
               </div>
               <p
-                onClick={() => navigate(`/product/${item.product_id}`)}
+                onClick={() => navigate(`/product/${item.slug}`)}
                 className="text-lead cursor-pointer hover:text-primary transition-colors duration-300 text-lg"
               >
                 {item.product_name}
@@ -106,7 +106,7 @@ export default function TodayDeals({ Products }: Props) {
         ${clicked ? "animate-glitch" : ""}
         bg-white text-primary border-primary hover:bg-primary hover:text-white hover:shadow-md hover:scale-105`}
                 >
-                  Add Cart
+                  Add to Cart
                 </Button>
               </div>
             </li>

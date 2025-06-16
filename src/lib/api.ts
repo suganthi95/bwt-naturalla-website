@@ -78,6 +78,45 @@ export const deleteCartItems = async (cart_id:number,  quantity:number,token: st
   return response.data;
 };
 
+export const getWhislistItems = async (token: string) => {
+  const response = await api.get("v1/wishlist", {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
+
+export const addToWhislistItems = async (
+  product_id: number,
+  token: string
+) => {
+  const response = await api.post(
+    "v1/wishlist",
+    { product_id},
+    {
+      headers: {
+        Authorization: `${token}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+export const deleteWhislistItems = async (cart_id:number,  quantity:number,token: string) => {
+  const response = await api.delete(`v1/cart/${cart_id}`,{
+    data:{
+        cart_id,
+        quantity
+    },
+    headers:{
+        Authorization:token
+    }
+  });
+  return response.data;
+};
+
+
 export const createOrder = async(OrderPayload:OrderPayload,token:string)=>{
 const response = await api.post('v1/order',{OrderPayload},{
     headers:{

@@ -74,10 +74,10 @@ export default function LatestProduct({ title, Products }: Props) {
                   src={item?.thumbnail_image_url}
                   alt={item?.product_name}
                   className="w-60 h-60 md:w-[240px] md:h-[240px] rounded-[20px] object-cover mx-auto cursor-pointer"
-                  onClick={() => navigate(`/product/${item.product_id}`)}
+                  onClick={() => navigate(`/product/${item.slug}`)}
                 />
                 <p
-                  onClick={() => navigate(`/product/${item.product_id}`)}
+                  onClick={() => navigate(`/product/${item.slug}`)}
                   className="text-title text-xl  cursor-pointer hover:text-primary transition-colors duration-300 font-medium line-clamp-1"
                 >
                   {item?.product_name}

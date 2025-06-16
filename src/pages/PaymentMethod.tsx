@@ -32,7 +32,6 @@ export default function PaymentMethod() {
   // const { product } = state || {};
   const [loading, setLoading] = useState(false);
 
-
   const { Razorpay: RazorpayConstructor } = useRazorpay();
   // const payment =
   const navigate = useNavigate();
@@ -143,7 +142,7 @@ export default function PaymentMethod() {
           if (localPaymentmethod === "razorpay") {
             localStorage.removeItem("merchantTransactionId");
             setShouldPoll(false);
-          toast.success("order created");
+            toast.success("order created");
 
             const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
             const options = {
@@ -217,42 +216,42 @@ export default function PaymentMethod() {
     );
   };
 
-useEffect(() => {
-  if (!merchantTransactionId && !shouldPoll) return;
+  useEffect(() => {
+    if (!merchantTransactionId && !shouldPoll) return;
 
-  setLoading(true);
+    setLoading(true);
 
-  const interval = setInterval(async () => {
-    try {
-      const { data } = await refetch();
+    const interval = setInterval(async () => {
+      try {
+        const { data } = await refetch();
 
-      if (data.resp.state === "COMPLETED") {
-        setLoading(false);
-        navigate("/order-success");
-        localStorage.removeItem("merchantTransactionId");
-        setFinalData(data);
-        setShouldPoll(false);
-        clearInterval(interval);
-        dispatch(removeCartItems());
-        dispatch(removeCoupon());
-      } else if (data.resp.state === "FAILED") {
-        setLoading(false);
-        localStorage.removeItem("merchantTransactionId");
-        navigate("/order-failure");
-        clearInterval(interval);
-        setShouldPoll(false);
+        if (data.resp.state === "COMPLETED") {
+          setLoading(false);
+          navigate("/order-success");
+          localStorage.removeItem("merchantTransactionId");
+          setFinalData(data);
+          setShouldPoll(false);
+          clearInterval(interval);
+          dispatch(removeCartItems());
+          dispatch(removeCoupon());
+        } else if (data.resp.state === "FAILED") {
+          setLoading(false);
+          localStorage.removeItem("merchantTransactionId");
+          navigate("/order-failure");
+          clearInterval(interval);
+          setShouldPoll(false);
+        }
+      } catch (error) {
+        console.error("Polling error:", error);
       }
-    } catch (error) {
-      console.error("Polling error:", error);
-    }
-  }, 2000);
+    }, 2000);
 
-  return () => clearInterval(interval);
-}, [merchantTransactionId, shouldPoll]);
+    return () => clearInterval(interval);
+  }, [merchantTransactionId, shouldPoll]);
 
-if(loading){
-return <FullScreenLoader />
-}
+  if (loading) {
+    return <FullScreenLoader />;
+  }
 
   return (
     <main className="container mx-auto py-6 h-screen">
@@ -362,12 +361,24 @@ return <FullScreenLoader />
                   </span>
                 )}
               </span>
-              <span
+              {/* <span
                 className={`font-semibold ${
                   shipping === 0 ? "text-green-600" : "text-primary"
                 }`}
               >
                 ₹{shipping === 0 ? "0" : shipping}
+              </span> */}
+              <span
+                className={`font-semibold  ${
+                  shipping === 0 ? "text-green-600 " : "text-primary"
+                } gap-x-1.5 flex items-center`}
+              >
+                {shipping === 0 && (
+                  <span className="text-xs  line-through text-lead">
+                    {tax_detail?.shipping_fee}
+                  </span>
+                )}
+                ₹{shipping === 0 ? shipping : shipping}
               </span>
             </div>
 

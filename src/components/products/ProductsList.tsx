@@ -134,7 +134,7 @@ export default function ProductsList({ Products }: Props) {
                   src={item?.thumbnail_image_url}
                   alt={item?.product_name}
                   className="w-60 h-60 md:w-[240px] md:h-[240px] rounded-xl object-cover mx-auto cursor-pointer"
-                  onClick={() => navigate(`/product/${item.product_id}`)}
+                  onClick={() => navigate(`/product/${item.slug}`)}
                 />
 
                 <div className="absolute inset-0 bg-black/40 rounded-xl opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
@@ -162,7 +162,7 @@ export default function ProductsList({ Products }: Props) {
 
               <p
                 className="text-title hover:text-primary transition-colors duration-300 text-lg font-semibold line-clamp-1 cursor-pointer"
-                onClick={() => navigate(`/product/${item.product_id}`)}
+                onClick={() => navigate(`/product/${item.slug}`)}
               >
                 {item?.product_name.length > 12
                   ? `${item.product_name.slice(0, 12)}...`

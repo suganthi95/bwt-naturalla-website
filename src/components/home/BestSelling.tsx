@@ -72,13 +72,13 @@ export default function BestSelling({ title, Products }: Props) {
                 src={item?.thumbnail_image_url}
                 alt={item?.product_name}
                 className="w-60 h-60 md:w-[240px] md:h-[240px] rounded-[20px] object-cover mx-auto cursor-pointer"
-                onClick={() => navigate(`/product/${item.product_id}`)}
+                onClick={() => navigate(`/product/${item.slug}`)}
               />
 
               <p
                 className="text-title  hover:text-primary transition-colors duration-300 text-xl font-medium line-clamp-1 cursor-pointer"
                 onClick={() => {
-                  navigate(`/product/${item.product_id}`);
+                  navigate(`/product/${item.slug}`);
                 }}
               >
                 {item?.product_name}

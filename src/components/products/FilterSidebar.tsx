@@ -120,7 +120,7 @@ export default function FilterSidebar({ filterValues }: Props) {
                 setSearchTerm(e.target.value);
                 setOpen(true);
               }}
-              className="cursor-text"
+              className="cursor-pointer "
             />
           </PopoverTrigger>
 

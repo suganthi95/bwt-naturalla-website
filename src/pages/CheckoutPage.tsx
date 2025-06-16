@@ -1,12 +1,7 @@
 import { Icons } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  BadgePercent,
- 
-  Loader2,
-  TicketPercent,
-} from "lucide-react";
+import { BadgePercent, Loader2, TicketPercent } from "lucide-react";
 import { useState } from "react";
 import z from "zod";
 import { useForm } from "react-hook-form";
@@ -185,6 +180,25 @@ export default function CheckoutPage() {
         },
       }
     );
+  };
+  const handleRemoveCoupon = () => {
+    setCouponCode("");
+    setCouponDetails({
+      status: false,
+      coupon_id: null,
+      coupon_type: "",
+      coupon_code: "",
+      start_at: "",
+      end_at: "",
+      discount_type: "",
+      discount: 0,
+      created_at: "",
+      created_by: null,
+      mini_shipping: 0,
+      max_discount: 0,
+      product_id: null,
+      product_ids: [],
+    });
   };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
@@ -760,7 +774,7 @@ export default function CheckoutPage() {
                                       setShowDropdown(false);
                                     }}
                                     className="w-full pr-10 cursor-pointer"
-                                  />  
+                                  />
                                   {/* <div
                                     className={`absolute   w-fit left-[480px]  flex items-center cursor-pointer ${showStateDropdown ? '-bottom-17':'-bottom-13'}`}
                                     onClick={() =>
@@ -885,6 +899,16 @@ export default function CheckoutPage() {
                       )}
                     </Button>
                   </div>
+                  <div className="flex justify-end -translate-y-3">
+                    {CouponDetails?.status && (
+                      <button
+                        onClick={handleRemoveCoupon}
+                        className="text-xs !py-0 text-red-500 hover:underline cursor-pointer"
+                      >
+                        Remove Applied Coupon
+                      </button>
+                    )}
+                  </div>
 
                   <div className="space-y-6 text-sm font-medium text-title">
                     <div className="flex justify-between">
@@ -922,11 +946,16 @@ export default function CheckoutPage() {
                         )}
                       </span>
                       <span
-                        className={`font-semibold ${
-                          shipping === 0 ? "text-green-600" : "text-primary"
-                        }`}
+                        className={`font-semibold  ${
+                          shipping === 0 ? "text-green-600 " : "text-primary"
+                        } gap-x-1.5 flex items-center`}
                       >
-                        ₹{shipping === 0 ? "0" : shipping}
+                        {shipping === 0 && (
+                          <span className="text-xs  line-through text-lead">
+                            {tax_detail?.shipping_fee}
+                          </span>
+                        )}
+                        ₹{shipping === 0 ? shipping : shipping}
                       </span>
                     </div>
                     <hr className="my-2 border-gray-300" />

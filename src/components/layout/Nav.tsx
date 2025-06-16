@@ -30,6 +30,7 @@ import type { RootState } from "@/redux/store";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { logout } from "@/redux/slices/authSlice";
 import { toast } from "sonner";
+import { Button } from "../ui/button";
 const messages = [
   "🎉 Flat 30% Off on Selected Products | Use Code : DEAL30 🎉",
   "🚚 Free Shipping on Orders Above ₹999 🚚",
@@ -175,70 +176,77 @@ export default function Nav() {
                 </SheetContent>
               </Sheet>
 
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Avatar className="w-8 h-8 cursor-pointer bg-primary">
-                    <AvatarImage src="https://ik.imagekit.io/nd8r7mpaev/Atlants/user.png?updatedAt=1738227108834" alt="profile" />
-                    {auth?.status && (
-                      <AvatarFallback className="bg-primary text-white font-semibold">
-                        {auth.first_name.charAt(0).toUpperCase()}
-                      </AvatarFallback>
-                    )}
-                  </Avatar>
-                </PopoverTrigger>
-
-                <PopoverContent
-                  sideOffset={8}
-                  className="z-50 w-56 rounded-xl bg-white shadow-xl p-4 outline-none"
-                  asChild
-                >
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.95, y: -4 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: -4 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="space-y-2">
-                      {auth.status && (
-                        <>
-                          <p className="text-sm font-medium text-gray-800">
-                            Welcome, {auth?.first_name}
-                          </p>
-                          <hr />
-                        </>
+              {auth.status ? (
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Avatar className="w-8 h-8 cursor-pointer bg-primary">
+                      <AvatarImage
+                        src="https://ik.imagekit.io/nd8r7mpaev/Atlants/user.png?updatedAt=1738227108834"
+                        alt="profile"
+                      />
+                      {auth?.status && (
+                        <AvatarFallback className="bg-primary text-white font-semibold">
+                          {auth.first_name.charAt(0).toUpperCase()}
+                        </AvatarFallback>
                       )}
-                      <div className="space-y-1 text-sm text-muted-foreground">
-                        <Link
-                          to="/my-profile"
-                          className="block hover:text-primary"
-                        >
-                          Profile
-                        </Link>
-                        {auth?.status ? (
-                          <p
-                            onClick={() => {
-                              dispatch(logout());
-                              toast.success("logout successfull");
-                            }}
-                            className="block cursor-pointer w-full text-left hover:text-red-500"
-                          >
-                            Logout
-                          </p>
-                        ) : (
-                          <p
-                            onClick={() => {
-                              navigate("/login");
-                            }}
-                            className="block cursor-pointer w-full text-left hover:text-primary"
-                          >
-                            Login
-                          </p>
+                    </Avatar>
+                  </PopoverTrigger>
+
+                  <PopoverContent
+                    sideOffset={8}
+                    className="z-50 w-56 rounded-xl bg-white shadow-xl p-4 outline-none"
+                    asChild
+                  >
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95, y: -4 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95, y: -4 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className="space-y-2">
+                        {auth.status && (
+                          <>
+                            <p className="text-sm font-medium text-gray-800">
+                              Welcome, {auth?.first_name}
+                            </p>
+                            <hr />
+                          </>
                         )}
+                        <div className="space-y-1 text-sm text-muted-foreground">
+                          <Link
+                            to="/my-profile"
+                            className="block hover:text-primary"
+                          >
+                            Profile
+                          </Link>
+                          {auth?.status ? (
+                            <p
+                              onClick={() => {
+                                dispatch(logout());
+                                toast.success("logout successfull");
+                              }}
+                              className="block cursor-pointer w-full text-left hover:text-red-500"
+                            >
+                              Logout
+                            </p>
+                          ) : (
+                            <p
+                              onClick={() => {
+                                navigate("/login");
+                              }}
+                              className="block cursor-pointer w-full text-left hover:text-primary"
+                            >
+                              Login
+                            </p>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
-                </PopoverContent>
-              </Popover>
+                    </motion.div>
+                  </PopoverContent>
+                </Popover>
+              ) : (
+                <Button onClick={() => navigate("/login")}>Login</Button>
+              )}
             </div>
           </div>
         </div>
