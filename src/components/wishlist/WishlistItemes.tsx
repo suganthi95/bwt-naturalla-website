@@ -9,10 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
 import { AnimatePresence, motion } from "framer-motion";
 import { useDeleteWishlist } from "@/services/whistlist";
-import { addWishItem, removeWishlistItem } from "@/redux/slices/wishSlice";
+import {  removeWishlistItem } from "@/redux/slices/wishSlice";
 import { toast } from "sonner";
 import { useAddToCart } from "@/services/cart";
 import EmptyWishlist from "./EmptyWishlist";
+import { addItem } from "@/redux/slices/cartSlice";
 
 interface Props {
   onClose: (val: boolean) => void;
@@ -106,7 +107,7 @@ export default function WishlistItemes({ isError, isLoading }: Props) {
                               quantity: 1,
                               token: token,
                             });
-                            dispatch(addWishItem(item));
+                            dispatch(addItem(item));
                           } else {
                             toast.error("Please login to continue");
                             navigate("/login");

@@ -1,6 +1,3 @@
-
-
-
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -20,15 +17,15 @@ export default function EmptyWishlist() {
         <Heart className="w-10 h-10" />
       </motion.div>
 
-      <h2 className="text-2xl font-bold text-neutral-800">Your Cart is Empty</h2>
+      <h2 className="text-2xl font-bold text-neutral-800">
+        Your WishList is Empty
+      </h2>
       <p className="text-muted-foreground text-sm mt-2 max-w-xs">
-        Looks like you haven’t added anything to your cart yet. Start shopping now!
+        Looks like you haven’t added anything to your wishlist yet. Start
+        shopping now!
       </p>
 
-      <Button
-        className="mt-6"
-        onClick={() => navigate("/")}
-      >
+      <Button className="mt-6" onClick={() => navigate("/")}>
         Browse Products
       </Button>
     </div>

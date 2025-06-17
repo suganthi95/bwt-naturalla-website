@@ -5,6 +5,7 @@ import Provider from "./providers/Provider";
 import Layout from "./components/layout/Layout";
 import ScrollToTop from "./common/ScrollToTop";
 import FullScreenLoader from "./common/FullScreenLoader";
+import ProtectedRoute from "./components/layout/ProtectedRoute";
 
 // Lazy-loaded page
 
@@ -35,14 +36,49 @@ const App = () => {
 
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="/product/:id" element={<ProductById />} />
-            <Route path="/products" element={<Products />} />
+            <Route
+              path="/product/:id"
+              element={
+                <ProtectedRoute>
+                  <ProductById />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/products"
+              element={
+                <ProtectedRoute>
+                  <Products />
+                </ProtectedRoute>
+              }
+            />
 
-            <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/payment" element={<PaymentMethod />} />
+            <Route
+              path="/checkout"
+              element={
+                <ProtectedRoute>
+                  <CheckoutPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/payment"
+              element={
+                <ProtectedRoute>
+                  <PaymentMethod />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/order-success" element={<OrderSuccess />} />
             <Route path="/order-failure" element={<OrderFailure />} />
-            <Route path="/my-profile" element={<Myprofile />} />
+            <Route
+              path="/my-profile"
+              element={
+                <ProtectedRoute>
+                  <Myprofile />
+                </ProtectedRoute>
+              }
+            />
           </Route>
         </Routes>
       </Suspense>

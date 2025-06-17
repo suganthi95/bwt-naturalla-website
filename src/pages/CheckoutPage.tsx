@@ -47,6 +47,7 @@ import { useNavigate } from "react-router-dom";
 import type { RootState } from "@/redux/store";
 import axios from "axios";
 import type { CouponState } from "@/types/type";
+import FullScreenLoader from "@/common/FullScreenLoader";
 
 // Country data
 
@@ -88,9 +89,9 @@ const formSchema = z.object({
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
-  const { data } = useGetCartItems(
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiTW9uIEp1biAwOSAyMDI1IDEzOjIzOjA5IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsInVzZXJfaWQiOjMsInBob25lX25vIjoiODg4MzY2MDg1MSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0OTQ1NTU4OX0.sPT7jc2DpU9iF-7lF6t0-MyTSjak2VfuoQi75cBQ-vg"
-  );
+  const { token } = useSelector((state: RootState) => state.auth);
+
+  const { data, isLoading, isFetching } = useGetCartItems(token);
   const { mutate } = useUpdateCart();
   const { mutate: CheckCoupon, isPending } = useCheckCouponCode();
   const { mutate: removeCart } = useDeleteCart();
@@ -100,7 +101,6 @@ export default function CheckoutPage() {
   const [quantity, setQuantity] = useState(1);
   const [CouponDetails, setCouponDetails] = useState<CouponState>();
   const [couponCode, setCouponCode] = useState("");
-  const { token } = useSelector((state: RootState) => state.auth);
 
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
 
@@ -252,7 +252,9 @@ export default function CheckoutPage() {
 
   // Final total
   const total = Math.round(subtotal + shipping - discount);
-
+  if (isLoading || isFetching) {
+    return <FullScreenLoader />;
+  }
   return (
     <main>
       <section className="container mx-auto  mb-10 md:mb-20">
