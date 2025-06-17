@@ -7,32 +7,36 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from "../ui/form";
+} from "../../ui/form";
 import { Icons } from "@/assets/icons";
 
-// import cities from "@/json/cities.json";
-// import states from "@/json/states.json";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Checkbox } from "../ui/checkbox";
-import { Button } from "../ui/button";
+import { Label } from "../../ui/label";
+import { Input } from "../../ui/input";
+import { Checkbox } from "../../ui/checkbox";
+import { Button } from "../../ui/button";
 import { toast } from "sonner";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Check, ChevronDown, ChevronUp } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
+import { Check, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "../ui/command";
+} from "../../ui/command";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import states from "@/json/states.json";
 import cities from "@/json/cities.json";
-// interface Props {
-//   onClose: (val: boolean) => void;
-// }
+import { useAddAddress } from "@/services/profile";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/store";
+import { Textarea } from "@/components/ui/textarea";
+import { useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+interface Props {
+  onClose: (val: boolean) => void;
+}
 const formSchema = z.object({
   firstName: z
     .string()
@@ -44,10 +48,8 @@ const formSchema = z.object({
     .min(1, "Last name is required")
     .min(3, "Last name must be at least 3 characters"),
 
-  email: z.string().optional(),
-  flat: z.string().min(4, "Area, Street, Sector or village    is required"),
+  email: z.string(),
 
-  village: z.string().min(4, "Area, Street, Sector or village    is required"),
   phoneNumber: z
     .string()
     .min(1, "Phone number is required")
@@ -64,16 +66,18 @@ const formSchema = z.object({
   state: z.string().min(1, "State is required"),
 
   // country: z.string().min(1, "Country is required"),
-
+  defaultAddress: z.boolean().optional(),
   pinCode: z
     .string()
     .min(5, "Pincode is required")
     .regex(/^\d{4,}$/, "Pincode must be at least 4 digits"),
 });
-export default function EditAddress () {
+export default function AddAddress({onClose}:Props) {
   const [openState, setOpenState] = useState(false);
   const [openCity, setOpenCity] = useState(false);
-
+  const queryClinet = useQueryClient();
+  const { token } = useSelector((state: RootState) => state.auth);
+  const { mutate, isPending } = useAddAddress();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -84,20 +88,45 @@ export default function EditAddress () {
       address: "",
       city: "",
       state: "",
-      // country: "India",
       pinCode: "",
+      defaultAddress: false,
     },
   });
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    toast.success("Address added");
-    console.log(values);
+    mutate(
+      {
+        payload: {
+          address: values.address,
+          address_email: values.email ?? "",
+          address_first_name: values.firstName,
+          address_last_name: values.lastName,
+          address_phone_no: Number(values.phoneNumber),
+          city: values.city,
+          state: values.state,
+          pincode: Number(values.pinCode),
+          default_address: values.defaultAddress ?? false,
+        },
+        token: token,
+      },
+      {
+        onSuccess() {
+          toast.success("Address added");
+          queryClinet.invalidateQueries({ queryKey: ["getaddress"] });
+          onClose(false)
+        },
+        onError: (error) => {
+          if (axios.isAxiosError(error)) {
+            toast.error(error?.response?.data?.message);
+          }
+        },
+      }
+    );
 
     //   dispatch(setShippingAddress(values));
   };
 
   return (
     <div className="p-4">
-    
       <Form {...form}>
         <form
           className="space-y-4  h-full"
@@ -150,54 +179,28 @@ export default function EditAddress () {
               )}
             />
           </div>
-          <div>
-            <FormField
-              control={form.control}
-              name="village"
-              render={({ field }) => (
-                <FormItem>
-                  <Label
-                    htmlFor="Building"
-                    className="text-title font-semibold text-sm"
-                  >
-                    Flat, House mo, Building
-                  </Label>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter here"
-                      className="h-10"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div>
-            <FormField
-              control={form.control}
-              name="flat"
-              render={({ field }) => (
-                <FormItem>
-                  <Label
-                    htmlFor="flat"
-                    className="text-title font-semibold text-sm"
-                  >
-                    Area, Street, Sector or village
-                  </Label>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter here"
-                      className="h-10"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          <FormField
+            control={form.control}
+            name="address"
+            render={({ field }) => (
+              <FormItem>
+                <Label
+                  htmlFor="address"
+                  className="text-title font-semibold text-sm"
+                >
+                  Address
+                </Label>
+                <FormControl>
+                  <Textarea
+                    placeholder="Enter your address"
+                    className="h-24"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
@@ -431,19 +434,36 @@ export default function EditAddress () {
             </div>
           </div>
 
-          <Label
-            className="text-title font-medium text-sm cursor-pointer"
-            htmlFor="contact"
-          >
-            <Checkbox
-              id="contact"
-              className="data-[state=checked]:bg-blue-500 data-[state=checked]:border-none"
-            />
-            Make this default address
-          </Label>
+          <FormField
+            control={form.control}
+            name="defaultAddress"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-2 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    id="contact"
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    className="data-[state=checked]:bg-blue-500 data-[state=checked]:border-none"
+                  />
+                </FormControl>
+                <Label
+                  htmlFor="contact"
+                  className="text-title font-semibold cursor-pointer"
+                >
+                  Save contact information
+                </Label>
+              </FormItem>
+            )}
+          />
+
           <div className="flex  justify-between ">
             <Button type="submit" className="px-8">
-              Add Address
+              {isPending ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                "  Add Address"
+              )}
             </Button>
           </div>
         </form>

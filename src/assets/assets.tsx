@@ -1,45 +1,85 @@
 export const ASSETS = {
-    LOGO:'https://ik.imagekit.io/3t9llb0gx/Naturella/image%201.png?updatedAt=1749124804161',
-    HERO_IMG:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%208.png?updatedAt=1749124817087',
-    PRODUCT1:'https://ik.imagekit.io/3t9llb0gx/Naturella/image%205.png?updatedAt=1749124818824',
-    PRODUCT2:'https://ik.imagekit.io/3t9llb0gx/Naturella/image%209.png?updatedAt=1749124819042',
-    PRODUCT3:'https://ik.imagekit.io/3t9llb0gx/Naturella/image%2010.png?updatedAt=1749127796779',
-    SHAMPOO:'https://ik.imagekit.io/3t9llb0gx/Naturella/young-smiling-woman-enjoying-washing-her-head-with-shampoo%201.png?updatedAt=1749129428626',
-    SHOAP:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%201597883685.png?updatedAt=1749129426645',
-    FASHWASH:'https://ik.imagekit.io/3t9llb0gx/Naturella/close-up-portrait-young-half-naked-man.png?updatedAt=1749129428815',
-    FASHGEL:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%201597883685%20(1).png?updatedAt=1749129427138',
-    CURLEY:'https://ik.imagekit.io/3t9llb0gx/Naturella/mingcute_leaf-3-line.png?updatedAt=1749188865417',
-  NONTOXIC:'https://ik.imagekit.io/3t9llb0gx/Naturella/mingcute_leaf-line.png?updatedAt=1749188865468',
-  SLIDEICON:'https://ik.imagekit.io/3t9llb0gx/Naturella/lucide_rabbit%20(1).png?updatedAt=1749190791224',
-  SLIDEICON2:'https://ik.imagekit.io/3t9llb0gx/Naturella/mingcute_leaf-3-line%20(1).png?updatedAt=1749188865489',
-  SLIDEICON3:'https://ik.imagekit.io/3t9llb0gx/Naturella/mingcute_leaf-3-line%20(2).png?updatedAt=1749188865512',
-  SLIDEICON4:'https://ik.imagekit.io/3t9llb0gx/Naturella/mingcute_leaf-line.png?updatedAt=1749188865468',
-  DECAN:'https://ik.imagekit.io/3t9llb0gx/Naturella/Link%20%E2%86%92%20Picture%20%E2%86%92%20Frame_12562.jpg.png?updatedAt=1749193994269',
-  VERVE:'https://ik.imagekit.io/3t9llb0gx/Naturella/Link%20%E2%86%92%20Picture%20%E2%86%92%20Frame_12561.jpg.png?updatedAt=1749193994267',
-  THEHIN:'https://ik.imagekit.io/3t9llb0gx/Naturella/Link%20%E2%86%92%20Picture%20%E2%86%92%20Frame_12560.jpg.png?updatedAt=1749193994072',
-  LD:'https://ik.imagekit.io/3t9llb0gx/Naturella/Link%20%E2%86%92%20Picture%20%E2%86%92%20Bold_outline.jpg.png?updatedAt=1749193994037',
-  BW:'https://ik.imagekit.io/3t9llb0gx/Naturella/Link%20%E2%86%92%20Picture%20%E2%86%92%20Businessworld.jpg.png?updatedAt=1749193993590',
-  STORY:'https://ik.imagekit.io/3t9llb0gx/Naturella/Link%20%E2%86%92%20Picture%20%E2%86%92%20Frame_12559.jpg.png?updatedAt=1749193993584',
-  IP:'https://ik.imagekit.io/3t9llb0gx/Naturella/Link%20%E2%86%92%20Picture%20%E2%86%92%20The_New_Indian_Express.jpg.png?updatedAt=1749193993506',
-  FOUNDER:'https://ik.imagekit.io/3t9llb0gx/Naturella/Image%20(1).png?updatedAt=1749200903046',
-  ALOWERA_FRAME:'https://ik.imagekit.io/3t9llb0gx/Naturella/Adobe%20Express%20-%20file%20(2)%201.png?updatedAt=1749200900532',
-  PRODUCT_BANNER:'https://ik.imagekit.io/3t9llb0gx/Naturella/Vector.png?updatedAt=1749204105195',
-  BLOG1:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%201597883702%20(2).png?updatedAt=1749205703036',
-  BLOG2:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%201597883702%20(1).png?updatedAt=1749205704457',
-  BLOG3:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%201597883702.png?updatedAt=1749205704597',
-  LOGO_FOOTER:'https://ik.imagekit.io/3t9llb0gx/Naturella/preloader.png?updatedAt=1749212179469',
-  PAYTM:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame.png?updatedAt=1749548196234',
-  GPAY:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%20(2).png?updatedAt=1749548196145',
-  PHONEPAY:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%20(1).png?updatedAt=1749548196446',
-  FRAMEPAY:'https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%20(3).png?updatedAt=1749548196356',
-  ORDER_SUCCESS:'https://ik.imagekit.io/3t9llb0gx/Naturella/pana.png',
-  ORDER_FAILURE:'https://ik.imagekit.io/3t9llb0gx/Naturella/rafiki.png',
-  RECTANGLE:'https://ik.imagekit.io/3t9llb0gx/Naturella/BG.png?updatedAt=1750132792276',
-  USER:'https://ik.imagekit.io/3t9llb0gx/Naturella/unsplash_QXevDflbl8A.png?updatedAt=1749619219706',
-  PHATHALATES:'https://ik.imagekit.io/3t9llb0gx/Naturella/Group%203589.png',
-  PARABENS:'https://ik.imagekit.io/3t9llb0gx/Naturella/Group%203588.png',
-  AIRTIFICIAL_COLURS:'https://ik.imagekit.io/3t9llb0gx/Naturella/Artificial%20Colours.png',
-  SULPHATE:'https://ik.imagekit.io/3t9llb0gx/Naturella/Group%203590%20(1).png',
-  RAZORPAY:'https://ik.imagekit.io/3t9llb0gx/Naturella/image%2047.png?updatedAt=1749725477929',
-  PHONEPAY2:'https://ik.imagekit.io/3t9llb0gx/Naturella/image%2046.png?updatedAt=1749725477780'
-}
+  LOGO: "https://ik.imagekit.io/3t9llb0gx/Naturella/image%201.png?updatedAt=1749124804161",
+  HERO_IMG:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%208.png?updatedAt=1749124817087",
+  PRODUCT1:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/image%205.png?updatedAt=1749124818824",
+  PRODUCT2:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/image%209.png?updatedAt=1749124819042",
+  PRODUCT3:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/image%2010.png?updatedAt=1749127796779",
+  SHAMPOO:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/young-smiling-woman-enjoying-washing-her-head-with-shampoo%201.png?updatedAt=1749129428626",
+  SHOAP:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%201597883685.png?updatedAt=1749129426645",
+  FASHWASH:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/close-up-portrait-young-half-naked-man.png?updatedAt=1749129428815",
+  FASHGEL:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%201597883685%20(1).png?updatedAt=1749129427138",
+  CURLEY:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/mingcute_leaf-3-line.png?updatedAt=1749188865417",
+  NONTOXIC:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/mingcute_leaf-line.png?updatedAt=1749188865468",
+  SLIDEICON:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/lucide_rabbit%20(1).png?updatedAt=1749190791224",
+  SLIDEICON2:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/mingcute_leaf-3-line%20(1).png?updatedAt=1749188865489",
+  SLIDEICON3:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/mingcute_leaf-3-line%20(2).png?updatedAt=1749188865512",
+  SLIDEICON4:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/mingcute_leaf-line.png?updatedAt=1749188865468",
+  DECAN:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Link%20%E2%86%92%20Picture%20%E2%86%92%20Frame_12562.jpg.png?updatedAt=1749193994269",
+  VERVE:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Link%20%E2%86%92%20Picture%20%E2%86%92%20Frame_12561.jpg.png?updatedAt=1749193994267",
+  THEHIN:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Link%20%E2%86%92%20Picture%20%E2%86%92%20Frame_12560.jpg.png?updatedAt=1749193994072",
+  LD: "https://ik.imagekit.io/3t9llb0gx/Naturella/Link%20%E2%86%92%20Picture%20%E2%86%92%20Bold_outline.jpg.png?updatedAt=1749193994037",
+  BW: "https://ik.imagekit.io/3t9llb0gx/Naturella/Link%20%E2%86%92%20Picture%20%E2%86%92%20Businessworld.jpg.png?updatedAt=1749193993590",
+  STORY:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Link%20%E2%86%92%20Picture%20%E2%86%92%20Frame_12559.jpg.png?updatedAt=1749193993584",
+  IP: "https://ik.imagekit.io/3t9llb0gx/Naturella/Link%20%E2%86%92%20Picture%20%E2%86%92%20The_New_Indian_Express.jpg.png?updatedAt=1749193993506",
+  FOUNDER:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Image%20(1).png?updatedAt=1749200903046",
+  ALOWERA_FRAME:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Adobe%20Express%20-%20file%20(2)%201.png?updatedAt=1749200900532",
+  PRODUCT_BANNER:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Vector.png?updatedAt=1749204105195",
+  BLOG1:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%201597883702%20(2).png?updatedAt=1749205703036",
+  BLOG2:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%201597883702%20(1).png?updatedAt=1749205704457",
+  BLOG3:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%201597883702.png?updatedAt=1749205704597",
+  LOGO_FOOTER:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/preloader.png?updatedAt=1749212179469",
+  PAYTM:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Frame.png?updatedAt=1749548196234",
+  GPAY: "https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%20(2).png?updatedAt=1749548196145",
+  PHONEPAY:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%20(1).png?updatedAt=1749548196446",
+  FRAMEPAY:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%20(3).png?updatedAt=1749548196356",
+  ORDER_SUCCESS: "https://ik.imagekit.io/3t9llb0gx/Naturella/pana.png",
+  ORDER_FAILURE: "https://ik.imagekit.io/3t9llb0gx/Naturella/rafiki.png",
+  RECTANGLE:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/BG.png?updatedAt=1750132792276",
+  USER: "https://ik.imagekit.io/3t9llb0gx/Naturella/unsplash_QXevDflbl8A.png?updatedAt=1749619219706",
+  PHATHALATES: "https://ik.imagekit.io/3t9llb0gx/Naturella/Group%203589.png",
+  PARABENS: "https://ik.imagekit.io/3t9llb0gx/Naturella/Group%203588.png",
+  AIRTIFICIAL_COLURS:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Artificial%20Colours.png",
+  SULPHATE: "https://ik.imagekit.io/3t9llb0gx/Naturella/Group%203590%20(1).png",
+  RAZORPAY:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/image%2047.png?updatedAt=1749725477929",
+  PHONEPAY2:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/image%2046.png?updatedAt=1749725477780",
+  CAT_FASHGEL:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Group%20(1).png?updatedAt=1749899691613",
+  CAT_SHAMPOO:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Group%20(4).png?updatedAt=1749899691528",
+  CAT_FASHWASH:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Group%20(2).png?updatedAt=1749899691480",
+  CAT_SOAP:
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Group%20(3).png?updatedAt=1749899691405",
+};

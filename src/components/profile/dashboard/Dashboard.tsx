@@ -1,25 +1,32 @@
 import { Icons } from "@/assets/icons";
+import type { RootState } from "@/redux/store";
+import { useGetDashboard } from "@/services/profile";
+import type { AddressPayload } from "@/types/type";
+import { useSelector } from "react-redux";
 
 export default function Dashboard() {
+  const { token } = useSelector((state: RootState) => state.auth);
+  const { data } = useGetDashboard(token);
+
   const dashboard = [
     {
       id: 1,
       Icon: Icons.Bundeles,
-      count: 0,
+      count: data?.dashboard?.cart_count,
       text: "Total Orders",
       bg: "#E3F5F9",
     },
     {
       id: 2,
       Icon: Icons.Cart,
-      count: 0,
+      count: data?.dashboard?.total_orders,
       text: "Products in Cart",
       bg: "#FEEDEF",
     },
     {
       id: 3,
       Icon: Icons.HeartCart,
-      count: 0,
+      count: data?.dashboard?.wishlist_count,
       text: "Products You Love",
       bg: "#FEE7D7",
     },
@@ -50,17 +57,27 @@ export default function Dashboard() {
           </li>
         ))}
       </ul>
-      <div>
-        <h2 className="text-lg font-semibold mb-3">Default Shipping Address</h2>
-        <div className="border md:w-6/12 p-4">
-          <ul className="text-[#524646] text-[15px]">
-            <li>28, Mayor Shivashanmugam St</li>
-            <li>Seetha Nagar, Nungambakkam,</li>
-            <li>Chennai, Tamil Nadu - 600034.</li>
-          </ul>
-        </div>
-      </div>
-     
+      {data?.address?.map((item:AddressPayload , index:number) => {
+  if (!item.default_address) return null; 
+        return (
+          
+          <div key={index}>
+            <h2 className="text-lg font-semibold mb-3">
+              Default Shipping Address
+            </h2>
+            <div className="border md:w-6/12 p-4">
+              <ul className="text-[#524646] text-[15px]">
+                <li>{item?.address}</li>
+                {/* <li>Seetha Nagar, Nungambakkam,</li> */}
+                <li>
+                  {item?.city} {item?.state} -{" "}
+                  {item?.pincode}
+                </li>
+              </ul>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

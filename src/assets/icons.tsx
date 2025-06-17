@@ -199,6 +199,31 @@ export const Icons = {
       </defs>
     </svg>
   ),
+   Edit: (props: IconProps) => (
+      <svg
+        {...props}
+        xmlns="http://www.w3.org/2000/svg"
+        width="23"
+        height="23"
+        fill="none"
+        viewBox="0 0 23 23"
+      >
+        <path
+          stroke="#262FF7"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2.4"
+          d="M4.996 6h-1.2a2.4 2.4 0 0 0-2.4 2.4v10.8a2.4 2.4 0 0 0 2.4 2.4h10.8a2.4 2.4 0 0 0 2.4-2.4V18"
+        ></path>
+        <path
+          stroke="#262FF7"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2.4"
+          d="m15.797 3.6 3.6 3.6m1.662-1.698a2.52 2.52 0 0 0-3.565-3.564L7.396 12v3.6h3.6z"
+        ></path>
+      </svg>
+    ),
     India: (props: IconProps) => (
       <svg
         {...props}

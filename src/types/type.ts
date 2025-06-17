@@ -83,5 +83,54 @@ export interface Category {
   category_title: string;
   category_thumbnail_image: string;
 }
+export interface AddressPayload {
+  address_first_name: string;
+  address_last_name: string;
+  address_email: string;
+  address_phone_no: number;
+  address: string;
+  city: string;
+  state: string;
+  pincode: number;
+  default_address: boolean;
+  address_id?:number
+}
 
-
+export type Order = {
+  order_id: number;
+  user_id: number;
+  order_date: string;
+  quantity: number;
+  address: string;
+  city: string;
+  state: string;
+  country: string | null;
+  pincode: string;
+  order_amount: number;
+  cash_on_delivery: boolean;
+  payment_method: string | null;
+  order_code: string;
+  phone_number: string | null;
+  payment_status: string;
+  delivery_status: string;
+  shipping_type_id: number | null;
+  sub_total: number;
+  discount_amount: number;
+  coupon_discount: number | null;
+  tax: number;
+  shipping_fee: number;
+  product_ids: number[];
+  assign_delivery: boolean;
+  order_status: string;
+  shipmet_first_name: string;
+  shipment_last_name: string;
+  shipment_email: string;
+  shipment_phone_no: string;
+  coupon_id: number | null;
+  cart_ids: number | null;
+  coupon_dis_amount: number | null;
+  amount: number;
+  product_name: string;
+  product_thumbnail_image: string;
+  shipment_status: string | null;
+};

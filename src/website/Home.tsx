@@ -7,17 +7,19 @@ import OfferEnding from "@/components/home/OfferEnding";
 import TodayDeals from "@/components/home/TodayDeals";
 import TopCategories from "@/components/home/TopCategories";
 import { useGetLandingPageDetails } from "@/services/home";
-import '../App.css'
+import "../App.css";
+import Categories from "@/components/home/Categories";
 export default function Home() {
-
-  const {data} = useGetLandingPageDetails()
+  const { data } = useGetLandingPageDetails();
   return (
     <main>
       {/* hero section */}
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
         <HeroCarousal />
       </section>
-
+      <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
+        <Categories/>
+      </section>
       {/* todays deal section */}
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
         <TodayDeals Products={data?.todays_deal} />
@@ -30,7 +32,10 @@ export default function Home() {
 
       {/* best selling section */}
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
-        <BestSelling title={"Best Selling Product"} Products={data?.best_selling} />
+        <BestSelling
+          title={"Best Selling Product"}
+          Products={data?.best_selling}
+        />
       </section>
 
       {/* feature on section */}
@@ -74,14 +79,17 @@ export default function Home() {
         </div>
       </section>
 
-        {/* latest products section */}
+      {/* latest products section */}
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
-        <LatestProduct title={"Latest Products"} Products={data?.latestProduct}/>
+        <LatestProduct
+          title={"Latest Products"}
+          Products={data?.latestProduct}
+        />
       </section>
 
-          {/* Blogs section */}
+      {/* Blogs section */}
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
-        <Blogs/>
+        <Blogs />
       </section>
     </main>
   );

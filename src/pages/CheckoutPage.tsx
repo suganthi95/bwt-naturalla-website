@@ -80,6 +80,7 @@ const formSchema = z.object({
   state: z.string().min(1, "State is required"),
 
   // country: z.string().min(1, "Country is required"),
+  defaultAddress: z.boolean().optional(),
 
   pinCode: z
     .string()
@@ -124,6 +125,7 @@ export default function CheckoutPage() {
       phoneNumber: "",
       address: "",
       city: "",
+      defaultAddress:false,
       state: "",
       // country: "India",
       pinCode: "",
@@ -841,17 +843,29 @@ export default function CheckoutPage() {
                             )}
                           />
                         </div>
+                        <FormField
+                          control={form.control}
+                          name="defaultAddress"
+                          render={({ field }) => (
+                            <FormItem className="flex items-center gap-2 space-y-0">
+                              <FormControl>
+                                <Checkbox
+                                  id="contact"
+                                  checked={field.value}
+                                  onCheckedChange={field.onChange}
+                                  className="data-[state=checked]:bg-blue-500 data-[state=checked]:border-none"
+                                />
+                              </FormControl>
+                              <Label
+                                htmlFor="contact"
+                                className="text-title font-semibold cursor-pointer"
+                              >
+                                Save contact information
+                              </Label>
+                            </FormItem>
+                          )}
+                        />
 
-                        <Label
-                          className="text-title font-semibold cursor-pointer"
-                          htmlFor="contact"
-                        >
-                          <Checkbox
-                            id="contact"
-                            className="data-[state=checked]:bg-blue-500 data-[state=checked]:border-none"
-                          />
-                          Save contact information
-                        </Label>
                         <div className="flex  justify-between ">
                           <Button type="submit" className="px-8">
                             Add

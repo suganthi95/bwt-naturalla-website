@@ -1,4 +1,4 @@
-import type { OrderPayload } from "@/types/type";
+import type { AddressPayload, OrderPayload } from "@/types/type";
 import { api } from "./axiosInstance";
 
 export const signup = async (
@@ -214,6 +214,82 @@ export const filterValues = async (token: string) => {
 
 export const filterbyFeatureProducts = async (param: string, token: string) => {
   const response = await api.get(`v1/product/filter/by-feature/?${param}`, {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
+
+export const getProfileInfo = async(token:string)=>{
+ const response  = await api.get('v1/profile',{
+  headers:{
+    Authorization:token
+  }
+ })
+
+ return response.data
+}
+export const updateProfileImage = async (token: string, formData: FormData) => {
+  const response = await api.put('v1/profile/profilepic/update', formData, {
+    headers: {
+      Authorization: token,
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data;
+};
+
+export const getOrders = async(token:string)=>{
+const response = await api.get('v1/profile/orders',{
+  headers:{
+    Authorization:token
+  }
+})
+return response.data
+}
+
+export const getDashboard = async(token:string)=>{
+const response = await api.get('v1/profile/dashboard',{
+  headers:{
+    Authorization:token
+  }
+})
+return response.data
+}
+
+export const getAddress = async(token:string)=>{
+const response = await api.get('v1/profile/address',{
+  headers:{
+    Authorization:token
+  }
+})
+return response.data
+}
+
+export const addAddress = async (token: string, payload: AddressPayload) => {
+  const response = await api.post('v1/profile/address', payload, {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
+
+
+
+export const editAddress = async (token: string, payload: AddressPayload) => {
+  const response = await api.put('v1/profile/address', payload, {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
+
+
+export const deleteAddress = async (token: string, id: string) => {
+  const response = await api.delete(`v1/profile/address/${id}`, {
     headers: {
       Authorization: token,
     },
