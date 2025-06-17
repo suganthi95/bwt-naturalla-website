@@ -1,8 +1,14 @@
 import type { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
+import { Button } from "../ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { X } from "lucide-react";
+import { useState } from "react";
+import OrderDetails from "./OrderDetails";
 
 export default function Order() {
   const { items } = useSelector((state: RootState) => state.cart);
+  const [Isopen,setIsopen] = useState(false)
   return (
     <div className="mt-4 space-y-4">
       <div className="flex items-center justify-between">
@@ -63,7 +69,7 @@ export default function Order() {
                   </div>
                 </div>
 
-                <div className="flex gap-x-20 items-center">
+                <div className="flex gap-x-16 items-center">
                   <div className="text-center text-title">
                     <h3 className="text-lg font-semibold">Payment Methods</h3>
                     <p className="text-[15px] text-title ">BHIM UPI</p>
@@ -111,16 +117,37 @@ export default function Order() {
                       <span
                         className={`font-semibold  
                          gap-x-1.5 flex items-center`}
-                      >₹50</span>
+                      >
+                        ₹50
+                      </span>
                     </div>
-                    <hr className="my-2 border-gray-300" />
                     <div className="flex justify-between font-semibold text-base">
                       <span className="font-semibold text-[#0B130B]">
-                       Grand Total
+                        Grand Total
                       </span>
                       <span className="text-[#0B130B] font-bold">₹400</span>
                     </div>
                   </div>
+
+                  <Dialog open={Isopen} onOpenChange={setIsopen}>
+                    <DialogTrigger className="cursor-pointer">
+                      <Button>Order Details</Button>
+                    </DialogTrigger>
+                    <DialogContent className="md:!max-w-5xl [&>button]:hidden  !p-0">
+                      <DialogHeader className="bg-[#F5F5F5] p-4 rounded-lg w-full flex flex-row  justify-between">
+                        <DialogTitle>Order Details  <Button variant={"outline"} className="font-semibold text-sm text-blue-500">Download Invoice</Button></DialogTitle>
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            setIsopen(false);
+                          }}
+                        >
+                          <X />
+                        </div>
+                      </DialogHeader>
+                      <OrderDetails />
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </li>
             );

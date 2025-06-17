@@ -6,8 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import UserAddress from "@/components/profile/UserAddress";
 import Order from "@/components/profile/Order";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { X } from "lucide-react";
+import EditAddress from "@/components/profile/EditAddress";
 
 export default function Myprofile() {
+  const [Isopen,setIsopen] = useState(false)
   return (
     <section className=" mb-10 md:mb-20">
       <img src={ASSETS.RECTANGLE} alt="profile-banner" className="" />
@@ -32,7 +37,25 @@ export default function Myprofile() {
             <p className="text-[#98A298] font-medium">brook.simmon@gmail.com</p>
 
             </div>
-            <Button>Edit</Button>
+            
+
+             <Dialog open={Isopen} onOpenChange={setIsopen}>
+          <DialogTrigger className="cursor-pointer">
+                      <Button>Edit</Button>
+
+          </DialogTrigger>
+          <DialogContent className="!max-w-3xl [&>button]:hidden  !p-0">
+            <DialogHeader className="bg-[#F5F5F5] p-4 rounded-lg w-full flex flex-row  justify-between">
+              <DialogTitle>Update address</DialogTitle>
+              <div className="cursor-pointer" onClick={()=>{
+                setIsopen(false)
+              }}>
+                <X />
+              </div>
+            </DialogHeader>
+            <EditAddress />
+          </DialogContent>
+        </Dialog>
           </div>
         </div>
 

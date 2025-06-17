@@ -10,7 +10,8 @@ import {
 } from "../ui/form";
 import { Icons } from "@/assets/icons";
 
-
+// import cities from "@/json/cities.json";
+// import states from "@/json/states.json";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Checkbox } from "../ui/checkbox";
@@ -69,7 +70,7 @@ const formSchema = z.object({
     .min(5, "Pincode is required")
     .regex(/^\d{4,}$/, "Pincode must be at least 4 digits"),
 });
-export default function AddAddress() {
+export default function EditAddress () {
   const [openState, setOpenState] = useState(false);
   const [openCity, setOpenCity] = useState(false);
 
@@ -96,7 +97,7 @@ export default function AddAddress() {
 
   return (
     <div className="p-4">
-     
+    
       <Form {...form}>
         <form
           className="space-y-4  h-full"
