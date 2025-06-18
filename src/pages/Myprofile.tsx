@@ -44,7 +44,7 @@ export default function Myprofile() {
           <div className="flex items-center w-full  gap-x-2.5 -translate-y-10">
             <div className="relative w-[180px] h-40 rounded-full border-4 border-white overflow-hidden">
               <img
-                src={(profileInfo && profileInfo[0]?.profile_pic)}
+                src={(profileInfo && profileInfo[0]?.profile_pic) || ASSETS.USER}
                 alt="user-profile"
                 className="w-full h-full object-cover rounded-full"
               />
@@ -81,7 +81,7 @@ export default function Myprofile() {
                   <Button>Edit</Button>
                 </DialogTrigger>
                 <DialogContent className="!max-w-3xl [&>button]:hidden  !p-0">
-                  <DialogHeader className="bg-[#F5F5F5] p-4 rounded-lg w-full flex flex-row  justify-between">
+                  <DialogHeader className="bg-[#F5F5F5] p-4 rounded w-full flex flex-row  justify-between">
                     <DialogTitle>Update address</DialogTitle>
                     <div
                       className="cursor-pointer"
@@ -89,7 +89,7 @@ export default function Myprofile() {
                         setIsopen(false);
                       }}
                     >
-                      <X />
+                      <X  />
                     </div>
                   </DialogHeader>
                   <EditAddress

@@ -47,11 +47,6 @@ export const useFilterByFeatureProducts = (
     queryKey: [
       "filterbyfeature",
       token,
-      category_id,
-      isin_todays_deal,
-      is_featured,
-      best_selling,
-      product_name,
     ],
     queryFn: () =>
       filterbyFeatureProducts(

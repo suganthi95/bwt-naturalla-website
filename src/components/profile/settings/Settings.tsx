@@ -12,11 +12,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Icons } from "@/assets/icons";
-import { useSignup } from "@/services/auth";
-import axios from "axios";
-import { toast } from "sonner";
+
 import { Check, Loader2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import type { User } from "@/types/type";
 
@@ -40,9 +37,8 @@ interface Props{
   User:User[]
 }
 export default function Settings({User}:Props) {
-  const { mutate, isPending } = useSignup();
   const [showVerify, setshowVerify] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -56,29 +52,8 @@ export default function Settings({User}:Props) {
   });
 
   const onSubmit = (values: FormValues) => {
-    mutate(
-      {
-        first_name: values.firstName,
-        last_name: values.lastName,
-        phone_no: Number(values.phoneNumber),
-        email: values.email,
-        password: values.password,
-      },
-      {
-        onSuccess(data) {
-          toast.success(data.message);
-
-          navigate("/sign-up-verify", {
-            state: { phone_no: Number(values.phoneNumber) },
-          });
-        },
-        onError(error) {
-          if (axios.isAxiosError(error)) {
-            toast.error(error?.response?.data?.message);
-          }
-        },
-      }
-    );
+    console.log('values: ', values);
+ 
   };
 
   return (
@@ -234,7 +209,7 @@ export default function Settings({User}:Props) {
           </div>
 
           <Button type="submit" className="w-fit">
-            {isPending ? <Loader2 className="animate-spin" /> : "Save"}
+            {true ? "Save" :  <Loader2 className="animate-spin" />  }
           </Button>
         </form>
       </Form>

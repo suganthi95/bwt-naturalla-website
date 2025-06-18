@@ -158,7 +158,7 @@ export default function FilterSidebar({ filterValues }: Props) {
             <Badge
               key={i}
               variant="outline"
-              className="px-2 py-1 text-sm flex items-center gap-1"
+              className="px-2 py-1  text-sm flex items-center gap-1"
             >
               {badge}
               <span
