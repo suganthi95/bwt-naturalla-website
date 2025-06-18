@@ -154,6 +154,8 @@ export default function PaymentMethod() {
               description: "Payment",
               image: ASSETS.LOGO,
               handler: function (response: any) {
+                console.log('razorpay handler work')
+                
                 verifyRazorpay(
                   {
                     token: token,

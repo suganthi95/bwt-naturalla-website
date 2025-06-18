@@ -15,7 +15,7 @@ import { ASSETS } from "../../assets/assets";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import CartSheet from "../addToCartProducts/CartSheet";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   motion,
   useMotionValueEvent,
@@ -44,6 +44,7 @@ export default function Nav() {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchTerm,setSearchTerm] = useState('')
   const auth = useSelector((state: RootState) => state.auth);
   const { items } = useSelector((state: RootState) => state.cart);
     const { items:wishlistitems } = useSelector((state: RootState) => state.wish);
@@ -85,6 +86,12 @@ export default function Nav() {
   const handleclick = () => {
     setIsMenuopen((prev) => !prev);
   };
+  const handleKeyDown = (e:React.KeyboardEvent<HTMLDivElement>)=>{
+    if(e.key === 'Enter' && searchTerm.trim()){
+            navigate("/products", { state: { product_name: searchTerm } })
+    }
+
+  }
   const { scrollY } = useScroll();
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
@@ -94,6 +101,8 @@ export default function Nav() {
       Sethidden(false);
     }
   });
+
+
   return (
     <motion.header
       variants={{
@@ -104,7 +113,6 @@ export default function Nav() {
       transition={{ duration: 0.35, ease: "easeInOut" }}
       className=""
     >
-      {/* offer slider  */}
       <div className="w-full bg-primary  mx-auto px-4 py-1 overflow-hidden">
         <Slider {...settings}>
           {messages.map((msg, index) => (
@@ -116,15 +124,14 @@ export default function Nav() {
           ))}
         </Slider>
       </div>
-      {/* navbar */}
 
       <motion.nav className=" py-5 bg-offWhite">
         <div className="container mx-auto ">
-          <div className="flex  items-center justify-between  xl:px-10">
+          <div className="flex  items-center justify-between  ">
             {/* <div className="xl:hidden">
               <Menu />
             </div> */}
-            <div className="flex items-center gap-3">
+            <div className="flex lg:hidden items-center gap-3">
               <MenuToggle open={IsMenuopen} handleclick={handleclick} />
             </div>
             <img
@@ -133,17 +140,17 @@ export default function Nav() {
               alt="hero-image"
               className="w-40"
             />
-            <ul className="xl:flex items-center hidden  justify-center gap-x-3.5">
+            <ul className="xl:flex items-center hidden  justify-center gap-x-7">
               {NavData.map((item, index) => {
                 const IsDropDown = [2, 3, 4, 5].includes(index);
 
                 return (
                   <Link
                     key={item.id}
-                    to={IsDropDown ? "#" : item.link}
-                    state={{ param: "" }}
+                    to={ item.link}
+                    // state={()=>handlePassFilterValue(item.id)}
                     className={`text-primary  flex items-center gap-x-1   tracking-wide  ${
-                      pathname === item.link
+                       pathname === item.link
                         ? "font-bold underline underline-offset-8 decoration-2"
                         : "font-normal no-underline"
                     } py-2`}
@@ -159,6 +166,8 @@ export default function Nav() {
                 <input
                   type="text"
                   placeholder="Search..."
+                  onChange={((e)=>setSearchTerm(e.target.value))}
+                  onKeyDown={handleKeyDown}
                   className="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary text-sm"
                 />
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4" />

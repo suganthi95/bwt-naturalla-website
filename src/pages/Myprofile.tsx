@@ -40,13 +40,13 @@ export default function Myprofile() {
     <section className=" mb-10 md:mb-20">
       <img src={ASSETS.RECTANGLE} alt="profile-banner" className="" />
       <div className="container mx-auto">
-        <div>
-          <div className="flex items-center  gap-x-2.5 -translate-y-10">
-            <div className=" relative rounded-full size-40 border-white border-4">
+        <div className="w-full">
+          <div className="flex items-center w-full  gap-x-2.5 -translate-y-10">
+            <div className="relative w-[180px] h-40 rounded-full border-4 border-white overflow-hidden">
               <img
                 src={(profileInfo && profileInfo[0]?.profile_pic)}
                 alt="user-profile"
-                className="rounded-full w-fit"
+                className="w-full h-full object-cover rounded-full"
               />
               <Dialog open={IsProfileUpdate} onOpenChange={setIsProfileUpdate}>
                 <DialogTrigger>
@@ -146,7 +146,7 @@ export default function Myprofile() {
             </TabsContent>
 
             <TabsContent value={"settings"}>
-              <Settings />
+              <Settings User={profileInfo} />
             </TabsContent>
           </Tabs>
         </div>

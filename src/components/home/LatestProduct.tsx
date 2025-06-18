@@ -60,7 +60,7 @@ export default function LatestProduct({ title, Products }: Props) {
           <p
             className="text-title cursor-pointer hover:underline underline-primary"
             onClick={() =>
-              navigate("/products", { state: { param: "is_featured=true" } })
+              navigate("/products/latest-products", { state: { param: "is_featured=true" } })
             }
           >
             View more

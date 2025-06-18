@@ -9,31 +9,31 @@ export const NavData =[
      {
         id:'2',
         name:'All Products',
-        link:'/products'
+        link:'/products/all'
     },
      {
         id:'3',
         name:'Hair',
-        link:''
+        link:'/products/hair'
     },
      {
         id:'4',
         name:'Face',
-        link:''
+        link:'/products/face'
     },
      {
         id:'5',
         name:'Body',
-        link:''
+        link:'/products/body'
     },
      {
         id:'6',
         name:'Combo',
-        link:''
+        link:'/products/combo'
     },
      {
         id:'7',
         name:'Best Sellers',
-        link:'/best-sellers'
+        link:'/products/best-sellers'
     }
 ]

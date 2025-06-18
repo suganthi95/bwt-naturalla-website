@@ -45,7 +45,7 @@ const App = () => {
               }
             />
             <Route
-              path="/products"
+              path="/products/:filter"
               element={
                 <ProtectedRoute>
                   <Products />

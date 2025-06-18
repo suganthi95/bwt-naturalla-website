@@ -51,7 +51,7 @@ export default function TodayDeals({ Products }: Props) {
         <p
           className="text-title cursor-pointer hover:underline underline-primary"
           onClick={() =>
-            navigate("/products", { state: { isin_todays_deal: "true" } })
+            navigate("/products/today-deals", { state: { isin_todays_deal: "true" } })
           }
         >
           View more

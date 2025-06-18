@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { Check, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import type { User } from "@/types/type";
 
 const formSchema = z
   .object({
@@ -27,9 +28,7 @@ const formSchema = z
     phoneNumber: z.string().min(10, "Phone number is too short"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string().min(6, "Please confirm your password"),
-    agree: z.boolean().refine((val) => val === true, {
-      message: "You must agree to the privacy policy",
-    }),
+  
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -37,21 +36,22 @@ const formSchema = z
   });
 
 type FormValues = z.infer<typeof formSchema>;
-
-export default function Settings() {
+interface Props{
+  User:User[]
+}
+export default function Settings({User}:Props) {
   const { mutate, isPending } = useSignup();
   const [showVerify, setshowVerify] = useState(false);
   const navigate = useNavigate();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phoneNumber: "",
+      firstName: User[0]?.first_name ?? '',
+      lastName: User[0]?.last_name ?? "",
+      email: User[0]?.email ?? "",
+      phoneNumber:User[0]?.phone_no ?? "",
       password: "",
       confirmPassword: "",
-      agree: false,
     },
   });
 
@@ -140,7 +140,7 @@ export default function Settings() {
                         {...field}
                         className="border-none !border-0 "
                       />
-                      {showVerify && <Button className="rounded-l h-full ">Verify</Button>}
+                      {(showVerify && (!User[0]?.verify_email || User[0]?.verify_email)) && <Button className="rounded-l h-full ">Verify</Button>}
                     </div>
                   </FormControl>
                   <FormMessage />
