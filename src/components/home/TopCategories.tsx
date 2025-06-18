@@ -104,7 +104,7 @@ export default function TopCategories({categories}:Props) {
           <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-8 lg:gap-x-14 lg:px-40  mt-8">
             {categories?.map((item, index) => (
               <li key={index} onClick={()=>{
-                navigate('/products',{state:{param:`${item.category_id}`}})
+                navigate('/products',{state:{category_id:`${item.category_id}`}})
               }} className="text-center cursor-pointer space-y-2">
                 <img
                   src={item?.category_thumbnail_image}

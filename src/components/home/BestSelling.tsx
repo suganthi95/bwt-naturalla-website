@@ -57,7 +57,7 @@ export default function BestSelling({ title, Products }: Props) {
         <p
           className="text-title cursor-pointer hover:underline underline-primary"
           onClick={() =>
-            navigate("/products", { state: { param: "best_selling=true" } })
+            navigate("/products", { state: { best_selling: "true" } })
           }
         >
           View more

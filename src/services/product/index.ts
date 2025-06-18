@@ -34,11 +34,35 @@ export const useFilterValues = (token: string) => {
   });
 };
 
-export const useFilterByFeatureProducts = (param: string, token: string) => {
+
+export const useFilterByFeatureProducts = (
+  token: string,
+  category_id?: string,
+  isin_todays_deal?: string,
+  is_featured?: string,
+  best_selling?: string,
+  product_name?: string
+) => {
   return useQuery({
-    queryKey: ["filterbyfeature", param],
-    queryFn: () => filterbyFeatureProducts(param, token),
-    select:(data)=>data?.data,
+    queryKey: [
+      "filterbyfeature",
+      token,
+      category_id,
+      isin_todays_deal,
+      is_featured,
+      best_selling,
+      product_name,
+    ],
+    queryFn: () =>
+      filterbyFeatureProducts(
+        token,
+        category_id,
+        isin_todays_deal,
+        is_featured,
+        best_selling,
+        product_name
+      ),
+    select: (data) => data?.data,
     staleTime: 1000 * 60 * 5,
     retry: 1,
   });

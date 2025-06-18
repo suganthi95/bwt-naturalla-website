@@ -17,8 +17,8 @@ const initialState: FilterState = {
   minPrice: 0,
   maxPrice: 10000,
   categories: [],
-  sortByPrice: "price-asc",
-  sortByDate: "date-desc",
+  sortByPrice: "",
+  sortByDate: "",
   sorybyAlphabetic: "",
 };
 
@@ -63,7 +63,7 @@ const filterSlice = createSlice({
     },
     setSortDate: (
       state,
-      action: PayloadAction<FilterState["sortByDate"]>
+      action: PayloadAction<string>
     ) => {
       state.sortByDate = action.payload;
     },

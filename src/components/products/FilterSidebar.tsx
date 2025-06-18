@@ -59,7 +59,7 @@ export default function FilterSidebar({ filterValues }: Props) {
   const [min, max] = priceRange;
   const [selectedCategories, setSelectedCategories] = useState<string[]>(categories);
   const [sortBy, setSortBy] = useState(sortByPrice);
-  const [sortDate, setSortByDate] = useState(    sortByDate  );
+  const [sortDate, setSortByDate] = useState( sortByDate  );
 
   const toggleCategory = (category: string) => {
     setSelectedCategories((prev) =>
@@ -88,7 +88,8 @@ export default function FilterSidebar({ filterValues }: Props) {
     dispatch(clearFilters())
     setPriceRange([100, 1000]);
     setSelectedCategories([]);
-    setSortBy("price-asc");
+    setSortBy("");
+    setSortByDate("")
   };
 
   const applyFilters = () => {

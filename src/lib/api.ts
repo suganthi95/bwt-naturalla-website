@@ -212,14 +212,25 @@ export const filterValues = async (token: string) => {
   return response.data;
 };
 
-export const filterbyFeatureProducts = async (param: string, token: string) => {
-  const response = await api.get(`v1/product/filter/by-feature/?${param}`, {
-    headers: {
-      Authorization: token,
-    },
-  });
+export const filterbyFeatureProducts = async (
+  token: string,
+  category_id?: string,
+  isin_todays_deal?: string,
+  is_featured?: string,
+  best_selling?: string,
+  product_name?: string
+) => {
+  const response = await api.get(
+    `v1/product/filter/by-feature/?category_id=${category_id || ""}&isin_todays_deal=${isin_todays_deal || ""}&is_featured=${is_featured || ""}&best_selling=${best_selling || ""}&product_name=${product_name || ""}`,
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
   return response.data;
 };
+
 
 export const getProfileInfo = async(token:string)=>{
  const response  = await api.get('v1/profile',{
