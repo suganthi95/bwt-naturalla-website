@@ -118,7 +118,7 @@ export const useVerifyPhonepay = (merchantTransactionId:string,token:string)=>{
 export const useVerifyrazorpay = ()=>{
     return useMutation({
         mutationKey:['verifyrazorpay'],
-        mutationFn:(args:{razorpay_payment_id:string, razorpay_signature:string ,razorpay_order_id:string,token:string})=>verifyRazorPayPayment(args.razorpay_order_id,args.razorpay_payment_id,args.razorpay_signature, args.token),
+        mutationFn:(args:{razorpay_payment_id:string, razorpay_signature:string ,razorpay_order_id:string,token:string})=>verifyRazorPayPayment(args.razorpay_payment_id,args.razorpay_signature,args.razorpay_order_id, args.token),
     })
 }
 
