@@ -18,8 +18,6 @@ import CartSheet from "../addToCartProducts/CartSheet";
 import React, { useEffect, useState } from "react";
 import {
   motion,
-  useMotionValueEvent,
-  useScroll,
   AnimatePresence,
 } from "framer-motion";
 import MenuToggle from "@/animation/MenuToggle";
@@ -41,6 +39,7 @@ const messages = [
 ];
 
 export default function Nav() {
+  
   const { pathname } = useLocation();
   const dispatch = useDispatch();
     const [IsProfile, setIsProfile] = useState(false);
@@ -82,26 +81,30 @@ export default function Nav() {
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
   };
+
   const [IsMenuopen, setIsMenuopen] = useState<boolean>(false);
-  const [hidden, Sethidden] = useState<boolean>(false);
+  // const [hidden, Sethidden] = useState<boolean>(false);
+
   const handleclick = () => {
     setIsMenuopen((prev) => !prev);
   };
+
   const handleKeyDown = (e:React.KeyboardEvent<HTMLDivElement>)=>{
     if(e.key === 'Enter' && searchTerm.trim()){
             navigate(`/products/${searchTerm}`, { state: { product_name: searchTerm } })
     }
 
   }
-  const { scrollY } = useScroll();
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() ?? 0;
-    if (latest > previous && latest > 200) {
-      Sethidden(true);
-    } else {
-      Sethidden(false);
-    }
-  });
+  // const { scrollY } = useScroll();
+
+  // useMotionValueEvent(scrollY, "change", (latest) => {
+  //   const previous = scrollY.getPrevious() ?? 0;
+  //   if (latest > previous && latest > 200) {
+  //     Sethidden(true);
+  //   } else {
+  //     Sethidden(false);
+  //   }
+  // });
 
 
   return (
@@ -110,9 +113,9 @@ export default function Nav() {
         visible: { y: 0 },
         hidden: { y: "-100%" },
       }}
-      animate={hidden ? "hidden" : "visible"}
+      // animate={hidden ? "hidden" : "visible"}
       transition={{ duration: 0.35, ease: "easeInOut" }}
-      className=""
+      className="sticky top-0 z-50"
     >
       <div className="w-full bg-primary  mx-auto px-4 py-1 overflow-hidden">
         <Slider {...settings}>

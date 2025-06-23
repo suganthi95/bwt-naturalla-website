@@ -16,7 +16,7 @@ export const useAddToWishList = () => {
     }) => addToWhislistItems(product_id, token),
 
     onSuccess: () => {
-      toast.success("WishList added ");
+      toast.success("Wishlist added ");
      queryClient.invalidateQueries({queryKey:['getwishlist']})
      
     },

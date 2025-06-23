@@ -103,8 +103,6 @@ export default function CheckoutPage() {
   const [CouponDetails, setCouponDetails] = useState<CouponState>();
   const [couponCode, setCouponCode] = useState("");
 
-  console.log(items)
-
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
 
   const [query, setQuery] = useState("");

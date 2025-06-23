@@ -93,7 +93,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
     <ScrollArea className="space-y-6 p-4  h-screen">
       <h2 className="text-lg font-bold text-title"> Cart</h2>
       {items?.length === 0 ? (
-        <EmptyCart />
+        <EmptyCart onClose={onClose} />
       ) : (
         <>
           {shipping === 0 && (
@@ -110,7 +110,8 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
           <ul>
             {items?.map((item, index) => {
               return (
-                <li key={index} className="flex gap-4 items-start   pb-4">
+                <>
+                <li key={index} className="flex gap-4 items-start">
                   <img
                     src={item?.thumbnail_image_url}
                     alt="Product"
@@ -205,12 +206,14 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                     </AnimatePresence>{" "}
                   </div>
                 </li>
+                <hr className="my-4 border-gray-300" />
+                </>
               );
             })}
           </ul>
 
           <div
-            style={{ boxShadow: "-10px -10px 30px -4px rgba(0,0,0,0.1)" }}
+            // style={{ boxShadow: "-10px -10px 30px -4px rgba(0,0,0,0.1)" }}
             className="py-2 mt-5 backdrop-blur-2xl"
           >
             <div className="space-y-2 text-sm font-medium text-title">

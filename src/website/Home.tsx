@@ -45,7 +45,7 @@ export default function Home() {
 
       {/* offer ending section */}
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
-        <OfferEnding />
+        <OfferEnding products={data?.offerEndingSoon} />
       </section>
 
       {/* founder  section */}

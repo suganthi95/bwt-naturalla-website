@@ -3,8 +3,18 @@ import { ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-export default function EmptyCart() {
+interface Props {
+  onClose: (val: boolean) => void;
+}
+
+export default function EmptyCart({ onClose }: Props) {
+
   const navigate = useNavigate();
+
+  const browseProduct = () => {
+    navigate("/products/all");
+    onClose(false);
+  }
 
   return (
     <div className="flex flex-col items-center justify-center h-[80vh] text-center px-4">
@@ -24,7 +34,7 @@ export default function EmptyCart() {
 
       <Button
         className="mt-6"
-        onClick={() => navigate("/")}
+        onClick={browseProduct}
       >
         Browse Products
       </Button>

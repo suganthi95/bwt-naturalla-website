@@ -1,52 +1,87 @@
-import { ASSETS } from "@/assets/assets";
+import type { RootState } from "@/redux/store";
+import { useAddToCart } from "@/services/cart";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../ui/button";
+import { ShoppingCart } from "lucide-react";
+import { toast } from "sonner";
+import type { Product } from "@/types/Home";
+import { addItem } from "@/redux/slices/cartSlice";
 
-export default function OfferEnding() {
-  const Prodcuts = [
-    {
-      id: "1",
-      img: ASSETS.PRODUCT1,
-      name: "Red Wine Face Wash …",
-      des: "ALOEVERA Face Gel | Moisturiser | Anti Aging | Exfoliation ",
-      price: "Rs. 168",
-      StrikeoutPrice: "Rs 158",
-    },
-    {
-      id: "2",
-      img: ASSETS.PRODUCT2,
-      name: "Red Wine Face Wash …",
-      des: "Red Wine Face Wash - Brightening - Anti-oxidant - Hydration -pure natural",
-      price: "Rs. 168",
-      StrikeoutPrice: "Rs 158",
-    },
-    {
-      id: "3",
-      img: ASSETS.PRODUCT3,
-      name: "Red Wine Face Wash …",
-      des: "ALOE VERRA hand made bathing soap | Fades Dark Spots | Skin Moisturizer",
-      price: "Rs. 168",
-      StrikeoutPrice: "Rs 158",
-    },
-  ];
+interface Props {
+  products: Product[];
+}
+
+export default function OfferEnding({ products }: Props) {
+
+  const navigate = useNavigate();
+  const { mutate } = useAddToCart();
+  const dispatch = useDispatch();
+  const { token, status } = useSelector((state: RootState) => state.auth);
+
   return (
     <div className="container mx-auto">
-        <div className="w-full  grid place-items-center">
-      <h2 className="font-semibold text-title text-xl">Offer Ending Soon</h2>
-      <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-x-8 lg:gap-x-10 lg:px-40  mt-8">
-        {Prodcuts.map((item, index) => (
-          <li key={index} className="text-center space-y-2">
-            <img
-              src={item.img}
-              alt={`img-${item.id}`}
-              className={`rounded-2xl size-64`}
-            />
-            <p className="text-textPrimary line-clamp-1 lato font-medium text-base sm:text-lg md:text-xl">
-              {item.name}
-            </p>
-          </li>
-        ))}
-      </ul>
+      <div className="flex justify-between font-semibold text-xl items-center">
+        <p className="text-title cursor-pointer ">Offer Ending Soon</p>
+        <p
+          className="text-title cursor-pointer hover:underline underline-primary"
+          onClick={() =>
+            navigate("/products/offer-ending-soon", { state: { offer_ending_soon: "true" } })
+          }
+        >
+          View more
+        </p>
+      </div>
 
-        </div>
+      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-x-8 md:gap-x-14 lg:gap-x-10 mt-4 md:mt-8">
+        {products?.slice(0, 5)?.map((item, index) => {
+          return (
+            <li key={index} className="space-y-2 relative">
+              <img
+                src={item?.thumbnail_image_url}
+                alt={item?.product_name}
+                className="w-60 h-60 md:w-[240px] md:h-[240px] rounded-[20px] object-cover mx-auto cursor-pointer"
+                onClick={() => navigate(`/product/${item.slug}`)}
+              />
+
+              <p
+                className="text-title  hover:text-primary transition-colors duration-300 text-xl font-medium line-clamp-1 cursor-pointer"
+                onClick={() => {
+                  navigate(`/product/${item.slug}`);
+                }}
+              >
+                {item?.product_name}
+              </p>
+              <div className="flex items-center justify-between w-full">
+                <p className="flex items-center gap-x-2.5 text-textPrimary text-xl lato font-bold">
+                  Rs. {item?.unit_price}
+                  <span className="text-lg text-lead  font-normal line-through">
+                    Rs.{item?.strike_through_price}
+                  </span>
+                </p>
+                <Button
+                  onClick={() => {
+                    if (status) {
+                      mutate({
+                        product_id: item.product_id,
+                        quantity: 1,
+                        token: token,
+                      });
+                      dispatch(addItem(item));
+                    } else {
+                      toast.error("Please login to continue");
+                      navigate("/login");
+                    }
+                  }}
+                  className="rounded-md font-bold transition-all duration-300 ease-in-out px-5 py-2 bg-white text-primary border border-primary hover:bg-primary hover:text-white shadow-sm hover:shadow-lg"
+                >
+                  <ShoppingCart className="w-5 h-5" />
+                </Button>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
