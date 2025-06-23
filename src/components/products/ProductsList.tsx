@@ -275,23 +275,28 @@ export default function ProductsList({ Products }: Props) {
                   </div>
 
                   <p
-                    className="text-title hover:text-primary transition-colors duration-300 text-lg font-semibold line-clamp-1 cursor-pointer"
+                    className="text-title hover:text-primary  transition-colors duration-300 text-lg font-semibold line-clamp-1 cursor-pointer"
                     onClick={() => navigate(`/product/${item.slug}`)}
                   >
-                    {item?.product_name.length > 12
+                    {/* {item?.product_name.length > 12
                       ? `${item.product_name.slice(0, 12)}`
-                      : item.product_name}
-                    <span className="text-sm text-lead">
-                      ({item?.product_size})
-                    </span>
+                      : item.product_name} */}
+                      {item?.product_name}
+                 
                   </p>
+  
+                  <div className="flex  items-center justify-between ">
+                    <div>
 
-                  <div className="flex flex-col ">
                     <p className="text-textPrimary text-xl lato font-bold">
                       Rs. {item?.unit_price}
                       <span className="text-lg text-lead font-normal line-through ml-2">
                         Rs. {item?.strike_through_price}
                       </span>
+                    </p>
+                    </div>
+                    <p className="text-sm  font-medium text-lead">
+                      ({item?.product_size})
                     </p>
                   </div>
                 </li>
