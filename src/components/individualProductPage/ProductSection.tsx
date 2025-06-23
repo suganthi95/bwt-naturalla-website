@@ -36,6 +36,7 @@ type Props = {
 };
 
 export default function ProductSection({ media, products }: Props) {
+
   const mainSliderRef = useRef<Slider>(null);
   const thumbSliderRef = useRef<Slider>(null);
   const { token, status } = useSelector((state: RootState) => state.auth);
@@ -48,10 +49,12 @@ export default function ProductSection({ media, products }: Props) {
   const [nav2, setNav2] = useState<Slider | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [Pincode, setPincode] = useState(() => localStorage.getItem("pincode"));
-  const [Messages, setMessage] = useState(() =>
-    localStorage.getItem("delivery")
-  );
+  // const [Pincode, setPincode] = useState(() => localStorage.getItem("pincode"));
+  const [Pincode, setPincode] = useState("");
+  // const [Messages, setMessage] = useState(() =>
+  //   localStorage.getItem("delivery")
+  // );
+  const [Messages, setMessage] = useState("");
   const [Isloading, setIsloading] = useState(false);
   const [liked, setLiked] = useState(false);
 
@@ -70,10 +73,12 @@ export default function ProductSection({ media, products }: Props) {
       setNav2(thumbSliderRef.current);
     }
   }, []);
+
   const handleCopyurl = async () => {
     await navigator.clipboard.writeText(window.location.href);
     toast.info("product url copied");
   };
+
   const mainSliderSettings = {
     asNavFor: nav2!,
     arrows: false,
@@ -92,15 +97,44 @@ export default function ProductSection({ media, products }: Props) {
     dots: false,
     verticalSwiping: true,
   };
+
   const averageRatings = Math.round(
     products?.review_count[0].total_ratings /
       Number(products?.review_count[0].total_reviews)
   );
+
   // const savings = Math.round(
   //   (Number(products?.strike_through_price) *
   //     Number(products?.discount_percent)) /
   //     100
   // );
+
+  const checkDeliveryInfo = async () => {
+
+    // localStorage.setItem("pincode", Pincode ?? "");
+    
+    try {
+      setIsloading(true);
+      const { data, isError, error } = await refetch();
+
+      if (data?.status === true) {
+        setMessage(data.message);
+        // localStorage.setItem("delivery", data?.message);
+      }
+      if (isError || error) {
+        setMessage("We are not shipping for this Location");
+        toast.error("We are not shipping for this Location");
+        // localStorage.setItem(
+        //   "delivery",
+        //   "We are not shipping for this Location"
+        // );
+      }
+    } catch (error) {
+      setMessage("Something went wrong");
+    } finally {
+      setIsloading(false);
+    }
+  }
 
   return (
     <div className="flex flex-col container mx-auto lg:flex-row  ">
@@ -330,31 +364,7 @@ export default function ProductSection({ media, products }: Props) {
             className="border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-8 md:w-72 text-sm px-2"
           />
           <Button
-            onClick={async () => {
-              setIsloading(true);
-              localStorage.setItem("pincode", Pincode ?? "");
-
-              try {
-                const { data, isError, error } = await refetch();
-
-                if (data?.status === true) {
-                  setMessage(data.message);
-                  localStorage.setItem("delivery", data?.message);
-                }
-                if (isError || error) {
-                  toast.error("We are not shipping for this Location");
-                  setMessage("We are not shipping for this Location");
-                  localStorage.setItem(
-                    "delivery",
-                    "We are not shipping for this Location"
-                  );
-                }
-              } catch (error) {
-                setMessage("Something went wrong");
-              } finally {
-                setIsloading(false);
-              }
-            }}
+            onClick={checkDeliveryInfo}
             className="h-6 rounded cursor-pointer px-3  text-sm"
           >
             {Isloading ? <Loader2 className="animate-spin" /> : "Check"}

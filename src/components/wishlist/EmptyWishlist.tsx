@@ -3,8 +3,18 @@ import { Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-export default function EmptyWishlist() {
+interface Props {
+  onClose: (val: boolean) => void
+}
+
+export default function EmptyWishlist({ onClose }: Props) {
+
   const navigate = useNavigate();
+
+  const browseProduct = () => {
+    navigate("/products/all");
+    onClose(false);
+  }
 
   return (
     <div className="flex flex-col items-center justify-center h-[80vh] text-center px-4">
@@ -18,14 +28,14 @@ export default function EmptyWishlist() {
       </motion.div>
 
       <h2 className="text-2xl font-bold text-neutral-800">
-        Your WishList is Empty
+        Your Wishlist is Empty
       </h2>
       <p className="text-muted-foreground text-sm mt-2 max-w-xs">
         Looks like you haven’t added anything to your wishlist yet. Start
         shopping now!
       </p>
 
-      <Button className="mt-6" onClick={() => navigate("/")}>
+      <Button className="mt-6" onClick={browseProduct}>
         Browse Products
       </Button>
     </div>

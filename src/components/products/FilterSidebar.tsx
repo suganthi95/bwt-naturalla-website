@@ -5,7 +5,7 @@ import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Badge } from "@/components/ui/badge";
-import { X } from "lucide-react";
+import { ChevronsUpDownIcon, X } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Command, CommandInput, CommandItem, CommandList } from "../ui/command";
 import {
@@ -110,19 +110,30 @@ export default function FilterSidebar({ filterValues }: Props) {
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium">Benifits</label>
+        <label className="text-sm font-medium">Benefits</label>
 
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
-            <Input
+            {/* <Input
               placeholder="Type a keyword..."
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
                 setOpen(true);
               }}
-              className="cursor-pointer "
-            />
+              className="cursor-pointer"
+            /> */}
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={open}
+              className="justify-between text-sm w-full"
+            >
+              {searchTerm
+                ? filterValues?.benefits.find((benefit) => benefit === searchTerm)
+                : "Search by keyword..."}
+              <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            </Button>
           </PopoverTrigger>
 
           <PopoverContent className="p-0 w-full">

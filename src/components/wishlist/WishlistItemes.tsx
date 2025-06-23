@@ -22,7 +22,8 @@ interface Props {
   isFetching: boolean;
   Product: Product[];
 }
-export default function WishlistItemes({ isError, isLoading }: Props) {
+
+export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -49,9 +50,9 @@ export default function WishlistItemes({ isError, isLoading }: Props) {
 
   return (
     <ScrollArea className="space-y-6 p-4  h-screen">
-      <h2 className="text-lg font-bold text-title mb-3">Favorites</h2>
+      <h2 className="text-lg font-bold text-title mb-3">Wishlist</h2>
       {items?.length === 0 ? (
-        <EmptyWishlist />
+        <EmptyWishlist onClose={onClose} />
       ) : (
         <>
           <ul>
