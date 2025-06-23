@@ -60,17 +60,17 @@ export default function ProductsList({ Products ,title}: Props) {
     let filtered = Products;
 
     if (keywords.length > 0) {
-      filtered = filtered.filter((item) =>
-        item.benefit_keys.some((key) => keywords.includes(key))
+      filtered = filtered?.filter((item) =>
+        item.benefit_keys?.some((key) => keywords.includes(key))
       );
     }
-
-    filtered = filtered.filter(
+    
+    filtered = filtered?.filter(
       (item) => item.unit_price >= minPrice && item.unit_price <= maxPrice
     );
 
     if (categories.length > 0) {
-      filtered = filtered.filter(
+      filtered = filtered?.filter(
         (item) =>
           item.category_title && categories.includes(item.category_title)
       );

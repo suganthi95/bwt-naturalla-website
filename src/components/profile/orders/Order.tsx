@@ -13,7 +13,13 @@ import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
 import dayjs from "dayjs";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import WriteReview from "./WrtiteReview";
 import UpdateReview from "./UpdateReview";
 interface Props {
@@ -22,12 +28,11 @@ interface Props {
 }
 export default function Order({ Orders, handleTab }: Props) {
   const [Isopen, setIsopen] = useState(false);
-    const [IsReviewopen, setIsReviewopen] = useState(false);
-  const [updatedReview,setUpdatedReview] = useState<any>()
+  const [IsReviewopen, setIsReviewopen] = useState(false);
+  const [updatedReview, setUpdatedReview] = useState<any>();
   const [selectedOrder, setSelectedOrder] = useState<number | null>(null);
 
   const { token } = useSelector((state: RootState) => state.auth);
-  console.log(Orders);
   const { data } = useGetOrdersDetails(token, selectedOrder ?? 0);
   const handleBackToOrders = () => {
     setSelectedOrder(null);
@@ -39,83 +44,8 @@ export default function Order({ Orders, handleTab }: Props) {
     setIsopen(true);
   };
 
-  // const orders = [
-  //   {
-  //     id: "ORD-7829",
-  //     date: "June 12, 2025",
-  //     status: "Delivered",
-  //     total: "$78.95",
-  //     items: [
-  //       {
-  //         id: "PRD-001",
-  //         name: "Natural Moisturizing Cream",
-  //         price: "$24.99",
-  //         quantity: 1,
-  //         image:
-  //           "https://readdy.ai/api/search-image?query=A%20luxurious%20natural%20moisturizing%20cream%20in%20an%20elegant%20glass%20jar%20with%20wooden%20cap%2C%20placed%20on%20a%20minimalist%20white%20surface%20with%20soft%20shadows%2C%20photographed%20with%20professional%20lighting%20against%20a%20clean%20light%20background%20with%20subtle%20gradient%2C%20premium%20skincare%20product%20photography&width=80&height=80&seq=1&orientation=squarish",
-  //       },
-  //       {
-  //         id: "PRD-002",
-  //         name: "Organic Hair Serum",
-  //         price: "$32.50",
-  //         quantity: 1,
-  //         image:
-  //           "https://readdy.ai/api/search-image?query=A%20premium%20organic%20hair%20serum%20in%20a%20sleek%20glass%20dropper%20bottle%20with%20natural%20ingredients%20visible%20inside%2C%20placed%20on%20a%20minimalist%20white%20surface%20with%20soft%20shadows%2C%20photographed%20with%20professional%20lighting%20against%20a%20clean%20light%20background%20with%20subtle%20gradient%2C%20premium%20haircare%20product%20photography&width=80&height=80&seq=2&orientation=squarish",
-  //       },
-  //       {
-  //         id: "PRD-003",
-  //         name: "Vitamin C Face Mask",
-  //         price: "$21.46",
-  //         quantity: 1,
-  //         image:
-  //           "https://readdy.ai/api/search-image?query=A%20refreshing%20vitamin%20C%20face%20mask%20in%20a%20premium%20jar%20with%20citrus%20elements%20nearby%2C%20placed%20on%20a%20minimalist%20white%20surface%20with%20soft%20shadows%2C%20photographed%20with%20professional%20lighting%20against%20a%20clean%20light%20background%20with%20subtle%20gradient%2C%20premium%20skincare%20product%20photography&width=80&height=80&seq=3&orientation=squarish",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: "ORD-6543",
-  //     date: "May 28, 2025",
-  //     status: "Delivered",
-  //     total: "$56.20",
-  //     items: [
-  //       {
-  //         id: "PRD-004",
-  //         name: "Natural Lip Balm Set",
-  //         price: "$18.99",
-  //         quantity: 1,
-  //         image:
-  //           "https://readdy.ai/api/search-image?query=A%20set%20of%20natural%20lip%20balms%20in%20various%20flavors%20arranged%20in%20a%20beautiful%20pattern%2C%20placed%20on%20a%20minimalist%20white%20surface%20with%20soft%20shadows%2C%20photographed%20with%20professional%20lighting%20against%20a%20clean%20light%20background%20with%20subtle%20gradient%2C%20premium%20cosmetic%20product%20photography&width=80&height=80&seq=4&orientation=squarish",
-  //       },
-  //       {
-  //         id: "PRD-005",
-  //         name: "Eco-friendly Shampoo",
-  //         price: "$37.21",
-  //         quantity: 1,
-  //         image:
-  //           "https://readdy.ai/api/search-image?query=An%20eco-friendly%20shampoo%20in%20a%20sustainable%20bamboo%20container%20with%20natural%20ingredients%2C%20placed%20on%20a%20minimalist%20white%20surface%20with%20soft%20shadows%2C%20photographed%20with%20professional%20lighting%20against%20a%20clean%20light%20background%20with%20subtle%20gradient%2C%20premium%20haircare%20product%20photography&width=80&height=80&seq=5&orientation=squarish",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: "ORD-5421",
-  //     date: "April 15, 2025",
-  //     status: "Delivered",
-  //     total: "$112.75",
-  //     items: [
-  //       {
-  //         id: "PRD-006",
-  //         name: "Complete Skincare Set",
-  //         price: "$112.75",
-  //         quantity: 1,
-  //         image:
-  //           "https://readdy.ai/api/search-image?query=A%20complete%20premium%20skincare%20set%20with%20multiple%20products%20arranged%20beautifully%2C%20including%20serums%2C%20creams%2C%20and%20cleansers%20in%20matching%20packaging%2C%20placed%20on%20a%20minimalist%20white%20surface%20with%20soft%20shadows%2C%20photographed%20with%20professional%20lighting%20against%20a%20clean%20light%20background%20with%20subtle%20gradient%2C%20premium%20skincare%20collection%20photography&width=80&height=80&seq=6&orientation=squarish",
-  //       },
-  //     ],
-  //   },
-  // ];
   const renderSelectedOrder = () => {
     const order = Orders.find((o) => o.order_id === selectedOrder);
-    console.log("order: ", order);
     if (!order) return null;
     return (
       <div className="bg-white rounded-lg shadow p-6 mb-6">
@@ -127,10 +57,20 @@ export default function Order({ Orders, handleTab }: Props) {
             <ChevronLeft />
             Back to Orders
           </button>
-          <button className="text-green-700 hover:text-green-800 flex items-center cursor-pointer !rounded-button whitespace-nowrap">
-            <i className="fas fa-download mr-2"></i>
-            Download Invoice
-          </button>
+          {data?.payment[0]?.invoice_url && (
+            <button
+              disabled={data?.payment[0]?.invoice_url}
+              onClick={() => {
+                if (data?.payment[0]?.invoice_url) {
+                  window.location.href = data?.payment[0]?.invoice_url;
+                }
+              }}
+              className="text-green-700 hover:text-green-800 flex items-center cursor-pointer !rounded-button whitespace-nowrap"
+            >
+              <i className="fas fa-download mr-2"></i>
+              Download Invoice
+            </button>
+          )}
         </div>
 
         <div className="border-b flex justify-between items-center pb-4 mb-4">
@@ -290,40 +230,51 @@ export default function Order({ Orders, handleTab }: Props) {
                       </span>{" "}
                     </p>
                   </div>
-                  {!item.has_reviewed  && order?.order_status === 'Delivered' && (
-                    <Dialog open={IsReviewopen} onOpenChange={setIsReviewopen}>
-                      <DialogTrigger  className="cursor-pointer">
-                        <button
-                          // onClick={() => handleOpenReview(item)}
-                          className="text-green-700 hover:text-green-900 text-sm font-medium cursor-pointer !rounded-button whitespace-nowrap"
-                        >
-                          Write a Review
-                        </button>{" "}
-                      </DialogTrigger>
-                      <DialogContent className="!max-w-xl [&>button]:hidden  !p-0">
-                        <DialogHeader className="bg-[#F5F5F5] p-4 rounded-lg w-full flex flex-row  justify-between">
-                          <DialogTitle>Write a Review</DialogTitle>
-                          <div
-                            className="cursor-pointer"
-                            onClick={() => {
-                              setIsopen(false);
-                            }}
+                  {!item.has_reviewed &&
+                    order?.order_status === "Delivered" && (
+                      <Dialog
+                        open={IsReviewopen}
+                        onOpenChange={setIsReviewopen}
+                      >
+                        <DialogTrigger className="cursor-pointer">
+                          <button
+                            // onClick={() => handleOpenReview(item)}
+                            className="text-green-700 hover:text-green-900 text-sm font-medium cursor-pointer !rounded-button whitespace-nowrap"
                           >
-                            <X />
-                          </div>
-                        </DialogHeader>
-                        <WriteReview onClose={setIsReviewopen} product_id={item.product_id} orderCode={order?.order_code}/>
-                      </DialogContent>
-                    </Dialog>
-                  )}
-                   {item.has_reviewed && (
+                            Write a Review
+                          </button>{" "}
+                        </DialogTrigger>
+                        <DialogContent className="!max-w-xl [&>button]:hidden  !p-0">
+                          <DialogHeader className="bg-[#F5F5F5] p-4 rounded-lg w-full flex flex-row  justify-between">
+                            <DialogTitle>Write a Review</DialogTitle>
+                            <div
+                              className="cursor-pointer"
+                              onClick={() => {
+                                setIsopen(false);
+                              }}
+                            >
+                              <X />
+                            </div>
+                          </DialogHeader>
+                          <WriteReview
+                            onClose={setIsReviewopen}
+                            product_id={item.product_id}
+                            orderCode={order?.order_code}
+                          />
+                        </DialogContent>
+                      </Dialog>
+                    )}
+                  {item.has_reviewed && (
                     <Dialog open={IsReviewopen} onOpenChange={setIsReviewopen}>
-                      <DialogTrigger onClick={()=>setIsReviewopen(true)} className="cursor-pointer">
+                      <DialogTrigger
+                        onClick={() => setIsReviewopen(true)}
+                        className="cursor-pointer"
+                      >
                         <button
                           onClick={() => setUpdatedReview(item)}
                           className="text-green-700 hover:text-green-900 text-sm font-medium cursor-pointer !rounded-button whitespace-nowrap"
                         >
-                         Update Review
+                          Update Review
                         </button>{" "}
                       </DialogTrigger>
                       <DialogContent className="!max-w-xl [&>button]:hidden  !p-0">
@@ -338,7 +289,11 @@ export default function Order({ Orders, handleTab }: Props) {
                             <X />
                           </div>
                         </DialogHeader>
-                        <UpdateReview onClose={setIsReviewopen} orderCode={order?.order_code} product={updatedReview}/>
+                        <UpdateReview
+                          onClose={setIsReviewopen}
+                          orderCode={order?.order_code}
+                          product={updatedReview}
+                        />
                       </DialogContent>
                     </Dialog>
                   )}
