@@ -14,7 +14,6 @@ import {
 import { Icons } from "@/assets/icons";
 
 import { Check, Loader2 } from "lucide-react";
-import { useState } from "react";
 import type { User } from "@/types/type";
 import { useUpdateProfile } from "@/services/profile";
 import { useSelector } from "react-redux";
@@ -44,7 +43,7 @@ interface Props {
 export default function Settings({ User }: Props) {
   const { token } = useSelector((state: RootState) => state.auth);
   const { mutate, isPending } = useUpdateProfile();
-  const [showVerify, setshowVerify] = useState(false);
+  // const [showVerify, setshowVerify] = useState(false);
   const queryClient = useQueryClient();
   // const navigate = useNavigate();
   const form = useForm<FormValues>({
@@ -135,16 +134,16 @@ export default function Settings({ User }: Props) {
                       <Input
                         placeholder="you@example.com"
                         type="email"
-                        onFocus={() => {
-                          setshowVerify(true);
-                        }}
+                        // onFocus={() => {
+                        //   setshowVerify(true);
+                        // }}
                         {...field}
                         className="border-none !border-0 "
                       />
-                      {showVerify &&
+                      {/* {showVerify &&
                         (!User[0]?.verify_email || User[0]?.verify_email) && (
                           <Button className="rounded-l h-full ">Verify</Button>
-                        )}
+                        )} */}
                     </div>
                   </FormControl>
                   <FormMessage />
