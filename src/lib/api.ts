@@ -344,3 +344,25 @@ export const deleteAddress = async (token: string, id: string) => {
   });
   return response.data;
 };
+
+
+export const writeReview = async(token:string,formData:FormData)=>{
+  const response  = await api.post('v1/review',formData,{
+    headers:{
+      Authorization:token,
+      "Content-Type":"multipart/form-data"
+    }
+  })
+  return response.data
+
+}
+
+export const updateReview = async(token:string,formData:FormData)=>{
+  const response  = await api.put('v1/review',formData,{
+    headers:{
+      Authorization:token
+    }
+  })
+  return response.data
+
+}

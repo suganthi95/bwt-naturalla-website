@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { useRazorpay } from "react-razorpay";
 import { removeCartItems } from "@/redux/slices/cartSlice";
 import { removeCoupon } from "@/redux/slices/couponSlice";
+import { removeWishlist } from "@/redux/slices/wishSlice";
 
 export default function PaymentMethod() {
   // const { state } = useLocation();
@@ -177,11 +178,11 @@ export default function PaymentMethod() {
                     onSuccess: () => {
                       navigate("/order-success");
                       dispatch(removeCartItems());
+                      dispatch(removeWishlist());
+                      dispatch(removeCoupon());
                       localStorage.removeItem("merchantTransactionId");
                       setShouldPoll(false);
-
                       // dispatch(removeTaxDetails());
-                      dispatch(removeCoupon());
                     },
                     onError(error) {
                       if (axios.isAxiosError(error)) {
@@ -245,6 +246,7 @@ export default function PaymentMethod() {
           setShouldPoll(false);
           clearInterval(interval);
           dispatch(removeCartItems());
+          dispatch(removeWishlist());
           dispatch(removeCoupon());
         } else if (data.resp.state === "FAILED") {
           setLoading(false);

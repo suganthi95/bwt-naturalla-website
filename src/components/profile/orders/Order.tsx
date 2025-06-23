@@ -6,18 +6,24 @@ import {
   ChevronLeft,
   ChevronRight,
   Truck,
+  X,
 } from "lucide-react";
 import { useGetOrdersDetails } from "@/services/profile";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
 import dayjs from "dayjs";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import WriteReview from "./WrtiteReview";
+import UpdateReview from "./UpdateReview";
 interface Props {
   Orders: Order[];
   handleTab: (val: string) => void;
 }
 export default function Order({ Orders, handleTab }: Props) {
   const [Isopen, setIsopen] = useState(false);
+    const [IsReviewopen, setIsReviewopen] = useState(false);
+  const [updatedReview,setUpdatedReview] = useState<any>()
   const [selectedOrder, setSelectedOrder] = useState<number | null>(null);
 
   const { token } = useSelector((state: RootState) => state.auth);
@@ -166,7 +172,7 @@ export default function Order({ Orders, handleTab }: Props) {
               </div>
             </div>
           </div>
-          <div className={`${order.billing_first_name ? "block":"hidden"}`}>
+          <div className={`${order.billing_first_name ? "block" : "hidden"}`}>
             <div>
               <h4 className="font-semibold text-title mb-2">Billing Address</h4>
               <div className="bg-gray-50 p-4 rounded">
@@ -257,7 +263,7 @@ export default function Order({ Orders, handleTab }: Props) {
         </div>
         <div className="mb-6">
           <h4 className="font-medium mb-3">Items</h4>
-          {order?.product?.map((item: any) => (
+          {data?.product?.map((item: any) => (
             <div key={item.id} className="flex items-center border-b py-4">
               <div className="w-20 h-20 flex-shrink-0 bg-gray-100 rounded overflow-hidden">
                 <img
@@ -284,13 +290,57 @@ export default function Order({ Orders, handleTab }: Props) {
                       </span>{" "}
                     </p>
                   </div>
-                  {order.order_status === "order confirmed" && (
-                    <button
-                      // onClick={() => handleOpenReview(item)}
-                      className="text-green-700 hover:text-green-900 text-sm font-medium cursor-pointer !rounded-button whitespace-nowrap"
-                    >
-                      Write a Review
-                    </button>
+                  {!item.has_reviewed  && order?.order_status === 'Delivered' && (
+                    <Dialog open={IsReviewopen} onOpenChange={setIsReviewopen}>
+                      <DialogTrigger  className="cursor-pointer">
+                        <button
+                          // onClick={() => handleOpenReview(item)}
+                          className="text-green-700 hover:text-green-900 text-sm font-medium cursor-pointer !rounded-button whitespace-nowrap"
+                        >
+                          Write a Review
+                        </button>{" "}
+                      </DialogTrigger>
+                      <DialogContent className="!max-w-xl [&>button]:hidden  !p-0">
+                        <DialogHeader className="bg-[#F5F5F5] p-4 rounded-lg w-full flex flex-row  justify-between">
+                          <DialogTitle>Write a Review</DialogTitle>
+                          <div
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setIsopen(false);
+                            }}
+                          >
+                            <X />
+                          </div>
+                        </DialogHeader>
+                        <WriteReview onClose={setIsReviewopen} product_id={item.product_id} orderCode={order?.order_code}/>
+                      </DialogContent>
+                    </Dialog>
+                  )}
+                   {item.has_reviewed && (
+                    <Dialog open={IsReviewopen} onOpenChange={setIsReviewopen}>
+                      <DialogTrigger onClick={()=>setIsReviewopen(true)} className="cursor-pointer">
+                        <button
+                          onClick={() => setUpdatedReview(item)}
+                          className="text-green-700 hover:text-green-900 text-sm font-medium cursor-pointer !rounded-button whitespace-nowrap"
+                        >
+                         Update Review
+                        </button>{" "}
+                      </DialogTrigger>
+                      <DialogContent className="!max-w-xl [&>button]:hidden  !p-0">
+                        <DialogHeader className="bg-[#F5F5F5] p-4 rounded-lg w-full flex flex-row  justify-between">
+                          <DialogTitle>Update a Review</DialogTitle>
+                          <div
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setIsopen(false);
+                            }}
+                          >
+                            <X />
+                          </div>
+                        </DialogHeader>
+                        <UpdateReview onClose={setIsReviewopen} orderCode={order?.order_code} product={updatedReview}/>
+                      </DialogContent>
+                    </Dialog>
                   )}
                 </div>
               </div>
@@ -319,11 +369,7 @@ export default function Order({ Orders, handleTab }: Props) {
             <div className="flex justify-between">
               <span className="text-gray-600">Discount</span>
               <span className="text-title font-semibold">
-<<<<<<< HEAD
-                {order.discount_amount ? "-":""}₹ {order.discount_amount}
-=======
-              {order.discount_amount ? `₹ ${order.discount_amount}` : '₹ 0'} 
->>>>>>> 2a56d39a9bb6c66962008c16caebf6876365e10b
+                {order.discount_amount ? `₹ ${order.discount_amount}` : "₹ 0"}
               </span>
             </div>
             <div className="flex justify-between pt-2 border-t font-medium">

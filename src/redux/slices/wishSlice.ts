@@ -57,6 +57,9 @@ export const wishSlice = createSlice({
         (item) => item.cart_id !== action.payload
       );
     },
+    removeWishlist : ()=>{
+      return initialState
+    }
     // clearCart: (state) => {
     //   state.items = [];
     //   Object.assign(state, calculateTotals([]));
@@ -68,6 +71,7 @@ export const wishSlice = createSlice({
 export const {
   setWishItems,
   addWishItem,
+  removeWishlist,
   removeWishlistItem
 } = wishSlice.actions;
 

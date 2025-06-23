@@ -26,7 +26,7 @@ import {
 import MenuToggle from "@/animation/MenuToggle";
 import { useGetCartItems } from "@/services/cart";
 import { useDispatch, useSelector } from "react-redux";
-import { setCartItems, setTaxDetails } from "@/redux/slices/cartSlice";
+import { removeCartItems, setCartItems, setTaxDetails } from "@/redux/slices/cartSlice";
 import type { RootState } from "@/redux/store";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { logout } from "@/redux/slices/authSlice";
@@ -34,9 +34,10 @@ import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { useGetWishListItems } from "@/services/whistlist";
 import WishlistItemes from "../wishlist/WishlistItemes";
-import { setWishItems } from "@/redux/slices/wishSlice";
+import { removeWishlist, setWishItems } from "@/redux/slices/wishSlice";
 import { useGetCategories } from "@/services/home";
 import { useQueryClient } from "@tanstack/react-query";
+import { useGetProfileInfo } from "@/services/profile";
 const messages = [
   "🎉 Flat 30% Off on Selected Products | Use Code : DEAL30 🎉",
   "🚚 Free Shipping on Orders Above ₹999 🚚",
@@ -58,6 +59,8 @@ export default function Nav() {
   const { data, isSuccess, isLoading, isError, isFetching } = useGetCartItems(
     auth?.token
   );
+  const { data: profileInfo } = useGetProfileInfo(auth?.token);
+
   const { data: categories } = useGetCategories(auth.token);
   console.log("categories: ", categories);
   const {
@@ -214,7 +217,7 @@ export default function Nav() {
                                         {
                                           state: {
                                             category_id: `${category.category_id}`,
-                                            title:`${category.category_title}`
+                                            title: `${category.category_title}`,
                                           },
                                         }
                                       );
@@ -237,9 +240,11 @@ export default function Nav() {
                                             }}
                                             to={`/products/${sub.subcategory_name.toLowerCase()}?category_id=${
                                               category.category_id
-                                            }&subcategory_id=${sub.subcategory_id}`}
+                                            }&subcategory_id=${
+                                              sub.subcategory_id
+                                            }`}
                                             state={{
-                                              title:`${sub.subcategory_name}`
+                                              title: `${sub.subcategory_name}`,
                                             }}
                                             className="text-sm text-gray-600 hover:text-primary transition"
                                           >
@@ -262,15 +267,17 @@ export default function Nav() {
                               queryKey: ["filterbyfeature"],
                             });
                             navigate(
-                              "/products/best-selling?best_selling=true"
-                           ,{state:{title: "Best Sellers"}} );
+                              "/products/best-selling?best_selling=true",
+                              { state: { title: "Best Sellers" } }
+                            );
                           } else {
                             queryClient.invalidateQueries({
                               queryKey: ["filterbyfeature"],
                             });
                             navigate(
-                              "/products/today-deals?isin_todays_deal=true"
-                            ,{state:{title: "Today's Deals"}});
+                              "/products/today-deals?isin_todays_deal=true",
+                              { state: { title: "Today's Deals" } }
+                            );
                           }
                         }}
                         className={`text-primary cursor-pointer tracking-wide py-2 ${
@@ -374,7 +381,7 @@ export default function Nav() {
                   <PopoverTrigger asChild>
                     <Avatar className="w-8 h-8 cursor-pointer bg-primary">
                       <AvatarImage
-                        src="https://ik.imagekit.io/nd8r7mpaev/Atlants/user.png?updatedAt=1738227108834"
+                        src={profileInfo[0]?.profile_pic}
                         alt="profile"
                       />
                       {auth?.status && (
@@ -417,6 +424,8 @@ export default function Nav() {
                             <p
                               onClick={() => {
                                 dispatch(logout());
+                                dispatch(removeCartItems());
+                                dispatch(removeWishlist());
                                 setIsProfile(false);
                                 toast.success("logout successfull");
                               }}
