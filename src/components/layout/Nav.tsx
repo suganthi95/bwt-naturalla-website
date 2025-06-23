@@ -61,7 +61,6 @@ export default function Nav() {
   const { data: profileInfo } = useGetProfileInfo(auth?.token);
 
   const { data: categories } = useGetCategories(auth.token);
-  console.log("categories: ", categories);
   const {
     data: wishlist,
     isSuccess: iswishisSuccess,
@@ -216,7 +215,7 @@ export default function Nav() {
                             transition={{ duration: 0.2 }}
                             className="space-y-4"
                           >
-                            {categories
+                            { categories && categories
                               ?.filter((cat: any) =>
                                 cat.category_title.includes(item.name)
                               )
@@ -396,7 +395,7 @@ export default function Nav() {
                   <PopoverTrigger asChild>
                     <Avatar className="w-8 h-8 cursor-pointer bg-primary">
                       <AvatarImage
-                        src={profileInfo[0]?.profile_pic}
+                        src={ profileInfo && profileInfo[0]?.profile_pic}
                         alt="profile"
                       />
                       {auth?.status && (

@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import type { RootState } from "@/redux/store";
 import {
   useCreateOrder,
+  useGetProviders,
   useVerifyPhonepay,
   useVerifyrazorpay,
 } from "@/services/cart";
@@ -46,8 +47,14 @@ export default function PaymentMethod() {
   const [shouldPoll, setShouldPoll] = useState(false);
   const { token } = useSelector((state: RootState) => state.auth);
   const localPaymentmethod = localStorage.getItem("payment");
-  const [finalData, setFinalData] = useState(null);
-  console.log("finalData: ", finalData);
+  const {
+    data: PaymentProviders,
+    isLoading,
+    isFetching,
+  } = useGetProviders(token);
+
+  // const [finalData, setFinalData] = useState(null);
+
   const [merchantTransactionId, SetmerchantTransactionId] = useState(() =>
     localStorage.getItem("merchantTransactionId")
   );
@@ -242,7 +249,7 @@ export default function PaymentMethod() {
           setLoading(false);
           navigate("/order-success");
           localStorage.removeItem("merchantTransactionId");
-          setFinalData(data);
+          // setFinalData(data);
           setShouldPoll(false);
           clearInterval(interval);
           dispatch(removeCartItems());
@@ -263,7 +270,7 @@ export default function PaymentMethod() {
     return () => clearInterval(interval);
   }, [merchantTransactionId, shouldPoll]);
 
-  if (loading) {
+  if (loading || isLoading || isFetching) {
     return <FullScreenLoader />;
   }
 
@@ -304,33 +311,37 @@ export default function PaymentMethod() {
                   },
                   //   { label: "Google Pay", value: "gpay" },
                   //   { label: "UPI", value: "upi" },
-                ].map(({ label, value, Img }) => (
-                  <Label
-                    htmlFor={value}
-                    key={value}
-                    className={cn(
-                      "flex items-center space-x-3 rounded-lg border-2 p-2 px-6 cursor-pointer transition-colors",
-                      selectedRole === value
-                        ? "border-primary "
-                        : "border-border"
-                    )}
-                  >
-                    <RadioGroupItem
-                      id={value}
-                      className="size-5"
-                      value={value}
-                    />
-                    <div className="flex items-center gap-x-10 font-medium text-sm text-title">
-                      {" "}
-                      <img
-                        src={Img}
-                        alt="payment-option"
-                        className="w-28"
-                      />{" "}
-                      {label}{" "}
-                    </div>
-                  </Label>
-                ))}
+                ].map(({ label, value, Img }) => {
+                  const provider = PaymentProviders?.find(
+                    (p:any) => p.provider_name === value
+                  );
+                  const isEnabled = provider?.enabled;
+
+                  return (
+                    <Label
+                      htmlFor={value}
+                      key={value}
+                      className={cn(
+                        "flex items-center space-x-3 rounded-lg border-2 p-2 px-6 cursor-pointer transition-colors",
+                        selectedRole === value
+                          ? "border-primary"
+                          : "border-border",
+                        !isEnabled && "opacity-50 cursor-not-allowed"
+                      )}
+                    >
+                      <RadioGroupItem
+                        id={value}
+                        value={value}
+                        disabled={!isEnabled}
+                        className="size-5"
+                      />
+                      <div className="flex items-center gap-x-10 font-medium text-sm text-title">
+                        <img src={Img} alt="payment-option" className="w-28" />
+                        {label}
+                      </div>
+                    </Label>
+                  );
+                })}
               </RadioGroup>
             </AccordionContent>
           </AccordionItem>

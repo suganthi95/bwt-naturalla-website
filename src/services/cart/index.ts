@@ -1,4 +1,4 @@
-import { addToCart, checkCoupoCode, createOrder, deleteCartItems, getCartItems, updateCartItems, verifyPhonePayPayment, verifyRazorPayPayment } from "@/lib/api";
+import { addToCart, checkCoupoCode, createOrder, deleteCartItems, getCartItems, getProviders, updateCartItems, verifyPhonePayPayment, verifyRazorPayPayment } from "@/lib/api";
 import type { OrderPayload } from "@/types/type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -122,3 +122,12 @@ export const useVerifyrazorpay = ()=>{
     })
 }
 
+export const useGetProviders = (token:string)=>{
+    return useQuery({
+        queryKey:['getproviders'],
+        queryFn:()=>getProviders(token),
+        staleTime:1000*60*5,
+        select:(data)=>data?.data,
+        retry:1
+    })
+}

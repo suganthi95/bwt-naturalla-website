@@ -142,6 +142,15 @@ export const deleteWhislistItems = async (
   return response.data;
 };
 
+export const getProviders = async (token: string) => {
+  const response = await api.get("/v1/order/provider", {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
+
 export const createOrder = async (
   OrderPayload: OrderPayload,
   token: string
@@ -202,15 +211,14 @@ export const checkCoupoCode = async (couponCode: string, token: string) => {
   return response.data;
 };
 
-
-export const getCategories= async(token:string)=>{
-  const response = await api.get('v1/product/category',{
-    headers:{
-      Authorization:token
-    }
-  })
-  return response.data
-}
+export const getCategories = async (token: string) => {
+  const response = await api.get("v1/product/category", {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
 export const filterValues = async (token: string) => {
   const response = await api.get("v1/product/filter/values", {
     headers: {
@@ -223,7 +231,7 @@ export const filterValues = async (token: string) => {
 export const filterbyFeatureProducts = async (
   token: string,
   category_id?: string,
-  subcategory_id?:string,
+  subcategory_id?: string,
   isin_todays_deal?: string,
   is_featured?: string,
   best_selling?: string,
@@ -232,11 +240,11 @@ export const filterbyFeatureProducts = async (
   const response = await api.get(
     `v1/product/filter/by-feature/?category_id=${
       category_id || ""
-    }&subcategory_id=${
-      subcategory_id || ""
-    }&isin_todays_deal=${isin_todays_deal || ""}&is_featured=${
-      is_featured || ""
-    }&best_selling=${best_selling || ""}&product_name=${product_name || ""}`,
+    }&subcategory_id=${subcategory_id || ""}&isin_todays_deal=${
+      isin_todays_deal || ""
+    }&is_featured=${is_featured || ""}&best_selling=${
+      best_selling || ""
+    }&product_name=${product_name || ""}`,
     {
       headers: {
         Authorization: token,
@@ -345,24 +353,21 @@ export const deleteAddress = async (token: string, id: string) => {
   return response.data;
 };
 
+export const writeReview = async (token: string, formData: FormData) => {
+  const response = await api.post("v1/review", formData, {
+    headers: {
+      Authorization: token,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};
 
-export const writeReview = async(token:string,formData:FormData)=>{
-  const response  = await api.post('v1/review',formData,{
-    headers:{
-      Authorization:token,
-      "Content-Type":"multipart/form-data"
-    }
-  })
-  return response.data
-
-}
-
-export const updateReview = async(token:string,formData:FormData)=>{
-  const response  = await api.put('v1/review',formData,{
-    headers:{
-      Authorization:token
-    }
-  })
-  return response.data
-
-}
+export const updateReview = async (token: string, formData: FormData) => {
+  const response = await api.put("v1/review", formData, {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
