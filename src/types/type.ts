@@ -3,6 +3,8 @@ export type OrderPayload = {
     product_id: number;
     quantity: number;
     order_amount: number;
+    coupon_id?: number | null;
+    coupon_amount?: number | null;
   }[];
   address: string;
   discount_amount: number | null;
@@ -23,7 +25,7 @@ export type OrderPayload = {
 };
 export type ShippingTaxDetail = {
   shipping_type_id: number;
-  shipping_fee_type: "invoice_based" | "product_based"; 
+  shipping_fee_type: "invoice_based" | "product_based";
   default_rate: number;
   cash_on_delivery: boolean;
   created_at: string; // ISO date string
@@ -70,12 +72,12 @@ export interface CouponState {
 
 export interface AuthState {
   token: string;
-  message:string
+  message: string;
   first_name: string;
   last_name: string;
   role: string;
-  phone_no ?: string;
-  status:boolean
+  phone_no?: string;
+  status: boolean;
 }
 
 export interface Category {
@@ -93,10 +95,11 @@ export interface AddressPayload {
   state: string;
   pincode: number;
   default_address: boolean;
-  address_id?:number
+  address_id?: number;
 }
 
 export type Order = {
+  product: any;
   order_id: number;
   user_id: number;
   order_date: string;
@@ -135,7 +138,6 @@ export type Order = {
   shipment_status: string | null;
 };
 
-
 export type User = {
   first_name: string;
   last_name: string;
@@ -144,4 +146,12 @@ export type User = {
   otp_verified: boolean;
   verify_email: boolean;
   profile_pic: string;
+};
+
+export type Profile = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_no: number;
+  password?: string;
 };

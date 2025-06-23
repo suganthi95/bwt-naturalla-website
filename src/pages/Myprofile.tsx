@@ -3,36 +3,33 @@ import { Icons } from "@/assets/icons";
 
 import Dashboard from "@/components/profile/dashboard/Dashboard";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import UserAddress from "@/components/profile/address/UserAddress";
 import Order from "@/components/profile/orders/Order";
 import { useState } from "react";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
+
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {  X } from "lucide-react";
-import EditAddress from "@/components/profile/address/EditAddress";
 import Settings from "@/components/profile/settings/Settings";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
 import {
-  useGetAddress,
   useGetOrders,
   useGetProfileInfo,
 } from "@/services/profile";
-import type { AddressPayload } from "@/types/type";
 import ProfilePictureUpload from "@/components/profile/ProfilePictureUpload";
 
 export default function Myprofile() {
-  const [Isopen, setIsopen] = useState(false);
   const [IsProfileUpdate, setIsProfileUpdate] = useState(false);
-
+  const [activeTab, setActiveTab] = useState("dashboard");
+  // const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    // setSelectedOrder(null);
+  };
   const { token } = useSelector((state: RootState) => state.auth);
-  const { data } = useGetAddress(token);
   const { data: orders } = useGetOrders(token);
   const { data: profileInfo } = useGetProfileInfo(token);
 
@@ -44,7 +41,9 @@ export default function Myprofile() {
           <div className="flex items-center w-full  gap-x-2.5 -translate-y-10">
             <div className="relative w-[180px] h-40 rounded-full border-4 border-white overflow-hidden">
               <img
-                src={(profileInfo && profileInfo[0]?.profile_pic) || ASSETS.USER}
+                src={
+                  (profileInfo && profileInfo[0]?.profile_pic) || ASSETS.USER
+                }
                 alt="user-profile"
                 className="w-full h-full object-cover rounded-full"
               />
@@ -52,7 +51,6 @@ export default function Myprofile() {
                 <DialogTrigger>
                   <button
                     className="absolute cursor-pointer bottom-10 -right-4 -translate-x-1/2 translate-y-1/2 bg-white border border-gray-300 p-2 rounded-lg shadow-md hover:bg-gray-100"
-                    onClick={() => console.log("Edit clicked")}
                   >
                     <Icons.Edit className="w-4 h-4 text-gray-600" />
                   </button>
@@ -76,34 +74,13 @@ export default function Myprofile() {
                 </p>
               </div>
 
-              <Dialog open={Isopen} onOpenChange={setIsopen}>
-                <DialogTrigger className="cursor-pointer">
-                  <Button>Edit</Button>
-                </DialogTrigger>
-                <DialogContent className="!max-w-3xl [&>button]:hidden  !p-0">
-                  <DialogHeader className="bg-[#F5F5F5] p-4 rounded w-full flex flex-row  justify-between">
-                    <DialogTitle>Update address</DialogTitle>
-                    <div
-                      className="cursor-pointer"
-                      onClick={() => {
-                        setIsopen(false);
-                      }}
-                    >
-                      <X  />
-                    </div>
-                  </DialogHeader>
-                  <EditAddress
-                    onClose={setIsopen}
-                    address={data?.address?.filter(
-                      (item: AddressPayload) => item.default_address === true
-                    )}
-                  />
-                </DialogContent>
-              </Dialog>
+           
+                  <Button onClick={()=>setActiveTab('settings')}>Edit</Button>
+             
             </div>
           </div>
         </div>
-        <div className="grid place-items-start">
+        {/* <div className="grid place-items-start">
           <h2 className="font-semibold text-2xl">My Profile</h2>
           <Tabs defaultValue="dashboard" className="w-full mt-4  ">
             <TabsList className="flex items-center justify-start  -ml-7 pb-5  border-b gap-x-5 bg-transparent">
@@ -149,6 +126,56 @@ export default function Myprofile() {
               <Settings User={profileInfo} />
             </TabsContent>
           </Tabs>
+        </div> */}
+        <div className="mb-6">
+          <nav className="flex border-b">
+            <button
+              onClick={() => handleTabChange("dashboard")}
+              className={`px-6 py-3 font-medium text-sm cursor-pointer !rounded-button whitespace-nowrap ${
+                activeTab === "dashboard"
+                  ? "text-green-800 border-b-2 border-green-800"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Dashboard
+            </button>
+            <button
+              onClick={() => handleTabChange("addresses")}
+              className={`px-6 py-3 font-medium text-sm cursor-pointer !rounded-button whitespace-nowrap ${
+                activeTab === "addresses"
+                  ? "text-green-800 border-b-2 border-green-800"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Addresses
+            </button>
+            <button
+              onClick={() => handleTabChange("orderHistory")}
+              className={`px-6 py-3 font-medium text-sm cursor-pointer !rounded-button whitespace-nowrap ${
+                activeTab === "orderHistory"
+                  ? "text-green-800 border-b-2 border-green-800"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Order History
+            </button>
+            <button
+              onClick={() => handleTabChange("settings")}
+              className={`px-6 py-3 font-medium text-sm cursor-pointer !rounded-button whitespace-nowrap ${
+                activeTab === "settings"
+                  ? "text-green-800 border-b-2 border-green-800"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Settings
+            </button>
+          </nav>
+        </div>
+        <div>
+          {activeTab === "dashboard" && <Dashboard handleTabChange={handleTabChange} />}
+          {activeTab === "addresses" && <UserAddress />}
+          {activeTab === "orderHistory" && <Order Orders={orders} handleTab={handleTabChange} />}
+          {activeTab === "settings" && <Settings User={profileInfo && profileInfo} />}
         </div>
       </div>
     </section>

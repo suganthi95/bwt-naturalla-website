@@ -39,7 +39,9 @@ import axios from "axios";
 import { Textarea } from "@/components/ui/textarea";
 interface Props {
   onClose: (val: boolean) => void;
-  address: AddressPayload | null;
+address: AddressPayload | null;
+  address_id:number
+
 }
 const formSchema = z.object({
   firstName: z
@@ -468,7 +470,7 @@ export default function EditAddress({ onClose, address }: Props) {
               {isPending ? (
                 <Loader2 className="animate-spin" />
               ) : (
-                " Add Address"
+                " Update Address"
               )}
             </Button>
           </div>

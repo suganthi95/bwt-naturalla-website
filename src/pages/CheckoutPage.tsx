@@ -171,7 +171,6 @@ export default function CheckoutPage() {
       },
       {
         onSuccess(data) {
-          // dispatch(setCoupon(data));
           setCouponDetails(data);
           toast.success("coupon applied");
         },
@@ -254,9 +253,39 @@ export default function CheckoutPage() {
 
   // Final total
   const total = Math.round(subtotal + shipping - discount);
+
   if (isLoading || isFetching) {
     return <FullScreenLoader />;
   }
+
+
+// const updatedItems = items?.map((product: Product) => {
+//   const isProductInCoupon =
+//     CouponDetails?.coupon_type === "product_based" &&
+//     Array.isArray(CouponDetails.product_ids) &&
+//     CouponDetails.product_ids.includes(Number(product.product_id));
+
+//   let productDiscount = 0;
+
+//   if (isProductInCoupon) {
+//     if (CouponDetails.discount_type === "percent") {
+//       productDiscount =
+//         (product.unit_price * product.quantity * CouponDetails.discount) / 100;
+//     } else {
+//       productDiscount = CouponDetails.discount;
+//     }
+//   }
+
+
+//   return {
+//     ...product,
+//     coupon_amount: isProductInCoupon ? Number(productDiscount) : 0,
+//     coupon_id: isProductInCoupon ? Number(CouponDetails.coupon_id) : null,
+//   };
+// });
+
+// dispatch(setCartItems(updatedItems));
+
   return (
     <main>
       <section className="container mx-auto  mb-10 md:mb-20">
@@ -293,11 +322,7 @@ export default function CheckoutPage() {
                 <AccordionContent>
                   <ul>
                     {items?.map((product: Product) => {
-                      const productTaxprice = Number(
-                        (product.unit_price * product.tax_percent) / 100
-                      );
-                      console.log(productTaxprice);
-
+                    
                       let productDiscount = 0;
 
                       const isProductInCoupon =
@@ -448,95 +473,7 @@ export default function CheckoutPage() {
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-            {/* <AccordionContent>
-
-            <ul>
-              {data?.map((product: Product) => {
-                return (
-                  <div className="flex justify-between items-center gap-4 pb-6">
-                    <div className="flex gap-4 items-start">
-                      <img
-                        src={product?.thumbnail_image_url}
-                        alt="Product"
-                        className="w-28 h-24 object-cover rounded-md"
-                      />
-
-                      <div className="text-textPrimary">
-                        <h3 className="font-semibold text-textPrimary text-base md:text-lg">
-                          {product?.product_name}
-                        </h3>
-
-                        <p className="text-xs flex flex-wrap items-center text-[#939393] mt-1 gap-x-1">
-                          <span>1 unit</span>
-                          <span className="text-gray-300">|</span>
-                          <span>₹{product?.unit_price}</span>
-                          <span className="text-gray-300">|</span>
-                          <span>Size</span>
-                          <span>{product?.product_size}</span>
-                        </p>
-
-                        <div className="md:mt-4">
-                          <span className="text-[22px] font-bold text-textPrimary">
-                            ₹{Math.round(product.unit_price * product.quantity)}
-                          </span>
-                          <span className="line-through ml-2 text-[15px] text-gray-400">
-                            ₹{product.strike_through_price}
-                          </span>
-                          <span className="ml-2 text-[15px] text-green-600 font-semibold">
-                            20% off
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-2">
-                      <div className="flex items-center gap-2 border px-3 py-1 rounded-lg">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="p-0 cursor-pointer w-5 h-5 text-lg text-gray-700"
-                          onClick={() => handleDecrease(product.cart_id)}
-                        >
-                          −
-                        </Button>
-                        <Input
-                          type="number"
-                          value={product.quantity}
-                          onChange={(e) => setQuantity(Number(e.target.value))}
-                          className="w-10 text-center border-none text-sm font-semibold px-0"
-                          min={1}
-                        />
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="p-0 cursor-pointer w-5 h-5 text-lg text-gray-700"
-                          onClick={() => handleIncrease(product.cart_id)}
-                        >
-                          +
-                        </Button>
-                      </div>
-
-                      <button
-                        onClick={() =>
-                          handleRemoveProduct(
-                            product.cart_id,
-                            product?.quantity
-                          )
-                        }
-                        className="text-gray-500 cursor-pointer hover:text-red-500"
-                      >
-                        {removingItemId === product.cart_id ? (
-                          <Loader2 className="w-4 h-4 animate-spin text-red-500" />
-                        ) : (
-                          <Icons.Remove />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </ul>
-          </AccordionContent> */}
+         
             <Accordion type="single" defaultValue="item-2" collapsible>
               <AccordionItem value="item-2" className="border-none ">
                 <AccordionTrigger className="cursor-pointer">
@@ -546,9 +483,7 @@ export default function CheckoutPage() {
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="mt-8">
-                    {/* <h1 className="md:text-2xl font-semibold mb-6">
-                      Shipping Details
-                    </h1> */}
+                   
 
                     <Form {...form}>
                       <form
@@ -877,7 +812,6 @@ export default function CheckoutPage() {
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-            {/* Shipping Details Form */}
           </div>
 
           <div className="w-full h-full lg:w-4/12 mt-8 lg:mt-0">

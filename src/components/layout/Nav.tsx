@@ -43,6 +43,7 @@ const messages = [
 export default function Nav() {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
+    const [IsProfile, setIsProfile] = useState(false);
   const navigate = useNavigate();
   const [searchTerm,setSearchTerm] = useState('')
   const auth = useSelector((state: RootState) => state.auth);
@@ -88,7 +89,7 @@ export default function Nav() {
   };
   const handleKeyDown = (e:React.KeyboardEvent<HTMLDivElement>)=>{
     if(e.key === 'Enter' && searchTerm.trim()){
-            navigate("/products", { state: { product_name: searchTerm } })
+            navigate(`/products/${searchTerm}`, { state: { product_name: searchTerm } })
     }
 
   }
@@ -226,7 +227,7 @@ export default function Nav() {
               </Sheet>
 
               {auth.status ? (
-                <Popover>
+                <Popover open={IsProfile} onOpenChange={setIsProfile}>
                   <PopoverTrigger asChild>
                     <Avatar className="w-8 h-8 cursor-pointer bg-primary">
                       <AvatarImage
@@ -263,6 +264,7 @@ export default function Nav() {
                         )}
                         <div className="space-y-1 text-sm text-muted-foreground">
                           <Link
+                          onClick={()=>setIsProfile(false)}
                             to="/my-profile"
                             className="block hover:text-primary"
                           >
@@ -272,6 +274,7 @@ export default function Nav() {
                             <p
                               onClick={() => {
                                 dispatch(logout());
+                                setIsProfile(false)
                                 toast.success("logout successfull");
                               }}
                               className="block cursor-pointer w-full text-left hover:text-red-500"

@@ -16,6 +16,12 @@ import { Icons } from "@/assets/icons";
 import { Check, Loader2 } from "lucide-react";
 import { useState } from "react";
 import type { User } from "@/types/type";
+import { useUpdateProfile } from "@/services/profile";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/store";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import axios from "axios";
 
 const formSchema = z
   .object({
@@ -25,7 +31,6 @@ const formSchema = z
     phoneNumber: z.string().min(10, "Phone number is too short"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string().min(6, "Please confirm your password"),
-  
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -33,27 +38,50 @@ const formSchema = z
   });
 
 type FormValues = z.infer<typeof formSchema>;
-interface Props{
-  User:User[]
+interface Props {
+  User: User[];
 }
-export default function Settings({User}:Props) {
+export default function Settings({ User }: Props) {
+  const { token } = useSelector((state: RootState) => state.auth);
+  const { mutate, isPending } = useUpdateProfile();
   const [showVerify, setshowVerify] = useState(false);
+  const queryClient = useQueryClient();
   // const navigate = useNavigate();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: User[0]?.first_name ?? '',
+      firstName: User[0]?.first_name ?? "",
       lastName: User[0]?.last_name ?? "",
       email: User[0]?.email ?? "",
-      phoneNumber:User[0]?.phone_no ?? "",
+      phoneNumber: User[0]?.phone_no ?? "",
       password: "",
       confirmPassword: "",
     },
   });
 
   const onSubmit = (values: FormValues) => {
-    console.log('values: ', values);
- 
+    mutate(
+      {
+        payload: {
+          first_name: values.firstName,
+          last_name: values.lastName,
+          email: values.email,
+          phone_no: Number(values.phoneNumber),
+        },
+        token: token,
+      },
+      {
+        onSuccess(data) {
+          queryClient.invalidateQueries({ queryKey: ["getprofile"] });
+          toast.success(data.message);
+        },
+        onError: (error) => {
+          if (axios.isAxiosError(error)) {
+            toast.error(error?.response?.data?.message);
+          }
+        },
+      }
+    );
   };
 
   return (
@@ -108,14 +136,15 @@ export default function Settings({User}:Props) {
                         placeholder="you@example.com"
                         type="email"
                         onFocus={() => {
-                           
-                            setshowVerify(true);
-                         
+                          setshowVerify(true);
                         }}
                         {...field}
                         className="border-none !border-0 "
                       />
-                      {(showVerify && (!User[0]?.verify_email || User[0]?.verify_email)) && <Button className="rounded-l h-full ">Verify</Button>}
+                      {showVerify &&
+                        (!User[0]?.verify_email || User[0]?.verify_email) && (
+                          <Button className="rounded-l h-full ">Verify</Button>
+                        )}
                     </div>
                   </FormControl>
                   <FormMessage />
@@ -208,8 +237,8 @@ export default function Settings({User}:Props) {
             />
           </div>
 
-          <Button type="submit" className="w-fit">
-            {true ? "Save" :  <Loader2 className="animate-spin" />  }
+          <Button type="submit" disabled={isPending} className="w-fit">
+            {isPending ?   <Loader2 className="animate-spin" />: "Save"}
           </Button>
         </form>
       </Form>

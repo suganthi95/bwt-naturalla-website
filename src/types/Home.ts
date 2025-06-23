@@ -36,6 +36,8 @@ export type Product = {
   category_id: number | null;
   brand: string | null;
   tags: string | null;
+  coupon_id?:number | null,
+coupon_amount?:number | null;
   slug: string;
   barcode: string | null;
   units: string | null;

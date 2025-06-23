@@ -112,6 +112,8 @@ export default function PaymentMethod() {
         product_id: item.product_id,
         quantity: item.quantity,
         order_amount: item.total_amount,
+        // coupon_id: item.coupon_id,
+        // coupon_amount: item.coupon_amount,
       })),
       address: shippingAddress.address,
       discount_amount: discount,
@@ -154,8 +156,8 @@ export default function PaymentMethod() {
               description: "Payment",
               image: ASSETS.LOGO,
               handler: function (response: any) {
-                console.log('razorpay handler work')
-                
+                console.log("razorpay handler work");
+
                 verifyRazorpay(
                   {
                     token: token,

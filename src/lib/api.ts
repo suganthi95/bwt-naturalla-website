@@ -1,4 +1,4 @@
-import type { AddressPayload, OrderPayload } from "@/types/type";
+import type { AddressPayload, OrderPayload, Profile } from "@/types/type";
 import { api } from "./axiosInstance";
 
 export const signup = async (
@@ -135,7 +135,6 @@ export const deleteWhislistItems = async (
   token: string
 ) => {
   const response = await api.delete(`v1/wishlist/${product_id}`, {
- 
     headers: {
       Authorization: token,
     },
@@ -221,7 +220,11 @@ export const filterbyFeatureProducts = async (
   product_name?: string
 ) => {
   const response = await api.get(
-    `v1/product/filter/by-feature/?category_id=${category_id || ""}&isin_todays_deal=${isin_todays_deal || ""}&is_featured=${is_featured || ""}&best_selling=${best_selling || ""}&product_name=${product_name || ""}`,
+    `v1/product/filter/by-feature/?category_id=${
+      category_id || ""
+    }&isin_todays_deal=${isin_todays_deal || ""}&is_featured=${
+      is_featured || ""
+    }&best_selling=${best_selling || ""}&product_name=${product_name || ""}`,
     {
       headers: {
         Authorization: token,
@@ -231,73 +234,95 @@ export const filterbyFeatureProducts = async (
   return response.data;
 };
 
-
-export const getProfileInfo = async(token:string)=>{
- const response  = await api.get('v1/profile',{
-  headers:{
-    Authorization:token
-  }
- })
-
- return response.data
-}
-export const updateProfileImage = async (token: string, formData: FormData) => {
-  const response = await api.put('v1/profile/profilepic/update', formData, {
+export const getProfileInfo = async (token: string) => {
+  const response = await api.get("v1/profile", {
     headers: {
       Authorization: token,
-      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return response.data;
+};
+export const updateProfile = async (token: string, payload: Profile) => {
+  const response = await api.put("v1/profile/update", payload, {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
+export const updateProfileImage = async (token: string, formData: FormData) => {
+  const response = await api.put("v1/profile/profilepic/update", formData, {
+    headers: {
+      Authorization: token,
+      "Content-Type": "multipart/form-data",
     },
   });
   return response.data;
 };
 
-export const getOrders = async(token:string)=>{
-const response = await api.get('v1/profile/orders',{
-  headers:{
-    Authorization:token
-  }
-})
-return response.data
-}
+export const getOrders = async (token: string) => {
+  const response = await api.get("v1/profile/orders", {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
 
-export const getDashboard = async(token:string)=>{
-const response = await api.get('v1/profile/dashboard',{
-  headers:{
-    Authorization:token
-  }
-})
-return response.data
-}
+export const getOrdersDetails = async (token: string, order_id: number) => {
+  const response = await api.get(`v1/profile/order/${order_id}`, {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
 
-export const getAddress = async(token:string)=>{
-const response = await api.get('v1/profile/address',{
-  headers:{
-    Authorization:token
-  }
-})
-return response.data
-}
+export const getDashboard = async (token: string) => {
+  const response = await api.get("v1/profile/dashboard", {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
+
+export const getRecentOrders = async (token: string) => {
+  const response = await api.get("v1/profile/recent/order", {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
+
+export const getAddress = async (token: string) => {
+  const response = await api.get("v1/profile/address", {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
 
 export const addAddress = async (token: string, payload: AddressPayload) => {
-  const response = await api.post('v1/profile/address', payload, {
+  const response = await api.post("v1/profile/address", payload, {
     headers: {
       Authorization: token,
     },
   });
   return response.data;
 };
-
-
 
 export const editAddress = async (token: string, payload: AddressPayload) => {
-  const response = await api.put('v1/profile/address', payload, {
+  const response = await api.put("v1/profile/address", payload, {
     headers: {
       Authorization: token,
     },
   });
   return response.data;
 };
-
 
 export const deleteAddress = async (token: string, id: string) => {
   const response = await api.delete(`v1/profile/address/${id}`, {

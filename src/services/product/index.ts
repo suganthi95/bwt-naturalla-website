@@ -50,7 +50,7 @@ export const useFilterByFeatureProducts = (
     ],
     queryFn: () =>
       filterbyFeatureProducts(
-        token,
+      token,
         category_id,
         isin_todays_deal,
         is_featured,

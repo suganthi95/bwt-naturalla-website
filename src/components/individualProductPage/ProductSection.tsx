@@ -39,7 +39,7 @@ export default function ProductSection({ media, products }: Props) {
   const mainSliderRef = useRef<Slider>(null);
   const thumbSliderRef = useRef<Slider>(null);
   const { token, status } = useSelector((state: RootState) => state.auth);
-  const {mutate:addtoCart} = useAddToCart()
+  const { mutate: addtoCart } = useAddToCart();
   const { mutate } = useAddToWishList();
   const { mutate: deleteWishlist } = useDeleteWishlist();
   const dispatch = useDispatch();
@@ -96,11 +96,11 @@ export default function ProductSection({ media, products }: Props) {
     products?.review_count[0].total_ratings /
       Number(products?.review_count[0].total_reviews)
   );
-  const savings = Math.round(
-    (Number(products?.strike_through_price) *
-      Number(products?.discount_percent)) /
-      100
-  );
+  // const savings = Math.round(
+  //   (Number(products?.strike_through_price) *
+  //     Number(products?.discount_percent)) /
+  //     100
+  // );
 
   return (
     <div className="flex flex-col container mx-auto lg:flex-row  ">
@@ -181,7 +181,7 @@ export default function ProductSection({ media, products }: Props) {
                     cart_id: products.product_id,
                     token: token,
                   });
-                  dispatch(removeWishlistItem(products.cart_id))
+                  dispatch(removeWishlistItem(products.cart_id));
                 } else {
                   toast.error("Please login to continue");
                   navigate("/login");
@@ -244,13 +244,16 @@ export default function ProductSection({ media, products }: Props) {
           <p className="md:text-2xl line-through text-lead">
             Rs. {products?.strike_through_price}
           </p>
-
-          <p className="md:text-3xl font-bold text-green-600">
-            {products?.discount_percent}% OFF
-          </p>
-          <p className="md:text-xl text-orange-600 font-semibold">
-            You{"’"}ll save ₹ {savings}.00{" "}
-          </p>
+          {products?.discount_percent && (
+            <p className="md:text-3xl font-bold text-green-600">
+              {Math.round(Number(products?.discount_percent))}% OFF
+            </p>
+          )}
+          {products?.discount_percent && (
+            <p className="md:text-xl text-orange-600 font-semibold">
+              You{"’"}ll save ₹ {products?.discounted_price}.00{" "}
+            </p>
+          )}
         </div>
         <div>
           <p className="flex items-center gap-x-1.5 text-lead">
