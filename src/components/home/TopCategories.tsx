@@ -5,10 +5,10 @@ import "slick-carousel/slick/slick-theme.css";
 import type { Category } from "@/types/type";
 import { useNavigate } from "react-router-dom";
 interface Props {
-  categories:Category[]
+  categories: Category[];
 }
-export default function TopCategories({categories}:Props) {
-  const navigate = useNavigate()
+export default function TopCategories({ categories }: Props) {
+  const navigate = useNavigate();
   const settings = {
     dots: false,
     infinite: true,
@@ -33,8 +33,6 @@ export default function TopCategories({categories}:Props) {
       },
     ],
   };
-
-
 
   const Description = [
     {
@@ -67,7 +65,7 @@ export default function TopCategories({categories}:Props) {
       img: ASSETS.SLIDEICON4,
       text: "100% Natural",
     },
-     {
+    {
       id: "7",
       img: ASSETS.NONTOXIC,
       text: "Non Toxic Chemicals",
@@ -101,15 +99,22 @@ export default function TopCategories({categories}:Props) {
           <h1 className="text-2xl sm:text-3xl  roundica md:text-[32px] text-primary font-semibold">
             Top Categories of This Month
           </h1>
-          <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-8 lg:gap-x-14 lg:px-40  mt-8">
+          <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 lg:gap-x-14 lg:px-40  mt-8">
             {categories?.map((item, index) => (
-              <li key={index} onClick={()=>{
-                navigate('/products/top-categories',{state:{category_id:`${item.category_id}`}})
-              }} className="text-center cursor-pointer space-y-2">
+              <li
+                key={index}
+                onClick={() => {
+                  // navigate('/products/top-categories',{state:{category_id:`${item.category_id}`}})
+                  navigate(
+                    `/products/top-categories?category_id=${item.category_id}`
+                ,{state:{title:'Top Categories'}}  );
+                }}
+                className="text-center cursor-pointer space-y-2"
+              >
                 <img
                   src={item?.category_thumbnail_image}
                   alt={`img-${item?.category_id}`}
-                  className= {`rounded-2xl `}
+                  className={`rounded-2xl w-[160px] h-[160px]  md:h-[240px] md:w-[240px] `}
                 />
                 <p className="text-textPrimary font-medium text-base sm:text-lg md:text-xl">
                   {item?.category_title}
@@ -127,7 +132,9 @@ export default function TopCategories({categories}:Props) {
               <div key={index} className="!flex !items-center !gap-x-3">
                 <img
                   src={item.img}
-                  className={` object-contain ${index === 2 ? 'w-14 h-14':'w-16 h-16'} `}
+                  className={` object-contain ${
+                    index === 2 ? "w-14 h-14" : "w-16 h-16"
+                  } `}
                   alt={`img-${index}`}
                 />
                 <h3 className="text-sm  roundica  sm:text-xl text-[#FFFFFF] font-normal ">

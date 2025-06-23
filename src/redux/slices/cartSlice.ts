@@ -11,6 +11,15 @@ type Address = {
   city: string;
   state: string;
   pinCode: string;
+  same_billing_address?: boolean;
+  billing_first_name?: string | null;
+  billing_last_name?:string | null;
+  billing_address?:string | null;
+  billing_email?:string | null;
+  billing_phone_no?: string | null;
+  billing_city?: string | null;
+  billing_state?: string | null;
+  billing_pincode?: string | null;
 };
 
 type CartState = {
@@ -67,8 +76,8 @@ export const cartSlice = createSlice({
       state.items = action.payload;
       Object.assign(state, calculateTotals(state.items));
     },
-    removeCartItems:(state)=>{
-    state.items = []
+    removeCartItems: (state) => {
+      state.items = [];
     },
     addItem: (state, action: PayloadAction<Product>) => {
       const existingItem = state.items.find(
@@ -83,13 +92,15 @@ export const cartSlice = createSlice({
 
       Object.assign(state, calculateTotals(state.items));
     },
-        addItemTotalAmount: (state, action: PayloadAction<Product>) => {
+    addItemTotalAmount: (state, action: PayloadAction<Product>) => {
       const existingItem = state.items.find(
         (item) => item.cart_id === action.payload.cart_id
       );
 
       if (existingItem) {
         existingItem.total_amount = action.payload.total_amount;
+        existingItem.coupon_amount = action.payload.coupon_amount ?? null;
+        existingItem.coupon_id = action.payload.coupon_id ?? null;
       } else {
         state.items.push(action.payload);
       }
@@ -100,18 +111,18 @@ export const cartSlice = createSlice({
     setTaxDetails: (state, action: PayloadAction<ShippingTaxDetail>) => {
       state.tax_detail = action.payload;
     },
-       removeTaxDetails: (state) => {
+    removeTaxDetails: (state) => {
       state.tax_detail = {
-          shipping_type_id: 0,
-    shipping_fee_type: "invoice_based",
-    default_rate: 0,
-    cash_on_delivery: false,
-    created_at: new Date().toISOString(),
-    shipping_days: 0,
-    min_amount: 0,
-    max_amount: null,
-    shipping_fee: 0,
-    status: "inactive",
+        shipping_type_id: 0,
+        shipping_fee_type: "invoice_based",
+        default_rate: 0,
+        cash_on_delivery: false,
+        created_at: new Date().toISOString(),
+        shipping_days: 0,
+        min_amount: 0,
+        max_amount: null,
+        shipping_fee: 0,
+        status: "inactive",
       };
     },
     increaseQuantity: (state, action: PayloadAction<number>) => {

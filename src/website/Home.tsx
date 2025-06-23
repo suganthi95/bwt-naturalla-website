@@ -45,13 +45,13 @@ export default function Home() {
 
       {/* offer ending section */}
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
-        <OfferEnding />
+        <OfferEnding Products={data?.offerEndingSoon} />
       </section>
 
       {/* founder  section */}
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
         <div className="bg-gradient-to-b from-[#FFFFFF] to-[#DFFEDF] flex items-center ">
-          <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-8 px-4">
+          <div className="container mx-auto grid place-items-center grid-cols-1 lg:grid-cols-2 items-center gap-8 px-4">
             <img
               src={ASSETS.FOUNDER}
               alt="founder"
@@ -59,10 +59,10 @@ export default function Home() {
             />
 
             <ul className="space-y-4 mt-8 md:mt-32 xl:-ml-20">
-              <li className="text-[28px] sm:text-[32px] font-semibold">
+              <li className="text-[24px] sm:text-[32px] font-semibold">
                 Hi, I&apos;m ************
               </li>
-              <li className="text-justify font-normal w-full md:w-11/12 leading-[32px] md:leading-[35px] text-base md:text-xl lato">
+              <li className="text-justify text-sm font-normal w-full md:w-11/12 leading-[32px] md:leading-[35px]  md:text-xl lato">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
                 enim ad minim veniam, quis nostrud exercitation ullamco laboris

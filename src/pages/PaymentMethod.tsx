@@ -112,8 +112,8 @@ export default function PaymentMethod() {
         product_id: item.product_id,
         quantity: item.quantity,
         order_amount: item.total_amount,
-        // coupon_id: item.coupon_id,
-        // coupon_amount: item.coupon_amount,
+        coupon_id: item.coupon_amount > 0 ? item.coupon_id : null,
+        coupon_amount: item.coupon_amount,
       })),
       address: shippingAddress.address,
       discount_amount: discount,
@@ -131,6 +131,14 @@ export default function PaymentMethod() {
       shipment_phone_no: Number(shippingAddress.phoneNumber),
       city: shippingAddress.city,
       state: shippingAddress.state,
+      billing_first_name: shippingAddress.billing_first_name,
+      billing_last_name: shippingAddress.billing_last_name,
+      billing_email: shippingAddress.billing_email,
+      billing_phone_no: Number(shippingAddress.billing_phone_no),
+      billing_city: shippingAddress.billing_city,
+      billing_state: shippingAddress.billing_state,
+      billing_pincode: shippingAddress.billing_pincode,
+      billing_address: shippingAddress.billing_address,
     };
 
     mutate(

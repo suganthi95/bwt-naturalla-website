@@ -1,6 +1,12 @@
 import { useState } from "react";
 import type { Order } from "@/types/type";
-import { AlertCircle, CheckCircle, ChevronLeft, ChevronRight, Truck } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+  Truck,
+} from "lucide-react";
 import { useGetOrdersDetails } from "@/services/profile";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
@@ -8,9 +14,9 @@ import dayjs from "dayjs";
 import { Badge } from "@/components/ui/badge";
 interface Props {
   Orders: Order[];
-  handleTab:(val:string)=>void
+  handleTab: (val: string) => void;
 }
-export default function Order({ Orders,handleTab }: Props) {
+export default function Order({ Orders, handleTab }: Props) {
   const [Isopen, setIsopen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<number | null>(null);
 
@@ -19,9 +25,8 @@ export default function Order({ Orders,handleTab }: Props) {
   const { data } = useGetOrdersDetails(token, selectedOrder ?? 0);
   const handleBackToOrders = () => {
     setSelectedOrder(null);
-    handleTab('orderHistory')
+    handleTab("orderHistory");
     setIsopen(false);
-
   };
   const handleOrderSelect = (orderId: number) => {
     setSelectedOrder(orderId);
@@ -104,7 +109,7 @@ export default function Order({ Orders,handleTab }: Props) {
   // ];
   const renderSelectedOrder = () => {
     const order = Orders.find((o) => o.order_id === selectedOrder);
-    console.log('order: ', order);
+    console.log("order: ", order);
     if (!order) return null;
     return (
       <div className="bg-white rounded-lg shadow p-6 mb-6">
@@ -161,54 +166,72 @@ export default function Order({ Orders,handleTab }: Props) {
               </div>
             </div>
           </div>
+          <div className={`${order.billing_first_name ? "block":"hidden"}`}>
+            <div>
+              <h4 className="font-semibold text-title mb-2">Billing Address</h4>
+              <div className="bg-gray-50 p-4 rounded">
+                <p className="font-medium">
+                  {order.billing_first_name} {order.billing_last_name}
+                </p>
+                <p>{order.billing_address}</p>
+                <p>
+                  {order.billing_city}, {order.billing_state}{" "}
+                  {order.billing_pincode}
+                </p>
+                <p className="mt-2 text-gray-600">{order.billing_phone_no}</p>
+              </div>
+            </div>
+          </div>
           <div>
-      <h4 className="font-semibold text-title mb-2">Order Timeline</h4>
-      <div className="bg-gray-50 p-4 rounded space-y-3">
-        {data?.shipment?.map((item:any, index:number) => (
-          <div key={index} className="flex items-start gap-3">
-            <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center
+            <h4 className="font-semibold text-title mb-2">Order Timeline</h4>
+            <div className="bg-gray-50 p-4 rounded space-y-3">
+              {data?.shipment?.map((item: any, index: number) => (
+                <div key={index} className="flex items-start gap-3">
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center
               ${
-               ( item?.status ?? '')?.includes("X") ||  ( item?.status ?? '')?.includes("DTUP")
+                (item?.status ?? "")?.includes("X") ||
+                (item?.status ?? "")?.includes("DTUP")
                   ? "bg-red-100 text-red-700"
-                  :  ( item?.status ?? '')?.includes("ST")
+                  : (item?.status ?? "")?.includes("ST")
                   ? "bg-yellow-100 text-yellow-700"
                   : "bg-green-100 text-green-700"
               }`}
-            >
-              { ( item?.status ?? '') ||  ( item?.status ?? '')?.includes("DTUP") ? (
-                <AlertCircle className="w-5 h-5" />
-              ) :  ( item?.status ?? '')?.includes("ST") ? (
-                <Truck className="w-5 h-5" />
-              ) : (
-                <CheckCircle className="w-5 h-5" />
-              )}
-            </div>
+                  >
+                    {(item?.status ?? "") ||
+                    (item?.status ?? "")?.includes("DTUP") ? (
+                      <AlertCircle className="w-5 h-5" />
+                    ) : (item?.status ?? "")?.includes("ST") ? (
+                      <Truck className="w-5 h-5" />
+                    ) : (
+                      <CheckCircle className="w-5 h-5" />
+                    )}
+                  </div>
 
-            <div>
-              <p className="font-medium">{item?.activity}</p>
-              <p className="text-sm text-gray-600">
-                {new Date(item?.activity_time).toLocaleString("en-IN", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: true,
-                })}
-              </p>
-              <p className="text-sm text-gray-500">{item?.location}</p>
+                  <div>
+                    <p className="font-medium">{item?.activity}</p>
+                    <p className="text-sm text-gray-600">
+                      {new Date(item?.activity_time).toLocaleString("en-IN", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true,
+                      })}
+                    </p>
+                    <p className="text-sm text-gray-500">{item?.location}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        ))}
-      </div>
-    </div>
         </div>
         <div className="grid grid-cols-2 gap-x-4">
           <div>
             <h4 className="font-medium mb-2">Payment Method</h4>
             <div className="bg-gray-50 p-4 rounded flex items-center">
-<p>{data?.payment?.[0]?.provider || "N/A"}</p>
+              <p>{data?.payment?.[0]?.provider || "N/A"}</p>
             </div>
           </div>
           <div>
@@ -221,13 +244,14 @@ export default function Order({ Orders,handleTab }: Props) {
                   {data?.payment[0].awb_code}
                 </span>
               </p>
-
-              <a
-                href="#"
-                className="text-green-700 hover:text-green-800   inline-block"
-              >
-                Track Package
-              </a>
+              {data?.payment[0]?.track_url && (
+                <a
+                  href={data?.payment[0]?.track_url}
+                  className="text-green-700 hover:text-green-800   inline-block"
+                >
+                  Track Package
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -295,7 +319,7 @@ export default function Order({ Orders,handleTab }: Props) {
             <div className="flex justify-between">
               <span className="text-gray-600">Discount</span>
               <span className="text-title font-semibold">
-              {order.discount_amount && '-'}₹ {order.discount_amount}
+                {order.discount_amount ? "-":""}₹ {order.discount_amount}
               </span>
             </div>
             <div className="flex justify-between pt-2 border-t font-medium">
@@ -310,7 +334,6 @@ export default function Order({ Orders,handleTab }: Props) {
     );
   };
   const renderOrderHistory = () => {
-   
     return (
       <div className="bg-white rounded-lg shadow">
         <div className="p-6 border-b">
@@ -384,12 +407,11 @@ export default function Order({ Orders,handleTab }: Props) {
         </div>
       </div>
     );
-  
   };
 
-return (
-  <>
-    {selectedOrder && Isopen ? renderSelectedOrder() : renderOrderHistory()}
-  </>
-);
+  return (
+    <>
+      {selectedOrder && Isopen ? renderSelectedOrder() : renderOrderHistory()}
+    </>
+  );
 }
