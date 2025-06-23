@@ -173,6 +173,8 @@ export default function CheckoutPage() {
   const [CouponDetails, setCouponDetails] = useState<CouponState>();
   const [couponCode, setCouponCode] = useState("");
 
+  console.log(items)
+
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
 
   const [query, setQuery] = useState("");
@@ -369,6 +371,34 @@ export default function CheckoutPage() {
     return <FullScreenLoader />;
   }
 
+
+// const updatedItems = items?.map((product: Product) => {
+//   const isProductInCoupon =
+//     CouponDetails?.coupon_type === "product_based" &&
+//     Array.isArray(CouponDetails.product_ids) &&
+//     CouponDetails.product_ids.includes(Number(product.product_id));
+
+//   let productDiscount = 0;
+
+//   if (isProductInCoupon) {
+//     if (CouponDetails.discount_type === "percent") {
+//       productDiscount =
+//         (product.unit_price * product.quantity * CouponDetails.discount) / 100;
+//     } else {
+//       productDiscount = CouponDetails.discount;
+//     }
+//   }
+
+
+//   return {
+//     ...product,
+//     coupon_amount: isProductInCoupon ? Number(productDiscount) : 0,
+//     coupon_id: isProductInCoupon ? Number(CouponDetails.coupon_id) : null,
+//   };
+// });
+
+// dispatch(setCartItems(updatedItems));
+
   return (
     <main>
       <section className="container mx-auto  mb-10 md:mb-20">
@@ -517,6 +547,7 @@ export default function CheckoutPage() {
                             </div>
 
                             <button
+                              disabled={items.length === 1 && quantity < 2}
                               onClick={() =>
                                 handleRemoveProduct(
                                   product.cart_id,
@@ -1292,6 +1323,7 @@ export default function CheckoutPage() {
             </Accordion>
             <Button
               className="w-full md:h-12 "
+              disabled={items.length === 0}
               onClick={async () => {
                 const valid = await form.trigger();
                 if (valid) {
