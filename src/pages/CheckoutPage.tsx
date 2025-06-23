@@ -103,6 +103,8 @@ export default function CheckoutPage() {
   const [CouponDetails, setCouponDetails] = useState<CouponState>();
   const [couponCode, setCouponCode] = useState("");
 
+  console.log(items)
+
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
 
   const [query, setQuery] = useState("");
@@ -286,6 +288,7 @@ export default function CheckoutPage() {
 
 // dispatch(setCartItems(updatedItems));
 
+
   return (
     <main>
       <section className="container mx-auto  mb-10 md:mb-20">
@@ -451,6 +454,7 @@ export default function CheckoutPage() {
                             </div>
 
                             <button
+                              disabled={items.length === 1 && quantity < 2}
                               onClick={() =>
                                 handleRemoveProduct(
                                   product.cart_id,
@@ -922,6 +926,7 @@ export default function CheckoutPage() {
             </Accordion>
             <Button
               className="w-full md:h-12 "
+              disabled={items.length === 0}
               onClick={async () => {
                 const valid = await form.trigger();
                 if (valid) {

@@ -295,7 +295,7 @@ export default function Order({ Orders,handleTab }: Props) {
             <div className="flex justify-between">
               <span className="text-gray-600">Discount</span>
               <span className="text-title font-semibold">
-              {order.discount_amount && '-'}₹ {order.discount_amount}
+              {order.discount_amount ? `₹ ${order.discount_amount}` : '₹ 0'} 
               </span>
             </div>
             <div className="flex justify-between pt-2 border-t font-medium">
@@ -324,7 +324,7 @@ export default function Order({ Orders,handleTab }: Props) {
             <div key={order.order_id} className="p-6 hover:bg-gray-50">
               <div className="flex justify-between items-center mb-4">
                 <div>
-                  <h4 className="font-semibold">Order #{order?.order_id}</h4>
+                  <h4 className="font-semibold">Order #{order?.order_code}</h4>
                   <p className="text-gray-600 text-sm">
                     {dayjs(order?.order_date).format("MMMM DD YYYY")}
                   </p>

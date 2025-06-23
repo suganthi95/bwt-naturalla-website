@@ -73,11 +73,11 @@ export default function TodayDeals({ Products }: Props) {
               </div>
               <p
                 onClick={() => navigate(`/product/${item.slug}`)}
-                className="text-lead cursor-pointer hover:text-primary transition-colors duration-300 text-lg"
+                className="text-primary font-medium cursor-pointer hover:text-primary transition-colors duration-300 text-xl"
               >
                 {item.product_name}
               </p>
-              <p className="text-primary font-medium text-xl line-clamp-2">
+              <p className="text-lead font-medium text-lg line-clamp-1">
                 {item.short_description}
               </p>
               <div className="flex items-center justify-between w-full">

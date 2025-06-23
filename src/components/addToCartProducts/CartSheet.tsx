@@ -99,7 +99,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
           {shipping === 0 && (
             <div className="space-y-1.5 mb-4">
               <p className="font-semibold  text-sm">
-                🎉 Congrats!
+                🎉 Congrats! {" "}
                 <span className="text-[#111411]">
                   You{"’"}ve earned free shipping!
                 </span>
