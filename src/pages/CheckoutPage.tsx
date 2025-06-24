@@ -188,17 +188,17 @@ export default function CheckoutPage() {
   const [showbiilingStateDropdown, setbiilingShowSatteDropdown] =
     useState(false);
   const filteredCities = cities.filter((city) =>
-    city.name.toLowerCase().includes(query.toLowerCase())
+    city.name.toLowerCase().includes(query?.toLowerCase())
   );
   const filteredStates = states.filter((city) =>
-    city.name.toLowerCase().includes(Statequery.toLowerCase())
+    city.name.toLowerCase().includes(Statequery?.toLowerCase())
   );
 
   const filteredCities2 = cities.filter((city) =>
-    city.name.toLowerCase().includes(biilingquery.toLowerCase())
+    city.name.toLowerCase().includes(biilingquery?.toLowerCase())
   );
   const filteredStates2 = states.filter((city) =>
-    city.name.toLowerCase().includes(biilingStatequery.toLowerCase())
+    city.name.toLowerCase().includes(biilingStatequery?.toLowerCase())
   );
 
   const form = useForm<z.infer<typeof formSchema>>({
