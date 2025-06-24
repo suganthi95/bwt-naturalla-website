@@ -2,7 +2,7 @@ import { Icons } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { BadgePercent, Loader2, TicketPercent } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -48,6 +48,7 @@ import type { RootState } from "@/redux/store";
 import axios from "axios";
 import type { CouponState } from "@/types/type";
 import FullScreenLoader from "@/common/FullScreenLoader";
+import { useGetAddress } from "@/services/profile";
 
 // Country data
 
@@ -161,7 +162,7 @@ const formSchema = z
 export default function CheckoutPage() {
   const navigate = useNavigate();
   const { token } = useSelector((state: RootState) => state.auth);
-
+  const { data: addresses } = useGetAddress(token);
   const { data, isLoading, isFetching } = useGetCartItems(token);
 
   const { mutate } = useUpdateCart();
@@ -222,6 +223,29 @@ export default function CheckoutPage() {
       pinCode: "",
     },
   });
+
+
+  useEffect(() => {
+    if(addresses){
+
+      const [ defaultAddress ] = addresses?.filter((address: any) => address.default_address);
+
+      form.reset({
+        firstName: defaultAddress.address_first_name,
+        lastName: defaultAddress.address_last_name,
+        email: defaultAddress.address_email,
+        phoneNumber: defaultAddress.address_phone_no,
+        address: defaultAddress.address,
+        city: defaultAddress.city,
+        state: defaultAddress.state,
+        pinCode: defaultAddress.pincode,
+      });
+
+      setQuery(defaultAddress.city);
+      setStateQuery(defaultAddress.state)
+    }
+
+  }, [ addresses, form.reset ]);
 
 
   const handleDecrease = (cart_id: number, quan: number) => {
