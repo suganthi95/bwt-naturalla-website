@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
 import { AnimatePresence, motion } from "framer-motion";
 import { useDeleteWishlist } from "@/services/whistlist";
-import {  removeWishlistItem } from "@/redux/slices/wishSlice";
+import { removeWishlistItem } from "@/redux/slices/wishSlice";
 import { toast } from "sonner";
 import { useAddToCart } from "@/services/cart";
 import EmptyWishlist from "./EmptyWishlist";
@@ -28,7 +28,7 @@ export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
 
   const dispatch = useDispatch();
   const { items } = useSelector((state: RootState) => state.wish);
-  const { token ,status} = useSelector((state: RootState) => state.auth);
+  const { token, status } = useSelector((state: RootState) => state.auth);
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
   const { mutate } = useAddToCart();
   const { mutate: removeCart } = useDeleteWishlist();
@@ -60,53 +60,54 @@ export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
               return (
                 <li
                   key={index}
-                  className="flex gap-4 border-b mb-4 items-start   pb-4"
+                  className="flex flex-col sm:flex-row gap-4 border-b mb-4 pb-4 items-start"
                 >
                   <img
                     src={item?.thumbnail_image_url}
                     alt="Product"
-                    className="w-28 h-36 object-cover rounded-md border"
+                    className="w-full sm:w-28 h-36 object-cover rounded-md border"
                   />
 
-                  <div className="flex flex-col  gap-y-2.5 flex-1">
-                    <div className="flex justify-between items-start text-textPrimary">
+                  <div className="flex flex-col flex-1 gap-y-2.5">
+                    <div className="flex justify-between text-textPrimary">
                       <div>
-                        <h3 className="font-semibold line-clamp-3  text-textPrimary md:text-lg">
+                        <h3 className="font-semibold line-clamp-2 text-base sm:text-lg">
                           {item?.product_name}
                         </h3>
-                        <p className="text-sm text-[13px] flex gap-x-1 items-center ">
-                          <span className="text-[13px] text-[#939393] px-2 ">
-                            1 unit
-                          </span>{" "}
-                          ₹{item.unit_price}{" "}
-                          <span className="border-l h-3 border-gray-300"></span>
-                          <span className="text-[13px]  text-[#939393]">
-                            Size
-                          </span>{" "}
+                        <p className="text-sm flex flex-wrap items-center gap-x-2 mt-0.5 text-[#939393]">
+                          <span>1 unit</span>₹{item.unit_price}
+                          <span className="hidden sm:inline border-l h-3 border-gray-300"></span>
+                          <span>Size</span>
                           {item?.product_size}
                         </p>
-                        <div className="mt-1">
-                          <span className="text-base font-bold md:text-[22px] text-title">
+
+                        <div className="mt-1 flex items-center gap-2 flex-wrap">
+                          <span className="text-lg font-bold text-title">
                             ₹{item.unit_price}
                           </span>
-                          <span className="line-through ml-2 text-sm text-gray-400">
-                            ₹{item.strike_through_price}
-                          </span>
-                          <span className="ml-2 text-sm text-green-600 font-semibold">
-                            20% off
-                          </span>
+                          {item.strike_through_price && (
+                            <>
+                              <span className="line-through text-sm text-gray-400">
+                                ₹{item.strike_through_price}
+                              </span>
+                              <span className="text-sm text-green-600 font-semibold">
+                                20% off
+                              </span>
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-x-1.5">
+
+                    <div className="flex flex-wrap gap-2 items-center mt-1">
                       <motion.button
-                        className="text-white text-sm cursor-pointer bg-primary hover:text-white px-6 py-2 rounded-md font-semibold"
+                        className="text-white bg-primary hover:bg-primary/90 text-sm px-5 py-2 rounded-md font-semibold transition"
                         onClick={() => {
                           if (status) {
                             mutate({
                               product_id: item.product_id,
                               quantity: 1,
-                              token: token,
+                              token,
                             });
                             dispatch(addItem(item));
                           } else {
@@ -117,9 +118,10 @@ export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
                       >
                         Add to Cart
                       </motion.button>
+
                       <button
                         onClick={() => handleRemoveProduct(item.product_id)}
-                        className="text-gray-500 cursor-pointer hover:text-red-500"
+                        className="text-gray-500 hover:text-red-500 transition"
                       >
                         {removingItemId === item.cart_id ? (
                           <Loader2 className="w-4 h-4 animate-spin text-red-500" />
@@ -128,6 +130,7 @@ export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
                         )}
                       </button>
                     </div>
+
                     <AnimatePresence>
                       {item?.quantity >= item?.current_stock && (
                         <motion.p
@@ -141,7 +144,7 @@ export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
                           quantity available
                         </motion.p>
                       )}
-                    </AnimatePresence>{" "}
+                    </AnimatePresence>
                   </div>
                 </li>
               );

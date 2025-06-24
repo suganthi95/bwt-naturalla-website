@@ -98,7 +98,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
         <>
           {shipping === 0 && (
             <div className="space-y-1.5 mb-4">
-              <p className="font-semibold  text-sm">
+              <p className="font-semibold   text-xs md:text-sm">
                 🎉 Congrats!{" "}
                 <span className="text-[#111411]">
                   You{"’"}ve earned free shipping!
@@ -111,55 +111,61 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
             {items?.map((item, index) => {
               return (
                 <>
-                  <li key={index} className="flex gap-4 items-start">
+                  <li
+                    key={index}
+                    className="flex flex-col sm:flex-row gap-4 items-start"
+                  >
                     <img
                       src={item?.thumbnail_image_url}
                       alt="Product"
-                      className="w-28 h-36 object-cover rounded-md border"
+                      className="w-full sm:w-28 h-36 object-cover rounded-md border"
                     />
 
-                    <div className="flex flex-col  gap-y-2.5 flex-1">
+                    <div className="flex flex-col gap-y-2.5 flex-1">
                       <div className="flex justify-between items-start text-textPrimary">
                         <div>
-                          <h3 className="font-semibold line-clamp-3  text-textPrimary md:text-lg">
+                          <h3 className="font-semibold line-clamp-3 text-textPrimary text-base md:text-lg">
                             {item?.product_name}
                           </h3>
-                          <p className="text-sm text-[13px] flex gap-x-1 items-center ">
-                            <span className="text-[13px] text-[#939393] px-2 ">
-                              1 unit
-                            </span>{" "}
-                            ₹{item.unit_price}{" "}
-                            <span className="border-l h-3 border-gray-300"></span>
-                            <span className="text-[13px]  text-[#939393]">
-                              Size
-                            </span>{" "}
+
+                          <p className="text-sm flex flex-wrap gap-x-2 items-center mt-0.5 text-[#939393]">
+                            <span className="text-[13px]">1 unit</span> ₹
+                            {item.unit_price}
+                            <span className="hidden sm:inline border-l h-3 border-gray-300"></span>
+                            <span className="text-[13px]">Size</span>{" "}
                             {item?.product_size}
                           </p>
-                          <div className="mt-1">
+
+                          <div className="mt-1 flex items-center gap-2 flex-wrap">
                             <span className="text-base font-bold md:text-[22px] text-title">
                               ₹{Math.round(item.unit_price * item.quantity)}
                             </span>
-                            <span className="line-through ml-2 text-sm text-gray-400">
-                              ₹{item.strike_through_price}
-                            </span>
-                            <span className="ml-2 text-sm text-green-600 font-semibold">
-                              20% off
-                            </span>
+                            {item.strike_through_price && (
+                              <>
+                                <span className="line-through text-sm text-gray-400">
+                                  ₹{item.strike_through_price}
+                                </span>
+                                <span className="text-sm text-green-600 font-semibold">
+                                  20% off
+                                </span>
+                              </>
+                            )}
                           </div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-x-1.5">
-                        <div className="flex items-center gap-2 border w-fit  px-4 rounded-lg">
+
+                      <div className="flex items-center gap-x-2 flex-wrap">
+                        <div className="flex items-center gap-1 border px-3 py-1 rounded-lg">
                           <Button
                             variant="outline"
                             disabled={item?.quantity < 2}
                             size="icon"
-                            className="border-none cursor-pointer  w-fit text-xl font-semibold"
+                            className="border-none p-0 text-xl font-semibold w-6 h-6"
                             onClick={() =>
                               handleDecrease(item.cart_id, item.quantity)
                             }
                           >
-                            {" −"}
+                            −
                           </Button>
                           <Input
                             type="number"
@@ -167,32 +173,34 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                             onChange={(e) =>
                               setQuantity(Number(e.target.value))
                             }
-                            className="w-10    font-semibold border-none text-center"
+                            className="w-10 text-center border-none p-0 font-semibold"
                             min={1}
                           />
                           <Button
                             variant="outline"
                             size="icon"
                             disabled={item?.quantity >= item?.current_stock}
-                            className="cursor-pointer  border-none  w-fit text-xl font-semibold"
+                            className="border-none p-0 text-xl font-semibold w-6 h-6"
                             onClick={() => handleIncrease(item.cart_id)}
                           >
                             +
                           </Button>
-                        </div>{" "}
+                        </div>
+
                         <button
                           onClick={() =>
                             handleRemoveProduct(item.cart_id, item?.quantity)
                           }
-                          className="text-gray-500 cursor-pointer hover:text-red-500"
+                          className="text-gray-500 hover:text-red-500"
                         >
                           {removingItemId === item.cart_id ? (
                             <Loader2 className="w-4 h-4 animate-spin text-red-500" />
                           ) : (
                             <Icons.Remove />
                           )}
-                        </button> 
+                        </button>
                       </div>
+
                       <AnimatePresence>
                         {item?.quantity >= item?.current_stock && (
                           <motion.p
@@ -206,9 +214,10 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                             quantity available
                           </motion.p>
                         )}
-                      </AnimatePresence>{" "}
+                      </AnimatePresence>
                     </div>
                   </li>
+
                   <hr className="my-4 border-gray-300" />
                 </>
               );
