@@ -182,11 +182,11 @@ export default function ProductsList({ Products, title }: Props) {
                   key={index}
                   className="w-full group md:w-fit space-y-3 xl:p-3 relative group"
                 >
-                  <div className="absolute hidden group-hover:flex top-3 opacity-0 group-hover:opacity-100  transition-all items-center justify-center flex-col right-3 z-20">
+                  <div className="absolute hidden group-hover:flex top-3 opacity-0 group-hover:opacity-100 duration-300  transition-all items-center justify-center flex-col right-3 z-20">
                     <motion.div
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.6 }}
-                      className="text-primary"
+                      className="text-primary opacity-0 group-hover:opacity-100"
                     >
                       <button
                         onClick={() => {
@@ -270,7 +270,7 @@ export default function ProductsList({ Products, title }: Props) {
                     <img
                       src={item?.thumbnail_image_url}
                       alt={item?.product_name}
-                      className="w-full h-40 sm:h-60 md:w-[240px] md:h-[240px] object-cover rounded-xl group-hover:h-44"
+                      className="w-full h-40 sm:h-60 md:w-[240px] md:h-[240px] transition-all duration-300  object-cover rounded-xl group-hover:h-44"
                     />
                   </div>
 

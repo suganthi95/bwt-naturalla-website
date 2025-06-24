@@ -241,8 +241,8 @@ export default function CheckoutPage() {
         pinCode: defaultAddress?.pincode ?? '',
       });
 
-      setQuery(defaultAddress.city);
-      setStateQuery(defaultAddress.state);
+      setQuery(defaultAddress?.city);
+      setStateQuery(defaultAddress?.state);
     }
   }, [addresses, form.reset]);
 

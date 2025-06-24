@@ -36,7 +36,13 @@ const filterSlice = createSlice({
         }
       });
     },
-
+    addKeyword: (state, action: PayloadAction<string>) => {
+      const keyword = action.payload.trim().toLowerCase();
+      const existingItem = state.keywords.includes(keyword);
+      if (!existingItem) {
+        state.keywords.push(keyword);
+      }
+    },
     removeKeyword: (state, action: PayloadAction<string>) => {
       state.keywords = state.keywords.filter((k) => k !== action.payload);
     },
@@ -61,10 +67,7 @@ const filterSlice = createSlice({
     ) => {
       state.sortByPrice = action.payload;
     },
-    setSortDate: (
-      state,
-      action: PayloadAction<string>
-    ) => {
+    setSortDate: (state, action: PayloadAction<string>) => {
       state.sortByDate = action.payload;
     },
     setSortByAlphabetic: (
@@ -80,6 +83,7 @@ const filterSlice = createSlice({
 export const {
   setSearchInput,
   addKeywords,
+  addKeyword,
   removeKeyword,
   setPriceRanges,
   setCategories,

@@ -36,9 +36,12 @@ export default function Order({ Orders, handleTab }: Props) {
   const { data } = useGetOrdersDetails(token, selectedOrder ?? 0);
   const handleBackToOrders = () => {
     setSelectedOrder(null);
-    handleTab("orderHistory");
+    setIsReviewopen(false);
+    setUpdatedReview(null);
     setIsopen(false);
+    handleTab("orderHistory");
   };
+
   const handleOrderSelect = (orderId: number) => {
     setSelectedOrder(orderId);
     setIsopen(true);

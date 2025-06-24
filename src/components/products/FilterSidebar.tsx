@@ -16,8 +16,10 @@ import {
 } from "../ui/accordion2";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  addKeyword,
   addKeywords,
   clearFilters,
+  removeKeyword,
   setCategories,
   setPriceRanges,
   setSortByPrice,
@@ -40,14 +42,8 @@ const sortOptions2 = [
 export default function FilterSidebar({ filterValues }: Props) {
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
-    const {
-    categories,
-    keywords,
-    maxPrice,
-    minPrice,
-    sortByDate,
-    sortByPrice,
-  } = useSelector((state: RootState) => state.filter);
+  const { categories, keywords, maxPrice, minPrice, sortByDate, sortByPrice } =
+    useSelector((state: RootState) => state.filter);
   const [badges, setBadges] = useState<string[]>(keywords);
   const defaultMin = filterValues?.price_range[0]?.min_price ?? 164;
   const defaultMax = filterValues?.price_range[0]?.max_price ?? 5000;
@@ -57,9 +53,10 @@ export default function FilterSidebar({ filterValues }: Props) {
   ]);
   const [open, setOpen] = useState(false);
   const [min, max] = priceRange;
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(categories);
+  const [selectedCategories, setSelectedCategories] =
+    useState<string[]>(categories);
   const [sortBy, setSortBy] = useState(sortByPrice);
-  const [sortDate, setSortByDate] = useState( sortByDate  );
+  const [sortDate, setSortByDate] = useState(sortByDate);
 
   const toggleCategory = (category: string) => {
     setSelectedCategories((prev) =>
@@ -69,7 +66,6 @@ export default function FilterSidebar({ filterValues }: Props) {
     );
   };
 
-  
   const handlePriceInput = (value: number, type: "min" | "max") => {
     if (type === "min") {
       if (value <= priceRange[1]) {
@@ -85,11 +81,11 @@ export default function FilterSidebar({ filterValues }: Props) {
   const clearAll = () => {
     setSearchTerm("");
     setBadges([]);
-    dispatch(clearFilters())
+    dispatch(clearFilters());
     setPriceRange([100, 1000]);
     setSelectedCategories([]);
     setSortBy("");
-    setSortByDate("")
+    setSortByDate("");
   };
 
   const applyFilters = () => {
@@ -111,12 +107,10 @@ export default function FilterSidebar({ filterValues }: Props) {
       </div>
 
       <div className="space-y-2">
-        
         <label className="text-sm font-medium">Benefits</label>
 
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
-           
             <Button
               variant="outline"
               role="combobox"
@@ -124,7 +118,9 @@ export default function FilterSidebar({ filterValues }: Props) {
               className="justify-between text-sm w-full"
             >
               {searchTerm
-                ? filterValues?.benefits.find((benefit) => benefit === searchTerm)
+                ? filterValues?.benefits.find(
+                    (benefit) => benefit === searchTerm
+                  )
                 : "Search by keyword..."}
               <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
@@ -148,6 +144,7 @@ export default function FilterSidebar({ filterValues }: Props) {
                         setBadges((prev) => [...prev, tag]);
                         setSearchTerm("");
                         setOpen(false);
+                        dispatch(addKeyword(tag))
                       }}
                     >
                       {tag}
@@ -169,8 +166,9 @@ export default function FilterSidebar({ filterValues }: Props) {
               <span
                 onClick={() => {
                   setBadges((prev) => prev.filter((item) => item !== badge));
-                    applyFilters()
-
+                  applyFilters();
+                  dispatch(addKeywords(badges));
+                  dispatch(removeKeyword(badge));
                   // dispatch(removeKeyword(badge))
                 }}
               >
@@ -190,11 +188,10 @@ export default function FilterSidebar({ filterValues }: Props) {
             <div className="mt-4">
               <Slider
                 value={priceRange}
-                onValueChange={(val) =>{ 
-                                      applyFilters()
+                onValueChange={(val) => {
+                  applyFilters();
 
-                  setPriceRange([val[0], val[1]])
-
+                  setPriceRange([val[0], val[1]]);
                 }}
                 min={defaultMin}
                 max={defaultMax}
@@ -205,11 +202,10 @@ export default function FilterSidebar({ filterValues }: Props) {
                 <Input
                   type="number"
                   value={min}
-                  onChange={(e) =>{ 
-                                        applyFilters()
+                  onChange={(e) => {
+                    applyFilters();
 
-                    handlePriceInput(+e.target.value, "min")
-
+                    handlePriceInput(+e.target.value, "min");
                   }}
                   min={defaultMin}
                   max={priceRange[1]}
@@ -217,10 +213,9 @@ export default function FilterSidebar({ filterValues }: Props) {
                 <Input
                   type="number"
                   value={max}
-                  onChange={(e) =>{ handlePriceInput(+e.target.value, "max")
-                    applyFilters()
-
-
+                  onChange={(e) => {
+                    handlePriceInput(+e.target.value, "max");
+                    applyFilters();
                   }}
                   min={priceRange[0]}
                   max={defaultMax}
@@ -248,9 +243,9 @@ export default function FilterSidebar({ filterValues }: Props) {
                     <Checkbox
                       id={checkboxId}
                       checked={selectedCategories.includes(cat.category_title)}
-                      onCheckedChange={() =>{ toggleCategory(cat.category_title)
-                                            applyFilters()
-
+                      onCheckedChange={() => {
+                        toggleCategory(cat.category_title);
+                        applyFilters();
                       }}
                     />
                     <label htmlFor={checkboxId} className="text-sm">
@@ -277,9 +272,9 @@ export default function FilterSidebar({ filterValues }: Props) {
             <AccordionContent>
               <RadioGroup
                 value={sortBy}
-                onValueChange={(val)=>{setSortBy(val)
-                                      applyFilters()
-
+                onValueChange={(val) => {
+                  setSortBy(val);
+                  applyFilters();
                 }}
                 className="space-y-2 mt-2"
               >
@@ -305,9 +300,9 @@ export default function FilterSidebar({ filterValues }: Props) {
             <AccordionContent>
               <RadioGroup
                 value={sortDate}
-                onValueChange={()=>{setSortByDate
-                                      applyFilters()
-
+                onValueChange={() => {
+                  setSortByDate;
+                  applyFilters();
                 }}
                 className="space-y-2 mt-2"
               >
@@ -326,7 +321,6 @@ export default function FilterSidebar({ filterValues }: Props) {
       <Button className="w-full hidden xl:block mt-4" onClick={applyFilters}>
         Apply Filters
       </Button>
-
     </div>
   );
 }
