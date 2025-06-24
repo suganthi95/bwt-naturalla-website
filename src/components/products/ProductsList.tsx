@@ -10,7 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import type { Product } from "@/types/Home";
 import { AnimatePresence, motion } from "framer-motion";
-import { Heart } from "lucide-react";
+import { FunnelPlus, Heart, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
 import { setSortByAlphabetic } from "@/redux/slices/filterSlice";
@@ -20,11 +20,20 @@ import { toast } from "sonner";
 import { useAddToWishList, useDeleteWishlist } from "@/services/whistlist";
 import { addWishItem, removeWishlistItem } from "@/redux/slices/wishSlice";
 import NoProducts from "./NoProducts";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTrigger,
+} from "../ui/sheet";
+import FilterSidebar from "./FilterSidebar";
+import { useFilterValues } from "@/services/product";
 interface Props {
   Products: Product[];
-  title:string | null
+  title: string | null;
 }
-export default function ProductsList({ Products ,title}: Props) {
+export default function ProductsList({ Products, title }: Props) {
   const {
     categories,
     keywords,
@@ -36,8 +45,10 @@ export default function ProductsList({ Products ,title}: Props) {
     sorybyAlphabetic,
   } = useSelector((state: RootState) => state.filter);
   const [sortBy, setSortBy] = useState("a-z");
+
   const [filteredProducts, setFiltered] = useState<Product[]>();
   const { token, status } = useSelector((state: RootState) => state.auth);
+  const { data } = useFilterValues(token);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { mutate } = useAddToCart();
@@ -64,7 +75,7 @@ export default function ProductsList({ Products ,title}: Props) {
         item.benefit_keys?.some((key) => keywords.includes(key))
       );
     }
-    
+
     filtered = filtered?.filter(
       (item) => item.unit_price >= minPrice && item.unit_price <= maxPrice
     );
@@ -88,32 +99,56 @@ export default function ProductsList({ Products ,title}: Props) {
   ]);
   return (
     <div className="space-y-4 w-full">
-      <div className="flex justify-between items-center w-full">
-        <h1 className="font-semibold text-2xl">{title ? title :'Products'}</h1>
+      <div className="flex  flex-col  lg:flex-row justify-between xl:items-center w-full">
+        <h1 className="font-semibold text-2xl">{title ? title : "Products"}</h1>
 
-        <div className="flex items-center gap-4">
-          <h2 className="font-medium text-sm text-title">Sort By:</h2>
-          <Select
-            value={sortBy}
-            onValueChange={(val) => {
-              setSortBy;
-              dispatch(setSortByAlphabetic(val));
-            }}
-          >
-            <SelectTrigger className="min-w-[120px]">
-              <SelectValue placeholder="Sort order" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="a-z">A - Z</SelectItem>
-              <SelectItem value="z-a">Z - A</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="flex justify-between items-center xl:gap-4">
+          <Sheet >
+            <SheetTrigger className="flex  lg:hidden  items-center gap-x-1.5">
+              <FunnelPlus />{" "}
+              <span className="text-title text-sm font-medium">Filter</span>
+            </SheetTrigger>
+            <SheetContent
+              side="left"
+              className="[&>button]:hidden overflow-y-auto  p-4"
+            >
+              <SheetHeader className="p-0">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold">Filters</h2>
+
+                  <SheetClose>
+                    <X />
+                  </SheetClose>
+                </div>
+              </SheetHeader>
+              <FilterSidebar filterValues={data} />
+            </SheetContent>
+          </Sheet>
+
+          <div className="flex items-center gap-4">
+            <h2 className="font-medium text-sm text-title">Sort By:</h2>
+            <Select
+              value={sortBy}
+              onValueChange={(val) => {
+                setSortBy;
+                dispatch(setSortByAlphabetic(val));
+              }}
+            >
+              <SelectTrigger className="min-w-[120px]">
+                <SelectValue placeholder="Sort order" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="a-z">A - Z</SelectItem>
+                <SelectItem value="z-a">Z - A</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
       {filteredProducts?.length === 0 ? (
         <NoProducts />
       ) : (
-        <ul className="grid md:grid-cols-4 gap-4">
+        <ul className="grid grid-cols-2  md:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-4 xl:gap-4">
           {filteredProducts
             ?.slice()
             ?.sort((a, b) => {
@@ -143,47 +178,17 @@ export default function ProductsList({ Products ,title}: Props) {
             .map((item, index) => {
               const isLiked = likedProducts[item.product_id];
               return (
-                <li key={index} className="space-y-2 md:w-fit relative">
-                  <div className="relative w-fit mx-auto group">
+                <li
+                  key={index}
+                  className="w-full md:w-fit space-y-3 xl:p-3 relative"
+                >
+                  <div className="absolute top-3 right-3 z-10">
                     <motion.div
-                      className="absolute top-2 right-2 z-10  text-primary"
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.6 }}
+                      className="text-primary"
                     >
-                      {/* <Heart className="w-5 h-5 opacity-0 group-hover:opacity-100" /> */}
                       <button
-                        // onClick={() => {
-
-                        //   if (
-                        //     status &&
-                        //     (!liked || (item?.in_wishlist && !item?.in_wishlist))
-                        //   ) {
-                        //     addWishlist(
-                        //       {
-                        //         product_id: item.product_id,
-                        //         quantity: 1,
-                        //         token: token,
-                        //       },
-                        //       {
-                        //         onSuccess: () => {},
-                        //       }
-                        //     );
-                        //     dispatch(addWishItem(item));
-                        //   } else if (
-                        //     (liked || (item?.in_wishlist && item?.in_wishlist)) &&
-                        //     status
-                        //   ) {
-                        //     deleteWishlist({
-                        //       cart_id: item.product_id,
-                        //       token: token,
-                        //     });
-                        //     dispatch(removeWishlistItem(item.cart_id));
-                        //   } else {
-                        //     toast.error("Please login to continue");
-                        //     navigate("/login");
-                        //   }
-                        // }}
-
                         onClick={() => {
                           if (!status) {
                             toast.error("Please login to continue");
@@ -208,13 +213,11 @@ export default function ProductsList({ Products ,title}: Props) {
                             dispatch(removeWishlistItem(item.cart_id));
                           }
                         }}
-                        className="relative w-10 h-10  cursor-pointer flex items-center justify-center"
+                        className="w-9 h-9 flex items-center justify-center"
                       >
                         <motion.div
                           initial={false}
-                          animate={{
-                            scale: isLiked ? 1.3 : 1,
-                          }}
+                          animate={{ scale: isLiked ? 1.3 : 1 }}
                           transition={{
                             type: "spring",
                             stiffness: 300,
@@ -237,68 +240,92 @@ export default function ProductsList({ Products ,title}: Props) {
                               initial={{ scale: 1, opacity: 0.5 }}
                               animate={{ scale: 2, opacity: 0 }}
                               exit={{ opacity: 0 }}
-                              transition={{ duration: 0.6, ease: "easeOut" }}
+                              transition={{ duration: 0.6 }}
                               className="absolute w-5 h-5 rounded-full bg-red-500"
                             />
                           )}
                         </AnimatePresence>
                       </button>
                     </motion.div>
+                  </div>
 
+                  <div className="relative w-full">
                     <img
                       src={item?.thumbnail_image_url}
                       alt={item?.product_name}
-                      className="w-60 h-60 md:w-[240px] md:h-[240px] rounded-xl object-cover mx-auto cursor-pointer"
                       onClick={() => navigate(`/product/${item.slug}`)}
+                      className="w-full h-40 sm:h-60  md:w-[240px] md:h-[240px] object-cover rounded-xl cursor-pointer"
                     />
+                  </div>
 
-                    <div className="absolute inset-0 bg-black/40 rounded-xl opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        className="bg-white text-black cursor-pointer hover:bg-primary hover:text-white px-4 py-2 rounded-md font-semibold"
-                        onClick={() => {
-                          if (status) {
-                            mutate({
-                              product_id: item.product_id,
-                              quantity: 1,
-                              token: token,
-                            });
-                            dispatch(addItem(item));
-                          } else {
-                            toast.error("Please login to continue");
-                            navigate("/login");
-                          }
-                        }}
-                      >
-                        Add to Cart
-                      </motion.button>
+                  <div className="block sm:hidden mt-2">
+                    <button
+                      className="w-full bg-primary text-white px-4 py-2 rounded-md font-semibold"
+                      onClick={() => {
+                        if (status) {
+                          mutate({
+                            product_id: item.product_id,
+                            quantity: 1,
+                            token: token,
+                          });
+                          dispatch(addItem(item));
+                        } else {
+                          toast.error("Please login to continue");
+                          navigate("/login");
+                        }
+                      }}
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
+
+                  <div className="hidden sm:block">
+                    <div className="group relative">
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 rounded-xl transition-opacity duration-300 flex items-center justify-center">
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          className="bg-white text-black px-4 py-2 rounded-md font-semibold hover:bg-primary hover:text-white transition"
+                          onClick={() => {
+                            if (status) {
+                              mutate({
+                                product_id: item.product_id,
+                                quantity: 1,
+                                token: token,
+                              });
+                              dispatch(addItem(item));
+                            } else {
+                              toast.error("Please login to continue");
+                              navigate("/login");
+                            }
+                          }}
+                        >
+                          Add to Cart
+                        </motion.button>
+                      </div>
                     </div>
                   </div>
 
                   <p
-                    className="text-title hover:text-primary  transition-colors duration-300 text-lg font-semibold line-clamp-1 cursor-pointer"
+                    className="text-title hover:text-primary transition text-base sm:text-lg font-semibold line-clamp-1 cursor-pointer"
                     onClick={() => navigate(`/product/${item.slug}`)}
                   >
-                    {/* {item?.product_name.length > 12
-                      ? `${item.product_name.slice(0, 12)}`
-                      : item.product_name} */}
-                      {item?.product_name}
-                 
+                    {item?.product_name}
                   </p>
-  
-                  <div className="flex  items-center justify-between ">
-                    <div>
 
-                    <p className="text-textPrimary text-xl lato font-bold">
-                      Rs. {item?.unit_price}
-                      <span className="text-lg text-lead font-normal line-through ml-2">
-                        Rs. {item?.strike_through_price}
-                      </span>
-                    </p>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-textPrimary text-base sm:text-lg font-bold">
+                        Rs. {item?.unit_price}
+                        <span className="text-sm text-lead font-normal line-through ml-1">
+                          Rs. {item?.strike_through_price}
+                        </span>
+                      </p>
                     </div>
-                    <p className="text-sm  font-medium text-lead">
-                      ({item?.product_size})
-                    </p>
+                    {item?.product_size && (
+                      <p className="text-sm font-medium text-lead">
+                        ({item?.product_size})
+                      </p>
+                    )}
                   </div>
                 </li>
               );

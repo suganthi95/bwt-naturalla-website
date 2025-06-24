@@ -6,19 +6,11 @@ import { Button } from "@/components/ui/button";
 import UserAddress from "@/components/profile/address/UserAddress";
 import Order from "@/components/profile/orders/Order";
 import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Settings from "@/components/profile/settings/Settings";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
-import {
-  useGetOrders,
-  useGetProfileInfo,
-} from "@/services/profile";
+import { useGetOrders, useGetProfileInfo } from "@/services/profile";
 import ProfilePictureUpload from "@/components/profile/ProfilePictureUpload";
 
 export default function Myprofile() {
@@ -35,11 +27,12 @@ export default function Myprofile() {
 
   return (
     <section className=" mb-10 md:mb-20">
-      <img src={ASSETS.RECTANGLE} alt="profile-banner" className="" />
+      <img src={ASSETS.RECTANGLE} alt="profile-banner" className="h-20 md:h-auto" />
       <div className="container mx-auto">
         <div className="w-full">
-          <div className="flex items-center w-full  gap-x-2.5 -translate-y-10">
-            <div className="relative w-[180px] h-40 rounded-full border-4 border-white overflow-hidden">
+          <div className="flex flex-col md:flex-row items-center w-full gap-y-4 md:gap-x-2.5 -translate-y-6 md:-translate-y-10 px-4">
+
+            <div className="relative w-24 h-24 md:w-[180px] md:h-44 rounded-full border-4 border-white overflow-hidden shrink-0">
               <img
                 src={
                   (profileInfo && profileInfo[0]?.profile_pic) || ASSETS.USER
@@ -49,9 +42,7 @@ export default function Myprofile() {
               />
               <Dialog open={IsProfileUpdate} onOpenChange={setIsProfileUpdate}>
                 <DialogTrigger>
-                  <button
-                    className="absolute cursor-pointer bottom-10 -right-4 -translate-x-1/2 translate-y-1/2 bg-white border border-gray-300 p-2 rounded-lg shadow-md hover:bg-gray-100"
-                  >
+                  <button className="absolute bottom-0 right-0 lg:bottom-5 lg:right-3 bg-white border border-gray-300 p-2 rounded-full shadow-md hover:bg-gray-100">
                     <Icons.Edit className="w-4 h-4 text-gray-600" />
                   </button>
                 </DialogTrigger>
@@ -60,23 +51,23 @@ export default function Myprofile() {
                 </DialogContent>
               </Dialog>
             </div>
-            <div className="flex items-center justify-between w-full">
-              <div>
-                <h2 className="flex items-center gap-x-1 font-bold text-xl">
-                  {profileInfo && profileInfo[0]?.first_name}{" "}
-                  {profileInfo && profileInfo[0]?.last_name}{" "}
-                  <span>
-                    <Icons.BlueCheck />
-                  </span>{" "}
+
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center w-full gap-2">
+              <div className="text-center md:text-left">
+                <h2 className="flex items-center justify-center md:justify-start gap-x-1 font-bold text-lg md:text-xl">
+                  {profileInfo?.[0]?.first_name} {profileInfo?.[0]?.last_name}
+                  <Icons.BlueCheck />
                 </h2>
-                <p className="text-[#98A298] font-medium">
-                  {profileInfo && profileInfo[0]?.email}
+                <p className="text-[#98A298] font-medium text-sm">
+                  {profileInfo?.[0]?.email}
                 </p>
               </div>
 
-           
-                  <Button onClick={()=>setActiveTab('settings')}>Edit</Button>
-             
+              <div className="text-center md:text-right mt-2 md:mt-0">
+                <Button onClick={() => setActiveTab("settings")} size="sm">
+                  Edit
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -128,7 +119,7 @@ export default function Myprofile() {
           </Tabs>
         </div> */}
         <div className="mb-6">
-          <nav className="flex border-b">
+<nav className="flex overflow-x-auto border-b no-scrollbar">
             <button
               onClick={() => handleTabChange("dashboard")}
               className={`px-6 py-3 font-medium text-sm cursor-pointer !rounded-button whitespace-nowrap ${
@@ -172,10 +163,16 @@ export default function Myprofile() {
           </nav>
         </div>
         <div>
-          {activeTab === "dashboard" && <Dashboard handleTabChange={handleTabChange} />}
+          {activeTab === "dashboard" && (
+            <Dashboard handleTabChange={handleTabChange} />
+          )}
           {activeTab === "addresses" && <UserAddress />}
-          {activeTab === "orderHistory" && <Order Orders={orders} handleTab={handleTabChange} />}
-          {activeTab === "settings" && <Settings User={profileInfo && profileInfo} />}
+          {activeTab === "orderHistory" && (
+            <Order Orders={orders} handleTab={handleTabChange} />
+          )}
+          {activeTab === "settings" && (
+            <Settings User={profileInfo && profileInfo} />
+          )}
         </div>
       </div>
     </section>

@@ -106,7 +106,7 @@ export default function CustomerReview({ Product }: Props) {
               </div>
             </div>
 
-            <div className="space-y-4 col-span-2 px-8 border-l border-r  border-gray-300">
+            <div className="space-y-4 xl:col-span-2  px-1 lg:px-8 lg::border-l lg:border-r  border-gray-300">
               {/* {[Product?.review_count[0]?.five_star, Product?.review_count[0]?.four_star, Product?.review_count[0]?.three_star, Product?.review_count[0]?.two_star, Product?.review_count[0]?.one_star].map((star) => (
                 <div key={star} className="flex items-center gap-2">
                   <p className="text-sm min-w-[60px] text-[#007AFF] whitespace-nowrap">
@@ -123,23 +123,23 @@ export default function CustomerReview({ Product }: Props) {
                   </span>
                 </div>
               ))} */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center md:gap-2">
                 <p className="text-sm min-w-[60px] text-[#007AFF] whitespace-nowrap">
                   5 star
                 </p>
                 <div className="relative w-full h-3 border rounded">
                   <div
-                    className="absolute top-0 left-0 h-3 bg-yellow-400 rounded"
+                    className="absolute truncate text-sm md:text-base top-0 left-0 h-3 bg-yellow-400 rounded"
                     style={{
                       width: `${FiveStar}%`,
                     }}
                   ></div>
                 </div>
-                <span className="w-12 text-sm text-right text-[#007AFF] ">
+                <span className="w-12 truncate  text-sm text-right text-[#007AFF] ">
                   {FiveStar.toFixed()} %
                 </span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center md:gap-2">
                 <p className="text-sm min-w-[60px] text-[#007AFF] whitespace-nowrap">
                   4 star
                 </p>
@@ -151,11 +151,11 @@ export default function CustomerReview({ Product }: Props) {
                     }}
                   ></div>
                 </div>
-                <span className="w-12 text-sm text-right text-[#007AFF] ">
+                <span className="w-12  text-sm text-right text-[#007AFF] ">
                   {FourStar.toFixed()} %
                 </span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center md:gap-2">
                 <p className="text-sm min-w-[60px] text-[#007AFF] whitespace-nowrap">
                   3 star
                 </p>
@@ -171,7 +171,7 @@ export default function CustomerReview({ Product }: Props) {
                   {ThreeStar.toFixed()} %
                 </span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center md:gap-2">
                 <p className="text-sm min-w-[60px] text-[#007AFF] whitespace-nowrap">
                   2 star
                 </p>
@@ -187,7 +187,7 @@ export default function CustomerReview({ Product }: Props) {
                   {TwoStar.toFixed()} %
                 </span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center md:gap-2">
                 <p className="text-sm min-w-[60px] text-[#007AFF] whitespace-nowrap">
                   1 star
                 </p>
@@ -217,7 +217,7 @@ export default function CustomerReview({ Product }: Props) {
         </div>
         <div className="mt-10">
           <div className="flex items-center justify-between w-full">
-            <h2 className="font-bold text-xl text-title">{Product?.review_count[0].total_reviews} Comments</h2>
+            <h2 className="font-bold text-sm md:text-xl text-title">{Product?.review_count[0].total_reviews} Comments</h2>
             <div className="relative">
               <Input
                 type="text"

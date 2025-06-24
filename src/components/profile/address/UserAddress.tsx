@@ -62,27 +62,29 @@ export default function UserAddress() {
   };
   return (
     <div className="bg-white rounded-lg shadow">
-      <div className="p-6 border-b flex justify-between items-center">
-        <div>
-          <h3 className="text-xl font-semibold">My Addresses</h3>
-          <p className="text-gray-600 mt-1">Manage your shipping addresses</p>
+      <div className="p-4 md:p-6 border-b flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
+        <div className="text-center md:text-left">
+          <h3 className="text-lg md:text-xl font-semibold">My Addresses</h3>
+          <p className="text-gray-600 text-sm mt-1">
+            Manage your shipping addresses
+          </p>
         </div>
+
         <Dialog open={Isopen} onOpenChange={setIsopen}>
-          <DialogTrigger className="cursor-pointer">
-            <Button className="grid place-items-center">Add New Address</Button>
+          <DialogTrigger asChild>
+            <Button className="w-full md:w-auto">Add New Address</Button>
           </DialogTrigger>
-          <DialogContent className="!max-w-3xl [&>button]:hidden  !p-0">
-            <DialogHeader className="bg-[#F5F5F5] p-4 rounded-lg w-full flex flex-row  justify-between">
-              <DialogTitle>Add your address</DialogTitle>
-              <div
-                className="cursor-pointer"
-                onClick={() => {
-                  setIsopen(false);
-                }}
-              >
+
+          <DialogContent className=" !min-w-64 mt-5 xl:mt-0 xl:!max-w-3xl max-h-[90vh] overflow-y-auto !p-0 [&>button]:hidden">
+            <DialogHeader className="bg-[#F5F5F5] p-2 md:p-4 rounded-lg w-full flex flex-row justify-between items-center">
+              <DialogTitle className="text-base md:text-lg">
+                Add your address
+              </DialogTitle>
+              <div className="cursor-pointer" onClick={() => setIsopen(false)}>
                 <X />
               </div>
             </DialogHeader>
+
             <AddAddress onClose={setIsopen} />
           </DialogContent>
         </Dialog>
@@ -102,14 +104,14 @@ export default function UserAddress() {
                 <Dialog open={Isopen2} onOpenChange={setIsopen2}>
                   <DialogTrigger className="cursor-pointer">
                     <Button
-                    onClick={()=>setSelectedAddress(address)}
+                      onClick={() => setSelectedAddress(address)}
                       type="button"
                       className="rounded-full text-[#34C759] bg-[#34C759]/10 hover:bg-[#34C7591A]/20"
                     >
                       <Edit className="h-5 w-5" />
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="!max-w-3xl [&>button]:hidden  !p-0">
+          <DialogContent className=" !min-w-64 mt-5 xl:mt-0 xl:!max-w-3xl max-h-[90vh] overflow-y-auto !p-0 [&>button]:hidden">
                     <DialogHeader className="bg-[#F5F5F5] p-4 rounded-lg w-full flex flex-row  justify-between">
                       <DialogTitle>Update address</DialogTitle>
                       <div
@@ -121,7 +123,11 @@ export default function UserAddress() {
                         <X />
                       </div>
                     </DialogHeader>
-                    <EditAddress  address_id={address.address_id}   address={selectedAddress} onClose={setIsopen2} />
+                    <EditAddress
+                      address_id={address.address_id}
+                      address={selectedAddress}
+                      onClose={setIsopen2}
+                    />
                   </DialogContent>
                 </Dialog>
 

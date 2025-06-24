@@ -201,7 +201,7 @@ export default function AddAddress({onClose}:Props) {
               </FormItem>
             )}
           />
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1  md:grid-cols-2 gap-4">
             <FormField
               control={form.control}
               name="city"
@@ -345,7 +345,7 @@ export default function AddAddress({onClose}:Props) {
             />
           </div>
 
-          <div className="grid grid-cols-2  gap-4">
+          <div className="grid  grid-cols-1 md:grid-cols-2  gap-4">
             {/* <FormField
               control={form.control}
               name="email"
@@ -451,7 +451,7 @@ export default function AddAddress({onClose}:Props) {
                   htmlFor="contact"
                   className="text-title font-semibold cursor-pointer"
                 >
-                  Save contact information
+                  Save as default address
                 </Label>
               </FormItem>
             )}

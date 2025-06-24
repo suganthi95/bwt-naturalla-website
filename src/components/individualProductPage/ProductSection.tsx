@@ -137,9 +137,9 @@ export default function ProductSection({ media, products }: Props) {
   }
 
   return (
-    <div className="flex flex-col container mx-auto lg:flex-row  ">
+    <div className="flex flex-col container mx-auto space-y-4 lg:flex-row  ">
       <div className="flex w-full lg:w-1/2 gap-4 ">
-        <div className="w-24">
+        <div className="w-20">
           <Slider
             {...thumbnailSliderSettings}
             ref={thumbSliderRef}
@@ -151,7 +151,7 @@ export default function ProductSection({ media, products }: Props) {
                   <img
                     src={src.media_url}
                     alt={`Thumb ${index + 1}`}
-                    className={`h-24 w-32 object-cover rounded-lg border cursor-pointer transition-opacity duration-300 ${
+                    className={ ` w-28 h-20 md:h-24 md:w-32 object-cover rounded-lg border cursor-pointer transition-opacity duration-300 ${
                       index === activeSlide
                         ? "opacity-100 border-2 border-black"
                         : "opacity-60"
@@ -170,7 +170,7 @@ export default function ProductSection({ media, products }: Props) {
                 <img
                   src={src?.media_url}
                   alt={`Product ${index + 1}`}
-                  className="w-11/12  rounded-2xl h-[484px] object-cover"
+                  className=" xl:w-11/12  rounded-2xl h-[410px] xl:h-[484px] object-cover"
                 />
               </div>
             ))}
@@ -181,10 +181,10 @@ export default function ProductSection({ media, products }: Props) {
       <div className="w-full  space-y-4">
         <div className="flex items-start w-full justify-between">
           <div>
-            <h2 className="text-[32px] font-semibold ">
+            <h2 className="text-2xl md:text-[32px] font-semibold ">
               {products?.product_name}
             </h2>
-            <p className="text-lead font-medium text-lg">
+            <p className="text-lead font-medium text-sm md:text-lg">
               {products?.short_description}
             </p>
           </div>
@@ -197,9 +197,7 @@ export default function ProductSection({ media, products }: Props) {
             >
               <Share2 className="w-5 h-5" />
             </Button>
-            {/* <Button variant="outline" size="icon">
-              <Heart className="w-5 h-5" />
-            </Button> */}
+         
             <button
               onClick={() => {
                 setLiked((prev) => !prev);
@@ -256,11 +254,7 @@ export default function ProductSection({ media, products }: Props) {
             </button>
           </div>
         </div>
-        {/* <p className="flex items-center gap-x-0.5 text-sm">
-          <Icons.Star /> <Icons.Star />
-          <Icons.Star />
-          <Icons.Star /> <span className="font-medium">{averageRatings}/5</span>
-        </p> */}
+     
         <p className="flex items-center gap-x-0.5 text-sm">
           {Array.from({ length: 5 }).map((_, i) =>
             i < averageRatings ? (
@@ -272,23 +266,25 @@ export default function ProductSection({ media, products }: Props) {
           <span className="font-medium ml-1">{averageRatings}/5</span>
         </p>
         <div className="flex items-center gap-x-2">
-          <p className=" font-bold text-title md:text-[32px]">
+          <p className=" font-bold text-title  text-sm md:text-[32px]">
             Rs. {products?.unit_price}
           </p>
-          <p className="md:text-2xl line-through text-lead">
+          <p className="md:text-2xl  text-sm  line-through text-lead">
             Rs. {products?.strike_through_price}
           </p>
           {products?.discount_percent && (
-            <p className="md:text-3xl font-bold text-green-600">
+            <p className="md:text-3xl text-sm   font-bold text-green-600">
               {Math.round(Number(products?.discount_percent))}% OFF
             </p>
           )}
           {products?.discount_percent && (
-            <p className="md:text-xl text-orange-600 font-semibold">
+            <p className="md:text-xl text-sm  text-[#FF9500] font-semibold">
               You{"’"}ll save ₹ {products?.discounted_price}.00{" "}
             </p>
           )}
         </div>
+        <div className="flex md:flex-col items-center  justify-between">
+
         <div>
           <p className="flex items-center gap-x-1.5 text-lead">
             Price <span> : </span>{" "}
@@ -322,6 +318,7 @@ export default function ProductSection({ media, products }: Props) {
             +
           </Button>
         </div>{" "}
+        </div>
         <div className="flex items-center gap-x-2">
           <Button
             onClick={() => {
@@ -333,7 +330,7 @@ export default function ProductSection({ media, products }: Props) {
               dispatch(addItem(products));
               navigate("/checkout");
             }}
-            className=" py-3 px-11"
+            className=" lg:py-3  px-8 lg:px-11"
           >
             Buy Now
           </Button>
@@ -346,7 +343,7 @@ export default function ProductSection({ media, products }: Props) {
               });
               dispatch(addItem(products));
             }}
-            className="bg-primary/10  py-3 px-11 text-primary border border-primary"
+            className="bg-primary/10  px-8 lg:py-3 lg:px-11 text-primary border border-primary"
           >
             Add to Cart
           </Button>
@@ -355,7 +352,7 @@ export default function ProductSection({ media, products }: Props) {
             <Icons.Swap className="text-xl" />
           </Button>
         </div>
-        <div className="flex items-center gap-2 border rounded-md px-2 py-1 w-fit">
+        <div className="flex items-center gap-2 border rounded-md px-2 py-1 w-full lg:w-fit">
           <Input
             type="number"
             value={Pincode ?? ""}

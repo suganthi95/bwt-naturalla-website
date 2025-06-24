@@ -73,17 +73,18 @@ export default function Order({ Orders, handleTab }: Props) {
           )}
         </div>
 
-        <div className="border-b flex justify-between items-center pb-4 mb-4">
+        <div className="border-b pb-4 mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
           <div>
-            <h3 className="text-xl font-semibold mb-2">
+            <h3 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">
               Order #{order.order_id}
             </h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-sm">
               Placed on {dayjs(order.order_date).format("MMMM DD YYYY")}
             </p>
           </div>
+
           <Badge
-            className={`px-3 py-1 w-fit rounded-full text-sm ${
+            className={`w-fit text-sm px-3 py-1 rounded-full self-start sm:self-auto ${
               order.delivery_status === "order confirmed"
                 ? "bg-green-100 text-green-800"
                 : order.delivery_status === "Processing"
@@ -94,6 +95,7 @@ export default function Order({ Orders, handleTab }: Props) {
             {order.delivery_status}
           </Badge>
         </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 h-full gap-6 mb-6">
           <div className="">
             <div>
@@ -128,54 +130,71 @@ export default function Order({ Orders, handleTab }: Props) {
               </div>
             </div>
           </div>
-          {data?.shipment[0]?.activity &&
-          <div>
-            <h4 className="font-semibold text-title mb-2">Order Timeline</h4>
-            <div className="bg-gray-50 p-4 rounded space-y-3">
-              {data?.shipment?.map((item: any, index: number) => (
-                <div key={index} className="flex items-start gap-3">
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center
+          {data?.shipment[0]?.activity && (
+            <div className="mt-6">
+              <h4 className="font-semibold text-title mb-2 text-base sm:text-lg">
+                Order Timeline
+              </h4>
+              <div className="bg-gray-50 p-4 rounded space-y-4 sm:space-y-3">
+                {data?.shipment?.map((item: any, index: number) => {
+                  const status = item?.status ?? "";
+                  const isError =
+                    status.includes("X") || status.includes("DTUP");
+                  const isShipped = status.includes("ST");
+
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-start gap-3 sm:gap-4"
+                    >
+                      {/* Icon Circle */}
+                      <div
+                        className={`min-w-[2.25rem] h-9 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-sm
               ${
-                (item?.status ?? "")?.includes("X") ||
-                (item?.status ?? "")?.includes("DTUP")
+                isError
                   ? "bg-red-100 text-red-700"
-                  : (item?.status ?? "")?.includes("ST")
+                  : isShipped
                   ? "bg-yellow-100 text-yellow-700"
                   : "bg-green-100 text-green-700"
               }`}
-                  >
-                    {(item?.status ?? "") ||
-                    (item?.status ?? "")?.includes("DTUP") ? (
-                      <AlertCircle className="w-5 h-5" />
-                    ) : (item?.status ?? "")?.includes("ST") ? (
-                      <Truck className="w-5 h-5" />
-                    ) : (
-                      <CheckCircle className="w-5 h-5" />
-                    )}
-                  </div>
+                      >
+                        {isError ? (
+                          <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+                        ) : isShipped ? (
+                          <Truck className="w-4 h-4 sm:w-5 sm:h-5" />
+                        ) : (
+                          <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+                        )}
+                      </div>
 
-                  <div>
-                    <p className="font-medium">{item?.activity}</p>
-                    <p className="text-sm text-gray-600">
-                      {new Date(item?.activity_time).toLocaleString("en-IN", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: true,
-                      })}
-                    </p>
-                    <p className="text-sm text-gray-500">{item?.location}</p>
-                  </div>
-                </div>
-              ))}
+                      {/* Activity Info */}
+                      <div className="text-sm sm:text-base">
+                        <p className="font-medium">{item?.activity}</p>
+                        <p className="text-xs sm:text-sm text-gray-600">
+                          {new Date(item?.activity_time).toLocaleString(
+                            "en-IN",
+                            {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: true,
+                            }
+                          )}
+                        </p>
+                        <p className="text-xs sm:text-sm text-gray-500">
+                          {item?.location}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-  }
+          )}
         </div>
-        <div className="grid grid-cols-2 gap-x-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <h4 className="font-medium mb-2">Payment Method</h4>
             <div className="bg-gray-50 p-4 rounded flex items-center">
@@ -184,18 +203,17 @@ export default function Order({ Orders, handleTab }: Props) {
           </div>
           <div>
             <h4 className="font-medium mb-2">Tracking Information</h4>
-            <div className="bg-gray-50 flex items-center justify-between p-4 rounded">
-              <p className="font-medium flex items-center gap-x-2">
+            <div className="bg-gray-50 p-4 rounded flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+              <p className="font-medium flex flex-wrap items-center gap-x-2">
                 AWB Number{" "}
                 <span className="text-lead text-sm">
-                  {" "}
-                  {data?.payment[0].awb_code}
+                  {data?.payment[0]?.awb_code || "N/A"}
                 </span>
               </p>
               {data?.payment[0]?.track_url && (
                 <a
                   href={data?.payment[0]?.track_url}
-                  className="text-green-700 hover:text-green-800   inline-block"
+                  className="text-green-700 hover:text-green-800 text-sm"
                 >
                   Track Package
                 </a>
@@ -203,6 +221,7 @@ export default function Order({ Orders, handleTab }: Props) {
             </div>
           </div>
         </div>
+
         <div className="mb-6">
           <h4 className="font-medium mb-3">Items</h4>
           {data?.product?.map((item: any) => (
@@ -343,24 +362,27 @@ export default function Order({ Orders, handleTab }: Props) {
   const renderOrderHistory = () => {
     return (
       <div className="bg-white rounded-lg shadow">
-        <div className="p-6 border-b">
-          <h3 className="text-xl font-semibold">My Orders</h3>
-          <p className="text-gray-600 mt-1">
+        <div className="p-4 sm:p-6 border-b">
+          <h3 className="text-lg sm:text-xl font-semibold">My Orders</h3>
+          <p className="text-gray-600 mt-1 text-sm">
             View and manage your order history
           </p>
         </div>
+
         <div className="divide-y">
           {Orders?.map((order) => (
-            <div key={order.order_id} className="p-6 hover:bg-gray-50">
-              <div className="flex justify-between items-center mb-4">
+            <div key={order.order_id} className="p-4 sm:p-6 hover:bg-gray-50">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-2">
                 <div>
-                  <h4 className="font-semibold">Order #{order?.order_code}</h4>
-                  <p className="text-gray-600 text-sm">
+                  <h4 className="font-semibold text-sm sm:text-base">
+                    Order #{order?.order_code}
+                  </h4>
+                  <p className="text-gray-600 text-xs sm:text-sm">
                     {dayjs(order?.order_date).format("MMMM DD YYYY")}
                   </p>
                 </div>
                 <span
-                  className={`px-3 py-1 rounded-full text-sm ${
+                  className={`w-fit px-3 py-1 rounded-full text-xs sm:text-sm ${
                     order.order_status === "order confirmed"
                       ? "bg-green-100 text-green-800"
                       : order.order_status === "Processing"
@@ -371,12 +393,13 @@ export default function Order({ Orders, handleTab }: Props) {
                   {order.order_status}
                 </span>
               </div>
-              <div className="flex items-center">
-                <div className="flex -space-x-2 mr-4">
+
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                <div className="flex -space-x-2">
                   {order.product.slice(0, 3).map((item: any, index: number) => (
                     <div
                       key={index}
-                      className="w-12 h-12 rounded-full border-2 border-white overflow-hidden"
+                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white overflow-hidden"
                     >
                       <img
                         src={item.product_thumbnail_image}
@@ -386,27 +409,28 @@ export default function Order({ Orders, handleTab }: Props) {
                     </div>
                   ))}
                   {order.product.length > 3 && (
-                    <div className="w-12 h-12 rounded-full border-2 border-white bg-gray-200 flex items-center justify-center text-sm font-medium">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-gray-200 flex items-center justify-center text-xs sm:text-sm font-medium">
                       +{order.product.length - 3}
                     </div>
                   )}
                 </div>
-                <div className="flex-grow">
-                  <p className="font-medium">{order?.amount}</p>
-                  <p className="text-gray-600 text-sm">
+
+                <div className="flex-grow text-sm">
+                  <p className="text-gray-600 text-xs sm:text-sm">
                     {order?.product.length}{" "}
                     {order?.product.length === 1 ? "item" : "items"}
                   </p>
                 </div>
+
                 <button
                   onClick={() => {
                     handleOrderSelect(order.order_id);
                     setIsopen(true);
                   }}
-                  className="text-green-700  gap-x-2 hover:text-green-900 flex items-center cursor-pointer !rounded-button whitespace-nowrap"
+                  className="text-green-700 text-sm sm:text-base gap-x-1 hover:text-green-900 flex items-center cursor-pointer !rounded-button whitespace-nowrap"
                 >
-                  View Details
-                  <ChevronRight />
+                  View Details{" "}
+                  <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
               </div>
             </div>

@@ -66,37 +66,37 @@ export default function ProductById() {
       <section className=" mt-10 mb-10 md:mt-20 md:mb-20  ">
         <div className="container mx-auto  flex  w-full">
           <div className="w-full md:px-24">
-            <h2 className="font-bold text-xl text-title mb-4">Description</h2>
+            <h2 className="font-bold text-lg md:text-xl text-title mb-4">Description</h2>
             <Accordion type="single" collapsible>
               <AccordionItem value="item-1">
-                <AccordionTrigger className="text-lg font-semibold text-title cursor-pointer ">
+                <AccordionTrigger className="md:text-lg font-semibold text-title cursor-pointer ">
                   Details
                 </AccordionTrigger>
-                <AccordionContent className="font-medium text-[#494F49]">
+                <AccordionContent className=" text-sm md:text-base font-medium text-[#494F49]">
                   {data?.long_description}
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-2">
-                <AccordionTrigger className="text-lg font-semibold text-title cursor-pointer ">
+                <AccordionTrigger className="md:text-lgfont-semibold text-title cursor-pointer ">
                   Benefits
                 </AccordionTrigger>
-                <AccordionContent className="font-medium text-[#494F49]">
+                <AccordionContent className=" text-sm md:text-base font-medium text-[#494F49]">
                   {data?.benefits}
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-3">
-                <AccordionTrigger className="text-lg font-semibold text-title cursor-pointer ">
+                <AccordionTrigger className="md:text-lg font-semibold text-title cursor-pointer ">
                   How to Use
                 </AccordionTrigger>
-                <AccordionContent className="font-medium text-[#494F49]">
+                <AccordionContent className=" text-sm md:text-base font-medium text-[#494F49]">
                   {data?.how_to_use}
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-4">
-                <AccordionTrigger className="text-lg font-semibold text-title cursor-pointer ">
+                <AccordionTrigger className="md:text-lg font-semibold text-title cursor-pointer ">
                   Ingredients
                 </AccordionTrigger>
-                <AccordionContent className="font-medium text-[#494F49]">
+                <AccordionContent className=" text-sm md:text-base font-medium text-[#494F49]">
                   {data?.ingredients}
                 </AccordionContent>
               </AccordionItem>
@@ -107,13 +107,13 @@ export default function ProductById() {
       <section className=" mt-10 mb-10 md:mt-20 md:mb-20  ">
         <div className="container mx-auto  flex  w-full">
           <div className="w-full md:px-24">
-            <h2 className="font-bold text-xl text-title mb-4">FAQ{"’"}s</h2>
+            <h2 className="font-bold text-lg md:text-xl text-title mb-4">FAQ{"’"}s</h2>
             <Accordion type="single" collapsible>
               <AccordionItem value="item-1">
-                <AccordionTrigger className="text-lg font-semibold text-title cursor-pointer ">
+                <AccordionTrigger className="md:text-lg font-semibold text-title cursor-pointer ">
                   What are the main benefits of Aloe Vera Gel for skin?
                 </AccordionTrigger>
-                <AccordionContent className="font-medium text-[#494F49]">
+                <AccordionContent className="text-sm md:text-base font-medium text-[#494F49]">
                   Aloe Vera Gel improves hydration, calms irritation, soothes
                   sunburns, and reduces acne scars.{" "}
                 </AccordionContent>

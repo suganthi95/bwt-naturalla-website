@@ -224,11 +224,11 @@ export default function CheckoutPage() {
     },
   });
 
-
   useEffect(() => {
-    if(addresses){
-
-      const [ defaultAddress ] = addresses?.filter((address: any) => address.default_address);
+    if (addresses) {
+      const [defaultAddress] = addresses?.filter(
+        (address: any) => address.default_address
+      );
 
       form.reset({
         firstName: defaultAddress.address_first_name,
@@ -242,11 +242,9 @@ export default function CheckoutPage() {
       });
 
       setQuery(defaultAddress.city);
-      setStateQuery(defaultAddress.state)
+      setStateQuery(defaultAddress.state);
     }
-
-  }, [ addresses, form.reset ]);
-
+  }, [addresses, form.reset]);
 
   const handleDecrease = (cart_id: number, quan: number) => {
     if (quan <= 1) return;
@@ -476,46 +474,42 @@ export default function CheckoutPage() {
                       );
 
                       return (
-                        <div className="flex justify-between items-center gap-4 pb-6">
+                        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 pb-4 border-b">
+                          {/* Image & Details */}
                           <div className="flex gap-4 items-start">
                             <img
                               src={product?.thumbnail_image_url}
                               alt="Product"
-                              className="w-28 h-24 object-cover rounded-md"
+                              className="w-24 h-24 md:w-28 md:h-24 object-cover rounded-md"
                             />
 
-                            <div className="text-textPrimary">
-                              <h3 className="font-semibold text-textPrimary text-base md:text-lg">
-                                {product?.product_name}
-                              </h3>
+                            <div className="text-textPrimary flex flex-col justify-between">
+                              <div>
+                                <h3 className="font-semibold text-base md:text-lg text-textPrimary">
+                                  {product?.product_name}
+                                </h3>
 
-                              <p className="text-xs flex flex-wrap items-center text-[#939393] mt-1 gap-x-1">
-                                <span>1 unit</span>
-                                <span className="text-gray-300">|</span>
-                                <span>₹{product?.unit_price}</span>
-                                <span className="text-gray-300">|</span>
-                                <span>Size</span>
-                                <span>{product?.product_size}</span>
-                              </p>
+                                <p className="text-xs flex flex-wrap items-center text-[#939393] mt-1 gap-x-1">
+                                  <span>1 unit</span>
+                                  <span className="text-gray-300">|</span>
+                                  <span>₹{product?.unit_price}</span>
+                                  <span className="text-gray-300">|</span>
+                                  <span>Size</span>
+                                  <span>{product?.product_size}</span>
+                                </p>
+                              </div>
 
-                              <div className="md:mt-4">
-                                <span className="text-[22px] font-bold text-textPrimary">
+                              <div className="mt-3">
+                                <span className="text-lg md:text-xl font-bold text-textPrimary">
                                   ₹ {finalPrice}
-                                  {/* {Math.round(
-                                    product.unit_price * product.quantity -
-                                      CouponDetails.product_ids.includes(
-                                        product.product_id
-                                      )
-                                      ? productDiscount
-                                      : 0
-                                  )} */}
                                 </span>
-                                <span className="line-through ml-2 text-[15px] text-gray-400">
+                                <span className="line-through ml-2 text-sm md:text-base text-gray-400">
                                   ₹{product.strike_through_price}
                                 </span>
-                                <span className="ml-2 text-[15px] text-green-600 font-semibold">
+                                <span className="ml-2 text-sm md:text-base text-green-600 font-semibold">
                                   20% off
                                 </span>
+
                                 {CouponDetails?.coupon_type ===
                                   "product_based" &&
                                   Array.isArray(CouponDetails.product_ids) &&
@@ -532,14 +526,16 @@ export default function CheckoutPage() {
                               </div>
                             </div>
                           </div>
-                          <div className="grid place-items-end">
-                            <div className="flex gap-2">
-                              <div className="flex items-center gap-2 border px-3 py-1 rounded-lg">
+
+                          {/* Quantity & Remove Section */}
+                          <div className="grid place-items-start md:place-items-end mt-4 md:mt-0">
+                            <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-2 border px-2 md:px-3 py-1 rounded-lg">
                                 <Button
                                   variant="ghost"
                                   size="icon"
                                   disabled={product?.quantity < 2}
-                                  className="p-0 cursor-pointer w-5 h-5 text-lg text-gray-700"
+                                  className="p-0 w-5 h-5 text-lg text-gray-700"
                                   onClick={() =>
                                     handleDecrease(
                                       product.cart_id,
@@ -549,6 +545,7 @@ export default function CheckoutPage() {
                                 >
                                   −
                                 </Button>
+
                                 <Input
                                   type="number"
                                   value={product.quantity}
@@ -558,13 +555,14 @@ export default function CheckoutPage() {
                                   className="w-10 text-center border-none text-sm font-semibold px-0"
                                   min={1}
                                 />
+
                                 <Button
                                   disabled={
                                     product?.quantity >= product?.current_stock
                                   }
                                   variant="ghost"
                                   size="icon"
-                                  className="p-0 cursor-pointer w-5 h-5 text-lg text-gray-700"
+                                  className="p-0 w-5 h-5 text-lg text-gray-700"
                                   onClick={() =>
                                     handleIncrease(product.cart_id)
                                   }
@@ -581,7 +579,7 @@ export default function CheckoutPage() {
                                     product?.quantity
                                   )
                                 }
-                                className="text-gray-500 cursor-pointer hover:text-red-500"
+                                className="text-gray-500 hover:text-red-500"
                               >
                                 {removingItemId === product.cart_id ? (
                                   <Loader2 className="w-4 h-4 animate-spin text-red-500" />
@@ -668,7 +666,7 @@ export default function CheckoutPage() {
                             )}
                           />
                         </div>
-                        <div className="grid grid-cols-2  gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
                           <FormField
                             control={form.control}
                             name="email"
@@ -925,7 +923,7 @@ export default function CheckoutPage() {
                                 </FormControl>
                                 <Label
                                   htmlFor="contact"
-                                  className="text-title font-semibold cursor-pointer"
+                                  className="text-title text-xs md:text-base font-semibold cursor-pointer"
                                 >
                                   Use the above for billing address also
                                 </Label>

@@ -80,190 +80,196 @@ export default function Signup() {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-[#F7F7F7] px-4">
-      <div className="max-w-lg mx-auto  m-0  p-6 space-y-6 shadow-xl bg-white rounded-xl">
-        <div className=" flex items-center justify-center gap-x-1.5">
-          <Icons.Logo className="" />
-          <h1 className="text-2xl  text-primary roundica">naturalla</h1>
+   <section className="min-h-screen flex flex-col items-center justify-center bg-[#F7F7F7] px-4">
+  <div className="max-w-lg w-full mx-auto p-6 space-y-6  bg-white rounded-xl">
+    <div className="flex items-center justify-center gap-x-1.5">
+      <Icons.Logo />
+      <h1 className="text-2xl text-primary font-bold">naturalla</h1>
+    </div>
+
+    <div className="text-center">
+      <p className="text-xl font-bold">Create your account</p>
+      <p className="font-medium text-lead">
+        Enter your personal details to create account
+      </p>
+    </div>
+
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="firstName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-textPrimary font-semibold">
+                  First Name <span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input className="h-11" placeholder="John" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="lastName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-textPrimary font-semibold">
+                  Last Name <span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input className="h-11" placeholder="Doe" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
-        <div className="grid place-items-center">
-          <p className="text-xl font-bold">Create your account</p>
-          <p className="font-medium text-lead ">
-            Enter your personal details to create account
-          </p>
-        </div>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="firstName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-textPrimary font-semibold ">
-                      First Name <span className="text-red-500 -ml-2">*</span>{" "}
-                    </FormLabel>
-                    <FormControl>
-                      <Input className="h-11" placeholder="John" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="lastName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-textPrimary font-semibold ">
-                      Last Name<span className="text-red-500 -ml-2">*</span>{" "}
-                    </FormLabel>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-textPrimary font-semibold">
+                  Email <span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    className="h-11"
+                    placeholder="you@example.com"
+                    type="email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-                    <FormControl>
-                      <Input className="h-11" placeholder="Doe" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-textPrimary font-semibold ">
-                      Email<span className="text-red-500 -ml-2">*</span>{" "}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="you@example.com"
-                        type="email"
-                        {...field}
-                        className="h-11"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="phoneNumber"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-textPrimary font-semibold ">
-                      Phone Number<span className="text-red-500 -ml-2">*</span>{" "}
-                    </FormLabel>
-                    <FormControl>
-                      <div
-                        className={`flex items-center gap-2 border rounded-md h-11 px-3 shadow-sm bg-white ${
-                          form.formState.errors.phoneNumber && "border-red-500"
-                        }`}
-                      >
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                          <Icons.India className="w-5 h-5" />
-                          <span>+91</span>
-                        </div>
-                        <div className="h-6 w-px bg-border" />
-                        <Input
-                          type="tel"
-                          placeholder=""
-                          className="border-none p-0 focus:ring-0"
-                          {...field}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-textPrimary font-semibold ">
-                      Password<span className="text-red-500 -ml-2">*</span>{" "}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="h-11"
-                        placeholder="••••••"
-                        type="password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="confirmPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-textPrimary font-semibold ">
-                      Confirm Password
-                      <span className="text-red-500 -ml-2">*</span>{" "}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="h-11"
-                        placeholder="••••••"
-                        type="password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <FormField
-              control={form.control}
-              name="agree"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex items-center space-x-2">
-                    <FormControl>
-                      <input
-                        type="checkbox"
-                        className="h-4 w-4"
-                        checked={field.value}
-                        onChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormLabel className="text-xs cursor-pointer text-textPrimary">
-                      I agree with the <span className="">privacy policy</span>
-                    </FormLabel>
+          <FormField
+            control={form.control}
+            name="phoneNumber"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-textPrimary font-semibold">
+                  Phone Number <span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <div
+                    className={`flex items-center gap-2 border rounded-md h-11 px-3 shadow-sm bg-white ${
+                      form.formState.errors.phoneNumber && "border-red-500"
+                    }`}
+                  >
+                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                      <Icons.India className="w-5 h-5" />
+                      <span>+91</span>
+                    </div>
+                    <div className="h-6 w-px bg-border" />
+                    <Input
+                      type="tel"
+                      placeholder=""
+                      className="border-none p-0 focus:ring-0 text-sm"
+                      {...field}
+                    />
                   </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
-            <Button type="submit" className="w-full">
-              {isPending ? <Loader2 className="animate-spin" /> : "Sign Up"}
-            </Button>
-          </form>
-        </Form>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-textPrimary font-semibold">
+                  Password <span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    className="h-11"
+                    placeholder="••••••"
+                    type="password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <p className="text-center text-sm text-textPrimary">
-          Already have an account?{" "}
-          <a href="/login" className="font-bold underline">
-            Sign in
-          </a>
-        </p>
-      </div>
-            <p className="fixed bottom-2.5 text-sm text-title">Copyrights © All Rights Reserved ® 2025 Naturalla Stores</p>
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-textPrimary font-semibold">
+                  Confirm Password <span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    className="h-11"
+                    placeholder="••••••"
+                    type="password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
-    </section>
+        <FormField
+          control={form.control}
+          name="agree"
+          render={({ field }) => (
+            <FormItem>
+              <div className="flex items-start gap-2">
+                <FormControl>
+                  <input
+                    type="checkbox"
+                    className="mt-1 h-4 w-4"
+                    checked={field.value}
+                    onChange={field.onChange}
+                  />
+                </FormControl>
+                <FormLabel className="text-xs text-textPrimary">
+                  I agree with the <span className="underline">privacy policy</span>
+                </FormLabel>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit" className="w-full h-11">
+          {isPending ? <Loader2 className="animate-spin" /> : "Sign Up"}
+        </Button>
+      </form>
+    </Form>
+
+    <p className="text-center text-sm text-textPrimary">
+      Already have an account?{" "}
+      <a href="/login" className="font-bold underline">
+        Sign in
+      </a>
+    </p>
+  </div>
+
+  <p className="static bottom-2.5 text-xs md:text-sm text-title text-center px-2 text-wrap">
+    Copyrights © All Rights Reserved ® 2025 Naturalla Stores
+  </p>
+</section>
+
   );
 }

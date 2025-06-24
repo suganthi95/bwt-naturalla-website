@@ -84,10 +84,10 @@ export default function Settings({ User }: Props) {
   };
 
   return (
-    <div className=" h-full w-6/12">
+    <div className=" h-full xl:w-6/12">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 gap-4">
             <FormField
               control={form.control}
               name="firstName"
@@ -120,7 +120,7 @@ export default function Settings({ User }: Props) {
               )}
             />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 gap-4">
             <FormField
               control={form.control}
               name="email"

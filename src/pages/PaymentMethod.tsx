@@ -285,7 +285,9 @@ export default function PaymentMethod() {
         >
           <AccordionItem value="pay" className="border-none">
             <AccordionTrigger>
-              <h1 className="md:text-2xl font-semibold">Payment Method</h1>
+              <h1 className="text-lg md:text-2xl font-semibold">
+                Payment Method
+              </h1>
             </AccordionTrigger>
 
             <AccordionContent>
@@ -296,7 +298,7 @@ export default function PaymentMethod() {
                   localStorage.setItem("payment", val);
                   setValue("payment", val);
                 }}
-                className="w-[380px] mt-4"
+                className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 w-full"
               >
                 {[
                   {
@@ -309,11 +311,9 @@ export default function PaymentMethod() {
                     value: "phonepe",
                     Img: ASSETS.PHONEPAY2,
                   },
-                  //   { label: "Google Pay", value: "gpay" },
-                  //   { label: "UPI", value: "upi" },
                 ].map(({ label, value, Img }) => {
                   const provider = PaymentProviders?.find(
-                    (p:any) => p.provider_name === value
+                    (p: any) => p.provider_name === value
                   );
                   const isEnabled = provider?.enabled;
 
@@ -322,7 +322,7 @@ export default function PaymentMethod() {
                       htmlFor={value}
                       key={value}
                       className={cn(
-                        "flex items-center space-x-3 rounded-lg border-2 p-2 px-6 cursor-pointer transition-colors",
+                        "flex items-center gap-4 rounded-lg border-2 p-4 sm:p-5 cursor-pointer transition-colors",
                         selectedRole === value
                           ? "border-primary"
                           : "border-border",
@@ -335,9 +335,15 @@ export default function PaymentMethod() {
                         disabled={!isEnabled}
                         className="size-5"
                       />
-                      <div className="flex items-center gap-x-10 font-medium text-sm text-title">
-                        <img src={Img} alt="payment-option" className="w-28" />
-                        {label}
+                      <div className="flex items-center gap-4">
+                        <img
+                          src={Img}
+                          alt={label}
+                          className="w-24 h-auto object-contain"
+                        />
+                        <span className="text-sm truncate font-medium text-title">
+                          {label}
+                        </span>
                       </div>
                     </Label>
                   );
