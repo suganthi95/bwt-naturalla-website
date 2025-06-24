@@ -72,7 +72,6 @@ export default function Order({ Orders, handleTab }: Props) {
             </button>
           )}
         </div>
-
         <div className="border-b pb-4 mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
           <div>
             <h3 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">

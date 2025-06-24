@@ -103,7 +103,7 @@ export default function ProductsList({ Products, title }: Props) {
         <h1 className="font-semibold text-2xl">{title ? title : "Products"}</h1>
 
         <div className="flex justify-between items-center xl:gap-4">
-          <Sheet >
+          <Sheet>
             <SheetTrigger className="flex  lg:hidden  items-center gap-x-1.5">
               <FunnelPlus />{" "}
               <span className="text-title text-sm font-medium">Filter</span>
@@ -180,9 +180,9 @@ export default function ProductsList({ Products, title }: Props) {
               return (
                 <li
                   key={index}
-                  className="w-full md:w-fit space-y-3 xl:p-3 relative"
+                  className="w-full md:w-fit space-y-3 xl:p-3 relative group"
                 >
-                  <div className="absolute top-3 right-3 z-10">
+                  <div className="absolute top-3 right-3 z-20">
                     <motion.div
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.6 }}
@@ -213,7 +213,7 @@ export default function ProductsList({ Products, title }: Props) {
                             dispatch(removeWishlistItem(item.cart_id));
                           }
                         }}
-                        className="w-9 h-9 flex items-center justify-center"
+                        className="w-9 h-9 flex items-center justify-center relative"
                       >
                         <motion.div
                           initial={false}
@@ -249,16 +249,38 @@ export default function ProductsList({ Products, title }: Props) {
                     </motion.div>
                   </div>
 
-                  <div className="relative w-full">
+                  <div className="relative w-full cursor-pointer">
                     <img
                       src={item?.thumbnail_image_url}
                       alt={item?.product_name}
                       onClick={() => navigate(`/product/${item.slug}`)}
-                      className="w-full h-40 sm:h-60  md:w-[240px] md:h-[240px] object-cover rounded-xl cursor-pointer"
+                      className="w-full h-40 sm:h-60 md:w-[240px] md:h-[240px] object-cover rounded-xl"
                     />
+
+                    <div className="hidden lg:flex absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 rounded-xl transition-opacity duration-300 items-center justify-center z-10">
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        className="bg-white text-black px-4 py-2 rounded-md font-semibold hover:bg-primary hover:text-white transition"
+                        onClick={() => {
+                          if (status) {
+                            mutate({
+                              product_id: item.product_id,
+                              quantity: 1,
+                              token,
+                            });
+                            dispatch(addItem(item));
+                          } else {
+                            toast.error("Please login to continue");
+                            navigate("/login");
+                          }
+                        }}
+                      >
+                        Add to Cart
+                      </motion.button>
+                    </div>
                   </div>
 
-                  <div className="block sm:hidden mt-2">
+                  <div className="block lg:hidden mt-2">
                     <button
                       className="w-full bg-primary text-white px-4 py-2 rounded-md font-semibold"
                       onClick={() => {
@@ -266,7 +288,7 @@ export default function ProductsList({ Products, title }: Props) {
                           mutate({
                             product_id: item.product_id,
                             quantity: 1,
-                            token: token,
+                            token,
                           });
                           dispatch(addItem(item));
                         } else {
@@ -277,32 +299,6 @@ export default function ProductsList({ Products, title }: Props) {
                     >
                       Add to Cart
                     </button>
-                  </div>
-
-                  <div className="hidden sm:block">
-                    <div className="group relative">
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 rounded-xl transition-opacity duration-300 flex items-center justify-center">
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          className="bg-white text-black px-4 py-2 rounded-md font-semibold hover:bg-primary hover:text-white transition"
-                          onClick={() => {
-                            if (status) {
-                              mutate({
-                                product_id: item.product_id,
-                                quantity: 1,
-                                token: token,
-                              });
-                              dispatch(addItem(item));
-                            } else {
-                              toast.error("Please login to continue");
-                              navigate("/login");
-                            }
-                          }}
-                        >
-                          Add to Cart
-                        </motion.button>
-                      </div>
-                    </div>
                   </div>
 
                   <p
