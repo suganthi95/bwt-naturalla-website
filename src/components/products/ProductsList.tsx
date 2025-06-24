@@ -10,7 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import type { Product } from "@/types/Home";
 import { AnimatePresence, motion } from "framer-motion";
-import { FunnelPlus, Heart, X } from "lucide-react";
+import { Eye, FunnelPlus, Heart, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
 import { setSortByAlphabetic } from "@/redux/slices/filterSlice";
@@ -45,7 +45,7 @@ export default function ProductsList({ Products, title }: Props) {
     sorybyAlphabetic,
   } = useSelector((state: RootState) => state.filter);
   const [sortBy, setSortBy] = useState("a-z");
-
+  const [viewImage, setViewImage] = useState<string | null>(null);
   const [filteredProducts, setFiltered] = useState<Product[]>();
   const { token, status } = useSelector((state: RootState) => state.auth);
   const { data } = useFilterValues(token);
@@ -180,9 +180,9 @@ export default function ProductsList({ Products, title }: Props) {
               return (
                 <li
                   key={index}
-                  className="w-full md:w-fit space-y-3 xl:p-3 relative group"
+                  className="w-full group md:w-fit space-y-3 xl:p-3 relative group"
                 >
-                  <div className="absolute top-3 right-3 z-20">
+                  <div className="absolute hidden group-hover:flex top-3 opacity-0 group-hover:opacity-100  transition-all items-center justify-center flex-col right-3 z-20">
                     <motion.div
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.6 }}
@@ -246,38 +246,55 @@ export default function ProductsList({ Products, title }: Props) {
                           )}
                         </AnimatePresence>
                       </button>
+                     
+                    </motion.div>
+                       <motion.div
+                      whileHover={{ scale:1.2 }}
+                      transition={{ duration: 0.6 }}
+                      className="text-primary"
+                    >
+                  
+                        <button
+                      onClick={() => setViewImage(item?.thumbnail_image_url)}
+                      className=""
+                    >
+                      <Eye/>
+                    </button>
                     </motion.div>
                   </div>
 
-                  <div className="relative w-full cursor-pointer">
+                  <div
+                    className="relative w-full cursor-pointer overflow-hidden transition-all duration-300"
+                    onClick={() => navigate(`/product/${item.slug}`)}
+                  >
                     <img
                       src={item?.thumbnail_image_url}
                       alt={item?.product_name}
-                      onClick={() => navigate(`/product/${item.slug}`)}
-                      className="w-full h-40 sm:h-60 md:w-[240px] md:h-[240px] object-cover rounded-xl"
+                      className="w-full h-40 sm:h-60 md:w-[240px] md:h-[240px] object-cover rounded-xl group-hover:h-44"
                     />
+                  </div>
 
-                    <div className="hidden lg:flex absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 rounded-xl transition-opacity duration-300 items-center justify-center z-10">
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        className="bg-white text-black px-4 py-2 rounded-md font-semibold hover:bg-primary hover:text-white transition"
-                        onClick={() => {
-                          if (status) {
-                            mutate({
-                              product_id: item.product_id,
-                              quantity: 1,
-                              token,
-                            });
-                            dispatch(addItem(item));
-                          } else {
-                            toast.error("Please login to continue");
-                            navigate("/login");
-                          }
-                        }}
-                      >
-                        Add to Cart
-                      </motion.button>
-                    </div>
+                  <div className="hidden group-hover:flex items-center justify-between gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                 
+
+                    <button
+                      className="flex-1 bg-primary text-white py-2 rounded-md font-medium hover:bg-primary/90"
+                      onClick={() => {
+                        if (status) {
+                          mutate({
+                            product_id: item.product_id,
+                            quantity: 1,
+                            token,
+                          });
+                          dispatch(addItem(item));
+                        } else {
+                          toast.error("Please login to continue");
+                          navigate("/login");
+                        }
+                      }}
+                    >
+                      Add to Cart
+                    </button>
                   </div>
 
                   <div className="block lg:hidden mt-2">
@@ -309,14 +326,12 @@ export default function ProductsList({ Products, title }: Props) {
                   </p>
 
                   <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-textPrimary text-base sm:text-lg font-bold">
-                        Rs. {item?.unit_price}
-                        <span className="text-sm text-lead font-normal line-through ml-1">
-                          Rs. {item?.strike_through_price}
-                        </span>
-                      </p>
-                    </div>
+                    <p className="text-textPrimary text-base sm:text-lg font-bold">
+                      Rs. {item?.unit_price}
+                      <span className="text-sm text-lead font-normal line-through ml-1">
+                        Rs. {item?.strike_through_price}
+                      </span>
+                    </p>
                     {item?.product_size && (
                       <p className="text-sm font-medium text-lead">
                         ({item?.product_size})
@@ -327,6 +342,20 @@ export default function ProductsList({ Products, title }: Props) {
               );
             })}
         </ul>
+      )}
+      {viewImage && (
+        <div
+          className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center"
+          onClick={() => setViewImage(null)}
+        >
+          <div className="max-w-lg w-full bg-white rounded-lg overflow-hidden shadow-lg">
+            <img
+              src={viewImage}
+              alt="View product"
+              className="w-full h-auto object-contain"
+            />
+          </div>
+        </div>
       )}
     </div>
   );

@@ -231,14 +231,14 @@ export default function CheckoutPage() {
       );
 
       form.reset({
-        firstName: defaultAddress.address_first_name,
-        lastName: defaultAddress.address_last_name,
-        email: defaultAddress.address_email,
-        phoneNumber: defaultAddress.address_phone_no,
-        address: defaultAddress.address,
-        city: defaultAddress.city,
-        state: defaultAddress.state,
-        pinCode: defaultAddress.pincode,
+        firstName: defaultAddress?.address_first_name ?? '',
+        lastName: defaultAddress?.address_last_name ?? '',
+        email: defaultAddress?.address_email ?? '',
+        phoneNumber: defaultAddress?.address_phone_no ?? '',
+        address: defaultAddress?.address ?? '',
+        city: defaultAddress?.city ?? '',
+        state: defaultAddress?.state ?? '',
+        pinCode: defaultAddress?.pincode ?? '',
       });
 
       setQuery(defaultAddress.city);
