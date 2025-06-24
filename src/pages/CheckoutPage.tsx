@@ -52,47 +52,117 @@ import { useGetAddress } from "@/services/profile";
 
 // Country data
 
-const formSchema = z.object({
-  firstName: z
-    .string()
-    .min(1, "First name is required")
-    .min(3, "First name must be at least 3 characters"),
+const formSchema = z
+  .object({
+    firstName: z
+      .string()
+      .min(1, "First name is required")
+      .min(3, "First name must be at least 3 characters"),
 
-  lastName: z
-    .string()
-    .min(1, "Last name is required")
-    .min(3, "Last name must be at least 3 characters"),
+    lastName: z
+      .string()
+      .min(1, "Last name is required")
+      .min(3, "Last name must be at least 3 characters"),
 
-  email: z.string().min(1, "Email is required").email("Invalid email address"),
+    email: z
+      .string()
+      .min(1, "Email is required")
+      .email("Invalid email address"),
 
-  phoneNumber: z
-    .string()
-    .min(1, "Phone number is required")
-    .regex(/^\d+$/, "Phone number must be numeric")
-    .min(7, "Phone number is too short"),
+    phoneNumber: z
+      .string()
+      .min(1, "Phone number is required")
+      .regex(/^\d+$/, "Phone number must be numeric")
+      .min(7, "Phone number is too short"),
 
-  address: z
-    .string()
-    .min(1, "Address is required")
-    .min(5, "Address is too short"),
+    address: z
+      .string()
+      .min(1, "Address is required")
+      .min(5, "Address is too short"),
 
-  city: z.string().min(1, "City is required"),
+    city: z.string().min(1, "City is required"),
+    state: z.string().min(1, "State is required"),
+    pinCode: z
+      .string()
+      .min(5, "Pincode is required")
+      .regex(/^\d{4,}$/, "Pincode must be at least 4 digits"),
 
-  state: z.string().min(1, "State is required"),
+    same_billing_address: z.boolean(),
 
-  // country: z.string().min(1, "Country is required"),
-  defaultAddress: z.boolean().optional(),
-
-  pinCode: z
-    .string()
-    .min(5, "Pincode is required")
-    .regex(/^\d{4,}$/, "Pincode must be at least 4 digits"),
-});
+    billing_first_name: z.string().optional(),
+    billing_last_name: z.string().optional(),
+    billing_email: z.string().optional(),
+    billing_phone_no: z.string().optional(),
+    billing_address: z.string().optional(),
+    billing_city: z.string().optional(),
+    billing_state: z.string().optional(),
+    billing_pincode: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (!data.same_billing_address) {
+      if (!data.billing_first_name || data.billing_first_name.length < 3) {
+        ctx.addIssue({
+          path: ["billing_first_name"],
+          code: z.ZodIssueCode.custom,
+          message: "Billing first name must be at least 3 characters",
+        });
+      }
+      if (!data.billing_last_name || data.billing_last_name.length < 3) {
+        ctx.addIssue({
+          path: ["billing_last_name"],
+          code: z.ZodIssueCode.custom,
+          message: "Billing last name must be at least 3 characters",
+        });
+      }
+      if (!data.billing_email || !/^\S+@\S+\.\S+$/.test(data.billing_email)) {
+        ctx.addIssue({
+          path: ["billing_email"],
+          code: z.ZodIssueCode.custom,
+          message: "Billing email is invalid",
+        });
+      }
+      if (!data.billing_phone_no || !/^\d{7,}$/.test(data.billing_phone_no)) {
+        ctx.addIssue({
+          path: ["billing_phone_no"],
+          code: z.ZodIssueCode.custom,
+          message: "Billing phone number is invalid",
+        });
+      }
+      if (!data.billing_address || data.billing_address.length < 5) {
+        ctx.addIssue({
+          path: ["billing_address"],
+          code: z.ZodIssueCode.custom,
+          message: "Billing address is too short",
+        });
+      }
+      if (!data.billing_city) {
+        ctx.addIssue({
+          path: ["billing_city"],
+          code: z.ZodIssueCode.custom,
+          message: "Billing city is required",
+        });
+      }
+      if (!data.billing_state) {
+        ctx.addIssue({
+          path: ["billing_state"],
+          code: z.ZodIssueCode.custom,
+          message: "Billing state is required",
+        });
+      }
+      if (!data.billing_pincode || !/^\d{4,}$/.test(data.billing_pincode)) {
+        ctx.addIssue({
+          path: ["billing_pincode"],
+          code: z.ZodIssueCode.custom,
+          message: "Billing pincode is invalid",
+        });
+      }
+    }
+  });
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
   const { token } = useSelector((state: RootState) => state.auth);
-
+  const { data: addresses } = useGetAddress(token);
   const { data, isLoading, isFetching } = useGetCartItems(token);
   const { mutate } = useUpdateCart();
   const { mutate: CheckCoupon, isPending } = useCheckCouponCode();
@@ -110,6 +180,12 @@ export default function CheckoutPage() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [Statequery, setStateQuery] = useState("");
   const [showStateDropdown, setShowSatteDropdown] = useState(false);
+
+  const [biilingquery, setbiilingqueryQuery] = useState("");
+  const [biilingshowDropdown, setbiilingShowDropdown] = useState(false);
+  const [biilingStatequery, setbiilingStateQuery] = useState("");
+  const [showbiilingStateDropdown, setbiilingShowSatteDropdown] =
+    useState(false);
   const filteredCities = cities.filter((city) =>
     city.name.toLowerCase().includes(query.toLowerCase())
   );
@@ -117,7 +193,12 @@ export default function CheckoutPage() {
     city.name.toLowerCase().includes(Statequery.toLowerCase())
   );
 
-  const { data: addresses } = useGetAddress(token);
+  const filteredCities2 = cities.filter((city) =>
+    city.name.toLowerCase().includes(biilingquery.toLowerCase())
+  );
+  const filteredStates2 = states.filter((city) =>
+    city.name.toLowerCase().includes(biilingStatequery.toLowerCase())
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -128,9 +209,17 @@ export default function CheckoutPage() {
       phoneNumber: "",
       address: "",
       city: "",
-      defaultAddress:false,
+      same_billing_address: true,
       state: "",
       // country: "India",
+      billing_address:"",
+      billing_city:"",
+      billing_email:"",
+      billing_first_name:"",
+      billing_last_name:"",
+      billing_phone_no:"",
+      billing_pincode:"",
+      billing_state:"",
       pinCode: "",
     },
   });
@@ -148,7 +237,6 @@ export default function CheckoutPage() {
         phoneNumber: defaultAddress.address_phone_no,
         address: defaultAddress.address,
         city: defaultAddress.city,
-        defaultAddress: defaultAddress.default_address,
         state: defaultAddress.state,
         pinCode: defaultAddress.pincode,
       });
@@ -232,7 +320,27 @@ export default function CheckoutPage() {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     toast.success("Address added");
-    dispatch(setShippingAddress(values));
+    dispatch(
+      setShippingAddress({
+        address: values.address,
+        city: values.city,
+        email: values.email,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        phoneNumber: values.phoneNumber,
+        pinCode: values.pinCode,
+        state: values.state,
+        billing_address: values.billing_address,
+        billing_city: values.billing_city,
+        billing_email: values.billing_email,
+        billing_first_name: values.firstName,
+        billing_last_name: values.lastName,
+        billing_phone_no: values.billing_phone_no,
+        billing_pincode: values.billing_pincode,
+        billing_state: values.billing_state,
+        same_billing_address: values.same_billing_address,
+      })
+    );
   };
 
   const subtotal = items?.reduce(
@@ -314,28 +422,9 @@ export default function CheckoutPage() {
 
 // dispatch(setCartItems(updatedItems));
 
-
   return (
     <main>
       <section className="container mx-auto  mb-10 md:mb-20">
-        {/* <div className="w-full border-b mb-4 py-2">
-          <Accordion type="multiple" className="grid grid-cols-2   w-full">
-            <AccordionItem value="cart" className="">
-              <AccordionTrigger>
-                <h1 className="md:text-2xl font-semibold">Cart</h1>
-              </AccordionTrigger>
-            </AccordionItem>
-
-            <AccordionItem value="pricing" className="ml-56">
-              <AccordionTrigger>
-                <div className="flex justify-center items-center w-full">
-                  <h2 className="md:text-2xl font-semibold">Pricing Details</h2>
-                </div>
-              </AccordionTrigger>
-            </AccordionItem>
-          </Accordion>
-        </div> */}
-
         <div className="flex  w-full gap-x-10 flex-col lg:flex-row">
           <div className="w-full h-full lg:w-8/12">
             <Accordion
@@ -351,7 +440,6 @@ export default function CheckoutPage() {
                 <AccordionContent>
                   <ul>
                     {items?.map((product: Product) => {
-                    
                       let productDiscount = 0;
 
                       const isProductInCoupon =
@@ -384,6 +472,8 @@ export default function CheckoutPage() {
                         addItemTotalAmount({
                           ...product,
                           total_amount: finalPrice,
+                          coupon_amount: productDiscount || null,
+                          coupon_id: CouponDetails?.coupon_id || null,
                         })
                       );
 
@@ -503,23 +593,21 @@ export default function CheckoutPage() {
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-         
-            <Accordion type="single" defaultValue="item-2" collapsible>
-              <AccordionItem value="item-2" className="border-none ">
-                <AccordionTrigger className="cursor-pointer">
-                  <h1 className="md:text-2xl font-semibold ">
-                    Shipping Details
-                  </h1>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="mt-8">
-                   
 
-                    <Form {...form}>
-                      <form
-                        className="space-y-4  h-full"
-                        onSubmit={form.handleSubmit(onSubmit)}
-                      >
+            <Accordion type="multiple" defaultValue={["item-1"]}>
+              <Form {...form}>
+                <form
+                  className="space-y-4  h-full"
+                  onSubmit={form.handleSubmit(onSubmit)}
+                >
+                  <AccordionItem value="item-1" className="border-none ">
+                    <AccordionTrigger className="cursor-pointer">
+                      <h1 className="md:text-2xl font-semibold ">
+                        Shipping Details
+                      </h1>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="mt-8 space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <FormField
                             control={form.control}
@@ -808,39 +896,345 @@ export default function CheckoutPage() {
                             )}
                           />
                         </div>
-                        <FormField
-                          control={form.control}
-                          name="defaultAddress"
-                          render={({ field }) => (
-                            <FormItem className="flex items-center gap-2 space-y-0">
-                              <FormControl>
-                                <Checkbox
-                                  id="contact"
-                                  checked={field.value}
-                                  onCheckedChange={field.onChange}
-                                  className="data-[state=checked]:bg-blue-500 data-[state=checked]:border-none"
-                                />
-                              </FormControl>
-                              <Label
-                                htmlFor="contact"
-                                className="text-title font-semibold cursor-pointer"
-                              >
-                                Save contact information
-                              </Label>
-                            </FormItem>
+                        <div className="mt-4 space-y-2">
+                          <FormField
+                            control={form.control}
+                            name="same_billing_address"
+                            render={({ field }) => (
+                              <FormItem className="flex items-center gap-2 space-y-0">
+                                <FormControl>
+                                  <Checkbox
+                                    id="contact"
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                    className="data-[state=checked]:bg-blue-500 data-[state=checked]:border-none"
+                                  />
+                                </FormControl>
+                                <Label
+                                  htmlFor="contact"
+                                  className="text-title font-semibold cursor-pointer"
+                                >
+                                  Use the above for billing address also
+                                </Label>
+                              </FormItem>
+                            )}
+                          />
+                          {form.watch("same_billing_address") && (
+                            <div className="flex  justify-between ">
+                              <Button type="submit" className="px-8">
+                                Add
+                              </Button>
+                            </div>
                           )}
-                        />
-
-                        <div className="flex  justify-between ">
-                          <Button type="submit" className="px-8">
-                            Add
-                          </Button>
                         </div>
-                      </form>
-                    </Form>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                  {!form.watch("same_billing_address") && (
+                    <AccordionItem value="item-2" className="border-none ">
+                      <AccordionTrigger className="cursor-pointer">
+                        <h1 className="md:text-2xl font-semibold ">
+                          Billing Details
+                        </h1>
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="mt-8 space-y-5">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <FormField
+                              control={form.control}
+                              name="billing_first_name"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <Label
+                                    htmlFor="billing_first_name"
+                                    className="text-title font-semibold text-sm"
+                                  >
+                                    First Name
+                                  </Label>
+                                  <FormControl>
+                                    <Input
+                                      placeholder="Enter your first name"
+                                      className="h-10"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+
+                            <FormField
+                              control={form.control}
+                              name="billing_last_name"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <Label
+                                    htmlFor="billing_last_name"
+                                    className="text-title font-semibold text-sm"
+                                  >
+                                    Last Name
+                                  </Label>
+                                  <FormControl>
+                                    <Input
+                                      placeholder="Enter your last name"
+                                      className="h-10"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                          <div className="grid grid-cols-2  gap-4">
+                            <FormField
+                              control={form.control}
+                              name="billing_email"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <Label
+                                    htmlFor="billing_email"
+                                    className="text-title font-semibold text-sm"
+                                  >
+                                    Email
+                                  </Label>
+                                  <FormControl>
+                                    <Input
+                                      placeholder="Enter your email"
+                                      className="h-10"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <div>
+                              <Label
+                                htmlFor="billingphone"
+                                className="text-title font-semibold text-sm mb-3"
+                              >
+                                Phone Number
+                              </Label>
+                              <div
+                                className={`flex items-center gap-2 border rounded-md h-10 px-3 shadow-sm bg-white ${
+                                  form.formState.errors.phoneNumber &&
+                                  "border-red-500"
+                                }`}
+                              >
+                                {" "}
+                                <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                                  <Icons.India className="w-5 h-5" />
+                                  <span className="whitespace-nowrap">+91</span>
+                                </div>
+                                <div className="h-6 w-px bg-border" />
+                                <FormField
+                                  control={form.control}
+                                  name="billing_phone_no"
+                                  render={({ field }) => (
+                                    <FormItem className="flex-1">
+                                      <FormControl>
+                                        <Input
+                                          placeholder="Enter your phone number"
+                                          className="border-none focus-visible:ring-0 focus-visible:ring-offset-0 p-0 text-sm"
+                                          type="tel"
+                                          {...field}
+                                        />
+                                      </FormControl>
+                                    </FormItem>
+                                  )}
+                                />
+                              </div>
+                              {form.formState.errors.phoneNumber && (
+                                <p className="text-red-500 mt-3">
+                                  {form.formState.errors.billing_phone_no &&
+                                    form.formState.errors.billing_phone_no
+                                      .message}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+
+                          <FormField
+                            control={form.control}
+                            name="billing_address"
+                            render={({ field }) => (
+                              <FormItem>
+                                <Label
+                                  htmlFor="billing_address"
+                                  className="text-title font-semibold text-sm"
+                                >
+                                  Address
+                                </Label>
+                                <FormControl>
+                                  <Textarea
+                                    placeholder="Enter your address"
+                                    className="h-24"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <div className="grid grid-cols-1 h-full md:grid-cols-4 gap-4">
+                            <FormField
+                              control={form.control}
+                              name="billing_city"
+                              render={({ field }) => (
+                                <FormItem className="h-full   ">
+                                  <Label className="text-title   font-semibold text-sm">
+                                    City
+                                  </Label>
+                                  <div className=" overflow-visible ">
+                                    <Input
+                                      placeholder="Search city..."
+                                      value={biilingquery}
+                                      onChange={(e) => {
+                                        setbiilingqueryQuery(e.target.value);
+                                        setbiilingShowDropdown(true);
+                                      }}
+                                      onFocus={() =>
+                                        setbiilingShowDropdown(true)
+                                      }
+                                      className="w-full pr-10  cursor-pointer"
+                                    />
+
+                                    {/* <div
+                                    className={`absolute   w-fit left-64  flex items-center cursor-pointer ${showDropdown ? '-bottom-13':'-bottom-13'}`}
+                                    onClick={() =>
+                                      setShowDropdown((prev) => !prev)
+                                    }
+                                  >
+                                    {showDropdown ? (
+                                      <ChevronUp className="w-4 h-4 text-gray-500" />
+                                    ) : (
+                                      <ChevronDown className="w-4 h-4 text-gray-500" />
+                                    )}
+                                  </div> */}
+
+                                    {biilingshowDropdown && (
+                                      <ul className="absolute  z-[999] w-52  bg-white dark:bg-gray-800 border dark:border-gray-700 max-h-80 overflow-auto mt-1 shadow-md rounded">
+                                        {filteredCities2.length === 0 ? (
+                                          <li className="p-2 text-sm text-muted-foreground">
+                                            No city found.
+                                          </li>
+                                        ) : (
+                                          filteredCities2.map((city) => (
+                                            <li
+                                              key={city.id}
+                                              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                                              onClick={() => {
+                                                field.onChange(city.name);
+                                                setbiilingqueryQuery(city.name);
+                                                setbiilingShowDropdown(false);
+                                              }}
+                                            >
+                                              {city.name}
+                                            </li>
+                                          ))
+                                        )}
+                                      </ul>
+                                    )}
+                                  </div>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+
+                            <FormField
+                              control={form.control}
+                              name="billing_state"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <Label className="text-title font-semibold text-sm">
+                                    State
+                                  </Label>
+                                  <div className="">
+                                    <Input
+                                      placeholder="Search state..."
+                                      value={field.value}
+                                      onChange={(e) => {
+                                        setbiilingStateQuery(e.target.value);
+                                        setbiilingShowSatteDropdown(true);
+                                        setbiilingShowDropdown(false);
+                                      }}
+                                      onFocus={() => {
+                                        setbiilingShowSatteDropdown(true);
+                                        setbiilingShowDropdown(false);
+                                      }}
+                                      className="w-full pr-10 cursor-pointer"
+                                    />
+                                 
+                                    {showbiilingStateDropdown && (
+                                      <ul className="absolute   w-52   bg-white dark:bg-gray-800 border dark:border-gray-700 max-h-80 overflow-auto mt-1 shadow-md rounded">
+                                        {filteredStates2.length === 0 ? (
+                                          <li className="p-2 text-sm text-muted-foreground">
+                                            No state found.
+                                          </li>
+                                        ) : (
+                                          filteredStates2.map((city) => (
+                                            <li
+                                              key={city.code}
+                                              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                                              onClick={() => {
+                                                field.onChange(city.name);
+                                                setbiilingStateQuery(city.name);
+                                                setShowSatteDropdown(false);
+                                                                                        setbiilingShowSatteDropdown(false);
+
+                                              }}
+                                            >
+                                              {city.name}
+                                            </li>
+                                          ))
+                                        )}
+                                      </ul>
+                                    )}
+                                  </div>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+
+                            <FormField
+                              control={form.control}
+                              name="billing_pincode"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <Label
+                                    htmlFor="billing_pincode"
+                                    className="text-title font-semibold text-sm"
+                                  >
+                                    Pincode
+                                  </Label>
+                                  <FormControl>
+                                    <Input
+                                      placeholder="Enter your pincode"
+                                      className="w-full"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+
+                          {!form.watch("same_billing_address") && (
+                            <div className="flex mt-4  justify-between ">
+                              <Button type="submit" className="px-8">
+                                Add
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  )}
+                </form>
+              </Form>
             </Accordion>
           </div>
 

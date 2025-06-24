@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function Categories() {
   const navigate = useNavigate();
   return (
-    <ul className="container mx-auto grid grid-cols-4 gap-5">
+    <ul className="container mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
       {[
         {
           img: ASSETS.CAT_FASHGEL,

@@ -38,6 +38,7 @@ export const useFilterValues = (token: string) => {
 export const useFilterByFeatureProducts = (
   token: string,
   category_id?: string,
+  subcategory_id?:string,
   isin_todays_deal?: string,
   is_featured?: string,
   best_selling?: string,
@@ -49,6 +50,7 @@ export const useFilterByFeatureProducts = (
       token,
       product_name,
       category_id,
+      subcategory_id,
       is_featured,
       isin_todays_deal,
       isin_todays_deal
@@ -57,6 +59,7 @@ export const useFilterByFeatureProducts = (
       filterbyFeatureProducts(
       token,
         category_id,
+        subcategory_id,
         isin_todays_deal,
         is_featured,
         best_selling,

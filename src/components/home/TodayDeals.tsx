@@ -47,17 +47,21 @@ export default function TodayDeals({ Products }: Props) {
   return (
     <div className="container mx-auto">
       <div className="flex justify-between font-semibold text-xl items-center">
-        <p className="text-title cursor-pointer ">Todays Deals</p>
+        <p className="text-title text-sm md:text-base cursor-pointer ">
+          Todays Deals
+        </p>
         <p
-          className="text-title cursor-pointer hover:underline underline-primary"
+          className="text-title text-sm md:text-base cursor-pointer hover:underline underline-primary"
           onClick={() =>
-            navigate("/products/today-deals", { state: { isin_todays_deal: "true" } })
+            // navigate("/products/today-deals", { state: { isin_todays_deal: "true" } })
+
+            navigate("/products/today-deals?isin_todays_deal=true",{state:{title:'Today Deals'}})
           }
         >
           View more
         </p>
       </div>
-      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 md:gap-x-14 lg:gap-x-20 mt-4 md:mt-8">
+      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-x-14 lg:gap-x-20 mt-4 md:mt-8">
         {Products?.slice(0, 3)?.map((item, index) => {
           return (
             <li key={index} className="space-y-2 relative">
@@ -81,9 +85,9 @@ export default function TodayDeals({ Products }: Props) {
                 {item.short_description}
               </p>
               <div className="flex items-center justify-between w-full">
-                <p className="flex items-center gap-x-2.5 text-textPrimary text-[32px] font-bold">
+                <p className="flex items-center gap-x-2.5 text-textPrimary text-xl md:text-[32px] font-bold">
                   Rs. {item.unit_price}
-                  <span className="text-lg text-lead  font-normal line-through">
+                  <span className="text-sm md:text-lg text-lead  font-normal line-through">
                     Rs.{item?.strike_through_price}
                   </span>
                 </p>

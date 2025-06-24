@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import type { RootState } from "@/redux/store";
 import {
   useCreateOrder,
+  useGetProviders,
   useVerifyPhonepay,
   useVerifyrazorpay,
 } from "@/services/cart";
@@ -26,6 +27,7 @@ import { toast } from "sonner";
 import { useRazorpay } from "react-razorpay";
 import { removeCartItems } from "@/redux/slices/cartSlice";
 import { removeCoupon } from "@/redux/slices/couponSlice";
+import { removeWishlist } from "@/redux/slices/wishSlice";
 
 export default function PaymentMethod() {
   // const { state } = useLocation();
@@ -45,8 +47,14 @@ export default function PaymentMethod() {
   const [shouldPoll, setShouldPoll] = useState(false);
   const { token } = useSelector((state: RootState) => state.auth);
   const localPaymentmethod = localStorage.getItem("payment");
-  const [finalData, setFinalData] = useState(null);
-  console.log("finalData: ", finalData);
+  const {
+    data: PaymentProviders,
+    isLoading,
+    isFetching,
+  } = useGetProviders(token);
+
+  // const [finalData, setFinalData] = useState(null);
+
   const [merchantTransactionId, SetmerchantTransactionId] = useState(() =>
     localStorage.getItem("merchantTransactionId")
   );
@@ -112,8 +120,8 @@ export default function PaymentMethod() {
         product_id: item.product_id,
         quantity: item.quantity,
         order_amount: item.total_amount,
-        // coupon_id: item.coupon_id,
-        // coupon_amount: item.coupon_amount,
+        coupon_id: item.coupon_amount > 0 ? item.coupon_id : null,
+        coupon_amount: item.coupon_amount,
       })),
       address: shippingAddress.address,
       discount_amount: discount,
@@ -131,6 +139,14 @@ export default function PaymentMethod() {
       shipment_phone_no: Number(shippingAddress.phoneNumber),
       city: shippingAddress.city,
       state: shippingAddress.state,
+      billing_first_name: shippingAddress.billing_first_name,
+      billing_last_name: shippingAddress.billing_last_name,
+      billing_email: shippingAddress.billing_email,
+      billing_phone_no: Number(shippingAddress.billing_phone_no),
+      billing_city: shippingAddress.billing_city,
+      billing_state: shippingAddress.billing_state,
+      billing_pincode: shippingAddress.billing_pincode,
+      billing_address: shippingAddress.billing_address,
     };
 
     mutate(
@@ -169,11 +185,11 @@ export default function PaymentMethod() {
                     onSuccess: () => {
                       navigate("/order-success");
                       dispatch(removeCartItems());
+                      dispatch(removeWishlist());
+                      dispatch(removeCoupon());
                       localStorage.removeItem("merchantTransactionId");
                       setShouldPoll(false);
-
                       // dispatch(removeTaxDetails());
-                      dispatch(removeCoupon());
                     },
                     onError(error) {
                       if (axios.isAxiosError(error)) {
@@ -233,10 +249,11 @@ export default function PaymentMethod() {
           setLoading(false);
           navigate("/order-success");
           localStorage.removeItem("merchantTransactionId");
-          setFinalData(data);
+          // setFinalData(data);
           setShouldPoll(false);
           clearInterval(interval);
           dispatch(removeCartItems());
+          dispatch(removeWishlist());
           dispatch(removeCoupon());
         } else if (data.resp.state === "FAILED") {
           setLoading(false);
@@ -253,7 +270,7 @@ export default function PaymentMethod() {
     return () => clearInterval(interval);
   }, [merchantTransactionId, shouldPoll]);
 
-  if (loading) {
+  if (loading || isLoading || isFetching) {
     return <FullScreenLoader />;
   }
 
@@ -294,33 +311,37 @@ export default function PaymentMethod() {
                   },
                   //   { label: "Google Pay", value: "gpay" },
                   //   { label: "UPI", value: "upi" },
-                ].map(({ label, value, Img }) => (
-                  <Label
-                    htmlFor={value}
-                    key={value}
-                    className={cn(
-                      "flex items-center space-x-3 rounded-lg border-2 p-2 px-6 cursor-pointer transition-colors",
-                      selectedRole === value
-                        ? "border-primary "
-                        : "border-border"
-                    )}
-                  >
-                    <RadioGroupItem
-                      id={value}
-                      className="size-5"
-                      value={value}
-                    />
-                    <div className="flex items-center gap-x-10 font-medium text-sm text-title">
-                      {" "}
-                      <img
-                        src={Img}
-                        alt="payment-option"
-                        className="w-28"
-                      />{" "}
-                      {label}{" "}
-                    </div>
-                  </Label>
-                ))}
+                ].map(({ label, value, Img }) => {
+                  const provider = PaymentProviders?.find(
+                    (p:any) => p.provider_name === value
+                  );
+                  const isEnabled = provider?.enabled;
+
+                  return (
+                    <Label
+                      htmlFor={value}
+                      key={value}
+                      className={cn(
+                        "flex items-center space-x-3 rounded-lg border-2 p-2 px-6 cursor-pointer transition-colors",
+                        selectedRole === value
+                          ? "border-primary"
+                          : "border-border",
+                        !isEnabled && "opacity-50 cursor-not-allowed"
+                      )}
+                    >
+                      <RadioGroupItem
+                        id={value}
+                        value={value}
+                        disabled={!isEnabled}
+                        className="size-5"
+                      />
+                      <div className="flex items-center gap-x-10 font-medium text-sm text-title">
+                        <img src={Img} alt="payment-option" className="w-28" />
+                        {label}
+                      </div>
+                    </Label>
+                  );
+                })}
               </RadioGroup>
             </AccordionContent>
           </AccordionItem>

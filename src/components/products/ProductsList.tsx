@@ -22,8 +22,9 @@ import { addWishItem, removeWishlistItem } from "@/redux/slices/wishSlice";
 import NoProducts from "./NoProducts";
 interface Props {
   Products: Product[];
+  title:string | null
 }
-export default function ProductsList({ Products }: Props) {
+export default function ProductsList({ Products ,title}: Props) {
   const {
     categories,
     keywords,
@@ -59,17 +60,17 @@ export default function ProductsList({ Products }: Props) {
     let filtered = Products;
 
     if (keywords.length > 0) {
-      filtered = filtered.filter((item) =>
-        item.benefit_keys.some((key) => keywords.includes(key))
+      filtered = filtered?.filter((item) =>
+        item.benefit_keys?.some((key) => keywords.includes(key))
       );
     }
-
-    filtered = filtered.filter(
+    
+    filtered = filtered?.filter(
       (item) => item.unit_price >= minPrice && item.unit_price <= maxPrice
     );
 
     if (categories.length > 0) {
-      filtered = filtered.filter(
+      filtered = filtered?.filter(
         (item) =>
           item.category_title && categories.includes(item.category_title)
       );
@@ -88,7 +89,7 @@ export default function ProductsList({ Products }: Props) {
   return (
     <div className="space-y-4 w-full">
       <div className="flex justify-between items-center w-full">
-        <h1 className="font-semibold text-2xl">Products</h1>
+        <h1 className="font-semibold text-2xl">{title ? title :'Products'}</h1>
 
         <div className="flex items-center gap-4">
           <h2 className="font-medium text-sm text-title">Sort By:</h2>

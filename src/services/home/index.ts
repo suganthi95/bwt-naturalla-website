@@ -1,10 +1,21 @@
-import { landingPageDetails } from "@/lib/api"
+import { getCategories, landingPageDetails } from "@/lib/api"
 import { useQuery } from "@tanstack/react-query"
 
 export const useGetLandingPageDetails = ()=>{
     return useQuery({
         queryKey:['landingpageDetails'],
         queryFn:landingPageDetails,
+        staleTime:1000*60*10,
+        retry:1
+    })
+}
+
+
+export const useGetCategories = (token:string)=>{
+    return useQuery({
+        queryKey:['getcategories'],
+        queryFn:()=>getCategories(token),
+        select:(data)=>data?.data,
         staleTime:1000*60*10,
         retry:1
     })

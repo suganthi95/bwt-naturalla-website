@@ -20,6 +20,15 @@ export type OrderPayload = {
   shipment_last_name: string;
   shipment_email: string;
   shipment_phone_no: number;
+  same_billing_address?: boolean;
+  billing_first_name?: string | null;
+  billing_last_name?: string | null;
+  billing_address?: string | null;
+  billing_email?: string | null;
+  billing_phone_no?: number | null;
+  billing_city?: string | null;
+  billing_state?: string | null;
+  billing_pincode?: string | null;
   city: string;
   state: string;
 };
@@ -96,6 +105,15 @@ export interface AddressPayload {
   pincode: number;
   default_address: boolean;
   address_id?: number;
+  same_billing_address?: boolean;
+  billing_first_name?: string | null;
+  billing_last_name?: string | null;
+  billing_address?: string | null;
+  billing_email?: string | null;
+  billing_phone_no?: string | null;
+  billing_city?: string | null;
+  billing_state?: string | null;
+  billing_pincode?: string | null;
 }
 
 export type Order = {
@@ -136,6 +154,15 @@ export type Order = {
   product_name: string;
   product_thumbnail_image: string;
   shipment_status: string | null;
+  same_billing_address?: true;
+  billing_first_name?: string | null;
+  billing_last_name?: string | null;
+  billing_address?: string | null;
+  billing_email?: string | null;
+  billing_phone_no?: string | null;
+  billing_city?: string | null;
+  billing_state?: string | null;
+  billing_pincode?: string | null;
 };
 
 export type User = {
