@@ -28,13 +28,13 @@ const formSchema = z
     lastName: z.string().min(2, "Last name is required"),
     email: z.string().email("Invalid email"),
     phoneNumber: z.string().min(10, "Phone number is too short"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: z.string().min(6, "Please confirm your password"),
+    // password: z.string().min(6, "Password must be at least 6 characters"),
+    // confirmPassword: z.string().min(6, "Please confirm your password"),
   })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
+  // .refine((data) => data.password === data.confirmPassword, {
+  //   message: "Passwords do not match",
+  //   path: ["confirmPassword"],
+  // });
 
 type FormValues = z.infer<typeof formSchema>;
 interface Props {
@@ -53,8 +53,8 @@ export default function Settings({ User }: Props) {
       lastName: User[0]?.last_name ?? "",
       email: User[0]?.email ?? "",
       phoneNumber: User[0]?.phone_no ?? "",
-      password: "",
-      confirmPassword: "",
+      // password: "",
+      // confirmPassword: "",
     },
   });
 
@@ -193,7 +193,7 @@ export default function Settings({ User }: Props) {
               )}
             />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          {/* <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
               name="password"
@@ -234,7 +234,7 @@ export default function Settings({ User }: Props) {
                 </FormItem>
               )}
             />
-          </div>
+          </div> */}
 
           <Button type="submit" disabled={isPending} className="w-fit">
             {isPending ?   <Loader2 className="animate-spin" />: "Save"}

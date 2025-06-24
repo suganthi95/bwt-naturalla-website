@@ -41,7 +41,7 @@ export const useGetCartItems = (token:string)=>{
 }
 
 export const useUpdateCart = () => {
-    const queryClient = useQueryClient()
+    // const queryClient = useQueryClient()
   return useMutation({
     mutationKey: ["updatecart"],
     mutationFn: ({
@@ -56,7 +56,7 @@ export const useUpdateCart = () => {
 
     onSuccess: () => {
     //   toast.success("Product added to cart!");
-     queryClient.invalidateQueries({queryKey:['getcart']})
+    //  queryClient.invalidateQueries({queryKey:['getcart']})
     },
 
     onError: (error: any) => {

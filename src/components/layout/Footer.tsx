@@ -21,7 +21,7 @@ export default function Footer() {
     <FaInstagram />
   </a>
   <a href="#" className="text-white/60 hover:text-white transition">
-    <FaTwitter /> {/* X (Twitter) icon */}
+    <FaTwitter /> 
   </a>
   <a href="#" className="text-white/60 hover:text-white transition">
     <FaFacebookF />
@@ -40,8 +40,8 @@ export default function Footer() {
         <div className="w-full sm:w-1/2 lg:w-full space-y-3">
           <h4 className="text-lg font-semibold">My Account</h4>
           <ul className="space-y-2 text-sm">
-            <li><Link to="/" className="text-white/50">Login</Link></li>
-            <li><Link to="/partner-login" className="text-white/50">Create Account</Link></li>
+            <li><Link to="/login" className="text-white/50">Login</Link></li>
+            <li><Link to="/sign-up" className="text-white/50">Create Account</Link></li>
           </ul>
         </div>
         </div>
@@ -54,8 +54,8 @@ export default function Footer() {
             <li><Link to="/" className="text-white/50">Privacy Policy</Link></li>
             <li><Link to="/" className="text-white/50">Return & Refund</Link></li>
             <li><Link to="/" className="text-white/50">Shipping Policy</Link></li>
-            <li><Link to="/" className="text-white/50">Browse All Products</Link></li>
-            <li><Link to="/" className="text-white/50">Browse All Category</Link></li>
+            <li><Link to="/products/all" className="text-white/50">Browse All Products</Link></li>
+            <li><Link to="/products/categories" className="text-white/50">Browse All Category</Link></li>
           </ul>
         </div>
 
@@ -63,10 +63,10 @@ export default function Footer() {
           <h4 className="text-lg font-semibold">Pages</h4>
           <ul className="space-y-2 text-sm">
             <li><Link to="/" className="text-white/50">Home</Link></li>
-            <li><Link to="/" className="text-white/50">All Categories</Link></li>
-            <li><Link to="/" className="text-white/50">All Products</Link></li>
-            <li><Link to="/blog" className="text-white/50">Blog</Link></li>
-            <li><Link to="/" className="text-white/50">Campaigns</Link></li>
+            <li><Link to="/products/all" className="text-white/50">All Categories</Link></li>
+            <li><Link to="/products/categories" className="text-white/50">All Products</Link></li>
+            {/* <li><Link to="/blog" className="text-white/50">Blog</Link></li>
+            <li><Link to="/" className="text-white/50">Campaigns</Link></li> */}
           </ul>
         </div>
 

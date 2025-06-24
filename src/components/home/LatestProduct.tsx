@@ -1,4 +1,3 @@
-import { ASSETS } from "@/assets/assets";
 import { Button } from "../ui/button";
 import { ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -62,7 +61,8 @@ export default function LatestProduct({ title, Products }: Props) {
             onClick={() =>
               // navigate("/products/latest-products", { state: { param: "is_featured=true" } })
 
-              navigate("/products/latest-products?is_featured=true",{state:{title:'Latest Products'}})
+              navigate("/products/latest-products?latest_product=true",{state:{title:'Latest Products'}})
+
             }
           >
             View more
@@ -115,7 +115,7 @@ export default function LatestProduct({ title, Products }: Props) {
           })}
         </ul>
       </div>
-      <div className="bg-primary relative p-1 h-24 lg:h-28 place-items-center  grid grid-cols-2 mt-10 mb-10 w-full">
+      {/* <div className="bg-primary relative p-1 h-24 lg:h-28 place-items-center  grid grid-cols-2 mt-10 mb-10 w-full">
         <div className="container mx-auto">
           <div className="absolute -top-12 md:-top-10 left-2 lg:left-20 bg-[#70BF44] text-white lato font-extrabold text-2xl rounded-full aspect-square size-24 lg:size-32 grid place-items-center rotate-[-20deg] shadow-lg">
             <div className="flex flex-col items-center justify-center leading-tight rotate-[-1deg]">
@@ -150,7 +150,7 @@ export default function LatestProduct({ title, Products }: Props) {
             </span>
           </p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

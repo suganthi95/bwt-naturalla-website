@@ -1,4 +1,5 @@
 [
+    { "code": "TN", "name": "Tamil Nadu" },
   { "code": "AP", "name": "Andhra Pradesh" },
   { "code": "AR", "name": "Arunachal Pradesh" },
   { "code": "AS", "name": "Assam" },
@@ -21,7 +22,6 @@
   { "code": "PB", "name": "Punjab" },
   { "code": "RJ", "name": "Rajasthan" },
   { "code": "SK", "name": "Sikkim" },
-  { "code": "TN", "name": "Tamil Nadu" },
   { "code": "TG", "name": "Telangana" },
   { "code": "TR", "name": "Tripura" },
   { "code": "UP", "name": "Uttar Pradesh" },

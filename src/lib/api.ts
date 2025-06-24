@@ -232,6 +232,8 @@ export const filterbyFeatureProducts = async (
   token: string,
   category_id?: string,
   subcategory_id?: string,
+  offer_ending_soon?:string,
+  latest_product?:string,
   isin_todays_deal?: string,
   is_featured?: string,
   best_selling?: string,
@@ -240,7 +242,7 @@ export const filterbyFeatureProducts = async (
   const response = await api.get(
     `v1/product/filter/by-feature/?category_id=${
       category_id || ""
-    }&subcategory_id=${subcategory_id || ""}&isin_todays_deal=${
+    }&subcategory_id=${subcategory_id || ""}&offer_ending_soon=${offer_ending_soon || ""}&latest_product=${latest_product || ""}&isin_todays_deal=${
       isin_todays_deal || ""
     }&is_featured=${is_featured || ""}&best_selling=${
       best_selling || ""

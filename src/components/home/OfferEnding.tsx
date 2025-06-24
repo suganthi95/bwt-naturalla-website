@@ -22,30 +22,32 @@ export default function OfferEnding({ products }: Props) {
   return (
     <div className="container mx-auto">
       <div className="flex justify-between font-semibold text-xl items-center">
-        <p className="text-title cursor-pointer ">Offer Ending Soon</p>
+        <p className="text-title text-sm md:text-base cursor-pointer ">
+          Offer Ending Soon</p>
         <p
-          className="text-title cursor-pointer hover:underline underline-primary"
+          className="text-title text-sm md:text-base cursor-pointer hover:underline underline-primary"
           onClick={() =>
-            navigate("/products/offer-ending-soon", { state: { offer_ending_soon: "true" } })
+            // navigate("/products/offer-ending-soon", { state: { offer_ending_soon: "true" } })
+            navigate("/products/offer-ending-soon?offer_ending_soon=true",{state:{title:'Offer ending Soon'}})
           }
         >
           View more
         </p>
       </div>
 
-      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-x-8 md:gap-x-14 lg:gap-x-10 mt-4 md:mt-8">
+      <ul className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-14 lg:gap-x-10 mt-4 md:mt-8">
         {products?.slice(0, 5)?.map((item, index) => {
           return (
             <li key={index} className="space-y-2 relative">
               <img
                 src={item?.thumbnail_image_url}
                 alt={item?.product_name}
-                className="w-60 h-60 md:w-[240px] md:h-[240px] rounded-[20px] object-cover mx-auto cursor-pointer"
+                className="w-52 h-44 md:w-[240px] md:h-[240px] rounded-lg md:rounded-[20px] object-cover mx-auto cursor-pointer"
                 onClick={() => navigate(`/product/${item.slug}`)}
               />
 
               <p
-                className="text-title  hover:text-primary transition-colors duration-300 text-xl font-medium line-clamp-1 cursor-pointer"
+                className="text-title  hover:text-primary transition-colors duration-300 text-sm md:text-xl font-medium line-clamp-1 cursor-pointer"
                 onClick={() => {
                   navigate(`/product/${item.slug}`);
                 }}
@@ -53,9 +55,9 @@ export default function OfferEnding({ products }: Props) {
                 {item?.product_name}
               </p>
               <div className="flex items-center justify-between w-full">
-                <p className="flex items-center gap-x-2.5 text-textPrimary text-xl lato font-bold">
+                <p className="flex items-center gap-x-2.5 text-textPrimary text-sm md:text-xl lato font-bold">
                   Rs. {item?.unit_price}
-                  <span className="text-lg text-lead  font-normal line-through">
+                  <span className="text-xs md:text-lg text-lead  font-normal line-through">
                     Rs.{item?.strike_through_price}
                   </span>
                 </p>
@@ -73,9 +75,9 @@ export default function OfferEnding({ products }: Props) {
                       navigate("/login");
                     }
                   }}
-                  className="rounded-md font-bold transition-all duration-300 ease-in-out px-5 py-2 bg-white text-primary border border-primary hover:bg-primary hover:text-white shadow-sm hover:shadow-lg"
+                  className="rounded-md font-bold transition-all duration-300 ease-in-out md:px-5 md:py-2 bg-white text-primary border border-primary hover:bg-primary hover:text-white shadow-sm hover:shadow-lg"
                 >
-                  <ShoppingCart className="w-5 h-5" />
+                  <ShoppingCart className="md:w-5 md:h-5" />
                 </Button>
               </div>
             </li>

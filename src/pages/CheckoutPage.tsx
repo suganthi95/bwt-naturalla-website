@@ -163,6 +163,7 @@ export default function CheckoutPage() {
   const { token } = useSelector((state: RootState) => state.auth);
 
   const { data, isLoading, isFetching } = useGetCartItems(token);
+
   const { mutate } = useUpdateCart();
   const { mutate: CheckCoupon, isPending } = useCheckCouponCode();
   const { mutate: removeCart } = useDeleteCart();
@@ -210,18 +211,18 @@ export default function CheckoutPage() {
       city: "",
       same_billing_address: true,
       state: "",
-      // country: "India",
-      billing_address:"",
-      billing_city:"",
-      billing_email:"",
-      billing_first_name:"",
-      billing_last_name:"",
-      billing_phone_no:"",
-      billing_pincode:"",
-      billing_state:"",
+      billing_address: "",
+      billing_city: "",
+      billing_email: "",
+      billing_first_name: "",
+      billing_last_name: "",
+      billing_phone_no: "",
+      billing_pincode: "",
+      billing_state: "",
       pinCode: "",
     },
   });
+
 
   const handleDecrease = (cart_id: number, quan: number) => {
     if (quan <= 1) return;
@@ -308,8 +309,8 @@ export default function CheckoutPage() {
         billing_address: values.billing_address,
         billing_city: values.billing_city,
         billing_email: values.billing_email,
-        billing_first_name: values.firstName,
-        billing_last_name: values.lastName,
+        billing_first_name: values.billing_first_name,
+        billing_last_name: values.billing_last_name,
         billing_phone_no: values.billing_phone_no,
         billing_pincode: values.billing_pincode,
         billing_state: values.billing_state,
@@ -369,33 +370,31 @@ export default function CheckoutPage() {
     return <FullScreenLoader />;
   }
 
+  // const updatedItems = items?.map((product: Product) => {
+  //   const isProductInCoupon =
+  //     CouponDetails?.coupon_type === "product_based" &&
+  //     Array.isArray(CouponDetails.product_ids) &&
+  //     CouponDetails.product_ids.includes(Number(product.product_id));
 
-// const updatedItems = items?.map((product: Product) => {
-//   const isProductInCoupon =
-//     CouponDetails?.coupon_type === "product_based" &&
-//     Array.isArray(CouponDetails.product_ids) &&
-//     CouponDetails.product_ids.includes(Number(product.product_id));
+  //   let productDiscount = 0;
 
-//   let productDiscount = 0;
+  //   if (isProductInCoupon) {
+  //     if (CouponDetails.discount_type === "percent") {
+  //       productDiscount =
+  //         (product.unit_price * product.quantity * CouponDetails.discount) / 100;
+  //     } else {
+  //       productDiscount = CouponDetails.discount;
+  //     }
+  //   }
 
-//   if (isProductInCoupon) {
-//     if (CouponDetails.discount_type === "percent") {
-//       productDiscount =
-//         (product.unit_price * product.quantity * CouponDetails.discount) / 100;
-//     } else {
-//       productDiscount = CouponDetails.discount;
-//     }
-//   }
+  //   return {
+  //     ...product,
+  //     coupon_amount: isProductInCoupon ? Number(productDiscount) : 0,
+  //     coupon_id: isProductInCoupon ? Number(CouponDetails.coupon_id) : null,
+  //   };
+  // });
 
-
-//   return {
-//     ...product,
-//     coupon_amount: isProductInCoupon ? Number(productDiscount) : 0,
-//     coupon_id: isProductInCoupon ? Number(CouponDetails.coupon_id) : null,
-//   };
-// });
-
-// dispatch(setCartItems(updatedItems));
+  // dispatch(setCartItems(updatedItems));
 
   return (
     <main>
@@ -509,57 +508,72 @@ export default function CheckoutPage() {
                               </div>
                             </div>
                           </div>
+                          <div className="grid place-items-end">
+                            <div className="flex gap-2">
+                              <div className="flex items-center gap-2 border px-3 py-1 rounded-lg">
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  disabled={product?.quantity < 2}
+                                  className="p-0 cursor-pointer w-5 h-5 text-lg text-gray-700"
+                                  onClick={() =>
+                                    handleDecrease(
+                                      product.cart_id,
+                                      product.quantity
+                                    )
+                                  }
+                                >
+                                  −
+                                </Button>
+                                <Input
+                                  type="number"
+                                  value={product.quantity}
+                                  onChange={(e) =>
+                                    setQuantity(Number(e.target.value))
+                                  }
+                                  className="w-10 text-center border-none text-sm font-semibold px-0"
+                                  min={1}
+                                />
+                                <Button
+                                  disabled={
+                                    product?.quantity >= product?.current_stock
+                                  }
+                                  variant="ghost"
+                                  size="icon"
+                                  className="p-0 cursor-pointer w-5 h-5 text-lg text-gray-700"
+                                  onClick={() =>
+                                    handleIncrease(product.cart_id)
+                                  }
+                                >
+                                  +
+                                </Button>
+                              </div>
 
-                          <div className="flex gap-2">
-                            <div className="flex items-center gap-2 border px-3 py-1 rounded-lg">
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="p-0 cursor-pointer w-5 h-5 text-lg text-gray-700"
+                              <button
+                                disabled={items.length === 1 && quantity < 2}
                                 onClick={() =>
-                                  handleDecrease(
+                                  handleRemoveProduct(
                                     product.cart_id,
-                                    product.quantity
+                                    product?.quantity
                                   )
                                 }
+                                className="text-gray-500 cursor-pointer hover:text-red-500"
                               >
-                                −
-                              </Button>
-                              <Input
-                                type="number"
-                                value={product.quantity}
-                                onChange={(e) =>
-                                  setQuantity(Number(e.target.value))
-                                }
-                                className="w-10 text-center border-none text-sm font-semibold px-0"
-                                min={1}
-                              />
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="p-0 cursor-pointer w-5 h-5 text-lg text-gray-700"
-                                onClick={() => handleIncrease(product.cart_id)}
-                              >
-                                +
-                              </Button>
+                                {removingItemId === product.cart_id ? (
+                                  <Loader2 className="w-4 h-4 animate-spin text-red-500" />
+                                ) : (
+                                  <Icons.Remove />
+                                )}
+                              </button>
                             </div>
 
-                            <button
-                              disabled={items.length === 1 && quantity < 2}
-                              onClick={() =>
-                                handleRemoveProduct(
-                                  product.cart_id,
-                                  product?.quantity
-                                )
-                              }
-                              className="text-gray-500 cursor-pointer hover:text-red-500"
-                            >
-                              {removingItemId === product.cart_id ? (
-                                <Loader2 className="w-4 h-4 animate-spin text-red-500" />
-                              ) : (
-                                <Icons.Remove />
-                              )}
-                            </button>
+                            {product?.current_stock <= product?.quantity && (
+                              <p className="text-xs text-red-600 mt-1">
+                                Only {product?.current_stock} item
+                                {product?.current_stock === 1 ? "" : "s"} left
+                                in stock.
+                              </p>
+                            )}
                           </div>
                         </div>
                       );
@@ -1141,7 +1155,7 @@ export default function CheckoutPage() {
                                       }}
                                       className="w-full pr-10 cursor-pointer"
                                     />
-                                 
+
                                     {showbiilingStateDropdown && (
                                       <ul className="absolute   w-52   bg-white dark:bg-gray-800 border dark:border-gray-700 max-h-80 overflow-auto mt-1 shadow-md rounded">
                                         {filteredStates2.length === 0 ? (
@@ -1157,8 +1171,9 @@ export default function CheckoutPage() {
                                                 field.onChange(city.name);
                                                 setbiilingStateQuery(city.name);
                                                 setShowSatteDropdown(false);
-                                                                                        setbiilingShowSatteDropdown(false);
-
+                                                setbiilingShowSatteDropdown(
+                                                  false
+                                                );
                                               }}
                                             >
                                               {city.name}
@@ -1321,7 +1336,7 @@ export default function CheckoutPage() {
             </Accordion>
             <Button
               className="w-full md:h-12 "
-              disabled={items.length === 0}
+              disabled={items?.length === 0}
               onClick={async () => {
                 const valid = await form.trigger();
                 if (valid) {

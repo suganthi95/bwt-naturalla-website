@@ -128,6 +128,7 @@ export default function Order({ Orders, handleTab }: Props) {
               </div>
             </div>
           </div>
+          {data?.shipment[0]?.activity &&
           <div>
             <h4 className="font-semibold text-title mb-2">Order Timeline</h4>
             <div className="bg-gray-50 p-4 rounded space-y-3">
@@ -172,6 +173,7 @@ export default function Order({ Orders, handleTab }: Props) {
               ))}
             </div>
           </div>
+  }
         </div>
         <div className="grid grid-cols-2 gap-x-4">
           <div>
