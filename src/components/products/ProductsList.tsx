@@ -262,7 +262,86 @@ export default function ProductsList({ Products, title }: Props) {
                     </button>
                     </motion.div>
                   </div>
+<div className="absolute  lg:hidden flex top-0  duration-300  transition-all items-center justify-center flex-col right-3 z-20">
+                    <motion.div
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.6 }}
+                      className="text-primary "
+                    >
+                      <button
+                        onClick={() => {
+                          if (!status) {
+                            toast.error("Please login to continue");
+                            navigate("/login");
+                            return;
+                          }
 
+                          setLikedProducts((prev) => ({
+                            ...prev,
+                            [item.product_id]: !prev[item.product_id],
+                          }));
+
+                          if (!isLiked) {
+                            addWishlist({
+                              product_id: item.product_id,
+                              quantity: 1,
+                              token,
+                            });
+                            dispatch(addWishItem(item));
+                          } else {
+                            deleteWishlist({ cart_id: item.product_id, token });
+                            dispatch(removeWishlistItem(item.cart_id));
+                          }
+                        }}
+                        className="w-9 h-9 flex items-center justify-center relative"
+                      >
+                        <motion.div
+                          initial={false}
+                          animate={{ scale: isLiked ? 1.3 : 1 }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 300,
+                            damping: 10,
+                          }}
+                        >
+                          <Heart
+                            className={`w-5 h-5 transition-colors duration-300 ${
+                              isLiked
+                                ? "fill-red-500 text-red-500"
+                                : "text-red-500"
+                            }`}
+                          />
+                        </motion.div>
+
+                        <AnimatePresence>
+                          {isLiked && (
+                            <motion.div
+                              key="pulse"
+                              initial={{ scale: 1, opacity: 0.5 }}
+                              animate={{ scale: 2, opacity: 0 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.6 }}
+                              className="absolute w-5 h-5 rounded-full bg-red-500"
+                            />
+                          )}
+                        </AnimatePresence>
+                      </button>
+                     
+                    </motion.div>
+                       <motion.div
+                      whileHover={{ scale:1.2 }}
+                      transition={{ duration: 0.6 }}
+                      className="text-primary"
+                    >
+                  
+                        <button
+                      onClick={() => setViewImage(item?.thumbnail_image_url)}
+                      className=""
+                    >
+                      <Eye/>
+                    </button>
+                    </motion.div>
+                  </div>
                   <div
                     className="relative w-full cursor-pointer overflow-hidden transition-all duration-300"
                     onClick={() => navigate(`/product/${item.slug}`)}
@@ -348,7 +427,7 @@ export default function ProductsList({ Products, title }: Props) {
           className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center"
           onClick={() => setViewImage(null)}
         >
-          <div className="max-w-lg w-full bg-white rounded-lg overflow-hidden shadow-lg">
+          <div className="w-72 h-72 md:h-auto md:max-w-lg  bg-white rounded-lg overflow-hidden shadow-lg">
             <img
               src={viewImage}
               alt="View product"

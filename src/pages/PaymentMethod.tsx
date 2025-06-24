@@ -43,7 +43,7 @@ export default function PaymentMethod() {
   );
   const CouponDetails = useSelector((state: RootState) => state.coupon);
   const { mutate, isPending } = useCreateOrder();
-  const { mutate: verifyRazorpay } = useVerifyrazorpay();
+  const { mutate: verifyRazorpay,isPending:verifyRazorpayPending } = useVerifyrazorpay();
   const [shouldPoll, setShouldPoll] = useState(false);
   const { token } = useSelector((state: RootState) => state.auth);
   const localPaymentmethod = localStorage.getItem("payment");
@@ -270,7 +270,7 @@ export default function PaymentMethod() {
     return () => clearInterval(interval);
   }, [merchantTransactionId, shouldPoll]);
 
-  if (loading || isLoading || isFetching) {
+  if (loading || isLoading || isFetching || verifyRazorpayPending) {
     return <FullScreenLoader />;
   }
 
@@ -298,7 +298,7 @@ export default function PaymentMethod() {
                   localStorage.setItem("payment", val);
                   setValue("payment", val);
                 }}
-                className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 w-full"
+                className="mt-4 grid grid-cols-1  gap-4 xl:w-6/12"
               >
                 {[
                   {
@@ -322,7 +322,7 @@ export default function PaymentMethod() {
                       htmlFor={value}
                       key={value}
                       className={cn(
-                        "flex items-center gap-4 rounded-lg border-2 p-4 sm:p-5 cursor-pointer transition-colors",
+                        "flex items-center gap-4 rounded-lg border-2 p-4  cursor-pointer transition-colors",
                         selectedRole === value
                           ? "border-primary"
                           : "border-border",
