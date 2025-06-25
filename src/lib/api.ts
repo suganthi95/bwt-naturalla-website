@@ -365,8 +365,8 @@ export const writeReview = async (token: string, formData: FormData) => {
   return response.data;
 };
 
-export const updateReview = async (token: string, formData: FormData) => {
-  const response = await api.put("v1/review", formData, {
+export const updateReview = async (token: string,id:string ,formData: FormData) => {
+  const response = await api.put(`v1/review/${id}`, formData, {
     headers: {
       Authorization: token,
     },

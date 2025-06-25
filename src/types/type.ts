@@ -49,6 +49,21 @@ export type ShippingTaxDetail = {
   shipping_fee: number;
   status: "active" | "inactive" | string; // Extend if other statuses possible
 };
+
+export type ProductReview = {
+  quantity: number;
+  order_amount: number;
+  product_name: string;
+  product_thumbnail_image: string;
+  has_reviewed: boolean;
+  review_id: number | null;
+  review_txt: string | null;
+  review_title: string | null;
+  ratings: number | null;
+  created_at: string | null;
+  review_author_id: number | null;
+  product_id: number;
+};
 export interface Category {
   category_id: number;
   category_title: string;

@@ -12,7 +12,7 @@ export const useWriteReview = () => {
 export const useUpdateReview = () => {
   return useMutation({
     mutationKey: ["updatereview"],
-    mutationFn: (args: { token: string; formData: FormData }) =>
-      updateReview(args.token, args.formData),
+    mutationFn: (args: { token: string; id:string,formData: FormData }) =>
+      updateReview(args.token, args.id, args.formData),
   });
 };

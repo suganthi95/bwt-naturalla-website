@@ -185,39 +185,43 @@ export default function Nav() {
                 return (
                   <li key={item.id} className="relative">
                     {IsDropDown ? (
-                      <Popover
-                        open={openDropdownId === item.id}
-                        onOpenChange={(isOpen) =>
-                          setOpenDropdownId(isOpen ? item.id : null)
-                        }
+                      <div
+                        onMouseEnter={() => setOpenDropdownId(item.id)}
+                        onMouseLeave={() => setOpenDropdownId(null)}
+                        className="relative"
                       >
-                        <PopoverTrigger className="cursor-pointer" asChild>
-                          <button
-                            className={`text-primary flex items-center gap-x-1 tracking-wide py-2 ${
-                              pathname === item.link
-                                ? "font-bold underline underline-offset-8 decoration-2"
-                                : "font-normal no-underline"
-                            }`}
-                          >
-                            {item.name}
-                            {openDropdownId === item.id ? (
-                              <ChevronUp className="w-3" />
-                            ) : (
-                              <ChevronDown className="w-3" />
-                            )}
-                          </button>
-                        </PopoverTrigger>
+                        <Popover open={openDropdownId === item.id}>
+                          <PopoverTrigger asChild>
+                            <button
+                              className={`text-primary flex items-center gap-x-1 tracking-wide py-2 cursor-pointer ${
+                                pathname === item.link
+                                  ? "font-bold underline underline-offset-8 decoration-2"
+                                  : "font-normal no-underline"
+                              }`}
+                            >
+                              {item.name}
+                              {openDropdownId === item.id ? (
+                                <ChevronUp className="w-3" />
+                              ) : (
+                                <ChevronDown className="w-3" />
+                              )}
+                            </button>
+                          </PopoverTrigger>
 
-                        <PopoverContent className="mt-2 w-64 bg-white shadow-lg rounded-xl p-4 z-50">
-                          <motion.div
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            transition={{ duration: 0.2 }}
-                            className="space-y-4"
+                          <PopoverContent
+                            align="start"
+                            className="-mt-2 w-64 bg-white shadow-lg rounded-xl p-4 z-50"
+                            sideOffset={8}
+                            avoidCollisions={false}
                           >
-                            {categories &&
-                              categories
+                            <motion.div
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                              transition={{ duration: 0.2 }}
+                              className="space-y-4"
+                            >
+                              {categories
                                 ?.filter((cat: any) =>
                                   cat.category_title.includes(item.name)
                                 )
@@ -239,7 +243,7 @@ export default function Nav() {
                                         );
                                         setOpenDropdownId(null);
                                       }}
-                                      className="text-sm font-semibold text-gray-800"
+                                      className="text-sm font-semibold text-gray-800 cursor-pointer"
                                     >
                                       {category.category_title}
                                     </p>
@@ -260,7 +264,7 @@ export default function Nav() {
                                                 sub.subcategory_id
                                               }`}
                                               state={{
-                                                title: `${sub.subcategory_name}`,
+                                                title: sub.subcategory_name,
                                               }}
                                               className="text-sm text-gray-600 hover:text-primary transition"
                                             >
@@ -272,9 +276,10 @@ export default function Nav() {
                                     </ul>
                                   </div>
                                 ))}
-                          </motion.div>
-                        </PopoverContent>
-                      </Popover>
+                            </motion.div>
+                          </PopoverContent>
+                        </Popover>
+                      </div>
                     ) : [0, 5].includes(index) ? (
                       <button
                         onClick={() => {

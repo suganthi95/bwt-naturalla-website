@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Order } from "@/types/type";
+import type { Order, ProductReview } from "@/types/type";
 import {
   AlertCircle,
   CheckCircle,
@@ -15,6 +15,7 @@ import dayjs from "dayjs";
 import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -31,7 +32,7 @@ export default function Order({ Orders, handleTab }: Props) {
   const [IsReviewopen, setIsReviewopen] = useState(false);
   const [updatedReview, setUpdatedReview] = useState<any>();
   const [selectedOrder, setSelectedOrder] = useState<number | null>(null);
-
+  const [ OpenReviewProduct , setReviewProduct] = useState<ProductReview>()
   const { token } = useSelector((state: RootState) => state.auth);
   const { data } = useGetOrdersDetails(token, selectedOrder ?? 0);
   const handleBackToOrders = () => {
@@ -261,25 +262,27 @@ export default function Order({ Orders, handleTab }: Props) {
                       >
                         <DialogTrigger className="cursor-pointer">
                           <button
-                            // onClick={() => handleOpenReview(item)}
+                            onClick={() => setReviewProduct(item)}
                             className="text-green-700 hover:text-green-900 text-sm font-medium cursor-pointer !rounded-button whitespace-nowrap"
                           >
                             Write a Review
                           </button>{" "}
                         </DialogTrigger>
-                        <DialogContent className="!max-w-xl [&>button]:hidden  !p-0">
+                        <DialogContent className=" h-[500px] lg:h-[700px] overflow-y-auto lg:!max-w-2xl [&>button]:hidden   !p-0">
                           <DialogHeader className="bg-[#F5F5F5] p-4 rounded-lg w-full flex flex-row  justify-between">
                             <DialogTitle>Write a Review</DialogTitle>
+                            <DialogClose>
                             <div
                               className="cursor-pointer"
-                              onClick={() => {
-                                setIsopen(false);
-                              }}
+                           
                             >
                               <X />
                             </div>
+
+                            </DialogClose>
                           </DialogHeader>
                           <WriteReview
+                            Product={item && OpenReviewProduct}
                             onClose={setIsReviewopen}
                             product_id={item.product_id}
                             orderCode={order?.order_code}
@@ -300,7 +303,7 @@ export default function Order({ Orders, handleTab }: Props) {
                           Update Review
                         </button>{" "}
                       </DialogTrigger>
-                      <DialogContent className="!max-w-xl [&>button]:hidden  !p-0">
+                        <DialogContent className=" h-[500px] lg:h-auto overflow-y-auto lg:!max-w-2xl [&>button]:hidden   !p-0">
                         <DialogHeader className="bg-[#F5F5F5] p-4 rounded-lg w-full flex flex-row  justify-between">
                           <DialogTitle>Update a Review</DialogTitle>
                           <div
@@ -313,7 +316,7 @@ export default function Order({ Orders, handleTab }: Props) {
                           </div>
                         </DialogHeader>
                         <UpdateReview
-                          onClose={setIsReviewopen}
+                          onClose ={setIsReviewopen}
                           orderCode={order?.order_code}
                           product={updatedReview}
                         />
