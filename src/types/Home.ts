@@ -8,7 +8,7 @@ type ProductReview = {
   review_author_id: number;
   review_txt: string;
   ratings: number;
-  created_at: string; 
+  created_at: string;
   first_name: string;
   last_name: string;
   email: string | null;
@@ -23,21 +23,19 @@ type ProductRatingSummary = {
   one_star: number;
 };
 
-
-
 export type Product = {
   product_id: number;
-  user_id:number;
-  quantity:number;
-  cart_id:number
-  product_size:string
+  user_id: number;
+  quantity: number;
+  cart_id: number;
+  product_size: string;
   admin_id: number | null;
   product_name: string;
   category_id: number | null;
   brand: string | null;
   tags: string | null;
-  coupon_id?:number | null,
-coupon_amount?:number | null;
+  coupon_id?: number | null;
+  coupon_amount?: number | null;
   slug: string;
   barcode: string | null;
   units: string | null;
@@ -50,7 +48,7 @@ coupon_amount?:number | null;
   benefits: string;
   how_to_use: string;
   ingredients: string;
-  strike_through_price:string
+  strike_through_price: string;
   product_specification_pdf: string | null;
   is_featured: boolean;
   isin_todays_deal: boolean;
@@ -72,16 +70,20 @@ coupon_amount?:number | null;
   discount_amount: number | null;
   discount_percent: number | null;
   discounted_price: number | null;
+  order_amount:number;
+  product_sub_total:number | null;
+  prodcut_tax:number | null;
+
   gallery_images: number[];
-  reviews:ProductReview[]
-  review_count:ProductRatingSummary[];
-  gallery_image_url:MediaItem[];
-  in_wishlist:boolean;
+  reviews: ProductReview[];
+  review_count: ProductRatingSummary[];
+  gallery_image_url: MediaItem[];
+  in_wishlist: boolean;
   product_videos: string | null;
   category_title: string | null;
   thumbnail_image_url: string;
-  total_amount ? :number
+  total_amount?: number;
   tax_percent: number;
-  current_stock:number
-  benefit_keys:string[]
+  current_stock: number;
+  benefit_keys: string[];
 };

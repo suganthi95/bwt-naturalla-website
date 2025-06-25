@@ -174,7 +174,6 @@ export default function CheckoutPage() {
   const [quantity, setQuantity] = useState(1);
   const [CouponDetails, setCouponDetails] = useState<CouponState>();
   const [couponCode, setCouponCode] = useState("");
-
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
 
   const [query, setQuery] = useState("");
@@ -231,14 +230,14 @@ export default function CheckoutPage() {
       );
 
       form.reset({
-        firstName: defaultAddress?.address_first_name ?? '',
-        lastName: defaultAddress?.address_last_name ?? '',
-        email: defaultAddress?.address_email ?? '',
-        phoneNumber: defaultAddress?.address_phone_no ?? '',
-        address: defaultAddress?.address ?? '',
-        city: defaultAddress?.city ?? '',
-        state: defaultAddress?.state ?? '',
-        pinCode: defaultAddress?.pincode ?? '',
+        firstName: defaultAddress?.address_first_name ?? "",
+        lastName: defaultAddress?.address_last_name ?? "",
+        email: defaultAddress?.address_email ?? "",
+        phoneNumber: defaultAddress?.address_phone_no ?? "",
+        address: defaultAddress?.address ?? "",
+        city: defaultAddress?.city ?? "",
+        state: defaultAddress?.state ?? "",
+        pinCode: defaultAddress?.pincode ?? "",
       });
 
       setQuery(defaultAddress?.city);
@@ -287,6 +286,16 @@ export default function CheckoutPage() {
         onSuccess(data) {
           setCouponDetails(data);
           toast.success("coupon applied");
+          let isAnyProductMatched = items?.some(
+            (product: Product) =>
+              CouponDetails?.coupon_type === "product_based" &&
+              Array.isArray(data?.product_ids) &&
+              CouponDetails.product_ids.includes(Number(product.product_id))
+          );
+
+          if (!isAnyProductMatched) {
+            toast.warning("Coupon not applicable to any product in your cart.");
+          }
         },
         onError(error) {
           if (axios.isAxiosError(error)) {
@@ -362,6 +371,9 @@ export default function CheckoutPage() {
       shipping = tax_detail.shipping_fee;
     }
   }
+  const CouponDiscount = items?.reduce((acc, item) => {
+    return acc + Math.round(Number(item.coupon_amount) || 0);
+  }, 0);
 
   let discount = 0;
 
@@ -381,18 +393,16 @@ export default function CheckoutPage() {
         `Apply this coupon on orders above ₹${CouponDetails.mini_shipping}`
       );
     }
-  } else {
+  } else if (CouponDetails?.discount_type === "percent") {
     discount = CouponDetails?.discount ?? 0;
   }
 
   // Final total
-  const total = Math.round(subtotal + shipping - discount);
+  const total = Math.round(subtotal + shipping - discount - CouponDiscount);
 
   if (isLoading || isFetching) {
     return <FullScreenLoader />;
   }
-
- 
 
   return (
     <main>
@@ -413,7 +423,11 @@ export default function CheckoutPage() {
                   <ul>
                     {items?.map((product: Product) => {
                       let productDiscount = 0;
-
+                      const productTax =
+                        (product.unit_price *
+                          product.quantity *
+                          product.tax_percent) /
+                        100;
                       const isProductInCoupon =
                         CouponDetails?.coupon_type === "product_based" &&
                         Array.isArray(CouponDetails.product_ids) &&
@@ -422,20 +436,31 @@ export default function CheckoutPage() {
                         );
 
                       if (isProductInCoupon) {
-                        if (CouponDetails.discount_type === "percent") {
+                        // isAnyProductMatched = true
+                        if (
+                          CouponDetails.product_ids.includes(
+                            Number(product.product_id)
+                          ) &&
+                          CouponDetails.discount_type === "percent"
+                        ) {
                           productDiscount =
                             (product.unit_price *
                               product.quantity *
                               CouponDetails.discount) /
                             100;
-                        } else {
+                        } else if (
+                          CouponDetails.product_ids.includes(
+                            Number(product.product_id)
+                          )
+                        ) {
                           productDiscount = CouponDetails.discount;
                         }
-                      } else {
-                        // toast.warning(
-                        //   "Coupon not applicable to any product in your cart."
-                        // );
                       }
+                      // else {
+                      //   toast.warning(
+                      //     "Coupon not applicable to any product in your cart."
+                      //   );
+                      // }
 
                       const finalPrice = Math.round(
                         product.unit_price * product.quantity - productDiscount
@@ -444,6 +469,11 @@ export default function CheckoutPage() {
                         addItemTotalAmount({
                           ...product,
                           total_amount: finalPrice,
+                          prodcut_tax: productTax,
+                          product_sub_total: Math.round(
+                            product.unit_price - productTax
+                          ),
+                          discount_amount: product.discount_amount,
                           coupon_amount: productDiscount || null,
                           coupon_id: CouponDetails?.coupon_id || null,
                         })
@@ -451,7 +481,6 @@ export default function CheckoutPage() {
 
                       return (
                         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 pb-4 border-b">
-                          {/* Image & Details */}
                           <div className="flex gap-4 items-start">
                             <img
                               src={product?.thumbnail_image_url}
@@ -503,7 +532,6 @@ export default function CheckoutPage() {
                             </div>
                           </div>
 
-                          {/* Quantity & Remove Section */}
                           <div className="grid place-items-start md:place-items-end mt-4 md:mt-0">
                             <div className="flex items-center gap-2">
                               <div className="flex items-center gap-2 border px-2 md:px-3 py-1 rounded-lg">
@@ -1247,7 +1275,9 @@ export default function CheckoutPage() {
                       type="text"
                       value={couponCode}
                       placeholder="Apply Coupon Code"
-                      onChange={(e) => setCouponCode(e.target.value)}
+                      onChange={(e) => {
+                        setCouponCode(e.target.value);
+                      }}
                       className="pl-10 pr-24 py-2 text-sm border border-gray-300 w-full"
                     />
 
@@ -1276,7 +1306,7 @@ export default function CheckoutPage() {
                   <div className="space-y-6 text-sm font-medium text-title">
                     <div className="flex justify-between">
                       <span>Subtotal</span>
-                      <span className="font-semibold">₹{subtotal}</span>
+                      <span className="font-semibold">₹{subtotal - tax}</span>
                     </div>
                     <div className="flex justify-between items-start text-sm text-muted-foreground">
                       <p className="flex flex-col leading-tight">
@@ -1294,6 +1324,14 @@ export default function CheckoutPage() {
                         <span className="">-₹{discount}</span>
                       </div>
                     )}
+
+                    {CouponDiscount > 0 && (
+                      <div className="flex justify-between">
+                        <span>Discount</span>
+                        <span className="">-₹{CouponDiscount}</span>
+                      </div>
+                    )}
+
                     <div className="flex justify-between items-center">
                       <span className="flex flex-col">
                         Shipping
@@ -1340,7 +1378,7 @@ export default function CheckoutPage() {
                 if (valid) {
                   dispatch(setCartItems(data?.data));
                   dispatch(setTaxDetails(data?.tax_detail));
-                  navigate("/payment", { state: { product: data } });
+                  navigate("/payment", { state: { product: data ,coupon_id:CouponDetails?.coupon_id} });
                 } else {
                   toast.error("please add address");
                 }

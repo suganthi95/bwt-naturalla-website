@@ -87,7 +87,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
   const shipping =
     tax_detail?.min_amount <= subtotal ? 0 : tax_detail?.shipping_fee;
 
-  const total = Math.round(subtotal + shipping - discount);
+  const total = Math.round((subtotal + shipping ) - discount);
 
   return (
     <ScrollArea className="space-y-6 p-4  h-screen">
@@ -210,7 +210,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                             exit={{ opacity: 0, y: 5 }}
                             transition={{ duration: 0.3, ease: "easeOut" }}
                           >
-                            Product out of stock, only {item?.current_stock}{" "}
+                            Product only {item?.current_stock}{" "}
                             quantity available
                           </motion.p>
                         )}
@@ -232,7 +232,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
               <h3 className="font-semibold text-xl">Price Details</h3>
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span className="font-semibold">₹{subtotal}</span>
+                <span className="font-semibold">₹{subtotal - tax}</span>
               </div>
               <div className="flex justify-between items-start text-sm text-muted-foreground">
                 <p className="flex flex-col leading-tight">

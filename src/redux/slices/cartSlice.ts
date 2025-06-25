@@ -101,6 +101,10 @@ export const cartSlice = createSlice({
         existingItem.total_amount = action.payload.total_amount;
         existingItem.coupon_amount = action.payload.coupon_amount ?? null;
         existingItem.coupon_id = action.payload.coupon_id ?? null;
+        existingItem.prodcut_tax = action.payload.prodcut_tax;
+        existingItem.product_sub_total=action.payload.product_sub_total;
+
+
       } else {
         state.items.push(action.payload);
       }

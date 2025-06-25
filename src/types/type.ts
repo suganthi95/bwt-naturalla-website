@@ -3,12 +3,17 @@ export type OrderPayload = {
     product_id: number;
     quantity: number;
     order_amount: number;
+    unit_price: number;
     coupon_id?: number | null;
     coupon_amount?: number | null;
+    product_sub_total?: number | null;
+    prodcut_tax?: number | null;
   }[];
   address: string;
   discount_amount: number | null;
   coupon_discount: number | null;
+  coupon_id?: number | null;
+
   tax: number;
   sub_total: number;
   order_amount: number;

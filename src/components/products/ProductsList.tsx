@@ -148,7 +148,7 @@ export default function ProductsList({ Products, title }: Props) {
       {filteredProducts?.length === 0 ? (
         <NoProducts />
       ) : (
-        <ul className="grid grid-cols-2  md:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-4 xl:gap-4">
+        <ul className="grid grid-cols-2   md:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-4 xl:gap-4">
           {filteredProducts
             ?.slice()
             ?.sort((a, b) => {
@@ -180,13 +180,17 @@ export default function ProductsList({ Products, title }: Props) {
               return (
                 <li
                   key={index}
-                  className="w-full group md:w-fit space-y-3 xl:p-3 relative group"
+                  className="w-full   md:w-fit space-y-3 xl:p-3 relative overflow-hidden group"
                 >
-                  <div className="absolute hidden group-hover:flex top-3 opacity-0 group-hover:opacity-100 duration-300  transition-all items-center justify-center flex-col right-3 z-20">
+                    <div
+                    className="relative w-full cursor-pointer overflow-hidden transition-all duration-300"
+                    onClick={() => navigate(`/product/${item.slug}`)}
+                  >
+                  <div className="absolute  flex  -right-8 duration-300  transition-all items-center justify-center flex-col group-hover:right-1 z-20">
                     <motion.div
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.6 }}
-                      className="text-primary opacity-0 group-hover:opacity-100"
+                      className="text-primary"
                     >
                       <button
                         onClick={() => {
@@ -246,23 +250,21 @@ export default function ProductsList({ Products, title }: Props) {
                           )}
                         </AnimatePresence>
                       </button>
-                     
                     </motion.div>
-                       <motion.div
-                      whileHover={{ scale:1.2 }}
+                    <motion.div
+                      whileHover={{ scale: 1.2 }}
                       transition={{ duration: 0.6 }}
                       className="text-primary"
                     >
-                  
-                        <button
-                      onClick={() => setViewImage(item?.thumbnail_image_url)}
-                      className=""
-                    >
-                      <Eye/>
-                    </button>
+                      <button
+                        onClick={() => setViewImage(item?.thumbnail_image_url)}
+                        className=""
+                      >
+                        <Eye />
+                      </button>
                     </motion.div>
                   </div>
-<div className="absolute  lg:hidden flex top-0  duration-300  transition-all items-center justify-center flex-col right-3 z-20">
+                  <div className="absolute  lg:hidden flex top-0  duration-300  transition-all items-center justify-center flex-col right-3 z-20">
                     <motion.div
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.6 }}
@@ -326,26 +328,21 @@ export default function ProductsList({ Products, title }: Props) {
                           )}
                         </AnimatePresence>
                       </button>
-                     
                     </motion.div>
-                       <motion.div
-                      whileHover={{ scale:1.2 }}
+                    <motion.div
+                      whileHover={{ scale: 1.2 }}
                       transition={{ duration: 0.6 }}
                       className="text-primary"
                     >
-                  
-                        <button
-                      onClick={() => setViewImage(item?.thumbnail_image_url)}
-                      className=""
-                    >
-                      <Eye/>
-                    </button>
+                      <button
+                        onClick={() => setViewImage(item?.thumbnail_image_url)}
+                        className=""
+                      >
+                        <Eye />
+                      </button>
                     </motion.div>
                   </div>
-                  <div
-                    className="relative w-full cursor-pointer overflow-hidden transition-all duration-300"
-                    onClick={() => navigate(`/product/${item.slug}`)}
-                  >
+                
                     <img
                       src={item?.thumbnail_image_url}
                       alt={item?.product_name}
@@ -354,8 +351,6 @@ export default function ProductsList({ Products, title }: Props) {
                   </div>
 
                   <div className="hidden group-hover:flex items-center justify-between gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                 
-
                     <button
                       className="flex-1 bg-primary text-white py-2 rounded-md font-medium hover:bg-primary/90"
                       onClick={() => {

@@ -22,7 +22,7 @@ import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useRazorpay } from "react-razorpay";
 import { removeCartItems } from "@/redux/slices/cartSlice";
@@ -30,8 +30,8 @@ import { removeCoupon } from "@/redux/slices/couponSlice";
 import { removeWishlist } from "@/redux/slices/wishSlice";
 
 export default function PaymentMethod() {
-  // const { state } = useLocation();
-  // const { product } = state || {};
+  const { state } = useLocation();
+  const { coupon_id } = state || {};
   const [loading, setLoading] = useState(false);
 
   const { Razorpay: RazorpayConstructor } = useRazorpay();
@@ -43,7 +43,8 @@ export default function PaymentMethod() {
   );
   const CouponDetails = useSelector((state: RootState) => state.coupon);
   const { mutate, isPending } = useCreateOrder();
-  const { mutate: verifyRazorpay,isPending:verifyRazorpayPending } = useVerifyrazorpay();
+  const { mutate: verifyRazorpay, isPending: verifyRazorpayPending } =
+    useVerifyrazorpay();
   const [shouldPoll, setShouldPoll] = useState(false);
   const { token } = useSelector((state: RootState) => state.auth);
   const localPaymentmethod = localStorage.getItem("payment");
@@ -88,6 +89,10 @@ export default function PaymentMethod() {
     }
   }
 
+  const CouponDiscount = items?.reduce((acc, item) => {
+    return acc + Math.round(Number(item.coupon_amount) || 0);
+  }, 0);
+
   let discount = 0;
 
   if (
@@ -111,7 +116,7 @@ export default function PaymentMethod() {
   }
 
   // Final total
-  const total = Math.round(subtotal + shipping - discount);
+  const total = Math.round(subtotal + shipping - discount - CouponDiscount);
   const handleCreateOrder = () => {
     if (!items || !shippingAddress) return;
 
@@ -119,15 +124,20 @@ export default function PaymentMethod() {
       product_data: items.map((item: any) => ({
         product_id: item.product_id,
         quantity: item.quantity,
+        unit_price: item.unit_price,
+        product_sub_total: item.product_sub_total,
+        discount_amount: item.discount_amount,
+        prodcut_tax: item.prodcut_tax,
         order_amount: item.total_amount,
         coupon_id: item.coupon_amount > 0 ? item.coupon_id : null,
         coupon_amount: item.coupon_amount,
       })),
       address: shippingAddress.address,
       discount_amount: discount,
-      coupon_discount: null,
+      coupon_discount: CouponDiscount,
+      coupon_id: coupon_id ?? null,
       tax: tax,
-      sub_total: subtotal,
+      sub_total: subtotal - tax,
       order_amount: total,
       shipping_fee: shipping,
       cash_on_delivery: false,
@@ -361,7 +371,7 @@ export default function PaymentMethod() {
           <div className="space-y-6 text-sm font-medium text-title">
             <div className="flex justify-between">
               <span className="text-lead">Subtotal</span>
-              <span className="font-semibold">₹{subtotal}</span>
+              <span className="font-semibold">₹{subtotal - tax}</span>
             </div>
             <div className="flex justify-between items-start text-sm text-muted-foreground">
               <p className="flex flex-col leading-tight">
@@ -376,6 +386,13 @@ export default function PaymentMethod() {
               <div className="flex justify-between">
                 <span className="text-lead">Discount</span>
                 <span className="">-₹{discount}</span>
+              </div>
+            )}
+
+            {CouponDiscount > 0 && (
+              <div className="flex justify-between">
+                <span className="text-lead">Discount</span>
+                <span className="">-₹{CouponDiscount}</span>
               </div>
             )}
             <div className="flex justify-between items-center">
