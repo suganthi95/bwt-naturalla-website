@@ -64,11 +64,11 @@ export default function Blogs() {
         </p>
       </div>
 
-      <div className="mt-10">
+      <div className="mt-10 ">
         <Slider {...settings}>
           {Blogs.map((item, index) => (
             <div key={item.id} className="px-2">
-              <div className="bg-white space-y-3 p-4 rounded-xl shadow-sm h-full">
+              <div className=" space-y-3 p-4 rounded-xl  h-full">
                 <img
                   src={item.img}
                   alt={`blog-${index}`}
