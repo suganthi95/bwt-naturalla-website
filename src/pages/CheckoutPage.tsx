@@ -286,7 +286,7 @@ export default function CheckoutPage() {
         onSuccess(data) {
           setCouponDetails(data);
           toast.success("coupon applied");
-          let isAnyProductMatched = items?.some(
+          let isAnyProductMatched = items?.find(
             (product: Product) =>
               CouponDetails?.coupon_type === "product_based" &&
               Array.isArray(data?.product_ids) &&
