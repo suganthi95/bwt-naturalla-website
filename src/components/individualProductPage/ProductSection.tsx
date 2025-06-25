@@ -137,8 +137,8 @@ export default function ProductSection({ media, products }: Props) {
   }
 
   return (
-    <div className="flex flex-col container mx-auto space-y-4 lg:flex-row  ">
-      <div className="flex w-full lg:w-1/2 gap-4 ">
+    <div className="flex flex-col container mx-auto space-y-4 xl:flex-row  ">
+      <div className="flex w-full lg:w-10/12 xl:w-1/2 gap-4 ">
         <div className="w-20">
           <Slider
             {...thumbnailSliderSettings}
@@ -170,7 +170,7 @@ export default function ProductSection({ media, products }: Props) {
                 <img
                   src={src?.media_url}
                   alt={`Product ${index + 1}`}
-                  className=" xl:w-11/12  rounded-2xl h-[410px] xl:h-[484px] object-cover"
+                  className="  xl:w-11/12  rounded-2xl h-[410px] xl:h-[484px] object-cover"
                 />
               </div>
             ))}
@@ -283,7 +283,7 @@ export default function ProductSection({ media, products }: Props) {
             </p>
           )}
         </div>
-        <div className="flex md:flex-col items-center  justify-between">
+        <div className="flex md:flex-col items-center lg:items-start  justify-between">
 
         <div>
           <p className="flex items-center gap-x-1.5 text-lead">

@@ -64,7 +64,7 @@ export default function BestSelling({ title, Products }: Props) {
         </p>
       </div>
 
-      <ul className="grid place-items-center grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-14 lg:gap-x-10 mt-4 md:mt-8">
+      <ul className="grid place-items-center grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 md:gap-14 lg:gap-x-10 mt-4 md:mt-8">
         {Products?.slice(0, 5)?.map((item, index) => {
           return (
             <li key={index} className="space-y-2 relative">

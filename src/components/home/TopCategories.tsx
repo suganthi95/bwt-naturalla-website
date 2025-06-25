@@ -99,7 +99,7 @@ export default function TopCategories({ categories }: Props) {
           <h1 className="text-2xl sm:text-3xl  roundica md:text-[32px] text-primary font-semibold">
             Top Categories of This Month
           </h1>
-          <ul className="grid grid-cols-2 sm:grid-cols-3 place-items-center  gap-8  lg:gap-4 lg:px-40  mt-8">
+          <ul className="grid grid-cols-2 sm:grid-cols-3 place-items-center  gap-8  lg:gap-4 xl:px-40  mt-8">
             {categories?.slice(0,3)?.map((item, index) => (
               <li
                 key={index}

@@ -61,7 +61,7 @@ export default function TodayDeals({ Products }: Props) {
           View more
         </p>
       </div>
-      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-x-14 lg:gap-x-20 mt-4 md:mt-8">
+      <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-x-14 lg:gap-x-20 mt-4 md:mt-8">
         {Products?.slice(0, 3)?.map((item, index) => {
           return (
             <li key={index} className="space-y-2 relative">

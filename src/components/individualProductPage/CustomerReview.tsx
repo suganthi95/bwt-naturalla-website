@@ -21,8 +21,8 @@ export default function CustomerReview({ Product }: Props) {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
+          slidesToShow: 2,
+          slidesToScroll: 2,
           infinite: true,
           dots: true,
         },
@@ -81,12 +81,12 @@ export default function CustomerReview({ Product }: Props) {
     }
 
     return (
-      <div className="container mx-auto px-4 lg:px-44 py-6">
+      <div className="container mx-auto px-4 lg:px-36 xl:px-44 py-6">
         <div className=" space-y-6">
           <h2 className="font-bold text-xl text-title">Customer Reviews</h2>
 
-          <div className="grid grid-cols-1 w-full md:grid-cols-4 gap-6 items-start">
-            <div className="flex flex-col items-center gap-1">
+          <div className="flex   gap-6 items-start">
+            <div className="flex flex-col lg:w-5/12 xl:w-3/12  items-center gap-1">
               <div className="space-y-1.5">
                 <div className="flex items-center gap-x-1">
                   {Array.from({ length: 5 }).map((_, i) =>
@@ -106,23 +106,8 @@ export default function CustomerReview({ Product }: Props) {
               </div>
             </div>
 
-            <div className="space-y-4 xl:col-span-2  px-1 lg:px-8 lg::border-l lg:border-r  border-gray-300">
-              {/* {[Product?.review_count[0]?.five_star, Product?.review_count[0]?.four_star, Product?.review_count[0]?.three_star, Product?.review_count[0]?.two_star, Product?.review_count[0]?.one_star].map((star) => (
-                <div key={star} className="flex items-center gap-2">
-                  <p className="text-sm min-w-[60px] text-[#007AFF] whitespace-nowrap">
-                    {star} star
-                  </p>
-                  <div className="relative w-full h-3 border rounded">
-                    <div
-                      className="absolute top-0 left-0 h-3 bg-yellow-400 rounded"
-                      style={{ width: `${star * 18}%` }}
-                    ></div>
-                  </div>
-                  <span className="w-12 text-sm text-right text-[#007AFF] ">
-                    {star * 18}%
-                  </span>
-                </div>
-              ))} */}
+            <div className="space-y-4 l w-full  px-1 lg:px-2 lg:border-l lg:border-r  border-gray-300">
+             
               <div className="flex items-center md:gap-2">
                 <p className="text-sm min-w-[60px] text-[#007AFF] whitespace-nowrap">
                   5 star
