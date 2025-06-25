@@ -45,7 +45,6 @@ export default function ProductsList({ Products, title }: Props) {
     sorybyAlphabetic,
   } = useSelector((state: RootState) => state.filter);
   const [sortBy, setSortBy] = useState("a-z");
-  const [viewImage, setViewImage] = useState<string | null>(null);
   const [filteredProducts, setFiltered] = useState<Product[]>();
   const { token, status } = useSelector((state: RootState) => state.auth);
   const { data } = useFilterValues(token);
@@ -182,172 +181,184 @@ export default function ProductsList({ Products, title }: Props) {
                   key={index}
                   className="w-full   md:w-fit space-y-3 xl:p-3 relative overflow-hidden group"
                 >
-                    <div
+                  <div
                     className="relative w-full cursor-pointer overflow-hidden transition-all duration-300"
-                    onClick={() => navigate(`/product/${item.slug}`)}
+                    // onClick={() => navigate(`/product/${item.slug}`)}
                   >
-                  <div className="absolute  flex  -right-8 duration-300  transition-all items-center justify-center flex-col group-hover:right-1 z-20">
-                    <motion.div
-                      whileHover={{ rotate: 360 }}
-                      transition={{ duration: 0.6 }}
-                      className="text-primary"
-                    >
-                      <button
-                        onClick={() => {
-                          if (!status) {
-                            toast.error("Please login to continue");
-                            navigate("/login");
-                            return;
-                          }
-
-                          setLikedProducts((prev) => ({
-                            ...prev,
-                            [item.product_id]: !prev[item.product_id],
-                          }));
-
-                          if (!isLiked) {
-                            addWishlist({
-                              product_id: item.product_id,
-                              quantity: 1,
-                              token,
-                            });
-                            dispatch(addWishItem(item));
-                          } else {
-                            deleteWishlist({ cart_id: item.product_id, token });
-                            dispatch(removeWishlistItem(item.cart_id));
-                          }
-                        }}
-                        className="w-9 h-9 flex items-center justify-center relative"
+                    <div className="absolute  space-y-1 flex top-3 -right-8 duration-300  transition-all items-center justify-center flex-col group-hover:right-1 z-20">
+                      <motion.div
+                        whileHover={{  scale: [1, 1.2, 1] }}
+                        transition={{ duration: 0.6, ease: "easeInOut" }}
+                        className="bg-white rounded-full  grid place-items-center size-7 shadow-md"
                       >
-                        <motion.div
-                          initial={false}
-                          animate={{ scale: isLiked ? 1.3 : 1 }}
-                          transition={{
-                            type: "spring",
-                            stiffness: 300,
-                            damping: 10,
-                          }}
-                        >
-                          <Heart
-                            className={`w-5 h-5 transition-colors duration-300 ${
-                              isLiked
-                                ? "fill-red-500 text-red-500"
-                                : "text-red-500"
-                            }`}
-                          />
-                        </motion.div>
+                        <button
+                          onClick={() => {
+                            if (!status) {
+                              toast.error("Please login to continue");
+                              navigate("/login");
+                              return;
+                            }
 
-                        <AnimatePresence>
-                          {isLiked && (
-                            <motion.div
-                              key="pulse"
-                              initial={{ scale: 1, opacity: 0.5 }}
-                              animate={{ scale: 2, opacity: 0 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.6 }}
-                              className="absolute w-5 h-5 rounded-full bg-red-500"
+                            setLikedProducts((prev) => ({
+                              ...prev,
+                              [item.product_id]: !prev[item.product_id],
+                            }));
+
+                            if (!isLiked) {
+                              addWishlist({
+                                product_id: item.product_id,
+                                quantity: 1,
+                                token,
+                              });
+                              dispatch(addWishItem(item));
+                            } else {
+                              deleteWishlist({
+                                cart_id: item.product_id,
+                                token,
+                              });
+                              dispatch(removeWishlistItem(item.cart_id));
+                            }
+                          }}
+                          className="w-7 h-7 cursor-pointer flex items-center justify-center relative"
+                        >
+                          <motion.div
+                            initial={false}
+                            animate={{ scale: isLiked ? 1 : 1 }}
+                            transition={{
+                              type: "spring",
+                              stiffness: 300,
+                              damping: 10,
+                            }}
+                          >
+                            <Heart
+                              className={`w-5 h-5 transition-colors duration-300 ${
+                                isLiked
+                                  ? "fill-red-500 text-red-500"
+                                  : "text-black"
+                              }`}
                             />
-                          )}
-                        </AnimatePresence>
-                      </button>
-                    </motion.div>
-                    <motion.div
-                      whileHover={{ scale: 1.2 }}
-                      transition={{ duration: 0.6 }}
-                      className="text-primary"
-                    >
-                      <button
-                        onClick={() => setViewImage(item?.thumbnail_image_url)}
+                          </motion.div>
+
+                          <AnimatePresence>
+                            {isLiked && (
+                              <motion.div
+                                key="pulse"
+                                initial={{ scale: 1, opacity: 0.5 }}
+                                animate={{ scale: 2, opacity: 0 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.6 }}
+                                className="absolute w-5 h-5 rounded-full bg-red-500"
+                              />
+                            )}
+                          </AnimatePresence>
+                        </button>
+                      </motion.div>
+                      <motion.div
+                        whileHover={{ scale: 1 }}
+                        transition={{ duration: 0.6 }}
                         className=""
                       >
-                        <Eye />
-                      </button>
-                    </motion.div>
-                  </div>
-                  <div className="absolute  lg:hidden flex top-0  duration-300  transition-all items-center justify-center flex-col right-3 z-20">
-                    <motion.div
-                      whileHover={{ rotate: 360 }}
-                      transition={{ duration: 0.6 }}
-                      className="text-primary "
-                    >
-                      <button
-                        onClick={() => {
-                          if (!status) {
-                            toast.error("Please login to continue");
-                            navigate("/login");
-                            return;
+                        <button
+                          onClick={() =>
+                            // setViewImage(item?.thumbnail_image_url)
+                            navigate(`/product/${item.slug}`)
                           }
-
-                          setLikedProducts((prev) => ({
-                            ...prev,
-                            [item.product_id]: !prev[item.product_id],
-                          }));
-
-                          if (!isLiked) {
-                            addWishlist({
-                              product_id: item.product_id,
-                              quantity: 1,
-                              token,
-                            });
-                            dispatch(addWishItem(item));
-                          } else {
-                            deleteWishlist({ cart_id: item.product_id, token });
-                            dispatch(removeWishlistItem(item.cart_id));
-                          }
-                        }}
-                        className="w-9 h-9 flex items-center justify-center relative"
-                      >
-                        <motion.div
-                          initial={false}
-                          animate={{ scale: isLiked ? 1.3 : 1 }}
-                          transition={{
-                            type: "spring",
-                            stiffness: 300,
-                            damping: 10,
-                          }}
+                          className="bg-white size-7 cursor-pointer  grid place-items-center rounded-full"
                         >
-                          <Heart
-                            className={`w-5 h-5 transition-colors duration-300 ${
-                              isLiked
-                                ? "fill-red-500 text-red-500"
-                                : "text-red-500"
-                            }`}
-                          />
-                        </motion.div>
-
-                        <AnimatePresence>
-                          {isLiked && (
-                            <motion.div
-                              key="pulse"
-                              initial={{ scale: 1, opacity: 0.5 }}
-                              animate={{ scale: 2, opacity: 0 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.6 }}
-                              className="absolute w-5 h-5 rounded-full bg-red-500"
-                            />
-                          )}
-                        </AnimatePresence>
-                      </button>
-                    </motion.div>
-                    <motion.div
-                      whileHover={{ scale: 1.2 }}
-                      transition={{ duration: 0.6 }}
-                      className="text-primary"
-                    >
-                      <button
-                        onClick={() => setViewImage(item?.thumbnail_image_url)}
-                        className=""
+                          <Eye className="w-5 h-5" />
+                        </button>
+                      </motion.div>
+                    </div>
+                    <div className="absolute  lg:hidden flex top-0  duration-300  transition-all items-center justify-center flex-col right-3 z-20">
+                      <motion.div
+                        whileHover={{ rotate: 360 }}
+                        transition={{ duration: 0.6 }}
+                        className="text-primary "
                       >
-                        <Eye />
-                      </button>
-                    </motion.div>
-                  </div>
-                
-                    <img
-                      src={item?.thumbnail_image_url}
-                      alt={item?.product_name}
-                      className="w-full h-40 sm:h-60 md:w-[240px] md:h-[240px] transition-all duration-300  object-cover rounded-xl group-hover:h-44"
-                    />
+                        <button
+                          onClick={() => {
+                            if (!status) {
+                              toast.error("Please login to continue");
+                              navigate("/login");
+                              return;
+                            }
+
+                            setLikedProducts((prev) => ({
+                              ...prev,
+                              [item.product_id]: !prev[item.product_id],
+                            }));
+
+                            if (!isLiked) {
+                              addWishlist({
+                                product_id: item.product_id,
+                                quantity: 1,
+                                token,
+                              });
+                              dispatch(addWishItem(item));
+                            } else {
+                              deleteWishlist({
+                                cart_id: item.product_id,
+                                token,
+                              });
+                              dispatch(removeWishlistItem(item.cart_id));
+                            }
+                          }}
+                          className="w-9 h-9 flex items-center justify-center relative"
+                        >
+                          <motion.div
+                            initial={false}
+                            animate={{ scale: isLiked ? 1.3 : 1 }}
+                            transition={{
+                              type: "spring",
+                              stiffness: 300,
+                              damping: 10,
+                            }}
+                          >
+                            <Heart
+                              className={`w-5 h-5 transition-colors duration-300 ${
+                                isLiked
+                                  ? "fill-red-500 text-red-500"
+                                  : "text-red-500"
+                              }`}
+                            />
+                          </motion.div>
+
+                          <AnimatePresence>
+                            {isLiked && (
+                              <motion.div
+                                key="pulse"
+                                initial={{ scale: 1, opacity: 0.5 }}
+                                animate={{ scale: 2, opacity: 0 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.6 }}
+                                className="absolute w-5 h-5 rounded-full bg-red-500"
+                              />
+                            )}
+                          </AnimatePresence>
+                        </button>
+                      </motion.div>
+                      <motion.div
+                        whileHover={{ scale: 1.2 }}
+                        transition={{ duration: 0.6 }}
+                        className="text-primary"
+                      >
+                        <button
+                          onClick={() => navigate(`/product/${item.slug}`)}
+                          className=""
+                        >
+                          <Eye />
+                        </button>
+                      </motion.div>
+                    </div>
+                    <div className="relative group-hover:h-44 group w-full h-40 sm:h-60 md:w-[240px] md:h-[240px] rounded-xl overflow-hidden transition-all duration-300">
+                      <img
+                        src={item?.thumbnail_image_url}
+                        alt={item?.product_name}
+                        className="w-full h-full object-cover rounded-xl transition-transform duration-500 group-hover:rotate-3"
+                      />
+
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl" />
+                    </div>
                   </div>
 
                   <div className="hidden group-hover:flex items-center justify-between gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -416,20 +427,6 @@ export default function ProductsList({ Products, title }: Props) {
               );
             })}
         </ul>
-      )}
-      {viewImage && (
-        <div
-          className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center"
-          onClick={() => setViewImage(null)}
-        >
-          <div className="w-72 h-72 md:h-auto md:max-w-lg  bg-white rounded-lg overflow-hidden shadow-lg">
-            <img
-              src={viewImage}
-              alt="View product"
-              className="w-full h-auto object-contain"
-            />
-          </div>
-        </div>
       )}
     </div>
   );
