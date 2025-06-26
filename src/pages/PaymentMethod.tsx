@@ -149,6 +149,7 @@ export default function PaymentMethod() {
       shipment_phone_no: Number(shippingAddress.phoneNumber),
       city: shippingAddress.city,
       state: shippingAddress.state,
+      same_billing_address:shippingAddress.same_billing_address,
       billing_first_name: shippingAddress.billing_first_name,
       billing_last_name: shippingAddress.billing_last_name,
       billing_email: shippingAddress.billing_email,
