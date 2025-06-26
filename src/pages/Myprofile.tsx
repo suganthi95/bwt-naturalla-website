@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
 import { useGetOrders, useGetProfileInfo } from "@/services/profile";
 import ProfilePictureUpload from "@/components/profile/ProfilePictureUpload";
+import FullScreenLoader from "@/common/FullScreenLoader";
 
 export default function Myprofile() {
   const [IsProfileUpdate, setIsProfileUpdate] = useState(false);
@@ -23,8 +24,11 @@ export default function Myprofile() {
   };
   const { token } = useSelector((state: RootState) => state.auth);
   const { data: orders } = useGetOrders(token);
-  const { data: profileInfo } = useGetProfileInfo(token);
-
+  const { data: profileInfo , isLoading,isFetching } = useGetProfileInfo(token);
+ 
+  if(isLoading  || isFetching){
+    return <FullScreenLoader/>
+  }
   return (
     <section className=" mb-10 md:mb-20">
       <img src={ASSETS.RECTANGLE} alt="profile-banner" className="h-20 md:h-auto" />

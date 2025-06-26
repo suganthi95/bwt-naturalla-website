@@ -36,7 +36,6 @@ type Props = {
 };
 
 export default function ProductSection({ media, products }: Props) {
-
   const mainSliderRef = useRef<Slider>(null);
   const thumbSliderRef = useRef<Slider>(null);
   const { token, status } = useSelector((state: RootState) => state.auth);
@@ -110,9 +109,8 @@ export default function ProductSection({ media, products }: Props) {
   // );
 
   const checkDeliveryInfo = async () => {
-
     // localStorage.setItem("pincode", Pincode ?? "");
-    
+
     try {
       setIsloading(true);
       const { data, isError, error } = await refetch();
@@ -134,7 +132,7 @@ export default function ProductSection({ media, products }: Props) {
     } finally {
       setIsloading(false);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col container mx-auto space-y-4 xl:flex-row  ">
@@ -151,7 +149,7 @@ export default function ProductSection({ media, products }: Props) {
                   <img
                     src={src.media_url}
                     alt={`Thumb ${index + 1}`}
-                    className={ ` w-28 h-20 md:h-24 md:w-32 object-cover rounded-lg border cursor-pointer transition-opacity duration-300 ${
+                    className={` w-28 h-20 md:h-24 md:w-32 object-cover rounded-lg border cursor-pointer transition-opacity duration-300 ${
                       index === activeSlide
                         ? "opacity-100 border-2 border-black"
                         : "opacity-60"
@@ -197,7 +195,7 @@ export default function ProductSection({ media, products }: Props) {
             >
               <Share2 className="w-5 h-5" />
             </Button>
-         
+
             <button
               onClick={() => {
                 setLiked((prev) => !prev);
@@ -254,7 +252,7 @@ export default function ProductSection({ media, products }: Props) {
             </button>
           </div>
         </div>
-     
+
         <p className="flex items-center gap-x-0.5 text-sm">
           {Array.from({ length: 5 }).map((_, i) =>
             i < averageRatings ? (
@@ -263,7 +261,9 @@ export default function ProductSection({ media, products }: Props) {
               <Icons.Un_Star key={i} className="text-gray-300 w-4 h-4" />
             )
           )}
-          <span className="font-medium ml-1">{averageRatings}/5</span>
+          <span className="font-medium ml-1">
+            {isNaN(averageRatings) ? 0 : averageRatings}/5
+          </span>
         </p>
         <div className="flex items-center gap-x-2">
           <p className=" font-bold text-title  text-sm md:text-[32px]">
@@ -284,40 +284,39 @@ export default function ProductSection({ media, products }: Props) {
           )}
         </div>
         <div className="flex md:flex-col items-center lg:items-start  justify-between">
-
-        <div>
-          <p className="flex items-center gap-x-1.5 text-lead">
-            Price <span> : </span>{" "}
-            <span className="text-title font-bold t">
-              Rs {products?.unit_price}
-            </span>
-          </p>
-        </div>
-        <div className="flex items-center gap-2 border w-fit p-1 px-4 rounded-lg">
-          <Button
-            variant="outline"
-            size="icon"
-            className="border-none cursor-pointer  w-fit text-xl font-semibold"
-            onClick={handleDecrease}
-          >
-            {" −"}
-          </Button>
-          <Input
-            type="number"
-            value={quantity}
-            onChange={(e) => setQuantity(Number(e.target.value))}
-            className="w-10  text-2xl  font-semibold border-none text-center"
-            min={1}
-          />
-          <Button
-            variant="outline"
-            size="icon"
-            className="cursor-pointer  border-none  w-fit text-xl font-semibold"
-            onClick={handleIncrease}
-          >
-            +
-          </Button>
-        </div>{" "}
+          <div>
+            <p className="flex items-center gap-x-1.5 text-lead">
+              Price <span> : </span>{" "}
+              <span className="text-title font-bold t">
+                Rs {products?.unit_price}
+              </span>
+            </p>
+          </div>
+          <div className="flex items-center gap-2 border w-fit p-1 px-4 rounded-lg">
+            <Button
+              variant="outline"
+              size="icon"
+              className="border-none cursor-pointer  w-fit text-xl font-semibold"
+              onClick={handleDecrease}
+            >
+              {" −"}
+            </Button>
+            <Input
+              type="number"
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+              className="w-10  text-2xl  font-semibold border-none text-center"
+              min={1}
+            />
+            <Button
+              variant="outline"
+              size="icon"
+              className="cursor-pointer  border-none  w-fit text-xl font-semibold"
+              onClick={handleIncrease}
+            >
+              +
+            </Button>
+          </div>{" "}
         </div>
         <div className="flex items-center gap-x-2">
           <Button

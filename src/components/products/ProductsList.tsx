@@ -185,7 +185,7 @@ export default function ProductsList({ Products, title }: Props) {
                     className="relative w-full cursor-pointer overflow-hidden transition-all duration-300"
                     // onClick={() => navigate(`/product/${item.slug}`)}
                   >
-                    <div className="absolute  space-y-1 flex top-3 -right-8 duration-300  transition-all items-center justify-center flex-col group-hover:right-1 z-20">
+                    <div className="absolute  space-y-3 flex top-3 -right-8 duration-300  transition-all items-center justify-center flex-col group-hover:right-3 z-20">
                       <motion.div
                         whileHover={{  scale: [1, 1.2, 1] }}
                         transition={{ duration: 0.6, ease: "easeInOut" }}
