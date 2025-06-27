@@ -132,8 +132,9 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                             <span className="text-[13px]">1 unit</span> ₹
                             {item.unit_price}
                             <span className="hidden sm:inline border-l h-3 border-gray-300"></span>
+                           
                             <span className="text-[13px]">Size</span>{" "}
-                            {item?.product_size}
+                            {item?.units}
                           </p>
 
                           <div className="mt-1 flex items-center gap-2 flex-wrap">

@@ -420,9 +420,9 @@ export default function ProductsList({ Products, title }: Props) {
                         Rs. {item?.strike_through_price}
                       </span>
                     </p>
-                    {item?.product_size && (
+                    {item?.units && (
                       <p className="text-sm font-medium text-lead">
-                        ({item?.product_size})
+                        ({item?.units})
                       </p>
                     )}
                   </div>

@@ -244,7 +244,7 @@ export default function Signup() {
                   />
                 </FormControl>
                 <FormLabel className="text-xs text-textPrimary">
-                  I agree with the <span className="underline">privacy policy</span>
+                  I agree with the <a href="https://stagingnaturalla.netlify.app/privacy-policy" target="_blank" className="underline">privacy policy</a>
                 </FormLabel>
               </div>
               <FormMessage />

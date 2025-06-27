@@ -78,7 +78,7 @@ export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
                           <span>1 unit</span>₹{item.unit_price}
                           <span className="hidden sm:inline border-l h-3 border-gray-300"></span>
                           <span>Size</span>
-                          {item?.product_size}
+                          {item?.units}
                         </p>
 
                         <div className="mt-1 flex items-center gap-2 flex-wrap">

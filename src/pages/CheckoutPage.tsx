@@ -527,7 +527,7 @@ export default function CheckoutPage() {
                                   <span>₹{product?.unit_price}</span>
                                   <span className="text-gray-300">|</span>
                                   <span>Size</span>
-                                  <span>{product?.product_size}</span>
+                                  <span>{product?.units}</span>
                                 </p>
                               </div>
 
