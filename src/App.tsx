@@ -56,9 +56,9 @@ const App = () => {
             <Route
               path="/products/:filter"
               element={
-                <ProtectedRoute>
+                // <ProtectedRoute>
                   <Products />
-                </ProtectedRoute>
+                // </ProtectedRoute>
               }
             />
 
