@@ -23,6 +23,10 @@ const OrderFailure = React.lazy(() => import("@/pages/Order_Failure"));
 const Myprofile = React.lazy(() => import("@/pages/Myprofile"));
 const PaymentMethod = React.lazy(() => import("@/pages/PaymentMethod"));
 
+const Terms = React.lazy(() => import("./pages/TermsCondition"));
+const PrivacyPolicy = React.lazy(() => import("./pages/PrivacyPolicy"));
+const ShippingPolicy = React.lazy(() => import("./pages/ShippingPolicy"));
+const ReturnRefund = React.lazy(() => import("./pages/ReturnRefund"));
 const App = () => {
   return (
     <Provider>
@@ -30,10 +34,13 @@ const App = () => {
         <ScrollToTop />
         <Routes>
           <Route path="/sign-up" element={<SignUp />} />
-          {/* <Route path="example" element={<Example/>} /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/sign-up-verify" element={<SignupVerify />} />
           <Route path="/login-verify" element={<LoginVerify />} />
+          <Route path="/terms-and-conditions" element={<Terms />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/shipping-policy" element={<ShippingPolicy />} />
+          <Route path="/returns-and-refunds" element={<ReturnRefund />} />
 
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />

@@ -187,7 +187,7 @@ export default function ProductsList({ Products, title }: Props) {
                   >
                     <div className="absolute  space-y-3 flex top-3 -right-8 duration-300  transition-all items-center justify-center flex-col group-hover:right-3 z-20">
                       <motion.div
-                        whileHover={{  scale: [1, 1.2, 1] }}
+                        whileHover={{ scale: [1, 1.2, 1] }}
                         transition={{ duration: 0.6, ease: "easeInOut" }}
                         className="bg-white rounded-full  grid place-items-center size-7 shadow-md"
                       >
@@ -269,6 +269,7 @@ export default function ProductsList({ Products, title }: Props) {
                         </button>
                       </motion.div>
                     </div>
+
                     <div className="absolute  lg:hidden flex top-0  duration-300  transition-all items-center justify-center flex-col right-3 z-20">
                       <motion.div
                         whileHover={{ rotate: 360 }}
@@ -356,7 +357,9 @@ export default function ProductsList({ Products, title }: Props) {
                         alt={item?.product_name}
                         className="w-full h-full object-cover rounded-xl transition-transform duration-500 group-hover:rotate-3"
                       />
-
+                      <div className="absolute bg-[#009951] font-bold text-white rounded  group-hover:hidden text-sm  -right-1 top-0  px-4 py-1">
+                        {Math.round(Number(item?.discount_percent))}% OFF
+                      </div>{" "}
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl" />
                     </div>
                   </div>
