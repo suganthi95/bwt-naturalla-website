@@ -84,48 +84,45 @@ export default function ProductById() {
                   />
                 </AccordionContent>
               </AccordionItem>
- 
 
- <AccordionItem value="item-2">
-  <AccordionTrigger className="md:text-lg font-semibold text-title cursor-pointer">
+              <AccordionItem value="item-2">
+                <AccordionTrigger className="md:text-lg font-semibold text-title cursor-pointer">
                   Benefits
-  </AccordionTrigger>
-  <AccordionContent className="text-sm md:text-base font-medium text-[#494F49]">
-    <div
-      dangerouslySetInnerHTML={{
-        __html: DOMPurify.sanitize(data?.benefits || ''),
-      }}
-    />
-  </AccordionContent>
-</AccordionItem>
+                </AccordionTrigger>
+                <AccordionContent className="text-sm md:text-base font-medium text-[#494F49]">
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(data?.benefits || ""),
+                    }}
+                  />
+                </AccordionContent>
+              </AccordionItem>
 
-<AccordionItem value="item-3">
-  <AccordionTrigger className="md:text-lg font-semibold text-title cursor-pointer">
+              <AccordionItem value="item-3">
+                <AccordionTrigger className="md:text-lg font-semibold text-title cursor-pointer">
                   How to Use
-  </AccordionTrigger>
-  <AccordionContent className="text-sm md:text-base font-medium text-[#494F49]">
-    <div
-      dangerouslySetInnerHTML={{
-        __html: DOMPurify.sanitize(data?.how_to_use || ''),
-      }}
-    />
-  </AccordionContent>
-</AccordionItem>
+                </AccordionTrigger>
+                <AccordionContent className="text-sm md:text-base font-medium text-[#494F49]">
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(data?.how_to_use || ""),
+                    }}
+                  />
+                </AccordionContent>
+              </AccordionItem>
 
-           
-          <AccordionItem value="item-4">
-  <AccordionTrigger className="md:text-lg font-semibold text-title cursor-pointer">
+              <AccordionItem value="item-4">
+                <AccordionTrigger className="md:text-lg font-semibold text-title cursor-pointer">
                   Ingredients
-  </AccordionTrigger>
-  <AccordionContent className="text-sm md:text-base font-medium text-[#494F49]">
-    <div
-      dangerouslySetInnerHTML={{
-        __html: DOMPurify.sanitize(data?.ingredients || ''),
-      }}
-    />
-  </AccordionContent>
-</AccordionItem>   
-            
+                </AccordionTrigger>
+                <AccordionContent className="text-sm md:text-base font-medium text-[#494F49]">
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(data?.ingredients || ""),
+                    }}
+                  />
+                </AccordionContent>
+              </AccordionItem>
             </Accordion>
           </div>
         </div>

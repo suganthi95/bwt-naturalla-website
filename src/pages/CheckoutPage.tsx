@@ -49,6 +49,7 @@ import axios from "axios";
 import type { CouponState } from "@/types/type";
 import FullScreenLoader from "@/common/FullScreenLoader";
 import { useGetAddress } from "@/services/profile";
+import { usePincodeEnquiry } from "@/services/product";
 
 // Country data
 
@@ -161,9 +162,11 @@ const formSchema = z
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
+  const [Pincode, setPincode] = useState("");
   const { token } = useSelector((state: RootState) => state.auth);
   const { data: addresses } = useGetAddress(token);
   const { data, isLoading, isFetching } = useGetCartItems(token);
+  const { refetch, isError } = usePincodeEnquiry(Pincode ?? "");
 
   const { mutate } = useUpdateCart();
   const { mutate: CheckCoupon, isPending } = useCheckCouponCode();
@@ -171,6 +174,9 @@ export default function CheckoutPage() {
   const dispatch = useDispatch();
   const { items, tax_detail } = useSelector((state: RootState) => state.cart);
   // const CouponDetails = useSelector((state: RootState) => state.coupon);
+  const [Messages, setMessage] = useState("");
+  const [Isloading, setIsloading] = useState(false);
+
   const [quantity, setQuantity] = useState(1);
   const [CouponDetails, setCouponDetails] = useState<CouponState>();
   const [couponCode, setCouponCode] = useState("");
@@ -238,7 +244,7 @@ export default function CheckoutPage() {
         city: defaultAddress?.city ?? "",
         state: defaultAddress?.state ?? "",
         pinCode: defaultAddress?.pincode ?? "",
-        same_billing_address:defaultAddress?.default_address
+        same_billing_address: defaultAddress?.default_address,
       });
 
       setQuery(defaultAddress?.city);
@@ -275,6 +281,25 @@ export default function CheckoutPage() {
       quantity,
       token: token,
     });
+  };
+
+  const checkDeliveryInfo = async () => {
+    try {
+      setIsloading(true);
+      const { data, isError, error } = await refetch();
+
+      if (data?.status === true) {
+        setMessage(data.message);
+      }
+      if (isError || error) {
+        setMessage("We are not shipping for this Location");
+        toast.error("We are not shipping for this Location");
+      }
+    } catch (error) {
+      setMessage("Something went wrong");
+    } finally {
+      setIsloading(false);
+    }
   };
 
   const handleCheckCoupon = () => {
@@ -1264,6 +1289,32 @@ export default function CheckoutPage() {
                   </h1>
                 </AccordionTrigger>
                 <AccordionContent>
+                  <div className="flex items-center gap-2 border rounded-md px-2 py-1 w-full lg:w-fit">
+                    <Input
+                      type="number"
+                      value={Pincode ?? ""}
+                      placeholder="Enter PIN code to check delivery date"
+                      onChange={(e) => setPincode(e.target.value)}
+                      className="border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-8 md:w-72 text-sm px-2"
+                    />
+                    <Button
+                      onClick={checkDeliveryInfo}
+                      className="h-6 rounded cursor-pointer px-3  text-sm"
+                    >
+                      {Isloading ? (
+                        <Loader2 className="animate-spin" />
+                      ) : (
+                        "Check"
+                      )}
+                    </Button>
+                  </div>
+                  <p
+                    className={`${
+                      isError ? "text-red-500" : "text-green-500"
+                    } text-sm font-medium`}
+                  >
+                    {Messages}
+                  </p>
                   {subtotal < 500 && (
                     <div className="mb-3 p-3 bg-yellow-100 text-yellow-800 rounded-md text-xs font-medium transition-all duration-300 ease-in-out opacity-100">
                       Minimum order value must be ₹500 to apply the discount.
@@ -1379,7 +1430,12 @@ export default function CheckoutPage() {
                 if (valid) {
                   dispatch(setCartItems(data?.data));
                   dispatch(setTaxDetails(data?.tax_detail));
-                  navigate("/payment", { state: { product: data ,coupon_id:CouponDetails?.coupon_id} });
+                  navigate("/payment", {
+                    state: {
+                      product: data,
+                      coupon_id: CouponDetails?.coupon_id,
+                    },
+                  });
                 } else {
                   toast.error("please add address");
                 }
