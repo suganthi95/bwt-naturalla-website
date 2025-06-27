@@ -162,11 +162,10 @@ const formSchema = z
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
-  const [Pincode, setPincode] = useState("");
+  // const [Pincode, setPincode] = useState("");
   const { token } = useSelector((state: RootState) => state.auth);
   const { data: addresses } = useGetAddress(token);
   const { data, isLoading, isFetching } = useGetCartItems(token);
-  const { refetch, isError } = usePincodeEnquiry(Pincode ?? "");
 
   const { mutate } = useUpdateCart();
   const { mutate: CheckCoupon, isPending } = useCheckCouponCode();
@@ -251,6 +250,8 @@ export default function CheckoutPage() {
       setStateQuery(defaultAddress?.state);
     }
   }, [addresses, form.reset]);
+  const Pincode = form.watch("pinCode");
+  const { refetch, isError } = usePincodeEnquiry(Pincode ?? "");
 
   const handleDecrease = (cart_id: number, quan: number) => {
     if (quan <= 1) return;
@@ -913,29 +914,49 @@ export default function CheckoutPage() {
                               </FormItem>
                             )}
                           />
-
-                          <FormField
-                            control={form.control}
-                            name="pinCode"
-                            render={({ field }) => (
-                              <FormItem>
-                                <Label
-                                  htmlFor="pinCode"
-                                  className="text-title font-semibold text-sm"
-                                >
-                                  Pincode
-                                </Label>
-                                <FormControl>
-                                  <Input
-                                    placeholder="Enter your pincode"
-                                    className="w-full"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
+                          <div className="flex  items-center relative w-full">
+                            <FormField
+                              control={form.control}
+                              name="pinCode"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <Label
+                                    htmlFor="pinCode"
+                                    className="text-title font-semibold text-sm"
+                                  >
+                                    Pincode
+                                  </Label>
+                                  <FormControl className="">
+                                    <Input
+                                      placeholder="Enter your pincode"
+                                      className="w-full rounded-r-none"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                    <p
+                            className={`${
+                              isError ? "text-red-500" : "text-green-500"
+                            } text-xs md:text-sm font-medium absolute -bottom-4 md:-bottom-6 truncate`}
+                          >
+                            {Messages}
+                          </p>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <Button
+                              type="button"
+                              onClick={checkDeliveryInfo}
+                              className="h-9 rounded-l-none  rounded-r-lg cursor-pointer py-4  absolute right-11 md:-right-[60px] top-7 text-sm"
+                            >
+                              {Isloading ? (
+                                <Loader2 className="animate-spin" />
+                              ) : (
+                                "Check"
+                              )}
+                            </Button>
+                          </div>
+                        
                         </div>
                         <div className="mt-4 space-y-2">
                           <FormField
@@ -962,7 +983,7 @@ export default function CheckoutPage() {
                           />
                           {form.watch("same_billing_address") && (
                             <div className="flex  justify-between ">
-                              <Button type="submit" className="px-8">
+                              <Button disabled={Messages === 'We are not shipping for this Location'} type="submit" className="px-8">
                                 Add
                               </Button>
                             </div>
@@ -1266,7 +1287,7 @@ export default function CheckoutPage() {
 
                           {!form.watch("same_billing_address") && (
                             <div className="flex mt-4  justify-between ">
-                              <Button type="submit" className="px-8">
+                              <Button disabled={Messages === 'We are not shipping for this Location'} type="submit" className="px-8">
                                 Add
                               </Button>
                             </div>
@@ -1289,32 +1310,6 @@ export default function CheckoutPage() {
                   </h1>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <div className="flex items-center gap-2 border rounded-md px-2 py-1 w-full lg:w-fit">
-                    <Input
-                      type="number"
-                      value={Pincode ?? ""}
-                      placeholder="Enter PIN code to check delivery date"
-                      onChange={(e) => setPincode(e.target.value)}
-                      className="border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-8 md:w-72 text-sm px-2"
-                    />
-                    <Button
-                      onClick={checkDeliveryInfo}
-                      className="h-6 rounded cursor-pointer px-3  text-sm"
-                    >
-                      {Isloading ? (
-                        <Loader2 className="animate-spin" />
-                      ) : (
-                        "Check"
-                      )}
-                    </Button>
-                  </div>
-                  <p
-                    className={`${
-                      isError ? "text-red-500" : "text-green-500"
-                    } text-sm font-medium`}
-                  >
-                    {Messages}
-                  </p>
                   {subtotal < 500 && (
                     <div className="mb-3 p-3 bg-yellow-100 text-yellow-800 rounded-md text-xs font-medium transition-all duration-300 ease-in-out opacity-100">
                       Minimum order value must be ₹500 to apply the discount.
@@ -1424,7 +1419,7 @@ export default function CheckoutPage() {
             </Accordion>
             <Button
               className="w-full md:h-12 "
-              disabled={items?.length === 0}
+              disabled={items?.length === 0 || Messages === 'We are not shipping for this Location'}
               onClick={async () => {
                 const valid = await form.trigger();
                 if (valid) {

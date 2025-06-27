@@ -41,34 +41,25 @@ const TermsAndConditions: React.FC = () => {
       <p className="mb-4">The use of the Platform and/or Services is subject to the following Terms of Use:</p>
 
       <ul className="list-disc list-inside mb-4 space-y-2">
-        <li>You agree to provide true, accurate and complete information during and after registration.</li>
-        <li>You are responsible for all acts done using your registered account.</li>
-        <li>We do not guarantee the accuracy, performance, or suitability of any information on the Platform.</li>
-        <li>You use our Services and Platform at your own risk and discretion.</li>
-        <li>The content of the Platform is proprietary and licensed to us — you cannot claim IP rights on it.</li>
-        <li>Unauthorized use may result in legal action under these Terms or applicable laws.</li>
-        <li>You agree to pay the charges associated with availing our Services.</li>
-        <li>You agree not to use the Platform/Services for illegal or prohibited purposes.</li>
-        <li>Links to third-party sites are governed by their own terms and policies.</li>
-        <li>By transacting, you are entering a legally binding contract with the Platform Owner.</li>
-        <li>You shall indemnify and hold harmless Platform Owner, affiliates, and employees from any third-party claims, penalties, or legal issues arising from your breach of these Terms.</li>
+        <li>To access and use the Services, you agree to provide true, accurate and complete information to us during and after registration, and you shall be responsible for all acts done through the use of your registered account on the Platform.</li>
+        <li>Neither we nor any third parties provide any warranty or guarantee as to the accuracy, timeliness, performance, completeness or suitability of the information and materials offered on this website or through the Services, for any specific purpose. You acknowledge that such information and materials may contain inaccuracies or errors and we expressly exclude liability for any such inaccuracies or errors to the fullest extent permitted by law.</li>
+        <li>Your use of our Services and the Platform is solely and entirely at your own risk and discretion for which we shall not be liable to you in any manner. You are required to independently assess and ensure that the Services meet your requirements.</li>
+        <li>The contents of the Platform and the Services are proprietary to us and are licensed to us. You will not have any authority to claim any intellectual property rights, title, or interest in its contents. The contents includes and is not limited to the design, layout, look and graphics.</li>
+        <li>You acknowledge that unauthorized use of the Platform and/or the Services may lead to action against you as per these Terms of Use and/or applicable laws.</li>
+        <li>You agree to pay us the charges associated with availing the Services.</li>
+        <li>You agree not to use the Platform and/ or Services for any purpose that is unlawful, illegal or forbidden by these Terms, or Indian or local laws that might apply to you.</li>
+        <li>You agree and acknowledge that website and the Services may contain links to other third party websites. On accessing these links, you will be governed by the terms of use, privacy policy and such other policies of such third party websites. These links are provided for your convenience for provide further information.</li>
+        <li>You understand that upon initiating a transaction for availing the Services you are entering into a legally binding and enforceable contract with the Platform Owner for the Services.</li>
+        <li>You shall indemnify and hold harmless Platform Owner, its affiliates, group companies (as applicable) and their respective officers, directors, agents, and employees, from any claim or demand, or actions including reasonable attorneys’ fees, made by any third party or penalty imposed due to or arising out of Your breach of this Terms of Use, privacy Policy and other Policies, or Your violation of any law, rules or regulations or the rights (including infringement of intellectual property rights) of a third party.</li>
+        <li>In no event will the Platform Owner be liable for any indirect, consequential, incidental, special or punitive damages, including without limitation damages for loss of profits or revenues, business interruption, loss of business opportunities, loss of data or loss of other economic interests, whether in contract, negligence, tort or otherwise, arising from the use of or inability to use the Services, however caused and whether arising in contract, tort, negligence, warranty or otherwise, exceed the amount paid by You for using the Services giving rise to the cause of action or Rupees One Hundred (Rs. 100) whichever is less</li>
+        <li>Notwithstanding anything contained in these Terms of Use, the parties shall not be liable for any failure to perform an obligation under these Terms if performance is prevented or delayed by a force majeure event.</li>
+        <li>These Terms and any dispute or claim relating to it, or its enforceability, shall be governed by and construed in accordance with the laws of India.</li>
+        <li>All disputes arising out of or in connection with these Terms shall be subject to the exclusive jurisdiction of the courts in COIMBATORE, TAMILNADU.</li>
+        <li>All concerns or communications relating to these Terms must be communicated to us using the contact information provided on this website.
+</li>
       </ul>
 
-      <p className="mb-4">
-        In no event will the Platform Owner be liable for:
-      </p>
-      <ul className="list-disc list-inside mb-4 space-y-2">
-        <li>Any indirect, consequential, incidental, special, or punitive damages</li>
-        <li>Loss of profits, business, data, or other economic interests</li>
-        <li>Amount exceeding what you paid for the Services or INR 100, whichever is lower</li>
-      </ul>
-
-      <ul className="list-disc list-inside mb-4 space-y-2">
-        <li>Force majeure events can exempt parties from liability for delays or non-performance.</li>
-        <li>These Terms are governed by the laws of India.</li>
-        <li>All disputes shall be subject to the exclusive jurisdiction of the courts in Coimbatore, Tamil Nadu.</li>
-        <li>For any concerns, contact us via the information provided on the website.</li>
-      </ul>
+   
     </main>
   );
 };
