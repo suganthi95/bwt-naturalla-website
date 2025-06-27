@@ -32,7 +32,7 @@ export default function Order({ Orders, handleTab }: Props) {
   const [IsReviewopen, setIsReviewopen] = useState(false);
   const [updatedReview, setUpdatedReview] = useState<any>();
   const [selectedOrder, setSelectedOrder] = useState<number | null>(null);
-  const [ OpenReviewProduct , setReviewProduct] = useState<ProductReview>()
+  const [OpenReviewProduct, setReviewProduct] = useState<ProductReview>();
   const { token } = useSelector((state: RootState) => state.auth);
   const { data } = useGetOrdersDetails(token, selectedOrder ?? 0);
   const handleBackToOrders = () => {
@@ -63,11 +63,8 @@ export default function Order({ Orders, handleTab }: Props) {
           </button>
           {data?.payment[0]?.invoice_url && (
             <button
-              disabled={data?.payment[0]?.invoice_url}
               onClick={() => {
-                if (data?.payment[0]?.invoice_url) {
-                  window.location.href = data?.payment[0]?.invoice_url;
-                }
+                window.open(data?.payment[0]?.invoice_url, "_blank");
               }}
               className="text-green-700 hover:text-green-800 flex items-center cursor-pointer !rounded-button whitespace-nowrap"
             >
@@ -214,12 +211,14 @@ export default function Order({ Orders, handleTab }: Props) {
                 </span>
               </p>
               {data?.payment[0]?.track_url && (
-                <a
-                  href={data?.payment[0]?.track_url}
+                <button
+                  onClick={() => {
+                    window.open(data?.payment[0]?.track_url, "_blank");
+                  }}
                   className="text-green-700 hover:text-green-800 text-sm"
                 >
                   Track Package
-                </a>
+                </button>
               )}
             </div>
           </div>
@@ -272,13 +271,9 @@ export default function Order({ Orders, handleTab }: Props) {
                           <DialogHeader className="bg-[#F5F5F5] p-4 rounded-lg w-full flex flex-row  justify-between">
                             <DialogTitle>Write a Review</DialogTitle>
                             <DialogClose>
-                            <div
-                              className="cursor-pointer"
-                           
-                            >
-                              <X />
-                            </div>
-
+                              <div className="cursor-pointer">
+                                <X />
+                              </div>
                             </DialogClose>
                           </DialogHeader>
                           <WriteReview
@@ -303,7 +298,7 @@ export default function Order({ Orders, handleTab }: Props) {
                           Update Review
                         </button>{" "}
                       </DialogTrigger>
-                        <DialogContent className=" h-[500px] lg:h-auto overflow-y-auto lg:!max-w-2xl [&>button]:hidden   !p-0">
+                      <DialogContent className=" h-[500px] lg:h-auto overflow-y-auto lg:!max-w-2xl [&>button]:hidden   !p-0">
                         <DialogHeader className="bg-[#F5F5F5] p-4 rounded-lg w-full flex flex-row  justify-between">
                           <DialogTitle>Update a Review</DialogTitle>
                           <div
@@ -316,7 +311,7 @@ export default function Order({ Orders, handleTab }: Props) {
                           </div>
                         </DialogHeader>
                         <UpdateReview
-                          onClose ={setIsReviewopen}
+                          onClose={setIsReviewopen}
                           orderCode={order?.order_code}
                           product={updatedReview}
                         />
