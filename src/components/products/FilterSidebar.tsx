@@ -259,7 +259,7 @@ export default function FilterSidebar({ filterValues }: Props) {
         </AccordionItem>
       </Accordion>
 
-      <h2 className="font-semibold text-xl text-title">SortBy</h2>
+      <h2 className="font-semibold text-xl text-title">Sort By</h2>
 
       <div>
         <Accordion collapsible type="single">

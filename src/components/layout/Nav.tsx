@@ -400,17 +400,28 @@ export default function Nav() {
               {auth.status ? (
                 <Popover open={IsProfile} onOpenChange={setIsProfile}>
                   <PopoverTrigger asChild>
-                    <Avatar className="w-8 h-8 cursor-pointer bg-primary">
-                      <AvatarImage
-                        src={profileInfo && profileInfo[0]?.profile_pic}
-                        alt="profile"
-                      />
-                      {auth?.status && (
-                        <AvatarFallback className="bg-primary text-white font-semibold">
-                          {auth.first_name.charAt(0).toUpperCase()}
-                        </AvatarFallback>
-                      )}
-                    </Avatar>
+                    {profileInfo && profileInfo[0]?.profile_pic ? (
+                      <Avatar className="w-8 h-8 cursor-pointer bg-primary">
+                        <AvatarImage
+                          src={profileInfo && profileInfo[0]?.profile_pic}
+                          alt="profile"
+                        />
+                        {auth?.status && (
+                          <AvatarFallback className="bg-primary text-white font-semibold">
+                            {auth.first_name.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        )}
+                      </Avatar>
+                    ) : (
+                      <Avatar className="w-8 h-8 cursor-pointer bg-primary">
+                        <AvatarImage
+                          src={
+                            "https://ik.imagekit.io/nd8r7mpaev/Atlants/user.png?updatedAt=1738227108834"
+                          }
+                          alt="profile"
+                        />
+                      </Avatar>
+                    )}
                   </PopoverTrigger>
 
                   <PopoverContent

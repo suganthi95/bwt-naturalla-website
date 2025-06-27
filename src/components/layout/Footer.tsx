@@ -45,15 +45,15 @@ export default function Footer() {
           </ul>
         </div>
         </div>
-
+   
 
         <div className="w-full sm:w-1/2 lg:w-[13%] space-y-3">
           <h4 className="text-lg font-semibold">Useful Links</h4>
           <ul className="space-y-2 text-sm">
-            <li><Link to="/" className="text-white/50">Terms & Conditions</Link></li>
-            <li><Link to="/" className="text-white/50">Privacy Policy</Link></li>
-            <li><Link to="/" className="text-white/50">Return & Refund</Link></li>
-            <li><Link to="/" className="text-white/50">Shipping Policy</Link></li>
+            <li><Link to="/terms-and-conditions" className="text-white/50">Terms & Conditions</Link></li>
+            <li><Link to="/privacy-policy" className="text-white/50">Privacy Policy</Link></li>
+            <li><Link to="/returns-and-refunds" className="text-white/50">Return & Refund</Link></li>
+            <li><Link to="/shipping-policy" className="text-white/50">Shipping Policy</Link></li>
             <li><Link to="/products/all" className="text-white/50">Browse All Products</Link></li>
             <li><Link to="/products/categories" className="text-white/50">Browse All Category</Link></li>
           </ul>

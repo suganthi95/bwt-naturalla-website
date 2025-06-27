@@ -3,6 +3,7 @@ export type MediaItem = {
 };
 
 type ProductReview = {
+  profile_pic: any;
   review_id: number;
   product_id: number;
   review_author_id: number;
