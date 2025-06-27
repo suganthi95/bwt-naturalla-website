@@ -49,7 +49,6 @@ import axios from "axios";
 import type { CouponState } from "@/types/type";
 import FullScreenLoader from "@/common/FullScreenLoader";
 import { useGetAddress } from "@/services/profile";
-import { usePincodeEnquiry } from "@/services/product";
 
 // Country data
 
@@ -173,8 +172,8 @@ export default function CheckoutPage() {
   const dispatch = useDispatch();
   const { items, tax_detail } = useSelector((state: RootState) => state.cart);
   // const CouponDetails = useSelector((state: RootState) => state.coupon);
-  const [Messages, setMessage] = useState("");
-  const [Isloading, setIsloading] = useState(false);
+  // const [Messages, setMessage] = useState("");
+  // const [Isloading, setIsloading] = useState(false);
 
   const [quantity, setQuantity] = useState(1);
   const [CouponDetails, setCouponDetails] = useState<CouponState>();
@@ -250,8 +249,8 @@ export default function CheckoutPage() {
       setStateQuery(defaultAddress?.state);
     }
   }, [addresses, form.reset]);
-  const Pincode = form.watch("pinCode");
-  const { refetch, isError } = usePincodeEnquiry(Pincode ?? "");
+  // const Pincode = form.watch("pinCode");
+  // const { refetch, isError } = usePincodeEnquiry(Pincode ?? "");
 
   const handleDecrease = (cart_id: number, quan: number) => {
     if (quan <= 1) return;
@@ -284,24 +283,24 @@ export default function CheckoutPage() {
     });
   };
 
-  const checkDeliveryInfo = async () => {
-    try {
-      setIsloading(true);
-      const { data, isError, error } = await refetch();
+  // const checkDeliveryInfo = async () => {
+  //   try {
+  //     setIsloading(true);
+  //     const { data, isError, error } = await refetch();
 
-      if (data?.status === true) {
-        setMessage(data.message);
-      }
-      if (isError || error) {
-        setMessage("We are not shipping for this Location");
-        toast.error("We are not shipping for this Location");
-      }
-    } catch (error) {
-      setMessage("Something went wrong");
-    } finally {
-      setIsloading(false);
-    }
-  };
+  //     if (data?.status === true) {
+  //       setMessage(data.message);
+  //     }
+  //     if (isError || error) {
+  //       setMessage("We are not shipping for this Location");
+  //       toast.error("We are not shipping for this Location");
+  //     }
+  //   } catch (error) {
+  //     setMessage("Something went wrong");
+  //   } finally {
+  //     setIsloading(false);
+  //   }
+  // };
 
   const handleCheckCoupon = () => {
     CheckCoupon(
@@ -933,18 +932,18 @@ export default function CheckoutPage() {
                                       {...field}
                                     />
                                   </FormControl>
-                                    <p
+                                    {/* <p
                             className={`${
                               isError ? "text-red-500" : "text-green-500"
                             } text-xs md:text-sm font-medium absolute -bottom-4 md:-bottom-6 truncate`}
                           >
                             {Messages}
-                          </p>
+                          </p> */}
                                   <FormMessage />
                                 </FormItem>
                               )}
                             />
-                            <Button
+                            {/* <Button
                               type="button"
                               onClick={checkDeliveryInfo}
                               className="h-9 rounded-l-none  rounded-r-lg cursor-pointer py-4  absolute right-11 md:-right-[60px] top-7 text-sm"
@@ -954,7 +953,7 @@ export default function CheckoutPage() {
                               ) : (
                                 "Check"
                               )}
-                            </Button>
+                            </Button> */}
                           </div>
                         
                         </div>
@@ -983,7 +982,7 @@ export default function CheckoutPage() {
                           />
                           {form.watch("same_billing_address") && (
                             <div className="flex  justify-between ">
-                              <Button disabled={Messages === 'We are not shipping for this Location'} type="submit" className="px-8">
+                              <Button type="submit" className="px-8">
                                 Add
                               </Button>
                             </div>
@@ -1287,7 +1286,7 @@ export default function CheckoutPage() {
 
                           {!form.watch("same_billing_address") && (
                             <div className="flex mt-4  justify-between ">
-                              <Button disabled={Messages === 'We are not shipping for this Location'} type="submit" className="px-8">
+                              <Button  type="submit" className="px-8">
                                 Add
                               </Button>
                             </div>
@@ -1419,7 +1418,7 @@ export default function CheckoutPage() {
             </Accordion>
             <Button
               className="w-full md:h-12 "
-              disabled={items?.length === 0 || Messages === 'We are not shipping for this Location'}
+              disabled={items?.length === 0 }
               onClick={async () => {
                 const valid = await form.trigger();
                 if (valid) {
