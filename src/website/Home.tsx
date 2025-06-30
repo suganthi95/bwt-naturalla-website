@@ -1,4 +1,3 @@
-import { ASSETS } from "@/assets/assets";
 import BestSelling from "@/components/home/BestSelling";
 import Blogs from "@/components/home/Blogs";
 import HeroCarousal from "@/components/home/HeroCarousal";
@@ -49,7 +48,7 @@ export default function Home() {
       </section>
 
       {/* founder  section */}
-      <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
+      {/* <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
         <div className="bg-gradient-to-b from-[#FFFFFF] to-[#DFFEDF] flex items-center ">
           <div className="container mx-auto grid place-items-center grid-cols-1 lg:grid-cols-2 items-center gap-8 px-4">
             <img
@@ -77,7 +76,7 @@ export default function Home() {
             </ul>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* latest products section */}
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">

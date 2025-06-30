@@ -78,6 +78,7 @@ export default function ProductById() {
                 </AccordionTrigger>
                 <AccordionContent className="text-sm md:text-base font-medium text-[#494F49]">
                   <div
+                    className="rich-text text-sm md:text-base font-medium text-[#494F49]"
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize(data?.long_description || ""),
                     }}
@@ -91,6 +92,8 @@ export default function ProductById() {
                 </AccordionTrigger>
                 <AccordionContent className="text-sm md:text-base font-medium text-[#494F49]">
                   <div
+                    className="rich-text text-sm md:text-base font-medium text-[#494F49]"
+
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize(data?.benefits || ""),
                     }}
@@ -104,6 +107,8 @@ export default function ProductById() {
                 </AccordionTrigger>
                 <AccordionContent className="text-sm md:text-base font-medium text-[#494F49]">
                   <div
+                    className="rich-text text-sm md:text-base font-medium text-[#494F49]"
+
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize(data?.how_to_use || ""),
                     }}
@@ -117,6 +122,7 @@ export default function ProductById() {
                 </AccordionTrigger>
                 <AccordionContent className="text-sm md:text-base font-medium text-[#494F49]">
                   <div
+                    className="rich-text text-sm md:text-base font-medium text-[#494F49]"
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize(data?.ingredients || ""),
                     }}

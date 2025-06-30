@@ -95,6 +95,27 @@
   z-index: 9999 !important; /* Ensure it's on top */
 }
 
+.rich-text ul {
+  @apply list-disc list-inside pl-5 mb-2;
+}
+
+.rich-text ol {
+  @apply list-decimal list-inside pl-5 mb-2;
+}
+
+.rich-text li {
+  @apply mb-1;
+}
+
+.rich-text p {
+  @apply mb-2;
+}
+
+.rich-text li.ql-indent-1 {
+  @apply list-disc list-inside pl-8 text-sm text-gray-700;
+}
+
+
   .dot-spinner {
     --uib-size: 2.8rem;
     --uib-speed: .9s;

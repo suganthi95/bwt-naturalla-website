@@ -210,6 +210,28 @@ export default function EditAddress({ onClose, address }: Props) {
               </FormItem>
             )}
           />
+             <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <Label
+                    htmlFor="email"
+                    className="text-title font-semibold text-sm"
+                  >
+                    Email
+                  </Label>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your email"
+                      className="w-full h-10"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
               control={form.control}

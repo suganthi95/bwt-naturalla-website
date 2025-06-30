@@ -24,6 +24,7 @@ import {
   setPriceRanges,
   setSortByPrice,
   setSortDate,
+  toggleCategory,
 } from "@/redux/slices/filterSlice";
 import type { FilterData } from "@/types/type";
 import type { RootState } from "@/redux/store";
@@ -58,7 +59,8 @@ export default function FilterSidebar({ filterValues }: Props) {
   const [sortBy, setSortBy] = useState(sortByPrice);
   const [sortDate, setSortByDate] = useState(sortByDate);
 
-  const toggleCategory = (category: string) => {
+  const toggleCategoryby = (category: string) => {
+    dispatch(toggleCategory(category));
     setSelectedCategories((prev) =>
       prev.includes(category)
         ? prev.filter((c) => c !== category)
@@ -144,7 +146,7 @@ export default function FilterSidebar({ filterValues }: Props) {
                         setBadges((prev) => [...prev, tag]);
                         setSearchTerm("");
                         setOpen(false);
-                        dispatch(addKeyword(tag))
+                        dispatch(addKeyword(tag));
                       }}
                     >
                       {tag}
@@ -244,8 +246,9 @@ export default function FilterSidebar({ filterValues }: Props) {
                       id={checkboxId}
                       checked={selectedCategories.includes(cat.category_title)}
                       onCheckedChange={() => {
-                        toggleCategory(cat.category_title);
-                        applyFilters();
+                        
+                        toggleCategoryby(cat.category_title);
+                        // applyFilters();
                       }}
                     />
                     <label htmlFor={checkboxId} className="text-sm">

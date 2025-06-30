@@ -77,9 +77,7 @@ export default function BestSelling({ title, Products }: Props) {
                   src={item?.thumbnail_image_url}
                   alt={item?.product_name}
                   className={`w-52 h-44 md:w-[240px] md:h-[240px] rounded-lg md:rounded-[20px] object-cover mx-auto cursor-pointer transition duration-300 ${
-                    item.current_stock > 0
-                      ? ""
-                      : "blur-[2px] brightness-90 "
+                    item.current_stock > 0 ? "" : "blur-[2px] brightness-100"
                   }`}
                   onClick={() => {
                     if (item.current_stock > 0)
@@ -87,9 +85,11 @@ export default function BestSelling({ title, Products }: Props) {
                   }}
                 />
 
-                {item.current_stock === 0 && (
-                  <div className="absolute  inset-0 bg-black flex items-center justify-center rounded-lg md:rounded-[20px] text-xs md:text-base font-semibold">
-                    Out of Stock
+                {Number(item.current_stock) <= 0 && (
+                  <div className="absolute inset-0 bg-black/60  flex items-center justify-center rounded-lg md:rounded-[20px]">
+                    <span className="text-white text-xs md:text-base font-semibold">
+                      Out of Stock
+                    </span>
                   </div>
                 )}
               </div>

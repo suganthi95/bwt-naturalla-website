@@ -179,97 +179,12 @@ export default function ProductsList({ Products, title }: Props) {
               return (
                 <li
                   key={index}
-                  className="w-full   md:w-fit space-y-3 xl:p-3 relative overflow-hidden group"
+                  className="w-full   md:w-fit space-y-3 xl:p-3 relative overflow-hidden "
                 >
                   <div
                     className="relative w-full cursor-pointer overflow-hidden transition-all duration-300"
                     // onClick={() => navigate(`/product/${item.slug}`)}
                   >
-                    <div className="absolute  lg:block space-y-3 flex top-3 -right-8 duration-300  transition-all items-center justify-center flex-col group-hover:right-3 z-20">
-                      <motion.div
-                        whileHover={{ scale: [1, 1.2, 1] }}
-                        transition={{ duration: 0.6, ease: "easeInOut" }}
-                        className="bg-white rounded-full  grid place-items-center size-7 shadow-md"
-                      >
-                        <button
-                          onClick={() => {
-                            if (!status) {
-                              toast.error("Please login to continue");
-                              navigate("/login");
-                              return;
-                            }
-
-                            setLikedProducts((prev) => ({
-                              ...prev,
-                              [item.product_id]: !prev[item.product_id],
-                            }));
-
-                            if (!isLiked) {
-                              addWishlist({
-                                product_id: item.product_id,
-                                quantity: 1,
-                                token,
-                              });
-                              dispatch(addWishItem(item));
-                            } else {
-                              deleteWishlist({
-                                cart_id: item.product_id,
-                                token,
-                              });
-                              dispatch(removeWishlistItem(item.cart_id));
-                            }
-                          }}
-                          className="w-7 h-7 cursor-pointer flex items-center justify-center relative"
-                        >
-                          <motion.div
-                            initial={false}
-                            animate={{ scale: isLiked ? 1 : 1 }}
-                            transition={{
-                              type: "spring",
-                              stiffness: 300,
-                              damping: 10,
-                            }}
-                          >
-                            <Heart
-                              className={`w-5 h-5 transition-colors duration-300 ${
-                                isLiked
-                                  ? "fill-red-500 text-red-500"
-                                  : "text-black"
-                              }`}
-                            />
-                          </motion.div>
-
-                          <AnimatePresence>
-                            {isLiked && (
-                              <motion.div
-                                key="pulse"
-                                initial={{ scale: 1, opacity: 0.5 }}
-                                animate={{ scale: 2, opacity: 0 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.6 }}
-                                className="absolute w-5 h-5 rounded-full bg-red-500"
-                              />
-                            )}
-                          </AnimatePresence>
-                        </button>
-                      </motion.div>
-                      <motion.div
-                        whileHover={{ scale: 1 }}
-                        transition={{ duration: 0.6 }}
-                        className=""
-                      >
-                        <button
-                          onClick={() =>
-                            // setViewImage(item?.thumbnail_image_url)
-                            navigate(`/product/${item.slug}`)
-                          }
-                          className="bg-white size-7 cursor-pointer  grid place-items-center rounded-full"
-                        >
-                          <Eye className="w-5 h-5" />
-                        </button>
-                      </motion.div>
-                    </div>
-
                     <div className="absolute top-2 right-2 z-20 flex flex-col items-center gap-2 lg:hidden">
                       <motion.div
                         whileHover={{ rotate: 360 }}
@@ -353,38 +268,123 @@ export default function ProductsList({ Products, title }: Props) {
                       </motion.div>
                     </div>
 
-                    <div className="relative group-hover:h-44 group w-full h-40 sm:h-60 md:w-[240px] md:h-[240px] rounded-xl overflow-hidden transition-all duration-300">
-                      <img
-                        src={item?.thumbnail_image_url}
-                        alt={item?.product_name}
-                        className="w-full h-full object-cover rounded-xl transition-transform duration-500 group-hover:rotate-3"
-                      />
-                      <div className=" hidden lg:block absolute bg-[#009951] font-bold text-white rounded  group-hover:hidden text-sm  -right-1 top-0  px-4 py-1">
-                        {Math.round(Number(item?.discount_percent))}% OFF
-                      </div>{" "}
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl" />
-                    </div>
-                  </div>
+                    <div className="group relative">
+                      <div className=" group-hover:h-44  w-full h-40 sm:h-60 md:w-[240px] md:h-[240px] rounded-xl overflow-hidden transition-all duration-300">
+                        <img
+                          src={item?.thumbnail_image_url}
+                          alt={item?.product_name}
+                          className="w-full h-full object-cover rounded-xl transition-transform duration-500 group-hover:rotate-3"
+                        />
+                        <div className=" hidden lg:block absolute bg-[#009951] font-bold text-white rounded  group-hover:hidden text-sm  -right-1 top-0  px-4 py-1">
+                          {Math.round(Number(item?.discount_percent))}% OFF
+                        </div>{" "}
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl" />
+                        <div className="absolute  lg:block space-y-3 flex top-3 -right-8 duration-300  transition-all items-center justify-center flex-col group-hover:right-3 z-20">
+                          <motion.div
+                            whileHover={{ scale: [1, 1.2, 1] }}
+                            transition={{ duration: 0.6, ease: "easeInOut" }}
+                            className="bg-white rounded-full  grid place-items-center size-7 shadow-md"
+                          >
+                            <button
+                              onClick={() => {
+                                if (!status) {
+                                  toast.error("Please login to continue");
+                                  navigate("/login");
+                                  return;
+                                }
 
-                  <div className=" hidden  group-hover:lg:flex items-center justify-between gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <button
-                      className="flex-1 bg-primary text-white py-2 rounded-md font-medium hover:bg-primary/90"
-                      onClick={() => {
-                        if (status) {
-                          mutate({
-                            product_id: item.product_id,
-                            quantity: 1,
-                            token,
-                          });
-                          dispatch(addItem(item));
-                        } else {
-                          toast.error("Please login to continue");
-                          navigate("/login");
-                        }
-                      }}
-                    >
-                      Add to Cart
-                    </button>
+                                setLikedProducts((prev) => ({
+                                  ...prev,
+                                  [item.product_id]: !prev[item.product_id],
+                                }));
+
+                                if (!isLiked) {
+                                  addWishlist({
+                                    product_id: item.product_id,
+                                    quantity: 1,
+                                    token,
+                                  });
+                                  dispatch(addWishItem(item));
+                                } else {
+                                  deleteWishlist({
+                                    cart_id: item.product_id,
+                                    token,
+                                  });
+                                  dispatch(removeWishlistItem(item.cart_id));
+                                }
+                              }}
+                              className="w-7 h-7 cursor-pointer flex items-center justify-center relative"
+                            >
+                              <motion.div
+                                initial={false}
+                                animate={{ scale: isLiked ? 1 : 1 }}
+                                transition={{
+                                  type: "spring",
+                                  stiffness: 300,
+                                  damping: 10,
+                                }}
+                              >
+                                <Heart
+                                  className={`w-5 h-5 transition-colors duration-300 ${
+                                    isLiked
+                                      ? "fill-red-500 text-red-500"
+                                      : "text-black"
+                                  }`}
+                                />
+                              </motion.div>
+
+                              <AnimatePresence>
+                                {isLiked && (
+                                  <motion.div
+                                    key="pulse"
+                                    initial={{ scale: 1, opacity: 0.5 }}
+                                    animate={{ scale: 2, opacity: 0 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.6 }}
+                                    className="absolute w-5 h-5 rounded-full bg-red-500"
+                                  />
+                                )}
+                              </AnimatePresence>
+                            </button>
+                          </motion.div>
+                          <motion.div
+                            whileHover={{ scale: 1 }}
+                            transition={{ duration: 0.6 }}
+                            className=""
+                          >
+                            <button
+                              onClick={() =>
+                                // setViewImage(item?.thumbnail_image_url)
+                                navigate(`/product/${item.slug}`)
+                              }
+                              className="bg-white size-7 cursor-pointer  grid place-items-center rounded-full"
+                            >
+                              <Eye className="w-5 h-5" />
+                            </button>
+                          </motion.div>
+                        </div>
+                      </div>
+                      <div className="absolute bottom-2  left-1/2 -translate-x-1/2 w-[90%] hidden lg:group-hover:flex opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <button
+                          className="flex-1 bg-primary cursor-pointer text-white py-2 rounded-md font-medium hover:bg-primary"
+                          onClick={() => {
+                            if (status) {
+                              mutate({
+                                product_id: item.product_id,
+                                quantity: 1,
+                                token,
+                              });
+                              dispatch(addItem(item));
+                            } else {
+                              toast.error("Please login to continue");
+                              navigate("/login");
+                            }
+                          }}
+                        >
+                          Add to Cart
+                        </button>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="block lg:hidden mt-2">
@@ -407,21 +407,19 @@ export default function ProductsList({ Products, title }: Props) {
                       Add to Cart
                     </button>
                   </div>
-<div className="flex flex-col items-center gap-x-1.5">
-
-                  <p
-                    className="text-title hover:text-primary transition text-sm sm:text-lg   font-semibold line-clamp-1 cursor-pointer"
-                    onClick={() => navigate(`/product/${item.slug}`)}
-                  >
-                    {item?.product_name} 
-                    
-                  </p>
-                     {item?.units && (
+                  <div className="flex flex-col items-center gap-x-1.5">
+                    <p
+                      className="text-title hover:text-primary transition text-sm sm:text-lg   font-semibold line-clamp-1 cursor-pointer"
+                      onClick={() => navigate(`/product/${item.slug}`)}
+                    >
+                      {item?.product_name}
+                    </p>
+                    {item?.units && (
                       <p className="text-xs md:hidden truncate font-medium text-lead text-right">
                         ({item.units})
                       </p>
                     )}
-</div>
+                  </div>
 
                   <div className="flex flex-row items-center justify-between gap-1 sm:gap-0">
                     <p className="text-textPrimary text-sm sm:text-lg font-bold">
@@ -432,15 +430,14 @@ export default function ProductsList({ Products, title }: Props) {
                         </span>
                       )}
                     </p>
-
                     {item?.units && (
                       <p className="hidden  md:block text-sm font-medium text-lead text-right">
                         ({item.units})
                       </p>
                     )}
-                      <div className="  md:hidden  text-[#009951] font-bold  rounded   text-xs ">
-                        {Math.round(Number(item?.discount_percent))}% OFF
-                      </div>{" "}
+                    <div className="  md:hidden  text-[#009951] font-bold  rounded   text-xs ">
+                      {Math.round(Number(item?.discount_percent))}% OFF
+                    </div>{" "}
                   </div>
                 </li>
               );

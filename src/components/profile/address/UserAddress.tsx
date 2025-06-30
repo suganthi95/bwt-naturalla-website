@@ -33,6 +33,7 @@ export default function UserAddress() {
   const [Isopen, setIsopen] = useState(false);
   const [Isopen2, setIsopen2] = useState(false);
   const [Isdelete, setIsDelete] = useState(false);
+  const [selectedAddressId,setSelectedAddressId] = useState<string>()
   const queryClinet = useQueryClient();
   const { token } = useSelector((state: RootState) => state.auth);
   const { data: addresses } = useGetAddress(token);
@@ -41,10 +42,10 @@ export default function UserAddress() {
     null
   );
 
-  const handleDeleteAddress = (id: number) => {
+  const handleDeleteAddress = () => {
     mutate(
       {
-        id: id.toString(),
+        id: selectedAddressId ?? '',
         token: token,
       },
       {
@@ -93,7 +94,7 @@ export default function UserAddress() {
       <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
         {addresses?.map((address: any) => (
           <div
-            key={address?.address_id}
+            key={address.address_id}
             className="border rounded-lg p-5 relative"
           >
             <div className="flex items-center justify-between">
@@ -111,7 +112,7 @@ export default function UserAddress() {
                       <Edit className="h-5 w-5" />
                     </Button>
                   </DialogTrigger>
-          <DialogContent className=" !min-w-64 mt-5 xl:mt-0 xl:!max-w-3xl max-h-[90vh] overflow-y-auto !p-0 [&>button]:hidden">
+                  <DialogContent className=" !min-w-64 mt-5 xl:mt-0 xl:!max-w-3xl max-h-[90vh] overflow-y-auto !p-0 [&>button]:hidden">
                     <DialogHeader className="bg-[#F5F5F5] p-4 rounded-lg w-full flex flex-row  justify-between">
                       <DialogTitle>Update address</DialogTitle>
                       <div
@@ -134,6 +135,7 @@ export default function UserAddress() {
                 <AlertDialog open={Isdelete} onOpenChange={setIsDelete}>
                   <AlertDialogTrigger asChild>
                     <Button
+                    onClick={()=>setSelectedAddressId(address.address_id)}
                       size="icon"
                       className="rounded-full text-red-400 bg-red-400/25 hover:bg-red-400/10"
                     >
@@ -154,7 +156,7 @@ export default function UserAddress() {
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction
                         className="bg-red-500"
-                        onClick={() => handleDeleteAddress(address?.address_id)}
+                        onClick={() => handleDeleteAddress()}
                       >
                         {isPending ? (
                           <Loader2 className="animate-spin" />

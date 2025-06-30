@@ -48,9 +48,9 @@ const App = () => {
             <Route
               path="/product/:id"
               element={
-                <ProtectedRoute>
+                // <ProtectedRoute>
                   <ProductById />
-                </ProtectedRoute>
+                // </ProtectedRoute>
               }
             />
             <Route
