@@ -15,7 +15,7 @@ export default function FullScreenLoader() {
   </defs>
   <text fontSize="6" fill="black" textLength="220" lengthAdjust="spacingAndGlyphs">
     <textPath href="#circle" startOffset="0%">
-      Naturella • Naturella • Naturella • Naturella •
+      Naturalla • Naturalla • Naturalla • Naturalla •
     </textPath>
   </text>
 </svg>
