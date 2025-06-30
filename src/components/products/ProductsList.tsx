@@ -423,7 +423,7 @@ export default function ProductsList({ Products, title }: Props) {
                     )}
 </div>
 
-                  <div className="flex flex-row items-center sjustify-between gap-1 sm:gap-0">
+                  <div className="flex flex-row items-center justify-between gap-1 sm:gap-0">
                     <p className="text-textPrimary text-sm sm:text-lg font-bold">
                       Rs. {item?.unit_price}
                       {item?.strike_through_price && (
