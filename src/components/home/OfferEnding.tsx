@@ -3,7 +3,7 @@ import { useAddToCart } from "@/services/cart";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
-import { ShoppingCart } from "lucide-react";
+import { Ban, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import type { Product } from "@/types/Home";
 import { addItem } from "@/redux/slices/cartSlice";
@@ -13,7 +13,6 @@ interface Props {
 }
 
 export default function OfferEnding({ products }: Props) {
-
   const navigate = useNavigate();
   const { mutate } = useAddToCart();
   const dispatch = useDispatch();
@@ -23,12 +22,15 @@ export default function OfferEnding({ products }: Props) {
     <div className="container mx-auto">
       <div className="flex justify-between font-semibold text-xl items-center">
         <p className="text-title text-sm md:text-base cursor-pointer ">
-          Offer Ending Soon</p>
+          Offer Ending Soon
+        </p>
         <p
           className="text-title text-sm md:text-base cursor-pointer hover:underline underline-primary"
           onClick={() =>
             // navigate("/products/offer-ending-soon", { state: { offer_ending_soon: "true" } })
-            navigate("/products/offer-ending-soon?offer_ending_soon=true",{state:{title:'Offer ending Soon'}})
+            navigate("/products/offer-ending-soon?offer_ending_soon=true", {
+              state: { title: "Offer ending Soon" },
+            })
           }
         >
           View more
@@ -39,13 +41,27 @@ export default function OfferEnding({ products }: Props) {
         {products?.slice(0, 5)?.map((item, index) => {
           return (
             <li key={index} className="space-y-2 relative">
-              <img
-                src={item?.thumbnail_image_url}
-                alt={item?.product_name}
-                className="w-52 h-44 md:w-[240px] md:h-[240px] rounded-lg md:rounded-[20px] object-cover mx-auto cursor-pointer"
-                onClick={() => navigate(`/product/${item.slug}`)}
-              />
+              <div className="relative w-fit mx-auto">
+                <img
+                  src={item?.thumbnail_image_url}
+                  alt={item?.product_name}
+                  className={`w-52 h-44 md:w-[240px] md:h-[240px] rounded-lg md:rounded-[20px] object-cover mx-auto cursor-pointer transition duration-300 ${
+                    item.current_stock > 0 ? "" : "blur-[2px] brightness-100"
+                  }`}
+                  onClick={() => {
+                    navigate(`/product/${item.slug}`);
+                  }}
+                />
 
+                {Number(item.current_stock) <= 0 && (
+                  <div className="absolute inset-0 bg-black/60  flex items-center justify-center rounded-lg md:rounded-[20px]">
+                    <span className="inline-flex items-center gap-1.5 bg-gray-100 text-gray-500 border border-gray-300 px-3 py-1 rounded-full text-xs md:text-sm font-medium">
+                      <Ban className="w-4 h-4" />
+                      Out of Stock
+                    </span>
+                  </div>
+                )}
+              </div>
               <p
                 className="text-title  hover:text-primary transition-colors duration-300 text-sm md:text-xl font-medium line-clamp-1 cursor-pointer"
                 onClick={() => {
@@ -61,24 +77,26 @@ export default function OfferEnding({ products }: Props) {
                     Rs.{item?.strike_through_price}
                   </span>
                 </p>
-                <Button
-                  onClick={() => {
-                    if (status) {
-                      mutate({
-                        product_id: item.product_id,
-                        quantity: 1,
-                        token: token,
-                      });
-                      dispatch(addItem(item));
-                    } else {
-                      toast.error("Please login to continue");
-                      navigate("/login");
-                    }
-                  }}
-                  className="rounded-md font-bold transition-all duration-300 ease-in-out md:px-5 md:py-2 bg-white text-primary border border-primary hover:bg-primary hover:text-white shadow-sm hover:shadow-lg"
-                >
-                  <ShoppingCart className="md:w-5 md:h-5" />
-                </Button>
+                {item?.current_stock > 0 && (
+                  <Button
+                    onClick={() => {
+                      if (status) {
+                        mutate({
+                          product_id: item.product_id,
+                          quantity: 1,
+                          token: token,
+                        });
+                        dispatch(addItem(item));
+                      } else {
+                        toast.error("Please login to continue");
+                        navigate("/login");
+                      }
+                    }}
+                    className="rounded-md font-bold transition-all duration-300 ease-in-out md:px-5 md:py-2 bg-white text-primary border border-primary hover:bg-primary hover:text-white shadow-sm hover:shadow-lg"
+                  >
+                    <ShoppingCart className="md:w-5 md:h-5" />
+                  </Button>
+                )}
               </div>
             </li>
           );

@@ -1,5 +1,5 @@
 import { Button } from "../ui/button";
-import { ShoppingCart } from "lucide-react";
+import { Ban, ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import type { Product } from "@/types/Home";
 import { useAddToCart } from "@/services/cart";
@@ -80,14 +80,14 @@ export default function BestSelling({ title, Products }: Props) {
                     item.current_stock > 0 ? "" : "blur-[2px] brightness-100"
                   }`}
                   onClick={() => {
-                    if (item.current_stock > 0)
-                      navigate(`/product/${item.slug}`);
+                    navigate(`/product/${item.slug}`);
                   }}
                 />
 
                 {Number(item.current_stock) <= 0 && (
                   <div className="absolute inset-0 bg-black/60  flex items-center justify-center rounded-lg md:rounded-[20px]">
-                    <span className="text-white text-xs md:text-base font-semibold">
+                    <span className="inline-flex items-center gap-1.5 bg-gray-100 text-gray-500 border border-gray-300 px-3 py-1 rounded-full text-xs md:text-sm font-medium">
+                      <Ban className="w-4 h-4" />
                       Out of Stock
                     </span>
                   </div>

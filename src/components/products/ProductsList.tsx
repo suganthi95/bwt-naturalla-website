@@ -10,7 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import type { Product } from "@/types/Home";
 import { AnimatePresence, motion } from "framer-motion";
-import { Eye, FunnelPlus, Heart, X } from "lucide-react";
+import { Ban, Eye, FunnelPlus, Heart, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
 import { setSortByAlphabetic } from "@/redux/slices/filterSlice";
@@ -29,6 +29,7 @@ import {
 } from "../ui/sheet";
 import FilterSidebar from "./FilterSidebar";
 import { useFilterValues } from "@/services/product";
+import { Button } from "../ui/button";
 interface Props {
   Products: Product[];
   title: string | null;
@@ -365,47 +366,67 @@ export default function ProductsList({ Products, title }: Props) {
                         </div>
                       </div>
                       <div className="absolute bottom-2  left-1/2 -translate-x-1/2 w-[90%] hidden lg:group-hover:flex opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <button
-                          className="flex-1 bg-primary cursor-pointer text-white py-2 rounded-md font-medium hover:bg-primary"
-                          onClick={() => {
-                            if (status) {
-                              mutate({
-                                product_id: item.product_id,
-                                quantity: 1,
-                                token,
-                              });
-                              dispatch(addItem(item));
-                            } else {
-                              toast.error("Please login to continue");
-                              navigate("/login");
-                            }
-                          }}
-                        >
-                          Add to Cart
-                        </button>
+                        {item?.current_stock > 0 ? (
+                          <button
+                            className="flex-1 bg-primary cursor-pointer text-white py-2 rounded-md font-medium hover:bg-primary"
+                            onClick={() => {
+                              if (status) {
+                                mutate({
+                                  product_id: item.product_id,
+                                  quantity: 1,
+                                  token,
+                                });
+                                dispatch(addItem(item));
+                              } else {
+                                toast.error("Please login to continue");
+                                navigate("/login");
+                              }
+                            }}
+                          >
+                            Add to Cart
+                          </button>
+                        ) : (
+                          <Button
+                            disabled
+                            className="bg-red-100 w-full text-red-500 cursor-not-allowed flex items-center gap-2"
+                          >
+                            <Ban className="w-4 h-4" />
+                            Out of Stock
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </div>
 
                   <div className="block lg:hidden mt-2">
-                    <button
-                      className="w-full bg-primary text-white px-4 py-2 rounded-md font-semibold"
-                      onClick={() => {
-                        if (status) {
-                          mutate({
-                            product_id: item.product_id,
-                            quantity: 1,
-                            token,
-                          });
-                          dispatch(addItem(item));
-                        } else {
-                          toast.error("Please login to continue");
-                          navigate("/login");
-                        }
-                      }}
-                    >
-                      Add to Cart
-                    </button>
+                    {item?.current_stock > 0 ? (
+                      <button
+                        className="w-full bg-primary text-white px-4 py-2 rounded-md font-semibold"
+                        onClick={() => {
+                          if (status) {
+                            mutate({
+                              product_id: item.product_id,
+                              quantity: 1,
+                              token,
+                            });
+                            dispatch(addItem(item));
+                          } else {
+                            toast.error("Please login to continue");
+                            navigate("/login");
+                          }
+                        }}
+                      >
+                        Add to Cart
+                      </button>
+                    ) : (
+                      <Button
+                        disabled
+                        className="bg-red-100 text-red-500 w-full cursor-not-allowed flex items-center gap-2"
+                      >
+                        <Ban className="w-4 h-4" />
+                        Out of Stock
+                      </Button>
+                    )}
                   </div>
                   <div className="flex flex-col items-center gap-x-1.5">
                     <p

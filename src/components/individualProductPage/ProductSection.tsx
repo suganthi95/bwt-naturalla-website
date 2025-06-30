@@ -1,6 +1,6 @@
 import Slider from "react-slick";
 import { useRef, useState, useEffect } from "react";
-import { Heart, Loader2, Share2 } from "lucide-react";
+import { Ban, Heart, Loader2, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -316,41 +316,53 @@ export default function ProductSection({ media, products }: Props) {
             >
               +
             </Button>
-          </div>{" "}
+          </div>
         </div>
-        <div className="flex items-center gap-x-2">
-          <Button
-            onClick={() => {
-              addtoCart({
-                product_id: products.product_id,
-                quantity: 1,
-                token: token,
-              });
-              dispatch(addItem(products));
-              navigate("/checkout");
-            }}
-            className=" lg:py-3  px-8 lg:px-11"
-          >
-            Buy Now
-          </Button>
-          <Button
-            onClick={() => {
-              addtoCart({
-                product_id: products.product_id,
-                quantity: 1,
-                token: token,
-              });
-              dispatch(addItem(products));
-            }}
-            className="bg-primary/10  px-8 lg:py-3 lg:px-11 text-primary border border-primary"
-          >
-            Add to Cart
-          </Button>
+        {products?.current_stock > 0 ? (
+          <div className="flex items-center gap-x-2">
+            <Button
+              onClick={() => {
+                addtoCart({
+                  product_id: products.product_id,
+                  quantity: 1,
+                  token: token,
+                });
+                dispatch(addItem(products));
+                navigate("/checkout");
+              }}
+              className=" lg:py-3  px-8 lg:px-11"
+            >
+              Buy Now
+            </Button>
+            <Button
+              onClick={() => {
+                addtoCart({
+                  product_id: products.product_id,
+                  quantity: 1,
+                  token: token,
+                });
+                dispatch(addItem(products));
+              }}
+              className="bg-primary/10  px-8 lg:py-3 lg:px-11 text-primary border border-primary"
+            >
+              Add to Cart
+            </Button>
 
-          <Button variant="outline" className="cursor-pointer">
-            <Icons.Swap className="text-xl" />
-          </Button>
-        </div>
+            <Button variant="outline" className="cursor-pointer">
+              <Icons.Swap className="text-xl" />
+            </Button>
+          </div>
+        ) : (
+
+<Button
+  disabled
+  className="bg-red-100 text-red-500 cursor-not-allowed flex items-center gap-2"
+>
+  <Ban className="w-4 h-4" />
+  Out of Stock
+</Button>
+        )}
+
         <div className="flex items-center gap-2 border rounded-md px-2 py-1 w-full lg:w-fit">
           <Input
             type="number"
