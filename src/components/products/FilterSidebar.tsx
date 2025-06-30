@@ -165,17 +165,17 @@ export default function FilterSidebar({ filterValues }: Props) {
               className="px-2 py-1  text-sm flex items-center gap-1"
             >
               {badge}
-              <span
+              <div
                 onClick={() => {
                   setBadges((prev) => prev.filter((item) => item !== badge));
-                  applyFilters();
-                  dispatch(addKeywords(badges));
-                  dispatch(removeKeyword(badge));
-                  // dispatch(removeKeyword(badge))
+                  // applyFilters();
+                  // dispatch(addKeywords(badges));
+                  // dispatch(removeKeyword(badge));
+                  dispatch(removeKeyword(badge))
                 }}
               >
                 <X className="w-4 h-4 cursor-pointer ml-1" />
-              </span>
+              </div>
             </Badge>
           ))}
         </div>

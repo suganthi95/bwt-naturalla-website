@@ -44,7 +44,7 @@ const filterSlice = createSlice({
       }
     },
     removeKeyword: (state, action: PayloadAction<string>) => {
-      state.keywords = state.keywords.filter((k) => k !== action.payload);
+      state.keywords = state.keywords.filter((k) => k.toLowerCase().trim() !== (action.payload).toLowerCase().trim());
     },
     setPriceRanges: (
       state,

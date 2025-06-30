@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "@/redux/slices/cartSlice";
 import type { RootState } from "@/redux/store";
 import { toast } from "sonner";
+import { Ban } from "lucide-react";
 interface Props {
   Products: Product[];
 }
@@ -55,7 +56,9 @@ export default function TodayDeals({ Products }: Props) {
           onClick={() =>
             // navigate("/products/today-deals", { state: { isin_todays_deal: "true" } })
 
-            navigate("/products/today-deals?isin_todays_deal=true",{state:{title:'Today Deals'}})
+            navigate("/products/today-deals?isin_todays_deal=true", {
+              state: { title: "Today Deals" },
+            })
           }
         >
           View more
@@ -73,7 +76,7 @@ export default function TodayDeals({ Products }: Props) {
               />
 
               <div className="absolute bg-[#E95144] text-white rounded  text-sm font-medium top-4 left-3  px-5 py-1">
-                    {Math.round(Number(item?.discount_percent))}% OFF
+                {Math.round(Number(item?.discount_percent))}% OFF
               </div>
               <p
                 onClick={() => navigate(`/product/${item.slug}`)}
@@ -91,27 +94,37 @@ export default function TodayDeals({ Products }: Props) {
                     Rs.{item?.strike_through_price}
                   </span>
                 </p>
-                <Button
-                  onClick={() => {
-                    if (status) {
-                      mutate({
-                        product_id: item.product_id,
-                        quantity: 1,
-                        token: token,
-                      });
-                      dispatch(addItem(item));
-                    } else {
-                      toast.error("Please login to continue");
-                      navigate("/login");
-                    }
-                    setTimeout(() => setClicked(false), 300);
-                  }}
-                  className={`rounded-full font-semibold px-5 py-2 border transition-all duration-300 ease-in-out
+                {item?.current_stock > 0 ? (
+                  <Button
+                    onClick={() => {
+                      if (status) {
+                        mutate({
+                          product_id: item.product_id,
+                          quantity: 1,
+                          token: token,
+                        });
+                        dispatch(addItem(item));
+                      } else {
+                        toast.error("Please login to continue");
+                        navigate("/login");
+                      }
+                      setTimeout(() => setClicked(false), 300);
+                    }}
+                    className={`rounded-full font-semibold px-5 py-2 border transition-all duration-300 ease-in-out
         ${clicked ? "animate-glitch" : ""}
         bg-white text-primary border-primary hover:bg-primary hover:text-white hover:shadow-md hover:scale-105`}
-                >
-                  Add to Cart
-                </Button>
+                  >
+                    Add to Cart
+                  </Button>
+                ) : (
+                  <Button
+                    disabled
+                    className="bg-red-100 text-red-500 cursor-not-allowed flex items-center gap-2"
+                  >
+                    <Ban className="w-4 h-4" />
+                    Out of Stock
+                  </Button>
+                )}
               </div>
             </li>
           );
