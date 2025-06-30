@@ -58,7 +58,11 @@ export default function BestSelling({ title, Products }: Props) {
         </p>
         <p
           className="text-title text-sm md:text-base cursor-pointer hover:underline underline-primary"
-          onClick={() => navigate("/products/best-selling?best_selling=true",{state:{title:'Best Selling'}})}
+          onClick={() =>
+            navigate("/products/best-selling?best_selling=true", {
+              state: { title: "Best Selling" },
+            })
+          }
         >
           View more
         </p>
@@ -67,14 +71,32 @@ export default function BestSelling({ title, Products }: Props) {
       <ul className="grid place-items-center grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 md:gap-14 lg:gap-x-10 mt-4 md:mt-8">
         {Products?.slice(0, 5)?.map((item, index) => {
           return (
-            <li key={index} className="space-y-2 relative">
-              <img
-                src={item?.thumbnail_image_url}
-                alt={item?.product_name}
-                className="w-52 h-44 md:w-[240px] md:h-[240px] rounded-lg md:rounded-[20px] object-cover mx-auto cursor-pointer"
-                onClick={() => navigate(`/product/${item.slug}`)}
-              />
+            <li key={index} className="space-y-2  group">
+              <div className="relative w-fit mx-auto">
+                <img
+                  src={item?.thumbnail_image_url}
+                  alt={item?.product_name}
+                  className={`w-52 h-44 md:w-[240px] md:h-[240px] rounded-lg md:rounded-[20px] object-cover mx-auto cursor-pointer transition duration-300 ${
+                    item.current_stock > 0
+                      ? ""
+                      : "blur-[2px] brightness-90 "
+                  }`}
+                  onClick={() => {
+                    if (item.current_stock > 0)
+                      navigate(`/product/${item.slug}`);
+                  }}
+                />
 
+                {item.current_stock === 0 && (
+                  <div className="absolute  inset-0 bg-black flex items-center justify-center rounded-lg md:rounded-[20px] text-xs md:text-base font-semibold">
+                    Out of Stock
+                  </div>
+                )}
+              </div>
+
+              {/* <div className="absolute bg-[#009951] font-medium md:font-bold  text-white rounded  text-xs md:text-sm  -right-1 top-0  px-3">
+                        {Math.round(Number(item?.discount_percent))}% OFF
+                      </div> */}
               <p
                 className="text-title  hover:text-primary transition-colors duration-300 text-sm md:text-xl font-medium line-clamp-1 cursor-pointer"
                 onClick={() => {
@@ -90,24 +112,28 @@ export default function BestSelling({ title, Products }: Props) {
                     Rs.{item?.strike_through_price}
                   </span>
                 </p>
-                <Button
-                  onClick={() => {
-                    if (status) {
-                      mutate({
-                        product_id: item.product_id,
-                        quantity: 1,
-                        token: token,
-                      });
-                      dispatch(addItem(item));
-                    } else {
-                      toast.error("Please login to continue");
-                      navigate("/login");
-                    }
-                  }}
-                  className="rounded-md font-bold transition-all duration-300 ease-in-out md:px-5 md:py-2 bg-white text-primary border border-primary hover:bg-primary hover:text-white shadow-sm hover:shadow-lg"
-                >
-                  <ShoppingCart className="md:w-5 md:h-5" />
-                </Button>
+                {item.current_stock > 0 ? (
+                  <Button
+                    onClick={() => {
+                      if (status) {
+                        mutate({
+                          product_id: item.product_id,
+                          quantity: 1,
+                          token: token,
+                        });
+                        dispatch(addItem(item));
+                      } else {
+                        toast.error("Please login to continue");
+                        navigate("/login");
+                      }
+                    }}
+                    className="rounded-md font-bold transition-all duration-300 ease-in-out md:px-5 md:py-2 bg-white text-primary border border-primary hover:bg-primary hover:text-white shadow-sm hover:shadow-lg"
+                  >
+                    <ShoppingCart className="md:w-5 md:h-5" />
+                  </Button>
+                ) : (
+                  ""
+                )}
               </div>
             </li>
           );

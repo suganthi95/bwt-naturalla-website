@@ -185,7 +185,7 @@ export default function ProductsList({ Products, title }: Props) {
                     className="relative w-full cursor-pointer overflow-hidden transition-all duration-300"
                     // onClick={() => navigate(`/product/${item.slug}`)}
                   >
-                    <div className="absolute  space-y-3 flex top-3 -right-8 duration-300  transition-all items-center justify-center flex-col group-hover:right-3 z-20">
+                    <div className="absolute  lg:block space-y-3 flex top-3 -right-8 duration-300  transition-all items-center justify-center flex-col group-hover:right-3 z-20">
                       <motion.div
                         whileHover={{ scale: [1, 1.2, 1] }}
                         transition={{ duration: 0.6, ease: "easeInOut" }}
@@ -270,11 +270,11 @@ export default function ProductsList({ Products, title }: Props) {
                       </motion.div>
                     </div>
 
-                    <div className="absolute  lg:hidden flex top-0  duration-300  transition-all items-center justify-center flex-col right-3 z-20">
+                    <div className="absolute top-2 right-2 z-20 flex flex-col items-center gap-2 lg:hidden">
                       <motion.div
                         whileHover={{ rotate: 360 }}
                         transition={{ duration: 0.6 }}
-                        className="text-primary "
+                        className="bg-[#ECF9EB] rounded-full w-6 h-6 flex items-center justify-center shadow-md"
                       >
                         <button
                           onClick={() => {
@@ -304,7 +304,7 @@ export default function ProductsList({ Products, title }: Props) {
                               dispatch(removeWishlistItem(item.cart_id));
                             }
                           }}
-                          className="w-9 h-9 flex items-center justify-center relative"
+                          className="w-full h-full flex items-center justify-center relative"
                         >
                           <motion.div
                             initial={false}
@@ -316,10 +316,10 @@ export default function ProductsList({ Products, title }: Props) {
                             }}
                           >
                             <Heart
-                              className={`w-5 h-5 transition-colors duration-300 ${
+                              className={`w-4 h-4 transition-colors duration-300 ${
                                 isLiked
                                   ? "fill-red-500 text-red-500"
-                                  : "text-red-500"
+                                  : "text-primary"
                               }`}
                             />
                           </motion.div>
@@ -338,33 +338,35 @@ export default function ProductsList({ Products, title }: Props) {
                           </AnimatePresence>
                         </button>
                       </motion.div>
+
                       <motion.div
                         whileHover={{ scale: 1.2 }}
-                        transition={{ duration: 0.6 }}
-                        className="text-primary"
+                        transition={{ duration: 0.4 }}
+                        className="bg-[#ECF9EB] rounded-full w-6 h-6 flex items-center justify-center shadow-md"
                       >
                         <button
                           onClick={() => navigate(`/product/${item.slug}`)}
-                          className=""
+                          className="w-full h-full flex items-center justify-center"
                         >
-                          <Eye />
+                          <Eye className="w-4 h-4 text-primary" />
                         </button>
                       </motion.div>
                     </div>
+
                     <div className="relative group-hover:h-44 group w-full h-40 sm:h-60 md:w-[240px] md:h-[240px] rounded-xl overflow-hidden transition-all duration-300">
                       <img
                         src={item?.thumbnail_image_url}
                         alt={item?.product_name}
                         className="w-full h-full object-cover rounded-xl transition-transform duration-500 group-hover:rotate-3"
                       />
-                      <div className="absolute bg-[#009951] font-bold text-white rounded  group-hover:hidden text-sm  -right-1 top-0  px-4 py-1">
+                      <div className=" hidden lg:block absolute bg-[#009951] font-bold text-white rounded  group-hover:hidden text-sm  -right-1 top-0  px-4 py-1">
                         {Math.round(Number(item?.discount_percent))}% OFF
                       </div>{" "}
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl" />
                     </div>
                   </div>
 
-                  <div className="hidden group-hover:flex items-center justify-between gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className=" hidden  group-hover:lg:flex items-center justify-between gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <button
                       className="flex-1 bg-primary text-white py-2 rounded-md font-medium hover:bg-primary/90"
                       onClick={() => {
@@ -405,26 +407,40 @@ export default function ProductsList({ Products, title }: Props) {
                       Add to Cart
                     </button>
                   </div>
+<div className="flex flex-col items-center gap-x-1.5">
 
                   <p
-                    className="text-title hover:text-primary transition text-base sm:text-lg font-semibold line-clamp-1 cursor-pointer"
+                    className="text-title hover:text-primary transition text-sm sm:text-lg   font-semibold line-clamp-1 cursor-pointer"
                     onClick={() => navigate(`/product/${item.slug}`)}
                   >
-                    {item?.product_name}
+                    {item?.product_name} 
+                    
                   </p>
-
-                  <div className="flex items-center justify-between">
-                    <p className="text-textPrimary text-base sm:text-lg font-bold">
-                      Rs. {item?.unit_price}
-                      <span className="text-sm text-lead font-normal line-through ml-1">
-                        Rs. {item?.strike_through_price}
-                      </span>
-                    </p>
-                    {item?.units && (
-                      <p className="text-sm font-medium text-lead">
-                        ({item?.units})
+                     {item?.units && (
+                      <p className="text-xs md:hidden truncate font-medium text-lead text-right">
+                        ({item.units})
                       </p>
                     )}
+</div>
+
+                  <div className="flex flex-row items-center sjustify-between gap-1 sm:gap-0">
+                    <p className="text-textPrimary text-sm sm:text-lg font-bold">
+                      Rs. {item?.unit_price}
+                      {item?.strike_through_price && (
+                        <span className="text-xs sm:text-sm text-lead font-normal line-through ml-2">
+                          Rs. {item?.strike_through_price}
+                        </span>
+                      )}
+                    </p>
+
+                    {item?.units && (
+                      <p className="hidden  md:block text-sm font-medium text-lead text-right">
+                        ({item.units})
+                      </p>
+                    )}
+                      <div className="  md:hidden  text-[#009951] font-bold  rounded   text-xs ">
+                        {Math.round(Number(item?.discount_percent))}% OFF
+                      </div>{" "}
                   </div>
                 </li>
               );

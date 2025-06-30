@@ -886,7 +886,7 @@ export default function CheckoutPage() {
                                     )}
                                   </div> */}
                                   {showStateDropdown && (
-                                    <ul className="absolute   w-52   bg-white dark:bg-gray-800 border dark:border-gray-700 max-h-80 overflow-auto mt-1 shadow-md rounded">
+                                    <ul className="absolute  z-[999]  w-52   bg-white dark:bg-gray-800 border dark:border-gray-700 max-h-80 overflow-auto mt-1 shadow-md rounded">
                                       {filteredStates.length === 0 ? (
                                         <li className="p-2 text-sm text-muted-foreground">
                                           No state found.
@@ -1229,7 +1229,7 @@ export default function CheckoutPage() {
                                     />
 
                                     {showbiilingStateDropdown && (
-                                      <ul className="absolute   w-52   bg-white dark:bg-gray-800 border dark:border-gray-700 max-h-80 overflow-auto mt-1 shadow-md rounded">
+                                      <ul className="absolute  z-[999] w-52   bg-white dark:bg-gray-800 border dark:border-gray-700 max-h-80 overflow-auto mt-1 shadow-md rounded">
                                         {filteredStates2.length === 0 ? (
                                           <li className="p-2 text-sm text-muted-foreground">
                                             No state found.
