@@ -1,4 +1,4 @@
-import type { AddressPayload, OrderPayload, Profile } from "@/types/type";
+import type { AddressPayload, OrderAddressPayload, OrderPayload, Profile } from "@/types/type";
 import { api } from "./axiosInstance";
 
 export const signup = async (
@@ -373,3 +373,14 @@ export const updateReview = async (token: string,id:string ,formData: FormData) 
   });
   return response.data;
 };
+
+export const addOrderAddress = async(token:string,payload:OrderAddressPayload
+  )=>{
+const response = await api.post('v1/profile/add/order/address',payload,{
+  headers:{
+    Authorization:token
+  }
+})
+return response.data
+
+}

@@ -21,6 +21,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
+  useAddOrderAddress,
   useCheckCouponCode,
   useDeleteCart,
   useGetCartItems,
@@ -165,7 +166,8 @@ export default function CheckoutPage() {
   const { token } = useSelector((state: RootState) => state.auth);
   const { data: addresses } = useGetAddress(token);
   const { data, isLoading, isFetching } = useGetCartItems(token);
-
+  const { mutate: addAddress, isPending: addAddressIspending } =
+    useAddOrderAddress();
   const { mutate } = useUpdateCart();
   const { mutate: CheckCoupon, isPending } = useCheckCouponCode();
   const { mutate: removeCart } = useDeleteCart();
@@ -352,7 +354,30 @@ export default function CheckoutPage() {
   };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    toast.success("Address added");
+    addAddress(
+      {
+        token: token ?? "",
+        payload: {
+          address: values.address,
+          address_email: values.email,
+          address_first_name: values.firstName,
+          address_last_name: values.lastName,
+          address_phone_no: Number(values.phoneNumber),
+          city: values.city,
+          pincode: Number(values.pinCode),
+          state: values.state,
+        },
+      },
+      {
+        onSuccess(data) {
+          toast.message(data?.message);
+        },
+        onError(error) {
+          if (axios.isAxiosError(error))
+            toast.error(error?.response?.data?.message);
+        },
+      }
+    );
     dispatch(
       setShippingAddress({
         address: values.address,
@@ -932,7 +957,7 @@ export default function CheckoutPage() {
                                       {...field}
                                     />
                                   </FormControl>
-                                    {/* <p
+                                  {/* <p
                             className={`${
                               isError ? "text-red-500" : "text-green-500"
                             } text-xs md:text-sm font-medium absolute -bottom-4 md:-bottom-6 truncate`}
@@ -955,7 +980,6 @@ export default function CheckoutPage() {
                               )}
                             </Button> */}
                           </div>
-                        
                         </div>
                         <div className="mt-4 space-y-2">
                           <FormField
@@ -982,7 +1006,7 @@ export default function CheckoutPage() {
                           />
                           {form.watch("same_billing_address") && (
                             <div className="flex  justify-between ">
-                              <Button type="submit" className="px-8">
+                              <Button type="submit" disabled={addAddressIspending}  className="px-8">
                                 Add
                               </Button>
                             </div>
@@ -1286,7 +1310,7 @@ export default function CheckoutPage() {
 
                           {!form.watch("same_billing_address") && (
                             <div className="flex mt-4  justify-between ">
-                              <Button  type="submit" className="px-8">
+                              <Button type="submit" disabled={addAddressIspending} className="px-8">
                                 Add
                               </Button>
                             </div>
@@ -1418,7 +1442,7 @@ export default function CheckoutPage() {
             </Accordion>
             <Button
               className="w-full md:h-12 "
-              disabled={items?.length === 0 }
+              disabled={items?.length === 0}
               onClick={async () => {
                 const valid = await form.trigger();
                 if (valid) {

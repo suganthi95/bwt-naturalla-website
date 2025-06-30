@@ -202,3 +202,13 @@ export type Profile = {
   phone_no: number;
   password?: string;
 };
+export interface OrderAddressPayload {
+  address_first_name: string;
+  address_last_name: string;
+  address_email: string;
+  address_phone_no: number;
+  address: string;
+  city: string;
+  state: string;
+  pincode: number;
+}

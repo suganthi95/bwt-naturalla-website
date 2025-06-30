@@ -1,5 +1,5 @@
-import { addToCart, checkCoupoCode, createOrder, deleteCartItems, getCartItems, getProviders, updateCartItems, verifyPhonePayPayment, verifyRazorPayPayment } from "@/lib/api";
-import type { OrderPayload } from "@/types/type";
+import { addOrderAddress, addToCart, checkCoupoCode, createOrder, deleteCartItems, getCartItems, getProviders, updateCartItems, verifyPhonePayPayment, verifyRazorPayPayment } from "@/lib/api";
+import type { OrderAddressPayload, OrderPayload } from "@/types/type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -130,4 +130,12 @@ export const useGetProviders = (token:string)=>{
         select:(data)=>data?.data,
         retry:1
     })
+}
+
+
+export const useAddOrderAddress = ()=>{
+ return useMutation({
+  mutationKey:['addorderaddress'],
+  mutationFn:(args:{token:string,payload:OrderAddressPayload})=>addOrderAddress(args.token,args.payload)
+ })
 }
