@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <main>
       {/* hero section */}
-      <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
+      <section className="  mb-10  mb:mb-20 ">
         <HeroCarousal />
       </section>
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">

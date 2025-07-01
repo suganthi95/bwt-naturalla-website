@@ -191,7 +191,7 @@ export default function FilterSidebar({ filterValues }: Props) {
               <Slider
                 value={priceRange}
                 onValueChange={(val) => {
-                  applyFilters();
+                  // applyFilters();
 
                   setPriceRange([val[0], val[1]]);
                 }}
@@ -217,7 +217,7 @@ export default function FilterSidebar({ filterValues }: Props) {
                   value={max}
                   onChange={(e) => {
                     handlePriceInput(+e.target.value, "max");
-                    applyFilters();
+                    // applyFilters();
                   }}
                   min={priceRange[0]}
                   max={defaultMax}
@@ -277,7 +277,8 @@ export default function FilterSidebar({ filterValues }: Props) {
                 value={sortBy}
                 onValueChange={(val) => {
                   setSortBy(val);
-                  applyFilters();
+                  // applyFilters();
+                  dispatch(setSortByPrice(val))
                 }}
                 className="space-y-2 mt-2"
               >
@@ -303,9 +304,10 @@ export default function FilterSidebar({ filterValues }: Props) {
             <AccordionContent>
               <RadioGroup
                 value={sortDate}
-                onValueChange={() => {
-                  setSortByDate;
-                  applyFilters();
+                onValueChange={(val) => {
+                  dispatch(setSortDate(val))
+                  setSortByDate(val)
+                  // applyFilters();
                 }}
                 className="space-y-2 mt-2"
               >

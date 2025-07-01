@@ -75,7 +75,7 @@ export default function TodayDeals({ Products }: Props) {
                 onClick={() => navigate(`/product/${item.slug}`)}
               />
 
-              <div className="absolute bg-[#E95144] text-white rounded  text-sm font-medium top-4 left-3  px-5 py-1">
+              <div className="absolute bg-[#E95144] text-white rounded  text-sm font-medium top-4 right-3  px-5 py-1">
                 {Math.round(Number(item?.discount_percent))}% OFF
               </div>
               <p

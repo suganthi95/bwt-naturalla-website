@@ -193,7 +193,7 @@ export default function Nav() {
                         <Popover open={openDropdownId === item.id}>
                           <PopoverTrigger asChild>
                             <button
-                              className={`text-primary flex items-center gap-x-1 tracking-wide py-2 cursor-pointer ${
+                              className={`text-primary font-semibold flex items-center gap-x-1 tracking-wide py-2 cursor-pointer ${
                                 pathname === item.link
                                   ? "font-bold underline underline-offset-8 decoration-2"
                                   : "font-normal no-underline"
@@ -301,7 +301,7 @@ export default function Nav() {
                             );
                           }
                         }}
-                        className={`text-primary cursor-pointer tracking-wide py-2 ${
+                        className={`text-primary font-semibold cursor-pointer tracking-wide py-2 ${
                           pathname === "/products/best-selling"
                             ? "font-bold underline underline-offset-8 decoration-2"
                             : "font-normal no-underline"
@@ -317,7 +317,7 @@ export default function Nav() {
                           })
                         }
                         to={item.link}
-                        className={`text-primary tracking-wide py-2 ${
+                        className={`text-primary font-semibold tracking-wide py-2 ${
                           pathname === item.link
                             ? "font-bold underline underline-offset-8 decoration-2"
                             : "font-normal no-underline"
