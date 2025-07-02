@@ -323,9 +323,9 @@ export default function FilterSidebar({ filterValues }: Props) {
         </Accordion>
       </div>
 
-      <Button className="w-full hidden xl:block mt-4" onClick={applyFilters}>
+      {/* <Button className="w-full hidden xl:block mt-4" onClick={applyFilters}>
         Apply Filters
-      </Button>
+      </Button> */}
     </div>
   );
 }

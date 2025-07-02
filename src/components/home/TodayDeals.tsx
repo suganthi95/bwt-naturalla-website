@@ -67,7 +67,7 @@ export default function TodayDeals({ Products }: Props) {
       <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-x-14 lg:gap-x-20 mt-4 md:mt-8">
         {Products?.slice(0, 3)?.map((item, index) => {
           return (
-            <li key={index} className="space-y-2 relative">
+            <li key={index} className="space-y-2 relative overflow-hidden">
               <img
                 src={item.thumbnail_image_url}
                 alt={item?.product_name}
@@ -75,9 +75,12 @@ export default function TodayDeals({ Products }: Props) {
                 onClick={() => navigate(`/product/${item.slug}`)}
               />
 
-              <div className="absolute bg-[#E95144] text-white rounded  text-sm font-medium top-4 right-3  px-5 py-1">
+              {/* <div className="absolute bg-[#E95144] text-white rounded-[16px]  text-sm font-medium top-0 right-3  px-5 py-1">
                 {Math.round(Number(item?.discount_percent))}% OFF
-              </div>
+              </div> */}
+               <div className="  absolute bg-[#E95144] font-bold text-white rounded-r  group-hover:hidden text-sm  right-1 md:right-2 top-0  px-4 py-1">
+                          {Math.round(Number(item?.discount_percent))}% OFF
+                        </div>{" "}
               <p
                 onClick={() => navigate(`/product/${item.slug}`)}
                 className="text-primary font-medium cursor-pointer hover:text-primary transition-colors duration-300 text-xl"
