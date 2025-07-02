@@ -43,8 +43,8 @@ export const productDetailById = async (id: string) => {
   return response.data;
 };
 
-export const pincodeEnquiry = async (pincode: string) => {
-  const response = await api.get(`v1/order/check/delivery/${pincode}`);
+export const pincodeEnquiry = async (pincode: number,product_id:number) => {
+  const response = await api.post(`v1/product/estimate/delivery`,{pincode,product_id});
   return response.data;
 };
 

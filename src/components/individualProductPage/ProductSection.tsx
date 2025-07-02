@@ -11,12 +11,13 @@ import { usePincodeEnquiry } from "@/services/product";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "@/redux/slices/cartSlice";
-import { useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import type { RootState } from "@/redux/store";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAddToWishList, useDeleteWishlist } from "@/services/whistlist";
 import { addWishItem, removeWishlistItem } from "@/redux/slices/wishSlice";
 import { useAddToCart } from "@/services/cart";
+import axios from "axios";
 
 // const productImages = [
 //   ASSETS.PRODUCT1,
@@ -54,10 +55,9 @@ export default function ProductSection({ media, products }: Props) {
   //   localStorage.getItem("delivery")
   // );
   const [Messages, setMessage] = useState("");
-  const [Isloading, setIsloading] = useState(false);
   const [liked, setLiked] = useState(false);
 
-  const { refetch, isError } = usePincodeEnquiry(Pincode ?? "");
+  const { mutate: pincodeVerify, isPending, isError } = usePincodeEnquiry();
   const handleDecrease = () => {
     if (quantity > 1) setQuantity(quantity - 1);
   };
@@ -109,28 +109,26 @@ export default function ProductSection({ media, products }: Props) {
   // );
 
   const checkDeliveryInfo = async () => {
-    // localStorage.setItem("pincode", Pincode ?? "");
-
     try {
-      setIsloading(true);
-      const { data, isError, error } = await refetch();
-
-      if (data?.status === true) {
-        setMessage(data.message);
-        // localStorage.setItem("delivery", data?.message);
-      }
-      if (isError || error) {
-        setMessage("We are not shipping for this Location");
-        toast.error("We are not shipping for this Location");
-        // localStorage.setItem(
-        //   "delivery",
-        //   "We are not shipping for this Location"
-        // );
-      }
+      pincodeVerify(
+        {
+          pincode: Number(Pincode),
+          product_id: products.product_id,
+        },
+        {
+          onSuccess(data) {
+            setMessage(data?.data?.eta);
+          },
+          onError: (error) => {
+            if (axios.isAxiosError(error)) {
+              setMessage(error?.response?.data?.message);
+            }
+          },
+        }
+      );
     } catch (error) {
       setMessage("Something went wrong");
     } finally {
-      setIsloading(false);
     }
   };
 
@@ -197,7 +195,7 @@ export default function ProductSection({ media, products }: Props) {
             </Button>
 
             <button
-            disabled={products?.current_stock <= 0}
+              disabled={products?.current_stock <= 0}
               onClick={() => {
                 setLiked((prev) => !prev);
                 if (status && !liked) {
@@ -348,8 +346,6 @@ export default function ProductSection({ media, products }: Props) {
             >
               Add to Cart
             </Button>
-
-         
           </div>
         ) : (
           <Button
@@ -373,7 +369,9 @@ export default function ProductSection({ media, products }: Props) {
             {Pincode && (
               <X
                 className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground cursor-pointer"
-                onClick={() => setPincode("")}
+                onClick={() => {setPincode("")
+                  setMessage("")
+                }}
               />
             )}
           </div>
@@ -381,15 +379,15 @@ export default function ProductSection({ media, products }: Props) {
             onClick={checkDeliveryInfo}
             className="h-6 rounded cursor-pointer px-3 text-sm"
           >
-            {Isloading ? <Loader2 className="animate-spin" /> : "Check"}
+            {isPending ? <Loader2 className="animate-spin" /> : "Check"}
           </Button>
         </div>
         <p
-          className={`${
+          className={`text-sm font-medium ${
             isError ? "text-red-500" : "text-green-500"
-          } text-sm font-medium`}
+          }`}
         >
-          {Messages}
+          {Messages && (isError ? Messages : `Delivery by ${Messages}`)}
         </p>
       </div>
     </div>

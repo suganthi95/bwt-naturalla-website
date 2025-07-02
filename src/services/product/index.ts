@@ -4,7 +4,7 @@ import {
   pincodeEnquiry,
   productDetailById,
 } from "@/lib/api";
-import {  useQuery } from "@tanstack/react-query";
+import {  useMutation, useQuery } from "@tanstack/react-query";
 
 export const useProductDetailsById = (id: string) => {
   return useQuery({
@@ -15,12 +15,10 @@ export const useProductDetailsById = (id: string) => {
     retry: 1,
   });
 };
-export const usePincodeEnquiry = (pincode: string) => {
-  return useQuery({
-    queryKey: ["pincodeEnquiry"],
-    queryFn: () => pincodeEnquiry(pincode),
-    staleTime: 1000 * 60 * 5,
-    enabled: !!pincode,
+export const usePincodeEnquiry = () => {
+  return useMutation({
+    mutationKey: ["pincodeEnquiry"],
+    mutationFn: (args:{pincode: number,product_id:number}) => pincodeEnquiry(args.pincode,args.product_id),
     retry: 1,
   });
 };
