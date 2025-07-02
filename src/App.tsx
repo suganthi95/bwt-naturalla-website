@@ -17,6 +17,10 @@ const LoginVerify = React.lazy(() => import("./pages/LoginVerify"));
 
 const ProductById = React.lazy(() => import("@/pages/ProductById"));
 const Products = React.lazy(() => import("@/website/Products"));
+const Blogs = React.lazy(() => import("@/website/Blogs"));
+const BlogDetails = React.lazy(() => import("@/website/BlogDetails"));
+
+
 const CheckoutPage = React.lazy(() => import("@/pages/CheckoutPage"));
 const OrderSuccess = React.lazy(() => import("@/pages/Order_Success"));
 const OrderFailure = React.lazy(() => import("@/pages/Order_Failure"));
@@ -58,6 +62,22 @@ const App = () => {
               element={
                 // <ProtectedRoute>
                   <Products />
+                // </ProtectedRoute>
+              }
+            />
+              <Route
+              path="/blogs"
+              element={
+                // <ProtectedRoute>
+                  < Blogs/>
+                // </ProtectedRoute>
+              }
+            />
+               <Route
+              path="/blogs/detail/:id"
+              element={
+                // <ProtectedRoute>
+                  < BlogDetails/>
                 // </ProtectedRoute>
               }
             />

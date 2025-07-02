@@ -7,6 +7,7 @@ import {
   Heart,
   Search,
   ShoppingCart,
+  X,
 } from "lucide-react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -331,15 +332,26 @@ export default function Nav() {
               })}
             </ul>
             <div className="flex items-center gap-4">
-              <div className="relative  hidden md:block">
+              <div className="relative hidden md:block w-full max-w-xs">
                 <input
                   type="text"
                   placeholder="Search..."
+                  value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  className="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                  className="pl-10 pr-8 py-2 w-full rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary text-sm"
                 />
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4" />
+
+                {searchTerm && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchTerm("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
               </div>
               <button
                 onClick={() => setIsMobileSearchOpen((prev) => !prev)}
@@ -347,7 +359,6 @@ export default function Nav() {
               >
                 <Search className="w-5 h-5 text-primary transition" />
               </button>
-
               <Sheet open={IsopenWishlist} onOpenChange={setIsopenWishlist}>
                 <SheetTrigger
                   className="cursor-pointer relative"
@@ -372,7 +383,6 @@ export default function Nav() {
                   />
                 </SheetContent>
               </Sheet>
-
               <Sheet open={Isopen} onOpenChange={setIsopen}>
                 <SheetTrigger
                   className="cursor-pointer relative"
@@ -396,7 +406,6 @@ export default function Nav() {
                   />
                 </SheetContent>
               </Sheet>
-
               {auth.status ? (
                 <Popover open={IsProfile} onOpenChange={setIsProfile}>
                   <PopoverTrigger asChild>

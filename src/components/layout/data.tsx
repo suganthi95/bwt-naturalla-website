@@ -32,5 +32,10 @@ export const NavData =[
         id:'7',
         name:'Best Sellers',
         link:'/products/best-sellers'
+    },
+      {
+        id:'8',
+        name:'Blogs',
+        link:'/blogs'
     }
 ]

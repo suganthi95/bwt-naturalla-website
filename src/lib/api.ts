@@ -384,3 +384,37 @@ const response = await api.post('v1/profile/add/order/address',payload,{
 return response.data
 
 }
+
+export const getBlogs = async(token:string,value:string)=>{
+ const response = await api.get(`v1/blog/list?blog_title=${value}`,{
+    headers:{
+      Authorization:token
+    }
+  })
+
+  return response.data
+}
+
+export const getTopBlogs = async(token:string)=>{
+  const response = await api.get('v1/blog/top',{
+    headers:{
+      Authorization:token
+    }
+  })
+
+  return response.data
+
+}
+
+
+export const getBlogDetail = async(token:string,id:string)=>{
+  const response = await api.get(`v1/blog/detail/${id}`,{
+    headers:{
+      Authorization:token
+    }
+  })
+
+  return response.data
+
+}
+

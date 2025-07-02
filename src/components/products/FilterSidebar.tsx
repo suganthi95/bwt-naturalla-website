@@ -48,7 +48,7 @@ export default function FilterSidebar({ filterValues }: Props) {
   const [badges, setBadges] = useState<string[]>(keywords);
   const defaultMin = filterValues?.price_range[0]?.min_price ?? 164;
   const defaultMax = filterValues?.price_range[0]?.max_price ?? 5000;
-  const [priceRange, setPriceRange] = useState<[number, number]>([
+  const [priceRange, setPriceRange] = useState<[number , number ]>([
     minPrice,
     maxPrice,
   ]);
@@ -95,7 +95,7 @@ export default function FilterSidebar({ filterValues }: Props) {
     dispatch(setCategories(selectedCategories));
     dispatch(setSortByPrice(sortBy));
     dispatch(setSortDate(sortDate));
-    dispatch(setPriceRanges({ min, max }));
+    dispatch(setPriceRanges({ min , max }));
   };
 
   return (
@@ -171,7 +171,7 @@ export default function FilterSidebar({ filterValues }: Props) {
                   // applyFilters();
                   // dispatch(addKeywords(badges));
                   // dispatch(removeKeyword(badge));
-                  dispatch(removeKeyword(badge))
+                  dispatch(removeKeyword(badge));
                 }}
               >
                 <X className="w-4 h-4 cursor-pointer ml-1" />
@@ -194,6 +194,7 @@ export default function FilterSidebar({ filterValues }: Props) {
                   // applyFilters();
 
                   setPriceRange([val[0], val[1]]);
+                  dispatch(setPriceRanges({ min, max }));
                 }}
                 min={defaultMin}
                 max={defaultMax}
@@ -203,7 +204,7 @@ export default function FilterSidebar({ filterValues }: Props) {
               <div className="flex gap-4">
                 <Input
                   type="number"
-                  value={min}
+                  value={min }
                   onChange={(e) => {
                     applyFilters();
 
@@ -217,7 +218,7 @@ export default function FilterSidebar({ filterValues }: Props) {
                   value={max}
                   onChange={(e) => {
                     handlePriceInput(+e.target.value, "max");
-                    // applyFilters();
+                    applyFilters();
                   }}
                   min={priceRange[0]}
                   max={defaultMax}
@@ -246,7 +247,6 @@ export default function FilterSidebar({ filterValues }: Props) {
                       id={checkboxId}
                       checked={selectedCategories.includes(cat.category_title)}
                       onCheckedChange={() => {
-                        
                         toggleCategoryby(cat.category_title);
                         // applyFilters();
                       }}
@@ -278,7 +278,7 @@ export default function FilterSidebar({ filterValues }: Props) {
                 onValueChange={(val) => {
                   setSortBy(val);
                   // applyFilters();
-                  dispatch(setSortByPrice(val))
+                  dispatch(setSortByPrice(val));
                 }}
                 className="space-y-2 mt-2"
               >
@@ -305,8 +305,8 @@ export default function FilterSidebar({ filterValues }: Props) {
               <RadioGroup
                 value={sortDate}
                 onValueChange={(val) => {
-                  dispatch(setSortDate(val))
-                  setSortByDate(val)
+                  dispatch(setSortDate(val));
+                  setSortByDate(val);
                   // applyFilters();
                 }}
                 className="space-y-2 mt-2"

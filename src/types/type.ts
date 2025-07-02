@@ -212,3 +212,20 @@ export interface OrderAddressPayload {
   state: string;
   pincode: number;
 }
+
+export type Blog = {
+  blog_id: number;
+  blog_title: string;
+  blog_desc: string;
+  blog_home_image: string | null;
+  blog_status: "draft" | "published";
+  blog_tags: string[];
+  created_by: number;
+  created_at: string;
+  updated_at: string | null;
+  publish: boolean;
+  blog_content: string;
+  blog_images: number;
+  blog_image_url: string;
+  created_time:string
+};

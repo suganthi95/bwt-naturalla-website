@@ -1,0 +1,89 @@
+import FullScreenLoader from "@/common/FullScreenLoader";
+import type { RootState } from "@/redux/store";
+import { useGetBlogDetail } from "@/services/blogs";
+import { useSelector } from "react-redux";
+import { useParams, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+export default function BlogDetails() {
+  const { token } = useSelector((state: RootState) => state.auth);
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const { data: blog, isFetching, isLoading } = useGetBlogDetail(
+    token ?? "",
+    id ?? ""
+  );
+
+  if (isFetching || isLoading) {
+    return <FullScreenLoader />;
+  }
+
+  return (
+    <section className="container mx-auto mt-10 mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="md:col-span-3 space-y-6">
+          <div>
+          <h1 className="text-2xl font-semibold flex items-center gap-2">
+            <ArrowLeft
+              className="cursor-pointer"
+              onClick={() => navigate("/blogs")}
+            />
+            {blog?.blog_title}
+          </h1>
+          <p className="uppercase flex items-center gap-x-1 font-medium text-textPrimary ">Published on:  <span className="text-[15px]">{blog?.created_time}</span></p>
+
+          </div>
+
+
+          {blog?.blog_image_url && (
+            <img
+              src={blog.blog_image_url}
+              alt="Blog"
+              className="w-full rounded-lg md:h-[400px] object-cover "
+            />
+          )}
+
+          <p className="text-lg text-slate-700 leading-relaxed">
+            {blog?.blog_desc}
+          </p>
+
+          <div
+            className=" rich-text prose max-w-none"
+            dangerouslySetInnerHTML={{ __html: blog?.blog_content || "" }}
+          />
+
+          <div className="flex flex-wrap gap-2">
+            {blog?.blog_tags?.map((tag: string) => (
+              <span
+                key={tag}
+                className="bg-slate-100 text-sm text-slate-600 px-3 py-1 rounded-md border"
+              >
+                #{tag}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="md:col-span-1 mt-4 space-y-4 text-center">
+          <h2 className="text-textPrimary font-medium">Newsletter</h2>
+          <img
+            src="https://ik.imagekit.io/3t9llb0gx/Naturella/unsplash_5fJcSYUS5lQ.png?updatedAt=1751458676571"
+            alt="Newsletter"
+            className="rounded-lg w-full object-cover"
+          />
+          <Input
+            type="email"
+            placeholder="Enter your email"
+            className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none"
+          />
+          <Button className="w-full">
+            Subscribe
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+}

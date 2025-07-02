@@ -45,7 +45,6 @@ export default function ProductsList({ Products, title }: Props) {
     sortByPrice,
     sorybyAlphabetic,
   } = useSelector((state: RootState) => state.filter);
-  const [sortBy, setSortBy] = useState("a-z");
   const [filteredProducts, setFiltered] = useState<Product[]>();
   const { token, status } = useSelector((state: RootState) => state.auth);
   const { data } = useFilterValues(token);
@@ -141,9 +140,9 @@ export default function ProductsList({ Products, title }: Props) {
           <div className="flex items-center gap-4">
             <h2 className="font-medium text-sm text-title">Sort By:</h2>
             <Select
-              value={sortBy}
+              value={sorybyAlphabetic}
               onValueChange={(val) => {
-                setSortBy;
+               
                 dispatch(setSortByAlphabetic(val));
               }}
             >
