@@ -72,7 +72,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
     return <CartLoadingSkeleton />;
   }
   if (isError) {
-    return <div className="text-red-600">Error</div>;
+    return         <EmptyCart onClose={onClose} />;
   }
   const subtotal = items?.reduce(
     (acc, item) => acc + item.unit_price * item.quantity,
@@ -89,10 +89,11 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
 
   const total = Math.round((subtotal + shipping ) - discount);
 
+ 
   return (
     <ScrollArea className="space-y-6 p-4  h-full md:h-screen">
       <h2 className="text-lg font-bold text-title"> Cart</h2>
-      {items?.length === 0 ? (
+      {items?.length === 0  ? (
         <EmptyCart onClose={onClose} />
       ) : (
         <>

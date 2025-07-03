@@ -23,7 +23,13 @@ type ProductRatingSummary = {
   two_star: number;
   one_star: number;
 };
-
+export type ProductEffectIcon = {
+  icon_text: string;
+  icon_id: number;
+  icon_name: string;
+  created_at: string;
+  icon_url: string;
+};
 export type Product = {
   product_id: number;
   user_id: number;
@@ -35,6 +41,7 @@ export type Product = {
   category_id: number | null;
   brand: string | null;
   tags: string | null;
+  icon_data: ProductEffectIcon[];
   coupon_id?: number | null;
   coupon_amount?: number | null;
   slug: string;

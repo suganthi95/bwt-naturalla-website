@@ -45,7 +45,7 @@ export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
     return <CartLoadingSkeleton />;
   }
   if (isError) {
-    return <div className="text-red-600">Error</div>;
+    return <EmptyWishlist onClose={onClose} />;
   }
 
   return (

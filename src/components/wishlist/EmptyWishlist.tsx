@@ -1,20 +1,23 @@
 import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
+import { AlertTriangle, Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/store";
 
 interface Props {
-  onClose: (val: boolean) => void
+  onClose: (val: boolean) => void;
 }
 
 export default function EmptyWishlist({ onClose }: Props) {
+  const { status } = useSelector((state: RootState) => state.auth);
 
   const navigate = useNavigate();
 
   const browseProduct = () => {
     navigate("/products/all");
     onClose(false);
-  }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center h-[80vh] text-center px-4">
@@ -34,6 +37,12 @@ export default function EmptyWishlist({ onClose }: Props) {
         Looks like you haven’t added anything to your wishlist yet. Start
         shopping now!
       </p>
+      {!status && (
+        <div className="flex items-start gap-2 mt-2 bg-yellow-100 border border-yellow-300 text-yellow-800 text-xs rounded-md p-2">
+          <AlertTriangle className="w-4 h-4 mt-0.5" />
+          <span>Please log in to access product wishlist features.</span>
+        </div>
+      )}
 
       <Button className="mt-6" onClick={browseProduct}>
         Browse Products
