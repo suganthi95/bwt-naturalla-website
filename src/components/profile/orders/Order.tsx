@@ -60,8 +60,8 @@ export default function Order({ Orders, handleTab }: Props) {
             <ChevronLeft />
             Back to Orders
           </button>
-          {data?.payment[0]?.invoice_url && (
             <button
+            disabled={!data?.payment[0]?.invoice_url }
               onClick={() => {
                 window.open(data?.payment[0]?.invoice_url, "_blank");
               }}
@@ -70,7 +70,6 @@ export default function Order({ Orders, handleTab }: Props) {
               <i className="fas fa-download mr-2"></i>
               Download Invoice
             </button>
-          )}
         </div>
         <div className="border-b pb-4 mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
           <div>
