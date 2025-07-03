@@ -12,7 +12,6 @@ import { useGetOrdersDetails } from "@/services/profile";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
 import dayjs from "dayjs";
-import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogClose,
@@ -83,17 +82,17 @@ export default function Order({ Orders, handleTab }: Props) {
             </p>
           </div>
 
-          <Badge
-            className={`w-fit text-sm px-3 py-1 rounded-full self-start sm:self-auto ${
-              order.delivery_status === "order confirmed"
+          <span
+            className={`w-fit px-3 py-1 rounded-full text-xs sm:text-sm ${
+              order.order_status === "order confirmed"
                 ? "bg-green-100 text-green-800"
-                : order.delivery_status === "Processing"
+                : order.order_status === "Processing"
                 ? "bg-blue-100 text-blue-800"
                 : "bg-yellow-100 text-yellow-800"
             }`}
           >
-            {order.delivery_status}
-          </Badge>
+            {order.order_status}
+          </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 h-full gap-6 mb-6">
