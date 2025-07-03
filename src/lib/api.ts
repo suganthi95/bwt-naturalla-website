@@ -385,7 +385,7 @@ return response.data
 
 }
 
-export const getBlogs = async(token:string,value:string)=>{
+export const getBlogs = async(token:string,value?:string)=>{
  const response = await api.get(`v1/blog/list?blog_title=${value}`,{
     headers:{
       Authorization:token

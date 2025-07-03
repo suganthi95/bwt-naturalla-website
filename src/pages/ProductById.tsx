@@ -11,7 +11,7 @@ import { useParams } from "react-router-dom";
 import { ASSETS } from "@/assets/assets";
 import BestSelling from "@/components/home/BestSelling";
 import DOMPurify from "dompurify";
-
+import {Helmet} from 'react-helmet'
 export default function ProductById() {
   const params = useParams();
   const { id } = params || {};
@@ -40,6 +40,9 @@ export default function ProductById() {
   ];
   return (
     <main>
+      <Helmet>
+        
+      </Helmet>
       <section className=" mt-10 mb-10  ">
         <ProductSection products={data} media={data?.gallery_image_url} />
       </section>
