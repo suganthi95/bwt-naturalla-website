@@ -22,7 +22,8 @@ export default function Footer() {
           </p>
 
           <p className="text-white roundica text-xs">
-            Naturalla {"–"} Naturally You, Naturally Beautiful.
+            Naturalla – Naturally You, Naturally Beautiful. Rejoice with
+            Nature's 💕{" "}
           </p>
           <div className="flex space-x-4 pt-2">
             <a href="#" className="text-white/60 hover:text-white transition">
@@ -88,7 +89,6 @@ export default function Footer() {
                 Browse All Products
               </Link>
             </li>
-           
           </ul>
         </div>
 
@@ -100,7 +100,7 @@ export default function Footer() {
                 Home
               </Link>
             </li>
-          
+
             <li>
               <Link to="/products/categories" className="text-white/50">
                 All Products
@@ -121,9 +121,7 @@ export default function Footer() {
             <li>Vilankurichi Road, Coimbatore,</li>
           </ul>
           <p className="text-sm text-white/50">
-            <a href="mailto:reachnaturalla@gmail.com">
-              reachnaturalla@gmail.com
-            </a>
+            <a href="mailto:cs@nllpl.in">cs@nllpl.in</a>
           </p>
           <p className="text-sm text-white/50">
             <a href="tel:+919655233533">+91-96552 33533</a>
