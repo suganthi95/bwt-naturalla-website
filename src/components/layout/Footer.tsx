@@ -22,7 +22,7 @@ export default function Footer() {
           </p>
 
           <p className="text-white roundica text-xs">
-            Naturalla – Naturally You, Naturally Beautiful. Rejoice with
+            Naturalla –  Rejoice with
             Nature's 💕{" "}
           </p>
           <div className="flex space-x-4 pt-2">

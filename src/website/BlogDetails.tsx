@@ -4,8 +4,7 @@ import { useGetBlogDetail } from "@/services/blogs";
 import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+
 
 export default function BlogDetails() {
   const { token } = useSelector((state: RootState) => state.auth);
@@ -67,22 +66,7 @@ export default function BlogDetails() {
           </div>
         </div>
 
-        <div className="md:col-span-1 mt-4 space-y-4 text-center">
-          <h2 className="text-textPrimary font-medium">Newsletter</h2>
-          <img
-            src="https://ik.imagekit.io/3t9llb0gx/Naturella/unsplash_5fJcSYUS5lQ.png?updatedAt=1751458676571"
-            alt="Newsletter"
-            className="rounded-lg w-full object-cover"
-          />
-          <Input
-            type="email"
-            placeholder="Enter your email"
-            className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none"
-          />
-          <Button className="w-full">
-            Subscribe
-          </Button>
-        </div>
+      
       </div>
     </section>
   );

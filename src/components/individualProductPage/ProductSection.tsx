@@ -11,7 +11,7 @@ import { usePincodeEnquiry } from "@/services/product";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "@/redux/slices/cartSlice";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import type { RootState } from "@/redux/store";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAddToWishList, useDeleteWishlist } from "@/services/whistlist";
@@ -176,13 +176,28 @@ export default function ProductSection({ media, products }: Props) {
 
       <div className="w-full  space-y-4">
         <div className="flex items-start w-full justify-between">
-          <div>
+          <div className="space-y-2.5">
             <h2 className="text-2xl md:text-[32px] font-semibold ">
               {products?.product_name}
             </h2>
-            <p className="text-lead font-medium text-sm md:text-lg">
-              {products?.short_description}
-            </p>
+            <ul className="grid grid-cols-2 sm:grid-cols-3  gap-4">
+              {products?.icon_data?.map((item) => {
+                return (
+                  <li className="flex items-center gap-x-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-pink-100 to-purple-100 shadow-md border border-purple-200">
+                    <div className="flex-shrink-0 w-6 h-6 rounded-full overflow-hidden border border-white shadow-sm">
+                      <img
+                        src={item.icon_url}
+                        alt={`icon-${item.icon_id}`}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <span className="text-sm font-medium text-purple-700 capitalize tracking-wide">
+                      {item.icon_text}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
           <div className="flex flex-col gap-y-5">
             <Button
@@ -369,8 +384,9 @@ export default function ProductSection({ media, products }: Props) {
             {Pincode && (
               <X
                 className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground cursor-pointer"
-                onClick={() => {setPincode("")
-                  setMessage("")
+                onClick={() => {
+                  setPincode("");
+                  setMessage("");
                 }}
               />
             )}

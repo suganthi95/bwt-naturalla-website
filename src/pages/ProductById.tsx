@@ -41,7 +41,7 @@ export default function ProductById() {
   return (
     <main>
       <Helmet>
-        <meta name="keywords" content={data?.meta_keywords.join(", ")} />
+        <meta name="keywords" content={data?.meta_keywords?.join(", ")} />
       </Helmet>
       <section className=" mt-10 mb-10  ">
         <ProductSection products={data} media={data?.gallery_image_url} />
