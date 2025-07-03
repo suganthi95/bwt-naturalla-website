@@ -11,13 +11,14 @@ import { usePincodeEnquiry } from "@/services/product";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "@/redux/slices/cartSlice";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import type { RootState } from "@/redux/store";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAddToWishList, useDeleteWishlist } from "@/services/whistlist";
 import { addWishItem, removeWishlistItem } from "@/redux/slices/wishSlice";
 import { useAddToCart } from "@/services/cart";
 import axios from "axios";
+import { Truck, BadgeDollarSign } from "lucide-react";
 
 // const productImages = [
 //   ASSETS.PRODUCT1,
@@ -35,6 +36,21 @@ type Props = {
   media: MediaItem[];
   products: Product;
 };
+const baseUrl = import.meta.env.VITE_FRONTEND_URL;
+
+const policies = [
+  {
+    title: "Shipping Policy",
+    icon: <Truck className="w-5 h-5 text-primary" />,
+    url: `${baseUrl}/shipping-policy`,
+  },
+
+  {
+    title: "Return & Refund Policy",
+    icon: <BadgeDollarSign className="w-5 h-5 text-primary" />,
+    url: `${baseUrl}/returns-and-refunds`,
+  },
+];
 
 export default function ProductSection({ media, products }: Props) {
   const mainSliderRef = useRef<Slider>(null);
@@ -180,16 +196,22 @@ export default function ProductSection({ media, products }: Props) {
             <h2 className="text-2xl md:text-[32px] font-semibold ">
               {products?.product_name}
             </h2>
-      <ul className="grid grid-cols-2 sm:grid-cols-3  gap-x-4">
-            {products?.icon_data?.slice(0,3)?.map((item)=>{
-              return(
-                <li className="flex items-center gap-x-1.5">
-                  <img src={item.icon_url} className="size-7" alt={`icon-${item.icon_id}`} />
-                  <p className="font-medium text-[#656877]">{item.icon_text}</p>
-                </li>
-              )
-            })}
-           </ul>
+            <ul className="grid grid-cols-2 sm:grid-cols-3  gap-x-4">
+              {products?.icon_data?.slice(0, 3)?.map((item) => {
+                return (
+                  <li className="flex items-center gap-x-1.5">
+                    <img
+                      src={item.icon_url}
+                      className="size-7"
+                      alt={`icon-${item.icon_id}`}
+                    />
+                    <p className="font-medium text-[#656877]">
+                      {item.icon_text}
+                    </p>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
           <div className="flex flex-col gap-y-5">
             <Button
@@ -376,8 +398,9 @@ export default function ProductSection({ media, products }: Props) {
             {Pincode && (
               <X
                 className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground cursor-pointer"
-                onClick={() => {setPincode("")
-                  setMessage("")
+                onClick={() => {
+                  setPincode("");
+                  setMessage("");
                 }}
               />
             )}
@@ -396,6 +419,20 @@ export default function ProductSection({ media, products }: Props) {
         >
           {Messages && (isError ? Messages : `Delivery by ${Messages}`)}
         </p>
+        <div className="flex items-center gap-4 mt-6">
+          {policies.map((item, index) => (
+            <div
+              key={index}
+              onClick={() => window.open(item.url, "_blank")}
+              className="flex items-center gap-3 cursor-pointer text-sm  rounded-xl transition-all "
+            >
+              <div className="bg-primary/10 p-2 rounded-full">{item.icon}</div>
+              <p className="text-sm font-medium text-neutral-700">
+                {item.title}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
