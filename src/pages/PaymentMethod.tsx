@@ -169,7 +169,7 @@ console.log(PaymentProviders);
       {
         onSuccess(data) {
           setShouldPoll(true);
-          if (localPaymentmethod === "razorpay") {
+          if (localPaymentmethod === "Razorpay") {
             localStorage.removeItem("merchantTransactionId");
             setShouldPoll(false);
             toast.success("order created");

@@ -170,6 +170,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                             −
                           </Button>
                           <Input
+                          autoFocus={false}
                             type="number"
                             value={item?.quantity}
                             onChange={(e) =>
