@@ -53,11 +53,11 @@ export default function BestSelling({ title, Products }: Props) {
   return (
     <div className="container mx-auto">
       <div className="flex justify-between font-semibold text-xl items-center">
-        <p className="text-title text-sm md:text-base cursor-pointer ">
+        <p className="text-title text-sm md:text-xl cursor-pointer ">
           {title}
         </p>
         <p
-          className="text-title text-sm md:text-base cursor-pointer hover:underline underline-primary"
+          className="text-title text-sm md:text-xl cursor-pointer hover:underline underline-primary"
           onClick={() =>
             navigate("/products/best-selling?best_selling=true", {
               state: { title: "Best Selling" },

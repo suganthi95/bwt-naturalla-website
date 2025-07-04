@@ -39,7 +39,7 @@ export default function EmptyCart({ onClose }: Props) {
       {!status && (
         <div className="flex items-start gap-2 mt-2 bg-yellow-100 border border-yellow-300 text-yellow-800 text-xs rounded-md p-2">
           <AlertTriangle className="w-4 h-4 mt-0.5" />
-          <span>Please log in to access product creation features.</span>
+          <span>Please log in to access your Cart</span>
         </div>
       )}
       <Button className="mt-6" onClick={browseProduct}>
