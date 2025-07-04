@@ -97,10 +97,10 @@ export default function LoginVerify() {
           </form>
         </Form>
 
-        <p className="text-center flex justify-between items-center text-sm text-textPrimary">
+        {/* <p className="text-center flex justify-between items-center text-sm text-textPrimary">
           Didn{"’"}t receive the OTP?
           <a className="font-bold text-blue-600 ">Resend</a>
-        </p>
+        </p> */}
       </div>
             <p className="fixed bottom-2.5 text-sm text-title">Copyrights © All Rights Reserved ® 2025 Naturalla Stores</p>
 
