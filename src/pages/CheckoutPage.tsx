@@ -250,8 +250,6 @@ export default function CheckoutPage() {
       setStateQuery(defaultAddress?.state);
     }
   }, [addresses, form.reset]);
-  // const Pincode = form.watch("pinCode");
-  // const { refetch, isError } = usePincodeEnquiry(Pincode ?? "");
 
   const handleDecrease = (cart_id: number, quan: number) => {
     if (quan <= 1) return;
@@ -666,13 +664,17 @@ export default function CheckoutPage() {
                   onSubmit={form.handleSubmit(onSubmit)}
                 >
                   <AccordionItem value="item-1" className="border-none ">
-                    <AccordionTrigger className="cursor-pointer">
-                      <h1 className="md:text-2xl font-semibold ">
+                    <AccordionTrigger className="cursor-pointer ">
+                      <h1 className="md:text-2xl flex flex-col items-start   font-semibold ">
                         Shipping Details
+                        <p className="text-red-600 text-xs font-semibold bg-red-100 px-3 py-1 rounded">
+                          ⚠️ NOTE: After filing the Shipping Details, please
+                          click 'Add' button to proceed
+                        </p>
                       </h1>
                     </AccordionTrigger>
                     <AccordionContent>
-                      <div className="mt-8 space-y-4">
+                      <div className="mt-2space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <FormField
                             control={form.control}
@@ -1005,7 +1007,11 @@ export default function CheckoutPage() {
                           />
                           {form.watch("same_billing_address") && (
                             <div className="flex  justify-between ">
-                              <Button type="submit" disabled={addAddressIspending}  className="px-8">
+                              <Button
+                                type="submit"
+                                disabled={addAddressIspending}
+                                className="px-8"
+                              >
                                 Add
                               </Button>
                             </div>
@@ -1309,7 +1315,11 @@ export default function CheckoutPage() {
 
                           {!form.watch("same_billing_address") && (
                             <div className="flex mt-4  justify-between ">
-                              <Button type="submit" disabled={addAddressIspending} className="px-8">
+                              <Button
+                                type="submit"
+                                disabled={addAddressIspending}
+                                className="px-8"
+                              >
                                 Add
                               </Button>
                             </div>

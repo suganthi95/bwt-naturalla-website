@@ -52,7 +52,7 @@ export default function Blogs() {
                 <h2 className="text-lg font-semibold text-slate-800 mb-4">
                   Top Posts
                 </h2>
-                <ul className="space-y-4">
+                <ul className="space-y-4 ">
                   {TopBlogs?.map((post: Blog, index: number) => (
                     <li key={index} className="flex items-start gap-3">
                       <span className="text-2xl font-bold text-primary">
@@ -63,7 +63,7 @@ export default function Blogs() {
                           onClick={() => {
                             navigate(`/blogs/detail/${post?.blog_id}`);
                           }}
-                          className="text-base cursor-pointer font-semibold text-textPrimary"
+                          className="text-base hover:underline cursor-pointer font-semibold text-textPrimary"
                         >
                           {post?.blog_title}
                         </span>
@@ -82,7 +82,7 @@ export default function Blogs() {
                 {data?.map((blog: Blog) => (
                   <li
                     key={blog?.blog_id}
-                    className="border rounded-xl w-96 overflow-hidden shadow-sm bg-white flex flex-col"
+                    className="border rounded-xl  overflow-hidden shadow-sm bg-white flex flex-col"
                   >
                     <img
                       src={blog?.blog_image_url}

@@ -47,7 +47,7 @@ export default function PaymentMethod() {
   // }, [items]);
 
   // console.log(cartItems[0]?.quantity);
-  
+
   const CouponDetails = useSelector((state: RootState) => state.coupon);
   const { mutate, isPending } = useCreateOrder();
   const { mutate: verifyRazorpay, isPending: verifyRazorpayPending } =
@@ -69,11 +69,13 @@ export default function PaymentMethod() {
   );
   const { refetch } = useVerifyPhonepay(merchantTransactionId ?? "", token);
 
-  const { setValue, watch } = useForm({
+  const { setValue, watch , formState:{errors}} = useForm({
     defaultValues: {
       payment: "",
     },
   });
+  console.log(errors);
+  
   const selectedRole = watch("payment");
 
   const subtotal = items?.reduce(

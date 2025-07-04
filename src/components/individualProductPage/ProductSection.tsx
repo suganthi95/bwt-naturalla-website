@@ -10,7 +10,7 @@ import type { Product } from "@/types/Home";
 import { usePincodeEnquiry } from "@/services/product";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem } from "@/redux/slices/cartSlice";
+import { addItem, decreaseQuantity, increaseQuantity } from "@/redux/slices/cartSlice";
 import { useNavigate } from "react-router-dom";
 import type { RootState } from "@/redux/store";
 import { AnimatePresence, motion } from "framer-motion";
@@ -74,12 +74,16 @@ export default function ProductSection({ media, products }: Props) {
   const [liked, setLiked] = useState(false);
 
   const { mutate: pincodeVerify, isPending, isError } = usePincodeEnquiry();
-  const handleDecrease = () => {
-    if (quantity > 1) setQuantity(quantity - 1);
+  const handleDecrease = (cart_id: number) => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+      dispatch(decreaseQuantity(cart_id));
+    }
   };
 
-  const handleIncrease = () => {
+  const handleIncrease = (cart_id: number) => {
     setQuantity(quantity + 1);
+    dispatch(increaseQuantity(cart_id));
   };
 
   useEffect(() => {
@@ -325,7 +329,7 @@ export default function ProductSection({ media, products }: Props) {
               variant="outline"
               size="icon"
               className="border-none cursor-pointer  w-fit text-xl font-semibold"
-              onClick={handleDecrease}
+              onClick={() => handleDecrease(products?.cart_id)}
             >
               {" −"}
             </Button>
@@ -340,7 +344,7 @@ export default function ProductSection({ media, products }: Props) {
               variant="outline"
               size="icon"
               className="cursor-pointer  border-none  w-fit text-xl font-semibold"
-              onClick={handleIncrease}
+              onClick={() => handleIncrease(products.cart_id)}
             >
               +
             </Button>
@@ -355,7 +359,7 @@ export default function ProductSection({ media, products }: Props) {
                   quantity: 1,
                   token: token,
                 });
-                dispatch(addItem(products));
+                // dispatch(addItem(products));
                 navigate("/checkout");
               }}
               className=" lg:py-3  px-8 lg:px-11"
