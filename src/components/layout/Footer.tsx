@@ -7,6 +7,10 @@ import {
   FaSnapchatGhost,
   FaPinterestP,
 } from "react-icons/fa";
+import {
+  Dialog,
+  DialogTrigger,
+} from "../ui/dialog";
 
 export default function Footer() {
   return (
@@ -22,8 +26,7 @@ export default function Footer() {
           </p>
 
           <p className="text-white roundica text-xs">
-            Naturalla –  Rejoice with
-            Nature's 💕{" "}
+            Naturalla – Rejoice with Nature's 💕{" "}
           </p>
           <div className="flex space-x-4 pt-2">
             <a href="#" className="text-white/60 hover:text-white transition">
@@ -106,8 +109,31 @@ export default function Footer() {
                 All Products
               </Link>
             </li>
-            {/* <li><Link to="/blog" className="text-white/50">Blog</Link></li>
-            <li><Link to="/" className="text-white/50">Campaigns</Link></li> */}
+            <li>
+              <Link to="/blogs" className="text-white/50">
+                Blog
+              </Link>
+            </li>
+            <li>
+              <Dialog>
+                <DialogTrigger className="text-white/50">
+                  Contact us
+                </DialogTrigger>
+          {/* <DialogContent className="[&>button]:hidden  overflow-y-scroll !max-h-[40rem] !p-0 !max-w-2xl">
+                  <DialogHeader className="bg-[#F5F5F5] p-3 rounded-lg items-center w-full flex flex-row  justify-between">
+                    <DialogTitle className="">Update Category</DialogTitle>
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setIsopen(false);
+                      }}
+                    >
+                      <X className="w-6 h-6" />
+                    </div>
+                  </DialogHeader>
+                </DialogContent> */}
+              </Dialog>
+            </li>
           </ul>
         </div>
 

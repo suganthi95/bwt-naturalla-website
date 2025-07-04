@@ -75,7 +75,7 @@ export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
                           {item?.product_name}
                         </h3>
                         <p className="text-sm flex flex-wrap items-center gap-x-2 mt-0.5 text-[#939393]">
-                          <span>1 unit</span>₹{item.unit_price}
+                          <span>1 unit</span>₹{item?.unit_price}
                           <span className="hidden sm:inline border-l h-3 border-gray-300"></span>
                           <span>Size</span>
                           {item?.units}
@@ -83,12 +83,12 @@ export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
 
                         <div className="mt-1 flex items-center gap-2 flex-wrap">
                           <span className="text-lg font-bold text-title">
-                            ₹{item.unit_price}
+                            ₹{item?.unit_price}
                           </span>
-                          {item.strike_through_price && (
+                          {item?.strike_through_price && (
                             <>
                               <span className="line-through text-sm text-gray-400">
-                                ₹{item.strike_through_price}
+                                ₹{item?.strike_through_price}
                               </span>
                               <span className="text-sm text-green-600 font-semibold">
                                 20% off
@@ -105,7 +105,7 @@ export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
                         onClick={() => {
                           if (status) {
                             mutate({
-                              product_id: item.product_id,
+                              product_id: item?.product_id,
                               quantity: 1,
                               token,
                             });
@@ -120,10 +120,10 @@ export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
                       </motion.button>
 
                       <button
-                        onClick={() => handleRemoveProduct(item.product_id)}
+                        onClick={() => handleRemoveProduct(item?.product_id)}
                         className="text-gray-500 hover:text-red-500 transition"
                       >
-                        {removingItemId === item.cart_id ? (
+                        {removingItemId === item?.cart_id ? (
                           <Loader2 className="w-4 h-4 animate-spin text-red-500" />
                         ) : (
                           <Icons.Remove />

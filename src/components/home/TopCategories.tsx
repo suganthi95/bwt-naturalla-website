@@ -1,5 +1,4 @@
 import { ASSETS } from "@/assets/assets";
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import type { Category } from "@/types/type";
@@ -9,31 +8,6 @@ interface Props {
 }
 export default function TopCategories({ categories }: Props) {
   const navigate = useNavigate();
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    arrows: false,
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
-  };
-
   const Description = [
     {
       id: "1",
@@ -90,7 +64,40 @@ export default function TopCategories({ categories }: Props) {
       img: ASSETS.SLIDEICON4,
       text: "100% Natural",
     },
+
+     {
+      id: "13",
+      img: ASSETS.CURLEY,
+      text: "Cruelty Free",
+    },
+    {
+      id: "13",
+      img: ASSETS.NONTOXIC,
+      text: "Non Toxic Chemicals",
+    },
+    {
+      id: "14",
+      img: ASSETS.SLIDEICON,
+      text: "GMO Free",
+    },
+    {
+      id: "15",
+      img: ASSETS.SLIDEICON2,
+      text: "Paraben Free",
+    },
+    {
+      id: "16",
+      img: ASSETS.SLIDEICON3,
+      text: "Handmade",
+    },
+    {
+      id: "17",
+      img: ASSETS.SLIDEICON4,
+      text: "100% Natural",
+    },
   ];
+
+
 
   return (
     <div className="w-full">
@@ -125,7 +132,7 @@ export default function TopCategories({ categories }: Props) {
         </div>
       </div>
 
-      <div className="bg-primary p-1 mt-10 mb-10 w-full">
+      {/* <div className="bg-primary p-1 mt-10 mb-10 w-full">
         <div className=" ml-2 mx-auto">
           <Slider {...settings}>
             {Description.map((item, index) => (
@@ -144,7 +151,19 @@ export default function TopCategories({ categories }: Props) {
             ))}
           </Slider>
         </div>
+      </div> */}
+       <div className="logo-carousel  bg-primary">
+      <div className="logo-track justify-around items-center  ">
+        {[...Description, ...Description , ...Description].map((src, idx) => (
+          <div className="logo flex items-center gap-x-4 justify-center" key={idx}>
+            <img src={src.img} alt={`Brand ${idx + 1}`} />
+                 <h3 className="text-sm  roundica  sm:text-xl text-[#FFFFFF] font-normal ">
+                  {src.text}
+                </h3>
+          </div>
+        ))}
       </div>
+    </div>
     </div>
   );
 }
