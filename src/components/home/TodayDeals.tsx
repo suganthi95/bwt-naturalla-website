@@ -47,12 +47,12 @@ export default function TodayDeals({ Products }: Props) {
 
   return (
     <div className="container mx-auto">
-      <div className="flex justify-between font-semibold text-xl items-center">
-        <p className="text-title text-sm md:text-base cursor-pointer ">
+      <div className="flex justify-between font-semibold  items-center">
+        <p className="text-title text-sm md:text-xl cursor-pointer ">
           Todays Deals
         </p>
         <p
-          className="text-title text-sm md:text-base cursor-pointer hover:underline underline-primary"
+          className="text-title text-sm md:text-xl cursor-pointer hover:underline underline-primary"
           onClick={() =>
             // navigate("/products/today-deals", { state: { isin_todays_deal: "true" } })
 
@@ -71,16 +71,12 @@ export default function TodayDeals({ Products }: Props) {
               <img
                 src={item.thumbnail_image_url}
                 alt={item?.product_name}
-                className="w-[388px] h-[388px] rounded-[16px] object-coover  mx-auto cursor-pointer"
+                className="w-[388px] h-[388px] rounded-[16px] object-cover  mx-auto cursor-pointer"
                 onClick={() => navigate(`/product/${item.slug}`)}
               />
-
-              {/* <div className="absolute bg-[#E95144] text-white rounded-[16px]  text-sm font-medium top-0 right-3  px-5 py-1">
+              <div className="  absolute bg-[#E95144] font-bold text-white rounded-r  group-hover:hidden text-sm  right-1 md:right-2 top-0  px-4 py-1">
                 {Math.round(Number(item?.discount_percent))}% OFF
-              </div> */}
-               <div className="  absolute bg-[#E95144] font-bold text-white rounded-r  group-hover:hidden text-sm  right-1 md:right-2 top-0  px-4 py-1">
-                          {Math.round(Number(item?.discount_percent))}% OFF
-                        </div>{" "}
+              </div>{" "}
               <p
                 onClick={() => navigate(`/product/${item.slug}`)}
                 className="text-primary font-medium cursor-pointer hover:text-primary transition-colors duration-300 text-xl"

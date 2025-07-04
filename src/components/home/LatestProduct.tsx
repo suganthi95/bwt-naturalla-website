@@ -55,11 +55,11 @@ export default function LatestProduct({ title, Products }: Props) {
     <div className="">
       <div className="container mx-auto">
         <div className="flex justify-between font-semibold text-xl items-center">
-          <p className="text-title text-sm md:text-base cursor-pointer ">
+          <p className="text-title text-sm md:text-xl cursor-pointer ">
             {title}
           </p>
           <p
-            className="text-title text-sm md:text-base cursor-pointer hover:underline underline-primary"
+            className="text-title text-sm md:text-xl cursor-pointer hover:underline underline-primary"
             onClick={() =>
               // navigate("/products/latest-products", { state: { param: "is_featured=true" } })
 
