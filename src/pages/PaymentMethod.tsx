@@ -315,7 +315,7 @@ console.log(PaymentProviders);
                 {[
                   {
                     label: "Pay with RazorPay",
-                    value: "Razorpay",
+                    value: "RazorPay",
                     Img: ASSETS.RAZORPAY,
                   },
                   {
