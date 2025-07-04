@@ -4,7 +4,7 @@
 export const NavData =[
     {
         id:'1',
-        name:`Today's Deals`,
+        name:`Today's Offer`,
         link:'/'
     },
      {
@@ -30,12 +30,12 @@ export const NavData =[
    
      {
         id:'7',
-        name:'Best Sellers',
+        name:"Combo's",
         link:'/products/best-sellers'
     },
-      {
-        id:'8',
-        name:'Blogs',
-        link:'/blogs'
-    }
+    //   {
+    //     id:'8',
+    //     name:'Blogs',
+    //     link:'/blogs'
+    // }
 ]

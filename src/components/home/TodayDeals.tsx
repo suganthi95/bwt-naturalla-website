@@ -49,15 +49,15 @@ export default function TodayDeals({ Products }: Props) {
     <div className="container mx-auto">
       <div className="flex justify-between font-semibold  items-center">
         <p className="text-title text-sm md:text-xl cursor-pointer ">
-          Todays Deals
+         Today's Offer
         </p>
         <p
           className="text-title text-sm md:text-xl cursor-pointer hover:underline underline-primary"
           onClick={() =>
             // navigate("/products/today-deals", { state: { isin_todays_deal: "true" } })
 
-            navigate("/products/today-deals?isin_todays_deal=true", {
-              state: { title: "Today Deals" },
+            navigate("/products/today-offer?isin_todays_deal=true", {
+              state: { title: "Today Offer" },
             })
           }
         >

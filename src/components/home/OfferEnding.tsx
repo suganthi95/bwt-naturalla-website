@@ -22,14 +22,14 @@ export default function OfferEnding({ products }: Props) {
     <div className="container mx-auto">
       <div className="flex justify-between font-semibold text-xl items-center">
         <p className="text-title text-sm md:text-xl cursor-pointer ">
-          Offer Ending Soon
+          Trending Now
         </p>
         <p
           className="text-title text-sm md:text-xl cursor-pointer hover:underline underline-primary"
           onClick={() =>
             // navigate("/products/offer-ending-soon", { state: { offer_ending_soon: "true" } })
-            navigate("/products/offer-ending-soon?offer_ending_soon=true", {
-              state: { title: "Offer ending Soon" },
+            navigate("/products/trending-now?offer_ending_soon=true", {
+              state: { title: "Trending Now" },
             })
           }
         >

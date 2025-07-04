@@ -289,16 +289,16 @@ export default function Nav() {
                               queryKey: ["filterbyfeature"],
                             });
                             navigate(
-                              "/products/best-selling?best_selling=true",
-                              { state: { title: "Best Sellers" } }
+                              "/products/combo?best_selling=true",
+                              { state: { title: "Combo's" } }
                             );
                           } else {
                             queryClient.invalidateQueries({
                               queryKey: ["filterbyfeature"],
                             });
                             navigate(
-                              "/products/today-deals?isin_todays_deal=true",
-                              { state: { title: "Today's Deals" } }
+                              "/products/today-offer?isin_todays_deal=true",
+                              { state: { title: "Today's Offer" } }
                             );
                           }
                         }}
@@ -678,14 +678,14 @@ export default function Nav() {
                           queryKey: ["filterbyfeature"],
                         });
                         if (index === 5) {
-                          navigate("/products/best-selling?best_selling=true", {
-                            state: { title: "Best Sellers" },
+                          navigate("/products/combo`s?best_selling=true", {
+                            state: { title: "Combo's" },
                           });
                         } else {
                           navigate(
-                            "/products/today-deals?isin_todays_deal=true",
+                            "/products/today-offer?isin_todays_deal=true",
                             {
-                              state: { title: "Today's Deals" },
+                              state: { title: "Today's Offer" },
                             }
                           );
                         }
