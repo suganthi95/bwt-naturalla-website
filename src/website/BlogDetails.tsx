@@ -22,7 +22,7 @@ export default function BlogDetails() {
 
   return (
     <section className="container mx-auto mt-10 mb-10">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="mx-auto container">
         <div className="md:col-span-3 space-y-6">
           <div>
           <h1 className="text-2xl font-semibold flex items-center gap-2">

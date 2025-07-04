@@ -112,7 +112,8 @@ export const useVerifyPhonepay = (merchantTransactionId:string,token:string)=>{
     return useQuery({
         queryKey:['verifyphonepay',merchantTransactionId],
         queryFn:()=>verifyPhonePayPayment(merchantTransactionId,token),
-        enabled:false
+        enabled:false,
+        retry:1
     })
 }
 export const useVerifyrazorpay = ()=>{

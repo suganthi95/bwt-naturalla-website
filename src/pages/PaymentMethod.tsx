@@ -67,15 +67,27 @@ export default function PaymentMethod() {
   const [merchantTransactionId, SetmerchantTransactionId] = useState(() =>
     localStorage.getItem("merchantTransactionId")
   );
-  const { refetch } = useVerifyPhonepay(merchantTransactionId ?? "", token);
-
-  const { setValue, watch , formState:{errors}} = useForm({
+  const { refetch, isError } = useVerifyPhonepay(
+    merchantTransactionId ?? "",
+    token
+  );
+  if (isError) {
+    setLoading(false);
+    localStorage.removeItem("merchantTransactionId");
+    navigate("/order-failure");
+    setShouldPoll(false);
+  }
+  const {
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       payment: "",
     },
   });
   console.log(errors);
-  
+
   const selectedRole = watch("payment");
 
   const subtotal = items?.reduce(
@@ -264,8 +276,15 @@ export default function PaymentMethod() {
 
     const interval = setInterval(async () => {
       try {
-        const { data } = await refetch();
+        const { data, isError } = await refetch();
 
+        if (isError) {
+          setLoading(false);
+          localStorage.removeItem("merchantTransactionId");
+          navigate("/order-failure");
+          clearInterval(interval);
+          setShouldPoll(false);
+        }
         if (data.resp.state === "COMPLETED") {
           setLoading(false);
           navigate("/order-success");

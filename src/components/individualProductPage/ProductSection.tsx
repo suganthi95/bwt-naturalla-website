@@ -10,7 +10,11 @@ import type { Product } from "@/types/Home";
 import { usePincodeEnquiry } from "@/services/product";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, decreaseQuantity, increaseQuantity } from "@/redux/slices/cartSlice";
+import {
+  addItem,
+  decreaseQuantity,
+  increaseQuantity,
+} from "@/redux/slices/cartSlice";
 import { useNavigate } from "react-router-dom";
 import type { RootState } from "@/redux/store";
 import { AnimatePresence, motion } from "framer-motion";
@@ -53,6 +57,7 @@ const policies = [
 ];
 
 export default function ProductSection({ media, products }: Props) {
+  // const { mutate: UpdateCart } = useUpdateCart();
   const mainSliderRef = useRef<Slider>(null);
   const thumbSliderRef = useRef<Slider>(null);
   const { token, status } = useSelector((state: RootState) => state.auth);
@@ -78,11 +83,21 @@ export default function ProductSection({ media, products }: Props) {
     if (quantity > 1) {
       setQuantity(quantity - 1);
       dispatch(decreaseQuantity(cart_id));
+      // UpdateCart({
+      //   cart_id,
+      //   quantity: -1,
+      //   token,
+      // });
     }
   };
 
   const handleIncrease = (cart_id: number) => {
     setQuantity(quantity + 1);
+    // UpdateCart({
+    //   cart_id,
+    //   quantity: 1,
+    //   token,
+    // });
     dispatch(increaseQuantity(cart_id));
   };
 
@@ -328,6 +343,7 @@ export default function ProductSection({ media, products }: Props) {
             <Button
               variant="outline"
               size="icon"
+              disabled={products?.quantity < 2}
               className="border-none cursor-pointer  w-fit text-xl font-semibold"
               onClick={() => handleDecrease(products?.cart_id)}
             >

@@ -12,8 +12,10 @@ import { ASSETS } from "@/assets/assets";
 import BestSelling from "@/components/home/BestSelling";
 import DOMPurify from "dompurify";
 import { Helmet } from "react-helmet-async";
+
 export default function ProductById() {
   const params = useParams();
+
   const { id } = params || {};
   const { data } = useProductDetailsById(id ?? "");
   const whatsout = [
@@ -40,9 +42,19 @@ export default function ProductById() {
   ];
   return (
     <main>
+      
       <Helmet>
+        <title>{`${data?.product_name}`} – Naturalla</title>
+        <meta name="description" content={data?.meta_description} />
         <meta name="keywords" content={data?.meta_keywords?.join(", ")} />
+        <meta property="og:title" content={data?.product_name} />
+        <meta property="og:description" content={data?.meta_description} />
+        <meta property="og:image" content={data?.meta_image_url} />
       </Helmet>
+      {/* <Helmet>
+        
+        <meta name="keywords" content={data?.meta_keywords?.join(", ")} />
+      </Helmet> */}
       <section className=" mt-10 mb-10  ">
         <ProductSection products={data} media={data?.gallery_image_url} />
       </section>
