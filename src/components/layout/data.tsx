@@ -29,13 +29,13 @@ export const NavData =[
     },
    
      {
-        id:'7',
+        id:'6',
         name:"Combo's",
         link:'/products/best-sellers'
     },
-    //   {
-    //     id:'8',
-    //     name:'Blogs',
-    //     link:'/blogs'
-    // }
+      {
+        id:'7',
+        name:'Trending Now',
+        link:'/products/trending-now'
+    }
 ]

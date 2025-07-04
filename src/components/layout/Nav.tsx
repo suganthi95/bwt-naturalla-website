@@ -281,16 +281,25 @@ export default function Nav() {
                           </PopoverContent>
                         </Popover>
                       </div>
-                    ) : [0, 5].includes(index) ? (
+                    ) : [0, 6].includes(index) ? (
                       <button
                         onClick={() => {
                           if (index === 5) {
                             queryClient.invalidateQueries({
                               queryKey: ["filterbyfeature"],
                             });
+                            navigate("/products/combo?best_selling=true", {
+                              state: { title: "Combo's" },
+                            });
+                          } else if (index === 6) {
+                            queryClient.invalidateQueries({
+                              queryKey: ["filterbyfeature"],
+                            });
                             navigate(
-                              "/products/combo?best_selling=true",
-                              { state: { title: "Combo's" } }
+                              "/products/trending-now?offer_ending_soon=true",
+                              {
+                                state: { title: "Trending Now" },
+                              }
                             );
                           } else {
                             queryClient.invalidateQueries({
@@ -669,7 +678,7 @@ export default function Nav() {
                   );
                 }
 
-                if ([0, 5].includes(index)) {
+                if ([0, 6].includes(index)) {
                   return (
                     <button
                       key={item.id}
@@ -678,10 +687,26 @@ export default function Nav() {
                           queryKey: ["filterbyfeature"],
                         });
                         if (index === 5) {
+                          queryClient.invalidateQueries({
+                            queryKey: ["filterbyfeature"],
+                          });
                           navigate("/products/combo`s?best_selling=true", {
                             state: { title: "Combo's" },
                           });
+                        } else if (index === 6) {
+                          queryClient.invalidateQueries({
+                            queryKey: ["filterbyfeature"],
+                          });
+                          navigate(
+                            "/products/trending-now?offer_ending_soon=true",
+                            {
+                              state: { title: "Trending Now" },
+                            }
+                          );
                         } else {
+                          queryClient.invalidateQueries({
+                            queryKey: ["filterbyfeature"],
+                          });
                           navigate(
                             "/products/today-offer?isin_todays_deal=true",
                             {
