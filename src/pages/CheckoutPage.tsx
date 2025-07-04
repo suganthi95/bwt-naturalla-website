@@ -244,7 +244,7 @@ export default function CheckoutPage() {
         city: defaultAddress?.city ?? "",
         state: defaultAddress?.state ?? "",
         pinCode: defaultAddress?.pincode ?? "",
-        same_billing_address: defaultAddress?.default_address,
+        same_billing_address: defaultAddress?.default_address ?? true,
       });
 
       setQuery(defaultAddress?.city);

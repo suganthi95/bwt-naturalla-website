@@ -53,6 +53,7 @@ export default function PaymentMethod() {
     isLoading,
     isFetching,
   } = useGetProviders(token);
+console.log(PaymentProviders);
 
   // const [finalData, setFinalData] = useState(null);
 
@@ -314,12 +315,12 @@ export default function PaymentMethod() {
                 {[
                   {
                     label: "Pay with RazorPay",
-                    value: "razorpay",
+                    value: "Razorpay",
                     Img: ASSETS.RAZORPAY,
                   },
                   {
                     label: "Pay with PhonePe",
-                    value: "phonepe",
+                    value: "PhonePe",
                     Img: ASSETS.PHONEPAY2,
                   },
                 ].map(({ label, value, Img }) => {
