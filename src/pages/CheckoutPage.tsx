@@ -39,7 +39,6 @@ import {
   addItemTotalAmount,
   decreaseQuantity,
   increaseQuantity,
-  setCartItems,
   setShippingAddress,
   setTaxDetails,
 } from "@/redux/slices/cartSlice";
@@ -1446,7 +1445,7 @@ export default function CheckoutPage() {
               onClick={async () => {
                 const valid = await form.trigger();
                 if (valid) {
-                  dispatch(setCartItems(data?.data));
+                  // dispatch(setCartItems(data?.data));
                   dispatch(setTaxDetails(data?.tax_detail));
                   navigate("/payment", {
                     state: {
