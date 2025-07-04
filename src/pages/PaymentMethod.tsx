@@ -33,7 +33,6 @@ export default function PaymentMethod() {
   const { state } = useLocation();
   const { coupon_id } = state || {};
   const [loading, setLoading] = useState(false);
-
   const { Razorpay: RazorpayConstructor } = useRazorpay();
   // const payment =
   const navigate = useNavigate();
@@ -41,6 +40,14 @@ export default function PaymentMethod() {
   const { shippingAddress, items, tax_detail } = useSelector(
     (state: RootState) => state.cart
   );
+
+  // const [cartItems, setCartItems] = useState<Product[]>(items);
+  // useEffect(() => {
+  //   setCartItems(items);
+  // }, [items]);
+
+  // console.log(cartItems[0]?.quantity);
+  
   const CouponDetails = useSelector((state: RootState) => state.coupon);
   const { mutate, isPending } = useCreateOrder();
   const { mutate: verifyRazorpay, isPending: verifyRazorpayPending } =
@@ -53,7 +60,7 @@ export default function PaymentMethod() {
     isLoading,
     isFetching,
   } = useGetProviders(token);
-console.log(PaymentProviders);
+  console.log(PaymentProviders);
 
   // const [finalData, setFinalData] = useState(null);
 
@@ -150,7 +157,7 @@ console.log(PaymentProviders);
       shipment_phone_no: Number(shippingAddress.phoneNumber),
       city: shippingAddress.city,
       state: shippingAddress.state,
-      same_billing_address:shippingAddress.same_billing_address,
+      same_billing_address: shippingAddress.same_billing_address,
       billing_first_name: shippingAddress.billing_first_name,
       billing_last_name: shippingAddress.billing_last_name,
       billing_email: shippingAddress.billing_email,
@@ -325,7 +332,8 @@ console.log(PaymentProviders);
                   },
                 ].map(({ label, value, Img }) => {
                   const provider = PaymentProviders?.find(
-                    (p: any) => p.provider_name === value
+                    (p: any) =>
+                      p.provider_name?.toLowerCase() === value?.toLowerCase()
                   );
                   const isEnabled = provider?.enabled;
 

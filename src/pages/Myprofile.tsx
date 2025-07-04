@@ -39,7 +39,7 @@ export default function Myprofile() {
             <div className="relative w-24 h-24 md:w-[180px] md:h-44 rounded-full border-4 border-white overflow-hidden shrink-0">
               <img
                 src={
-                  (profileInfo && profileInfo[0]?.profile_pic) || ASSETS.USER
+                  (profileInfo && profileInfo[0]?.profile_pic) || "https://ik.imagekit.io/nd8r7mpaev/Atlants/user.png?updatedAt=1738227108834"
                 }
                 alt="user-profile"
                 className="w-full h-full object-cover rounded-full"
