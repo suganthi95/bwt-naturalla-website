@@ -131,7 +131,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
 
                           <p className="text-sm flex flex-wrap gap-x-2 items-center mt-0.5 text-[#939393]">
                             <span className="text-[13px]">1 unit</span> ₹
-                            {item.unit_price}
+                            {item?.unit_price}
                             <span className="hidden sm:inline border-l h-3 border-gray-300"></span>
                            
                             <span className="text-[13px]">Size</span>{" "}
@@ -140,12 +140,12 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
 
                           <div className="mt-1 flex items-center gap-2 flex-wrap">
                             <span className="text-base font-bold md:text-[22px] text-title">
-                              ₹{Math.round(item.unit_price * item.quantity)}
+                              ₹{Math.round(item?.unit_price * item?.quantity)}
                             </span>
-                            {item.strike_through_price && (
+                            {item?.strike_through_price && (
                               <>
                                 <span className="line-through text-sm text-gray-400">
-                                  ₹{item.strike_through_price}
+                                  ₹{item?.strike_through_price}
                                 </span>
                                 <span className="text-sm text-green-600 font-semibold">
                                   20% off
@@ -164,14 +164,14 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                             size="icon"
                             className="border-none p-0 text-xl font-semibold w-6 h-6"
                             onClick={() =>
-                              handleDecrease(item.cart_id, item.quantity)
+                              handleDecrease(item?.cart_id, item?.quantity)
                             }
                           >
                             −
                           </Button>
                           <Input
                             type="number"
-                            value={item.quantity}
+                            value={item?.quantity}
                             onChange={(e) =>
                               setQuantity(Number(e.target.value))
                             }
@@ -191,11 +191,11 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
 
                         <button
                           onClick={() =>
-                            handleRemoveProduct(item.cart_id, item?.quantity)
+                            handleRemoveProduct(item?.cart_id, item?.quantity)
                           }
                           className="text-gray-500 hover:text-red-500"
                         >
-                          {removingItemId === item.cart_id ? (
+                          {removingItemId === item?.cart_id ? (
                             <Loader2 className="w-4 h-4 animate-spin text-red-500" />
                           ) : (
                             <Icons.Remove />
@@ -272,7 +272,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                 </span>
               ) : (
                 <span className=" text-red-500 text-xs font-medium italic animate-shake">
-                  (Spend ₹{tax_detail.min_amount - subtotal} more for free
+                  (Spend ₹{tax_detail?.min_amount - subtotal} more for free
                   shipping)
                 </span>
               )}
