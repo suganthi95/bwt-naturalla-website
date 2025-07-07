@@ -384,12 +384,23 @@ export default function ProductSection({ media, products }: Props) {
             </Button>
             <Button
               onClick={() => {
-                addtoCart({
-                  product_id: products.product_id,
-                  quantity: 1,
-                  token: token,
-                });
-                dispatch(addItem(products));
+                addtoCart(
+                  {
+                    product_id: products.product_id,
+                    quantity: 1,
+                    token: token,
+                  },
+                  {
+                    onSuccess() {
+                      dispatch(addItem(products));
+                    },
+                    onError: (error) => {
+                      if (axios.isAxiosError(error)) {
+                        toast.error(error?.response?.data?.message);
+                      }
+                    },
+                  }
+                );
               }}
               className="bg-primary/10  px-8 lg:py-3 lg:px-11 text-primary border border-primary"
             >
