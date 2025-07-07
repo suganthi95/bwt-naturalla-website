@@ -1,6 +1,7 @@
 import { addOrderAddress, addToCart, checkCoupoCode, createOrder, deleteCartItems, getCartItems, getProviders, updateCartItems, verifyPhonePayPayment, verifyRazorPayPayment } from "@/lib/api";
 import type { OrderAddressPayload, OrderPayload } from "@/types/type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import { toast } from "sonner";
 
 export const useAddToCart = () => {
@@ -22,10 +23,10 @@ export const useAddToCart = () => {
      queryClient.invalidateQueries({queryKey:['getcart']})
     },
 
-    onError: (error: any) => {
-      const message =
-        error?.response?.data?.message || "Failed to add product to cart.";
-      toast.error(message);
+    onError: (error) => {
+     if(axios.isAxiosError(error)){
+      toast.error(error?.response?.data?.message)
+     }
     },
   });
 };

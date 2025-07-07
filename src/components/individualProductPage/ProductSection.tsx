@@ -370,13 +370,27 @@ export default function ProductSection({ media, products }: Props) {
           <div className="flex items-center gap-x-2">
             <Button
               onClick={() => {
-                addtoCart({
-                  product_id: products.product_id,
-                  quantity: 1,
-                  token: token,
-                });
+                if (status) {
+                  addtoCart(
+                    {
+                      product_id: products.product_id,
+                      quantity: quantity,
+                      token: token,
+                    },
+                    {
+                      onError: (error) => {
+                        if (axios.isAxiosError(error)) {
+                          toast.error(error?.response?.data?.messgae);
+                        }
+                      },
+                    }
+                  );
+
+                  navigate("/checkout");
+                } else {
+                  toast.error("Please login to continue");
+                }
                 // dispatch(addItem(products));
-                navigate("/checkout");
               }}
               className=" lg:py-3  px-8 lg:px-11"
             >
@@ -384,23 +398,30 @@ export default function ProductSection({ media, products }: Props) {
             </Button>
             <Button
               onClick={() => {
-                addtoCart(
-                  {
-                    product_id: products.product_id,
-                    quantity: 1,
-                    token: token,
-                  },
-                  {
-                    onSuccess() {
-                      dispatch(addItem(products));
+                if (status) {
+                  addtoCart(
+                    {
+                      product_id: products.product_id,
+                      quantity:
+                        products.current_stock < quantity
+                          ? products.current_stock
+                          : quantity,
+                      token: token,
                     },
-                    onError: (error) => {
-                      if (axios.isAxiosError(error)) {
-                        toast.error(error?.response?.data?.message);
-                      }
-                    },
-                  }
-                );
+                    {
+                      onSuccess() {
+                        dispatch(addItem(products));
+                      },
+                      onError: (error) => {
+                        if (axios.isAxiosError(error)) {
+                          toast.error(error?.response?.data?.messgae);
+                        }
+                      },
+                    }
+                  );
+                } else {
+                  toast.error("Please login to continue");
+                }
               }}
               className="bg-primary/10  px-8 lg:py-3 lg:px-11 text-primary border border-primary"
             >
