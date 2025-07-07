@@ -40,7 +40,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useGetProfileInfo } from "@/services/profile";
 const messages = [
   "🎉 Flat 30% Off on Selected Products | Use Code : DEAL30 🎉",
-  "🚚 Free Shipping on Orders Above ₹999 🚚",
+  "🚚 Free Shipping on Orders Above ₹499 🚚",
   "🔥 New Deals Every Day — Don't Miss Out! 🔥",
 ];
 
