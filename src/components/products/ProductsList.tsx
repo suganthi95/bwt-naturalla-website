@@ -65,16 +65,24 @@ export default function ProductsList({ Products, title }: Props) {
 
     setLikedProducts(initialLikes);
   }, [Products]);
-// const sortOptions2 = [
-//   { label: "New to Old", value: "date-desc" },
-//   { label: "Old to New", value: "date-asc" },
-// ];
+  // const sortOptions2 = [
+  //   { label: "New to Old", value: "date-desc" },
+  //   { label: "Old to New", value: "date-asc" },
+  // ];
   useEffect(() => {
     let filtered = Products;
 
     if (keywords.length > 0) {
+      const normalizedKeywords = keywords.map((kw) =>
+        kw.toLowerCase().trim().replace(/&/g, "and")
+      );
+
       filtered = filtered?.filter((item) =>
-        item.benefit_keys?.some((key) => keywords.includes(key))
+        item.benefit_keys.some((key: string) =>
+          normalizedKeywords.includes(
+            key.toLowerCase().trim().replace(/&/g, "and")
+          )
+        )
       );
     }
 
@@ -89,15 +97,14 @@ export default function ProductsList({ Products, title }: Props) {
       );
     }
 
-      if (sortByDate) {
-    filtered = filtered.sort((a, b) => {
-      const dateA = new Date(a.created_at).getTime();
-      const dateB = new Date(b.created_at).getTime();
+    if (sortByDate) {
+      filtered = filtered.sort((a, b) => {
+        const dateA = new Date(a.created_at).getTime();
+        const dateB = new Date(b.created_at).getTime();
 
-      return sortByDate === "date-desc" ? dateB - dateA : dateA - dateB;
-    });
-  }
-
+        return sortByDate === "date-desc" ? dateB - dateA : dateA - dateB;
+      });
+    }
 
     setFiltered(filtered);
   }, [
@@ -142,7 +149,6 @@ export default function ProductsList({ Products, title }: Props) {
             <Select
               value={sorybyAlphabetic}
               onValueChange={(val) => {
-               
                 dispatch(setSortByAlphabetic(val));
               }}
             >
@@ -205,7 +211,7 @@ export default function ProductsList({ Products, title }: Props) {
                         className="bg-[#ECF9EB] rounded-full w-6 h-6 flex items-center justify-center shadow-md"
                       >
                         <button
-                        disabled = {item?.current_stock <=0}
+                          disabled={item?.current_stock <= 0}
                           onClick={() => {
                             if (!status) {
                               toast.error("Please login to continue");
@@ -300,8 +306,7 @@ export default function ProductsList({ Products, title }: Props) {
                             className="bg-white rounded-full  grid place-items-center size-7 shadow-md"
                           >
                             <button
-                                                    disabled = {item?.current_stock <=0}
-
+                              disabled={item?.current_stock <= 0}
                               onClick={() => {
                                 if (!status) {
                                   toast.error("Please login to continue");

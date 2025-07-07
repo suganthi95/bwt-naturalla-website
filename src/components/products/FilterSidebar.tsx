@@ -99,7 +99,7 @@ export default function FilterSidebar({ filterValues }: Props) {
   };
 
   return (
-    <div className="w-full  space-y-6">
+    <div className="w-full  space-y-6 overflow-hidden">
       <div className="flex items-end lg:items-center justify-end lg:justify-between">
         <h2 className="text-xl hidden lg:block font-semibold">Filters</h2>
 
@@ -162,7 +162,7 @@ export default function FilterSidebar({ filterValues }: Props) {
             <Badge
               key={i}
               variant="outline"
-              className="px-2 py-1  text-sm flex items-center gap-1"
+              className="px-2 py-1 line-clamp-1  text-sm flex items-center gap-1"
             >
               {badge}
               <div
