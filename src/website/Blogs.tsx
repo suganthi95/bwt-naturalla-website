@@ -33,7 +33,7 @@ export default function Blogs() {
   return (
     <section className="container mx-auto mt-10 mb-10 ">
       <div className="">
-        <h2 className="font-semibold text-2xl">Blogs</h2>
+        <h2 className="font-semibold text-xl mb-2 md:mb-0 md:text-2xl">Blogs</h2>
         {data?.length > 0 ? (
           <ul className="grid lg:grid-cols-4 gap-x-6 w-full ">
             <li className=" hidden lg:col-span-1 lg:flex flex-col gap-y-3">
@@ -77,7 +77,7 @@ export default function Blogs() {
               </div>
             </li>
 
-            <li className="col-span-3">
+            <li className="md:col-span-3">
               <ul className="grid grid-cols-1  sm:grid-cols-2 lg:grid-cols-3 gap-2">
                 {data?.map((blog: Blog) => (
                   <li
@@ -96,7 +96,7 @@ export default function Blogs() {
                       </p>
                     </div>
 
-                    <h2 className="md:text-lg font-semibold md:px-4 pt-2">
+                    <h2 className="md:text-lg font-semibold px-4 pt-2">
                       {blog?.blog_title}
                     </h2>
 

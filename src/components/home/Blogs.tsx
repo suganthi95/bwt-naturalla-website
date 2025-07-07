@@ -14,7 +14,7 @@ export default function Blogs() {
     <>
       {TopBlogs?.length > 0 && (
     <div className="container mx-auto">
-          <div className="px-4 flex justify-between items-center font-semibold text-xl">
+          <div className="px-4 flex justify-between items-center text-sm font-semibold md:text-xl">
             <p className="text-title text-center ">
               Latest News and Blogs
             </p>

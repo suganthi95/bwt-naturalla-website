@@ -11,7 +11,7 @@ import Categories from "@/components/home/Categories";
 export default function Home() {
   const { data } = useGetLandingPageDetails();
   return (
-    <main>
+    <main className="overflow-hidden">
       {/* hero section */}
       <section className="  mb-10  mb:mb-20 ">
         <HeroCarousal />
