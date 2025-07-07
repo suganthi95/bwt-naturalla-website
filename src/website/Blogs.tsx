@@ -35,8 +35,8 @@ export default function Blogs() {
       <div className="">
         <h2 className="font-semibold text-2xl">Blogs</h2>
         {data?.length > 0 ? (
-          <ul className="grid grid-cols-4 gap-x-6 w-full ">
-            <li className="col-span-1 flex flex-col gap-y-3">
+          <ul className="grid lg:grid-cols-4 gap-x-6 w-full ">
+            <li className=" hidden lg:col-span-1 lg:flex flex-col gap-y-3">
               <div className="relative w-full mt-3">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input
@@ -96,7 +96,7 @@ export default function Blogs() {
                       </p>
                     </div>
 
-                    <h2 className="text-lg font-semibold px-4 pt-2">
+                    <h2 className="md:text-lg font-semibold md:px-4 pt-2">
                       {blog?.blog_title}
                     </h2>
 

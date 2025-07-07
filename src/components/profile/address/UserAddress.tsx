@@ -95,21 +95,22 @@ export default function UserAddress() {
         {addresses?.map((address: any) => (
           <div
             key={address.address_id}
-            className="border rounded-lg p-5 relative"
+            className="border rounded-lg p-2 md:p-5 relative"
           >
             <div className="flex items-center justify-between">
-              <h4 className="font-semibold text-lg">
+              <h4 className="font-semibold text-sm md:text-lg">
                 {address?.address_first_name} {address?.address_last_name}
               </h4>
               <div className="space-x-2">
                 <Dialog open={Isopen2} onOpenChange={setIsopen2}>
                   <DialogTrigger className="cursor-pointer">
                     <Button
+                    size={'icon'}
                       onClick={() => setSelectedAddress(address)}
                       type="button"
                       className="rounded-full text-[#34C759] bg-[#34C759]/10 hover:bg-[#34C7591A]/20"
                     >
-                      <Edit className="h-5 w-5" />
+                      <Edit className="md:h-5 md:w-5" />
                     </Button>
                   </DialogTrigger>
                   <DialogContent className=" !min-w-64 mt-5 xl:mt-0 xl:!max-w-3xl max-h-[90vh] overflow-y-auto !p-0 [&>button]:hidden">
@@ -135,11 +136,12 @@ export default function UserAddress() {
                 <AlertDialog open={Isdelete} onOpenChange={setIsDelete}>
                   <AlertDialogTrigger asChild>
                     <Button
+
                     onClick={()=>setSelectedAddressId(address.address_id)}
                       size="icon"
                       className="rounded-full text-red-400 bg-red-400/25 hover:bg-red-400/10"
                     >
-                      <Trash2 className="h-5 w-5" />
+                      <Trash2 className="md:h-5 md:w-5" />
                     </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
@@ -179,8 +181,8 @@ export default function UserAddress() {
                 </button>
               </div>
             </div>
-            <p className="mb-1">{address?.address}</p>
-            <p className="mb-1">
+            <p className="mb-1 text-sm md:text-base">{address?.address}</p>
+            <p className="mb-1 text-sm md:text-base">
               {address?.city}, {address?.state} {address?.pincode}
             </p>
             {/* <p className="mb-1">{address.country}</p> */}

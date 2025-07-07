@@ -141,6 +141,9 @@ export default function PaymentMethod() {
   const total = Math.round(subtotal + shipping - discount - CouponDiscount);
   const handleCreateOrder = () => {
     if (!items || !shippingAddress) return;
+    if (!shippingAddress) {
+      toast.warning("You must add your address to complete the payment.");
+    }
 
     const orderPayload = {
       product_data: items.map((item: any) => ({
