@@ -23,7 +23,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   useAddOrderAddress,
   useCheckCouponCode,
-  useDeleteCart,
   useGetCartItems,
   useUpdateCart,
 } from "@/services/cart";
@@ -169,7 +168,7 @@ export default function CheckoutPage() {
     useAddOrderAddress();
   const { mutate } = useUpdateCart();
   const { mutate: CheckCoupon, isPending } = useCheckCouponCode();
-  const { mutate: removeCart } = useDeleteCart();
+  // const { mutate: removeCart } = useDeleteCart();
   const dispatch = useDispatch();
   const { items, tax_detail } = useSelector((state: RootState) => state.cart);
   // const CouponDetails = useSelector((state: RootState) => state.coupon);
@@ -179,7 +178,7 @@ export default function CheckoutPage() {
   const [quantity, setQuantity] = useState(1);
   const [CouponDetails, setCouponDetails] = useState<CouponState>();
   const [couponCode, setCouponCode] = useState("");
-  const [removingItemId, setRemovingItemId] = useState<number | null>(null);
+  // const [removingItemId, setRemovingItemId] = useState<number | null>(null);
 
   const [query, setQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -273,14 +272,14 @@ export default function CheckoutPage() {
     });
     dispatch(increaseQuantity(cart_id));
   };
-  const handleRemoveProduct = (cart_id: number, quantity: number) => {
-    setRemovingItemId(cart_id);
-    removeCart({
-      cart_id,
-      quantity,
-      token: token,
-    });
-  };
+  // const handleRemoveProduct = (cart_id: number, quantity: number) => {
+  //   setRemovingItemId(cart_id);
+  //   removeCart({
+  //     cart_id,
+  //     quantity,
+  //     token: token,
+  //   });
+  // };
 
   // const checkDeliveryInfo = async () => {
   //   try {
@@ -311,7 +310,7 @@ export default function CheckoutPage() {
         onSuccess(data) {
           setCouponDetails(data);
           toast.success("coupon applied");
-          let isAnyProductMatched = items?.find(
+          let isAnyProductMatched = items?.some(
             (product: Product) =>
               CouponDetails?.coupon_type === "product_based" &&
               Array.isArray(data?.product_ids) &&
@@ -624,7 +623,7 @@ export default function CheckoutPage() {
                                 </Button>
                               </div>
 
-                              <button
+                              {/* <button
                                 disabled={items.length === 1 && quantity < 2}
                                 onClick={() =>
                                   handleRemoveProduct(
@@ -639,7 +638,7 @@ export default function CheckoutPage() {
                                 ) : (
                                   <Icons.Remove />
                                 )}
-                              </button>
+                              </button> */}
                             </div>
 
                             {product?.current_stock <= product?.quantity && (
