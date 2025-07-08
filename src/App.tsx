@@ -19,6 +19,8 @@ const ProductById = React.lazy(() => import("@/pages/ProductById"));
 const Products = React.lazy(() => import("@/website/Products"));
 const Blogs = React.lazy(() => import("@/website/Blogs"));
 const BlogDetails = React.lazy(() => import("@/website/BlogDetails"));
+const Categories = React.lazy(() => import("@/pages/Categories"));
+const ContactUs = React.lazy(() => import("@/pages/ContactUs"));
 
 
 const CheckoutPage = React.lazy(() => import("@/pages/CheckoutPage"));
@@ -65,7 +67,20 @@ const App = () => {
                 // </ProtectedRoute>
               }
             />
-              <Route
+            <Route
+              path="/categories"
+              element={
+                  <Categories />
+              }
+            />
+            <Route
+              path="/contact-us"
+              element={
+                  <ContactUs />
+              }
+            />
+              
+            <Route
               path="/blogs"
               element={
                 // <ProtectedRoute>

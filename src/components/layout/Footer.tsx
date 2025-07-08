@@ -7,12 +7,13 @@ import {
   FaSnapchatGhost,
   FaPinterestP,
 } from "react-icons/fa";
-import {
-  Dialog,
-  DialogTrigger,
-} from "../ui/dialog";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/store";
 
 export default function Footer() {
+
+  const { status } = useSelector((data: RootState) => data.auth);
+
   return (
     <footer className="bg-[#232323] text-white py-12 lato">
       <div className="container mx-auto flex flex-col lg:flex-row flex-wrap gap-8 justify-between">
@@ -92,6 +93,11 @@ export default function Footer() {
                 Browse All Products
               </Link>
             </li>
+            <li>
+              <Link to="/categories" className="text-white/50">
+                Browse All Categories
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -115,24 +121,9 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Dialog>
-                <DialogTrigger className="text-white/50">
-                  Contact us
-                </DialogTrigger>
-          {/* <DialogContent className="[&>button]:hidden  overflow-y-scroll !max-h-[40rem] !p-0 !max-w-2xl">
-                  <DialogHeader className="bg-[#F5F5F5] p-3 rounded-lg items-center w-full flex flex-row  justify-between">
-                    <DialogTitle className="">Update Category</DialogTitle>
-                    <div
-                      className="cursor-pointer"
-                      onClick={() => {
-                        setIsopen(false);
-                      }}
-                    >
-                      <X className="w-6 h-6" />
-                    </div>
-                  </DialogHeader>
-                </DialogContent> */}
-              </Dialog>
+              <Link to={status ? "/contact-us" : "/login"} className="text-white/50">
+                Contact Us
+              </Link>
             </li>
           </ul>
         </div>

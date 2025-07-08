@@ -68,6 +68,10 @@ export interface Category {
   category_id: number;
   category_title: string;
   category_thumbnail_image: string;
+  subcategories: {
+    subcategory_id: number,
+    subcategory_name: string
+  }[]
 }
 
 export interface PriceRange {

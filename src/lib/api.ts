@@ -418,3 +418,36 @@ export const getBlogDetail = async(token:string,id:string)=>{
 
 }
 
+export const getAllCategories = async(token:string)=>{
+  const response = await api.get(`v1/product/category`,{
+    headers:{
+      Authorization:token
+    }
+  })
+
+  return response.data
+
+}
+
+export const contact = async(data: any)=>{
+
+  const formdata = new FormData();
+
+  formdata.append("first_name", data.firstName);
+  formdata.append("last_name", data.lastName);
+  formdata.append("contact_email", data.email);
+  formdata.append("contact_phone_no", data.phoneNumber);
+  formdata.append("subject", data.subject);
+  formdata.append("message_body", data.message);
+  formdata.append("attachment", data.attachments);
+
+  const response = await api.post(`v1/contact-us/submission`, formdata,{
+    headers:{
+      Authorization: data.token,
+      "Content-Type": "multipart/form-data",
+    }
+  })
+
+  return response.data
+
+}
