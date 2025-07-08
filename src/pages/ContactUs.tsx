@@ -48,7 +48,8 @@ function ContactUs() {
         mutationKey: [ "contact" ],
         mutationFn: contact,
         onSuccess: (data) => {
-            toast.success(data?.message)
+            toast.success(data?.message);
+            form.reset();
         },
         onError: (error: AxiosError<any>) => {
             toast.error(error?.response?.data.message)
