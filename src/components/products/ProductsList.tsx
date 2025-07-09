@@ -78,7 +78,7 @@ export default function ProductsList({ Products, title }: Props) {
       );
 
       filtered = filtered?.filter((item) =>
-        item.benefit_keys.some((key: string) =>
+        item.benefit_keys?.some((key: string) =>
           normalizedKeywords.includes(
             key.toLowerCase().trim().replace(/&/g, "and")
           )
