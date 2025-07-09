@@ -429,6 +429,31 @@ export const getAllCategories = async(token:string)=>{
 
 }
 
+export const fetchTermsConditions = async () => {
+  const response = await api.get(`v1/legal/page/detail/4`)
+
+  return response.data
+
+}
+export const fetchPrivacyPolicy = async () => {
+  const response = await api.get(`v1/legal/page/detail/1`)
+
+  return response.data
+
+}
+export const fetchRefundPolicy = async () => {
+  const response = await api.get(`v1/legal/page/detail/3`)
+
+  return response.data
+
+}
+export const fetchShippingPolicy = async () => {
+  const response = await api.get(`v1/legal/page/detail/2`)
+
+  return response.data
+
+}
+
 export const contact = async(data: any)=>{
 
   const formdata = new FormData();
