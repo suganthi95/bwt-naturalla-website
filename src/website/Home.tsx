@@ -14,7 +14,7 @@ export default function Home() {
     <main className="overflow-hidden">
       {/* hero section */}
       <section className="  mb-10  mb:mb-20 ">
-        <HeroCarousal />
+        <HeroCarousal banners={data?.banners} />
       </section>
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
         <Categories/>

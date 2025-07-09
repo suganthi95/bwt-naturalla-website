@@ -34,7 +34,7 @@ export const verifyAccount = async (
   return response.data;
 };
 export const landingPageDetails = async () => {
-  const response = await api.get("v1/product/deals-sellings");
+  const response = await api.get("v1/product/deals-sellings/webapp");
   return response.data;
 };
 

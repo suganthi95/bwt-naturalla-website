@@ -1,15 +1,8 @@
 import Slider from "react-slick";
-import { ASSETS } from "@/assets/assets";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const images = [
-  ASSETS.HERO_IMG,
-  ASSETS.HERO_IMG,
-  ASSETS.HERO_IMG,
-];
-
-export default function HeroCarousal() {
+export default function HeroCarousal({ banners }: any) {
   const settings = {
     dots: true,
     infinite: true,
@@ -23,11 +16,9 @@ export default function HeroCarousal() {
 
   return (
     <div className="w-full overflow-hidden">
-      <Slider {...settings}>
-        {images.map((src, index) => (
-          <div key={index}>
-            <img src={src} alt={`hero-${index}`} className="w-full h-[180px] md:h-auto  object-cover" />
-          </div>
+      <Slider {...settings} className="h-[70vh] rounded-2xl overflow-hidden">
+        {banners?.map((src: any, index: number) => (
+          <img key={`banner-image-${index}`} src={src.media_url} alt={`hero-${index}`} className="w-full h-full md:h-auto  object-cover" />
         ))}
       </Slider>
     </div>
