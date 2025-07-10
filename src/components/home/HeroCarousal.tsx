@@ -12,13 +12,15 @@ export default function HeroCarousal({ banners }: any) {
     autoplay: true,
     autoplaySpeed: 4000,
     arrows: false, 
+    adaptiveHeight: true
   };
+
 
   return (
     <div className="w-full overflow-hidden">
-      <Slider {...settings} className="h-[70vh] rounded-2xl overflow-hidden">
+      <Slider {...settings} className="h-[70vh] rounded-2xl overflow-hidden border-none">
         {banners?.map((src: any, index: number) => (
-          <img key={`banner-image-${index}`} src={src.media_url} alt={`hero-${index}`} className="w-full h-full md:h-auto  object-cover" />
+          <img key={`banner-image-${index}`} src={src.media_url} alt={`hero-${index}`} className="w-full h-full object-cover" />
         ))}
       </Slider>
     </div>
