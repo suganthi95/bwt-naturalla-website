@@ -146,26 +146,28 @@ export default function ProductById() {
           </div>
         </div>
       </section>
-      {/* <section className=" mt-10 mb-10 md:mt-20 md:mb-20  ">
+      <section className=" mt-10 mb-10 md:mt-20 md:mb-20  ">
         <div className="container mx-auto  flex  w-full">
           <div className="w-full md:px-24">
             <h2 className="font-bold text-lg md:text-xl text-title mb-4">
               FAQ{"’"}s
             </h2>
             <Accordion type="single" collapsible>
-              <AccordionItem value="item-1">
-                <AccordionTrigger className="md:text-lg font-semibold text-title cursor-pointer ">
-                  What are the main benefits of Aloe Vera Gel for skin?
-                </AccordionTrigger>
-                <AccordionContent className="text-sm md:text-base font-medium text-[#494F49]">
-                  Aloe Vera Gel improves hydration, calms irritation, soothes
-                  sunburns, and reduces acne scars.{" "}
-                </AccordionContent>
-              </AccordionItem>
+              {data?.faq.map((item: any, index: number) => (
+                <AccordionItem key={`product-faq-${index}`} value={`product-faq-${index}`}>
+                  <AccordionTrigger className="md:text-lg font-semibold text-title cursor-pointer">
+                    {item.qn}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm md:text-base font-medium text-[#494F49]">
+                    {item.ans}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+              
             </Accordion>
           </div>
         </div>
-      </section> */}
+      </section>
       <section className=" mt-10 mb-10 md:mt-20 md:mb-20  ">
         <CustomerReview Product={data} />
       </section>
