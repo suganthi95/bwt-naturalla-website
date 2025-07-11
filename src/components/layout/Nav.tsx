@@ -176,7 +176,7 @@ export default function Nav() {
                 onClick={() => navigate("/")}
                 src={ASSETS.LOGO}
                 alt="hero-image"
-                className="w-24 md:w-40"
+                className="w-16 md:w-24 object-cover"
               />
             </div>
             <ul className="xl:flex items-center hidden  justify-center gap-x-7">

@@ -12,12 +12,15 @@ import { ASSETS } from "@/assets/assets";
 import BestSelling from "@/components/home/BestSelling";
 import DOMPurify from "dompurify";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/store";
 
 export default function ProductById() {
+ const {token} = useSelector((state:RootState)=>state.auth)
   const params = useParams();
 
   const { id } = params || {};
-  const { data } = useProductDetailsById(id ?? "");
+  const { data } = useProductDetailsById(id ?? "" ,token ?? "");
   useEffect(() => {
     if (data) {
       document.title = `${data.product_name} – Naturalla`;
