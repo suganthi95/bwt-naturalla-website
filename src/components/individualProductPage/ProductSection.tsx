@@ -167,6 +167,10 @@ export default function ProductSection({ media, products }: Props) {
     }
   };
 
+  useEffect(() => {
+    setLiked(products?.in_wishlist);
+  }, [products?.in_wishlist]);
+
   return (
     <div className="flex flex-col container mx-auto space-y-4 xl:flex-row  ">
       <div className="flex w-full lg:w-10/12 xl:w-1/2 gap-4 ">
@@ -352,11 +356,13 @@ export default function ProductSection({ media, products }: Props) {
             <Input
               type="number"
               value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
+           onChange={(e) => setQuantity(Number(e.target.value))}
               className="w-10  text-2xl  font-semibold border-none text-center"
               min={1}
             />
             <Button
+                          disabled={quantity >= products?.current_stock}
+
               variant="outline"
               size="icon"
               className="cursor-pointer  border-none  w-fit text-xl font-semibold"
@@ -365,6 +371,19 @@ export default function ProductSection({ media, products }: Props) {
               +
             </Button>
           </div>
+          <AnimatePresence>
+            {quantity >= products?.current_stock && (
+              <motion.p
+                className="text-xs font-medium text-red-500 mt-1"
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 5 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+              >
+                Product only {products?.current_stock} quantity available
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
         {products?.current_stock > 0 ? (
           <div className="flex items-center gap-x-2">

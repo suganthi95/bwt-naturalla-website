@@ -19,14 +19,14 @@ import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
-  inputValue:  z.string().min(10, "Phone number is too short"),
+  inputValue: z.string().min(10, "Phone number is too short"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 export default function Login() {
-    const {mutate,isPending} = useLogin()
-    const navigate = useNavigate()
+  const { mutate, isPending } = useLogin();
+  const navigate = useNavigate();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,16 +35,18 @@ export default function Login() {
   });
 
   const onSubmit = (values: FormValues) => {
-    mutate(Number(values.inputValue),{
-        onSuccess:()=>{
-navigate('/login-verify',{state:{phone_no:Number(values.inputValue)}})
-        },
-        onError(error) {
-            if(axios.isAxiosError(error)){
-                toast.error(error?.response?.data?.message)
-            }
-        },
-    })
+    mutate(Number(values.inputValue), {
+      onSuccess: () => {
+        navigate("/login-verify", {
+          state: { phone_no: Number(values.inputValue) },
+        });
+      },
+      onError(error) {
+        if (axios.isAxiosError(error)) {
+          toast.error(error?.response?.data?.message);
+        }
+      },
+    });
   };
 
   return (
@@ -66,7 +68,7 @@ navigate('/login-verify',{state:{phone_no:Number(values.inputValue)}})
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-textPrimary font-semibold ">
-                    Email or mobile number
+                  Mobile number
                   </FormLabel>
                   <FormControl>
                     <Input className="h-11" placeholder="" {...field} />
@@ -77,7 +79,7 @@ navigate('/login-verify',{state:{phone_no:Number(values.inputValue)}})
             />
 
             <Button type="submit" className="w-full">
-             {isPending  ? <Loader2 className="animate-spin"/>: 'Continue'} 
+              {isPending ? <Loader2 className="animate-spin" /> : "Continue"}
             </Button>
           </form>
         </Form>
@@ -85,11 +87,13 @@ navigate('/login-verify',{state:{phone_no:Number(values.inputValue)}})
         <p className="text-center  justify-center flex items-center gap-x-1 text-sm text-textPrimary">
           You don't have an account ?{" "}
           <a href="/sign-up" className="font-bold underline">
-              Register Now
+            Register Now
           </a>
         </p>
       </div>
-      <p className="fixed bottom-2.5 text-sm text-title">Copyrights © All Rights Reserved ® 2025 Naturalla Stores</p>
+      <p className="fixed bottom-2.5 text-sm text-title">
+        Copyrights © All Rights Reserved ® 2025 Naturalla Stores
+      </p>
     </section>
   );
 }

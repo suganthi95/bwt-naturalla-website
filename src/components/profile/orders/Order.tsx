@@ -327,29 +327,29 @@ export default function Order({ Orders, handleTab }: Props) {
             <div className="flex justify-between">
               <span className="text-gray-600">Subtotal</span>
               <span className="text-title font-semibold">
-                ₹ {order.sub_total}
+                ₹ {order?.sub_total}
               </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Shipping</span>
               <span className="text-title font-semibold">
-                ₹ {order.shipping_fee}
+                ₹ {order?.shipping_fee}
               </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Tax</span>
-              <span className="text-title font-semibold">₹ {order.tax}</span>
+              <span className="text-title font-semibold">₹ {order?.tax}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Discount</span>
               <span className="text-title font-semibold">
-                {order.discount_amount ? `₹ ${order.discount_amount}` : "₹ 0"}
+                {order?.coupon_discount   ? `₹ ${order?.coupon_discount  }` : "₹ 0"}
               </span>
             </div>
             <div className="flex justify-between pt-2 border-t font-medium">
               <span>Total</span>
               <span className="text-textPrimary font-bold">
-                ₹ {order.order_amount}
+                ₹ {order?.order_amount}
               </span>
             </div>
           </div>

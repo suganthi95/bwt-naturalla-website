@@ -38,10 +38,11 @@ export const landingPageDetails = async () => {
   return response.data;
 };
 
-export const productDetailById = async (id: string, token:string) => {
-  const response = await api.get(`v1/product/detail/${id}`,{
-    headers:{
-      Authorization:token
+export const productDetailById = async (id: string, token: string) => {
+
+  const response = await api.get(`v1/product/detail/${id}`, {
+    headers: {
+      Authorization: token
     }
   });
   return response.data;

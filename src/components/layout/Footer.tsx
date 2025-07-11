@@ -18,7 +18,7 @@ export default function Footer() {
     <footer className="bg-[#232323] text-white py-12 lato">
       <div className="container mx-auto flex flex-col lg:flex-row flex-wrap gap-8 justify-between">
         <div className="w-full lg:w-[23%] space-y-4">
-          <img src={ASSETS.LOGO_FOOTER} alt="Logo" className="h-10 w-auto" />
+          <img src={ASSETS.LOGO} alt="Logo" className="h-10 md:h-16 w-auto" />
           <p className="text-sm leading-relaxed text-justify text-white/70">
             Welcome to <b>Naturalla.store</b>, where nature meets innovation. We
             are a proudly organic and nature-based cosmetics company dedicated

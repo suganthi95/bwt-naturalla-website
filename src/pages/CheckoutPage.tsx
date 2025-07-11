@@ -312,10 +312,11 @@ export default function CheckoutPage() {
           toast.success("coupon applied");
           let isAnyProductMatched = items?.some(
             (product: Product) =>
-              CouponDetails?.coupon_type === "product_based" &&
+              data?.coupon_type === "product_based" &&
               Array.isArray(data?.product_ids) &&
-              CouponDetails.product_ids.includes(Number(product.product_id))
+              data?.product_ids.includes(Number(product.product_id))
           );
+console.log(isAnyProductMatched);
 
           if (!isAnyProductMatched) {
             toast.warning("Coupon not applicable to any product in your cart.");
@@ -668,7 +669,7 @@ export default function CheckoutPage() {
                       <h1 className="md:text-2xl flex flex-col items-start   font-semibold ">
                         Shipping Details
                         <p className="text-red-600 text-xs font-semibold bg-red-100 px-3 py-1 rounded">
-                          ⚠️ NOTE: After filing the Shipping Details, please
+                          ⚠️ NOTE: After filling in the Shipping Details, please
                           click 'Add' button to proceed
                         </p>
                       </h1>
@@ -1420,8 +1421,10 @@ export default function CheckoutPage() {
                           </span>
                         ) : (
                           <span className=" text-red-500 text-xs font-medium italic animate-shake">
-                            (Spend ₹{tax_detail.min_amount - subtotal} more for
-                            free shipping)
+                            {/* (Spend ₹{tax_detail.min_amount - subtotal} more for
+                            free shipping) */}
+
+                          (  Spend ₹{tax_detail.min_amount - subtotal} more to get free shipping!)
                           </span>
                         )}
                       </span>
