@@ -57,6 +57,7 @@ const policies = [
 ];
 
 export default function ProductSection({ media, products }: Props) {
+
   // const { mutate: UpdateCart } = useUpdateCart();
   const mainSliderRef = useRef<Slider>(null);
   const thumbSliderRef = useRef<Slider>(null);
@@ -166,6 +167,10 @@ export default function ProductSection({ media, products }: Props) {
     } finally {
     }
   };
+
+  useEffect(() => {
+    setLiked(products?.in_wishlist)
+  }, [ products?.in_wishlist ])
 
   return (
     <div className="flex flex-col container mx-auto space-y-4 xl:flex-row  ">

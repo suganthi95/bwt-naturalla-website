@@ -21,6 +21,7 @@ export const useGetProfileInfo = (token: string) => {
     select: (data) => data?.data,
     staleTime: 1000 * 60 * 5,
     retry: 1,
+    enabled: Boolean(token)
   });
 };
 
@@ -45,6 +46,7 @@ export const useGetOrders = (token: string) => {
     select: (data) => data?.data,
     staleTime: 1000 * 60 * 5,
     retry: 1,
+    enabled: Boolean(token)
   });
 };
 
@@ -55,6 +57,7 @@ export const useGetOrdersDetails = (token: string, order_id: number) => {
     select: (data) => data,
     staleTime: 1000 * 60 * 5,
     retry: 1,
+    enabled: Boolean(token)
   });
 };
 export const useGetDashboard = (token: string) => {
