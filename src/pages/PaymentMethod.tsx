@@ -22,7 +22,7 @@ import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { replace, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useRazorpay } from "react-razorpay";
 import { removeCartItems } from "@/redux/slices/cartSlice";
@@ -289,12 +289,12 @@ export default function PaymentMethod() {
           setShouldPoll(false);
         }
         if (data.resp.state === "COMPLETED") {
+          clearInterval(interval);
+          navigate("/order-success" , {replace:true});
           setLoading(false);
-          navigate("/order-success");
           localStorage.removeItem("merchantTransactionId");
           // setFinalData(data);
           setShouldPoll(false);
-          clearInterval(interval);
           dispatch(removeCartItems());
           dispatch(removeWishlist());
           dispatch(removeCoupon());
