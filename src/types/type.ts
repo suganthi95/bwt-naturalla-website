@@ -233,3 +233,21 @@ export type Blog = {
   blog_image_url: string;
   created_time:string
 };
+
+
+export type ContactUsTicket = {
+  contactus_id: number;
+  first_name: string;
+  last_name: string;
+  contact_email: string;
+  contact_phone_no: string;
+  subject: string;
+  message_body: string;
+  attachment: any[];
+  priority: string
+  status: string;
+  customer_id: number;
+  created_at: string; 
+  created_time: string; 
+  attachment_data: any[]; 
+};

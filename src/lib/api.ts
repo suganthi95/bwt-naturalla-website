@@ -1,4 +1,9 @@
-import type { AddressPayload, OrderAddressPayload, OrderPayload, Profile } from "@/types/type";
+import type {
+  AddressPayload,
+  OrderAddressPayload,
+  OrderPayload,
+  Profile,
+} from "@/types/type";
 import { api } from "./axiosInstance";
 
 export const signup = async (
@@ -39,17 +44,19 @@ export const landingPageDetails = async () => {
 };
 
 export const productDetailById = async (id: string, token: string) => {
-
   const response = await api.get(`v1/product/detail/${id}`, {
     headers: {
-      Authorization: token
-    }
+      Authorization: token,
+    },
   });
   return response.data;
 };
 
-export const pincodeEnquiry = async (pincode: number,product_id:number) => {
-  const response = await api.post(`v1/product/estimate/delivery`,{pincode,product_id});
+export const pincodeEnquiry = async (pincode: number, product_id: number) => {
+  const response = await api.post(`v1/product/estimate/delivery`, {
+    pincode,
+    product_id,
+  });
   return response.data;
 };
 
@@ -237,8 +244,8 @@ export const filterbyFeatureProducts = async (
   token: string,
   category_id?: string,
   subcategory_id?: string,
-  offer_ending_soon?:string,
-  latest_product?:string,
+  offer_ending_soon?: string,
+  latest_product?: string,
   isin_todays_deal?: string,
   is_featured?: string,
   best_selling?: string,
@@ -247,7 +254,9 @@ export const filterbyFeatureProducts = async (
   const response = await api.get(
     `v1/product/filter/by-feature/?category_id=${
       category_id || ""
-    }&subcategory_id=${subcategory_id || ""}&offer_ending_soon=${offer_ending_soon || ""}&latest_product=${latest_product || ""}&isin_todays_deal=${
+    }&subcategory_id=${subcategory_id || ""}&offer_ending_soon=${
+      offer_ending_soon || ""
+    }&latest_product=${latest_product || ""}&isin_todays_deal=${
       isin_todays_deal || ""
     }&is_featured=${is_featured || ""}&best_selling=${
       best_selling || ""
@@ -370,7 +379,11 @@ export const writeReview = async (token: string, formData: FormData) => {
   return response.data;
 };
 
-export const updateReview = async (token: string,id:string ,formData: FormData) => {
+export const updateReview = async (
+  token: string,
+  id: string,
+  formData: FormData
+) => {
   const response = await api.put(`v1/review/${id}`, formData, {
     headers: {
       Authorization: token,
@@ -379,105 +392,105 @@ export const updateReview = async (token: string,id:string ,formData: FormData) 
   return response.data;
 };
 
-export const addOrderAddress = async(token:string,payload:OrderAddressPayload
-  )=>{
-const response = await api.post('v1/profile/add/order/address',payload,{
-  headers:{
-    Authorization:token
-  }
-})
-return response.data
+export const addOrderAddress = async (
+  token: string,
+  payload: OrderAddressPayload
+) => {
+  const response = await api.post("v1/profile/add/order/address", payload, {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
 
-}
+export const getBlogs = async (token: string, value?: string) => {
+  const response = await api.get(`v1/blog/list?blog_title=${value}`, {
+    headers: {
+      Authorization: token,
+    },
+  });
 
-export const getBlogs = async(token:string,value?:string)=>{
- const response = await api.get(`v1/blog/list?blog_title=${value}`,{
-    headers:{
-      Authorization:token
-    }
-  })
+  return response.data;
+};
 
-  return response.data
-}
+export const getTopBlogs = async (token: string) => {
+  const response = await api.get("v1/blog/top", {
+    headers: {
+      Authorization: token,
+    },
+  });
 
-export const getTopBlogs = async(token:string)=>{
-  const response = await api.get('v1/blog/top',{
-    headers:{
-      Authorization:token
-    }
-  })
+  return response.data;
+};
 
-  return response.data
+export const getBlogDetail = async (token: string, id: string) => {
+  const response = await api.get(`v1/blog/detail/${id}`, {
+    headers: {
+      Authorization: token,
+    },
+  });
 
-}
+  return response.data;
+};
 
+export const getAllCategories = async (token: string) => {
+  const response = await api.get(`v1/product/category`, {
+    headers: {
+      Authorization: token,
+    },
+  });
 
-export const getBlogDetail = async(token:string,id:string)=>{
-  const response = await api.get(`v1/blog/detail/${id}`,{
-    headers:{
-      Authorization:token
-    }
-  })
-
-  return response.data
-
-}
-
-export const getAllCategories = async(token:string)=>{
-  const response = await api.get(`v1/product/category`,{
-    headers:{
-      Authorization:token
-    }
-  })
-
-  return response.data
-
-}
+  return response.data;
+};
 
 export const fetchTermsConditions = async () => {
-  const response = await api.get(`v1/legal/page/detail/4`)
+  const response = await api.get(`v1/legal/page/detail/4`);
 
-  return response.data
-
-}
+  return response.data;
+};
 export const fetchPrivacyPolicy = async () => {
-  const response = await api.get(`v1/legal/page/detail/1`)
+  const response = await api.get(`v1/legal/page/detail/1`);
 
-  return response.data
-
-}
+  return response.data;
+};
 export const fetchRefundPolicy = async () => {
-  const response = await api.get(`v1/legal/page/detail/3`)
+  const response = await api.get(`v1/legal/page/detail/3`);
 
-  return response.data
-
-}
+  return response.data;
+};
 export const fetchShippingPolicy = async () => {
-  const response = await api.get(`v1/legal/page/detail/2`)
+  const response = await api.get(`v1/legal/page/detail/2`);
 
-  return response.data
+  return response.data;
+};
 
-}
+export const getTicket = async (token: string) => {
+  const response = await api.get("v1/contact-us", {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
 
-export const contact = async(data: any)=>{
-
+export const raiseTicket = async (data: any) => {
   const formdata = new FormData();
 
-  formdata.append("first_name", data.firstName);
-  formdata.append("last_name", data.lastName);
+  formdata.append("first_name", data.full_name);
+  formdata.append("last_name", data.full_name);
   formdata.append("contact_email", data.email);
-  formdata.append("contact_phone_no", data.phoneNumber);
+  formdata.append("contact_phone_no", data.phone);
   formdata.append("subject", data.subject);
   formdata.append("message_body", data.message);
-  formdata.append("attachment", data.attachments);
+  // formdata.append("attachment", data.attachments);
 
-  const response = await api.post(`v1/contact-us/submission`, formdata,{
-    headers:{
+  const response = await api.post(`v1/contact-us/submission`, formdata, {
+    headers: {
       Authorization: data.token,
       "Content-Type": "multipart/form-data",
-    }
-  })
+    },
+  });
 
-  return response.data
-
-}
+  return response.data;
+};

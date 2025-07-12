@@ -37,3 +37,15 @@ return formatDistanceToNow(date,{addSuffix:true})
     isCouponApplied: isProductInCoupon,
   };
 }
+
+
+
+export const getDaysAgo = (date: string | Date): string => {
+  const parsedDate = typeof date === "string" ? new Date(date) : date;
+
+  const now = Date.now();
+  const then = parsedDate.getTime();
+  const days = Math.floor((now - then) / (1000 * 60 * 60 * 24));
+
+  return `${days} day${days !== 1 ? "s" : ""} ago`;
+};

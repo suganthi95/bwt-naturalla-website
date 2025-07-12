@@ -22,7 +22,7 @@ import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { replace, useLocation, useNavigate } from "react-router-dom";
+import {useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useRazorpay } from "react-razorpay";
 import { removeCartItems } from "@/redux/slices/cartSlice";
