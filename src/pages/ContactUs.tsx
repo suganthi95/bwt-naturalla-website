@@ -1,17 +1,11 @@
 import { Icons } from "@/assets/icons";
-import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { contact } from "@/lib/api";
-import type { RootState } from "@/redux/store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import type { AxiosError } from "axios";
-import { Loader2 } from "lucide-react";
+
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
-import { toast } from "sonner";
+
 import { z } from "zod";
 
 const formSchema = z
@@ -29,7 +23,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 function ContactUs() {
 
-    const { token } = useSelector((data: RootState) => data.auth)
+    // const { token } = useSelector((data: RootState) => data.auth)
 
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
@@ -44,20 +38,21 @@ function ContactUs() {
         },
     });
 
-    const { mutate, isPending } = useMutation({
-        mutationKey: [ "contact" ],
-        mutationFn: contact,
-        onSuccess: (data) => {
-            toast.success(data?.message);
-            form.reset();
-        },
-        onError: (error: AxiosError<any>) => {
-            toast.error(error?.response?.data.message)
-        }
-    })
+    // const { mutate, isPending } = useMutation({
+    //     mutationKey: [ "contact" ],
+    //     mutationFn: contact,
+    //     onSuccess: (data) => {
+    //         toast.success(data?.message);
+    //         form.reset();
+    //     },
+    //     onError: (error: AxiosError<any>) => {
+    //         toast.error(error?.response?.data.message)
+    //     }
+    // })
 
     const onSubmit = (data: FormValues) => {
-        mutate({ ...data, token: token })
+        console.log('data: ', data);
+        // mutate({ ...data, token: token })
     }
 
 
@@ -219,9 +214,9 @@ function ContactUs() {
                         )}
                     />
 
-                    <Button disabled={isPending} type="submit" className="w-full h-11">
+                    {/* <Button disabled={isPending} type="submit" className="w-full h-11">
                         {isPending ? <Loader2 className="animate-spin" /> : "Submit"}
-                    </Button>
+                    </Button> */}
                 </form>
             </Form>
         </div>
