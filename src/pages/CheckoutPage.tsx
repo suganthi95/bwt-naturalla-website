@@ -23,6 +23,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   useAddOrderAddress,
   useCheckCouponCode,
+  useDeleteCart,
   useGetCartItems,
   useUpdateCart,
 } from "@/services/cart";
@@ -38,6 +39,7 @@ import {
   addItemTotalAmount,
   decreaseQuantity,
   increaseQuantity,
+  removeItem,
   setShippingAddress,
   setTaxDetails,
 } from "@/redux/slices/cartSlice";
@@ -168,7 +170,7 @@ export default function CheckoutPage() {
     useAddOrderAddress();
   const { mutate } = useUpdateCart();
   const { mutate: CheckCoupon, isPending } = useCheckCouponCode();
-  // const { mutate: removeCart } = useDeleteCart();
+  const { mutate: removeCart } = useDeleteCart();
   const dispatch = useDispatch();
   const { items, tax_detail } = useSelector((state: RootState) => state.cart);
   // const CouponDetails = useSelector((state: RootState) => state.coupon);
@@ -178,7 +180,7 @@ export default function CheckoutPage() {
   const [quantity, setQuantity] = useState(1);
   const [CouponDetails, setCouponDetails] = useState<CouponState>();
   const [couponCode, setCouponCode] = useState("");
-  // const [removingItemId, setRemovingItemId] = useState<number | null>(null);
+  const [removingItemId, setRemovingItemId] = useState<number | null>(null);
 
   const [query, setQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -272,14 +274,15 @@ export default function CheckoutPage() {
     });
     dispatch(increaseQuantity(cart_id));
   };
-  // const handleRemoveProduct = (cart_id: number, quantity: number) => {
-  //   setRemovingItemId(cart_id);
-  //   removeCart({
-  //     cart_id,
-  //     quantity,
-  //     token: token,
-  //   });
-  // };
+  const handleRemoveProduct = (cart_id: number, quantity: number) => {
+    setRemovingItemId(cart_id);
+    removeCart({
+      cart_id,
+      quantity,
+      token: token,
+    });
+    dispatch(removeItem(cart_id));
+  };
 
   // const checkDeliveryInfo = async () => {
   //   try {
@@ -316,7 +319,7 @@ export default function CheckoutPage() {
               Array.isArray(data?.product_ids) &&
               data?.product_ids.includes(Number(product.product_id))
           );
-console.log(isAnyProductMatched);
+          console.log(isAnyProductMatched);
 
           if (!isAnyProductMatched) {
             toast.warning("Coupon not applicable to any product in your cart.");
@@ -351,7 +354,6 @@ console.log(isAnyProductMatched);
   };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    
     addAddress(
       {
         token: token ?? "",
@@ -455,6 +457,7 @@ console.log(isAnyProductMatched);
 
   return (
     <main>
+      
       <section className="container mx-auto  mb-10 md:mb-20">
         <div className="flex  w-full gap-x-10 flex-col lg:flex-row">
           <div className="w-full h-full lg:w-8/12">
@@ -624,7 +627,7 @@ console.log(isAnyProductMatched);
                                 </Button>
                               </div>
 
-                              {/* <button
+                              <button
                                 disabled={items.length === 1 && quantity < 2}
                                 onClick={() =>
                                   handleRemoveProduct(
@@ -632,14 +635,14 @@ console.log(isAnyProductMatched);
                                     product?.quantity
                                   )
                                 }
-                                className="text-gray-500 hover:text-red-500"
+                                className="text-gray-500 cursor-pointer hover:text-red-500"
                               >
                                 {removingItemId === product.cart_id ? (
                                   <Loader2 className="w-4 h-4 animate-spin text-red-500" />
                                 ) : (
                                   <Icons.Remove />
                                 )}
-                              </button> */}
+                              </button>
                             </div>
 
                             {product?.current_stock <= product?.quantity && (
@@ -1423,8 +1426,8 @@ console.log(isAnyProductMatched);
                           <span className=" text-red-500 text-xs font-medium italic animate-shake">
                             {/* (Spend ₹{tax_detail.min_amount - subtotal} more for
                             free shipping) */}
-
-                          (  Spend ₹{tax_detail.min_amount - subtotal} more to get free shipping!)
+                            ( Spend ₹{tax_detail.min_amount - subtotal} more to
+                            get free shipping!)
                           </span>
                         )}
                       </span>
