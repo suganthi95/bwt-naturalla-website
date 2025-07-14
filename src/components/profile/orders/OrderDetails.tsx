@@ -90,7 +90,7 @@ export default function OrderDetails() {
             <span className="font-semibold">₹50</span>
           </div>
           <div className="flex justify-between font-semibold text-base">
-            <span>Grand Total</span>
+            <span>Item Total</span>
             <span className="text-[#0B130B] font-bold">₹400</span>
           </div>
         </li>

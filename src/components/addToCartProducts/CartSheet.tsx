@@ -261,7 +261,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                 >
                   {shipping === 0 && (
                     <span className="text-xs  line-through text-lead">
-                      {tax_detail?.shipping_fee}
+                     ₹ {tax_detail?.shipping_fee}
                     </span>
                   )}
                   ₹{shipping === 0 ? shipping : shipping}

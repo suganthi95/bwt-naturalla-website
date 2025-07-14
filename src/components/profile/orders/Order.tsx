@@ -343,7 +343,7 @@ export default function Order({ Orders, handleTab }: Props) {
             <div className="flex justify-between">
               <span className="text-gray-600">Discount</span>
               <span className="text-title font-semibold">
-                {order?.coupon_discount   ? `₹ ${order?.coupon_discount  }` : "₹ 0"}
+                {order?.coupon_discount   ? ` - ₹ ${order?.coupon_discount  }` : "₹ 0"}
               </span>
             </div>
             <div className="flex justify-between pt-2 border-t font-medium">

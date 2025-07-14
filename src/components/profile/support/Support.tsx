@@ -16,6 +16,7 @@ import { useGetTickets, useRaiseTicket } from "@/services/profile";
 import type { ContactUsTicket } from "@/types/type";
 import { getDaysAgo } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Headphones, Info, Loader2 } from "lucide-react";
 import { useEffect } from "react";
@@ -38,6 +39,7 @@ interface Props {
 }
 export default function Support({ profileInfo }: Props) {
   const { token } = useSelector((state: RootState) => state.auth);
+  const queryClient = useQueryClient()
   const contactSchema = z.object({
     fullName: z.string().min(2, "Full name is required"),
     email: z.string().email("Invalid email"),
@@ -108,6 +110,7 @@ export default function Support({ profileInfo }: Props) {
     mutate(data, {
       onSuccess: (data) => {
         toast.success(data?.message);
+        queryClient.invalidateQueries({queryKey:['getTickets']})
         reset({
           issueType: "",
           message: "",

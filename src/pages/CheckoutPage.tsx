@@ -1398,12 +1398,12 @@ console.log(isAnyProductMatched);
                       </span>
                     </div>
 
-                    {discount > 0 && (
+                    {/* {discount > 0 && (
                       <div className="flex justify-between">
                         <span>Discount</span>
                         <span className="">-₹{discount}</span>
                       </div>
-                    )}
+                    )} */}
 
                     {CouponDiscount > 0 && (
                       <div className="flex justify-between">
