@@ -60,16 +60,16 @@ export default function Order({ Orders, handleTab }: Props) {
             <ChevronLeft />
             Back to Orders
           </button>
-            <button
-            disabled={!data?.payment[0]?.invoice_url }
-              onClick={() => {
-                window.open(data?.payment[0]?.invoice_url, "_blank");
-              }}
-              className="text-green-700 hover:text-green-800 flex items-center cursor-pointer !rounded-button whitespace-nowrap"
-            >
-              <i className="fas fa-download mr-2"></i>
-              Download Invoice
-            </button>
+          <button
+            disabled={!data?.payment[0]?.invoice_url}
+            onClick={() => {
+              window.open(data?.payment[0]?.invoice_url, "_blank");
+            }}
+            className="text-green-700 hover:text-green-800 flex items-center cursor-pointer !rounded-button whitespace-nowrap"
+          >
+            <i className="fas fa-download mr-2"></i>
+            Download Invoice
+          </button>
         </div>
         <div className="border-b pb-4 mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
           <div>
@@ -330,12 +330,7 @@ export default function Order({ Orders, handleTab }: Props) {
                 ₹ {order?.sub_total}
               </span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Shipping</span>
-              <span className="text-title font-semibold">
-                ₹ {order?.shipping_fee}
-              </span>
-            </div>
+
             <div className="flex justify-between">
               <span className="text-gray-600">Tax</span>
               <span className="text-title font-semibold">₹ {order?.tax}</span>
@@ -343,7 +338,15 @@ export default function Order({ Orders, handleTab }: Props) {
             <div className="flex justify-between">
               <span className="text-gray-600">Discount</span>
               <span className="text-title font-semibold">
-                {order?.coupon_discount   ? ` - ₹ ${order?.coupon_discount  }` : "₹ 0"}
+                {order?.coupon_discount
+                  ? ` - ₹ ${order?.coupon_discount}`
+                  : "₹ 0"}
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Shipping</span>
+              <span className="text-title font-semibold">
+                ₹ {order?.shipping_fee}
               </span>
             </div>
             <div className="flex justify-between pt-2 border-t font-medium">
