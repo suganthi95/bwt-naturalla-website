@@ -39,7 +39,7 @@ interface Props {
 }
 export default function Support({ profileInfo }: Props) {
   const { token } = useSelector((state: RootState) => state.auth);
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const contactSchema = z.object({
     fullName: z.string().min(2, "Full name is required"),
     email: z.string().email("Invalid email"),
@@ -49,11 +49,9 @@ export default function Support({ profileInfo }: Props) {
     message: z.string().min(10, "Message is required"),
   });
 
-  const { data, isLoading, isFetching } = useGetTickets(token ?? "");
+  const { data, isLoading } = useGetTickets(token ?? "");
   const { mutate, isPending } = useRaiseTicket();
   type ContactFormData = z.infer<typeof contactSchema>;
-
-
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -85,6 +83,7 @@ export default function Support({ profileInfo }: Props) {
     register,
     handleSubmit,
     setValue,
+    watch,
     reset,
     formState: { errors },
   } = useForm<ContactFormData>({
@@ -110,8 +109,11 @@ export default function Support({ profileInfo }: Props) {
     mutate(data, {
       onSuccess: (data) => {
         toast.success(data?.message);
-        queryClient.invalidateQueries({queryKey:['getTickets']})
+        queryClient.invalidateQueries({ queryKey: ["getTickets"] });
         reset({
+          fullName: profileInfo.first_name,
+          email: profileInfo.email,
+          phone: profileInfo?.phone_no,
           issueType: "",
           message: "",
         });
@@ -133,7 +135,7 @@ export default function Support({ profileInfo }: Props) {
         </p>
       </div>
       <div className="p-4 sm:p-6">
-        <ul className=" grid grid-cols-2 ">
+        <ul className=" grid lg:grid-cols-2  space-y-4 ">
           <li className="space-y-1.5 md:space-x-2.5 p-4">
             <h2 className="text-textPrimary flex items-center gap-x-1.5 font-semibold text-2xl">
               <Headphones />
@@ -150,58 +152,64 @@ export default function Support({ profileInfo }: Props) {
                 <SelectItem value="low">Low</SelectItem>
               </SelectContent>
             </Select>
-            {isLoading || isFetching ? (
+            {isLoading ? (
               <TicketCardSkeleton />
             ) : (
-              data?.map((ticket:ContactUsTicket)=>{
-                return(
-               <div  key={ticket.contactus_id} className="w-full border rounded-xl shadow-sm p-4 space-y-3 bg-white">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-semibold text-neutral-800">
-                    {ticket.subject}
-                  </h3>
-                  <div
-                    className={`px-4 py-1 text-xs rounded-md font-medium ${getStatusColor(
-                      ticket.status
-                    )}`}
-                  >
-                    {ticket.status}
-                  </div>
-                </div>
+              <div className="overflow-y-auto mt-4 h-96 space-y-3.5">
+                {data?.map((ticket: ContactUsTicket) => {
+                  return (
+                    <div
+                      key={ticket.contactus_id}
+                      className="w-full border rounded-xl shadow-sm p-4 space-y-3 bg-white"
+                    >
+                      <div className="flex justify-between items-center">
+                        <h3 className="md:text-lg font-semibold text-neutral-800">
+                          {ticket.subject}
+                        </h3>
+                        <div
+                          className={`px-4 py-1 text-xs rounded-md font-medium ${getStatusColor(
+                            ticket.status
+                          )}`}
+                        >
+                          {ticket.status}
+                        </div>
+                      </div>
 
-                <div className="flex justify-between items-center  text-muted-foreground">
-                  <span>{ticket?.message_body}</span>
-                  <div
-                    className={`px-4 py-1 flex items-center gap-x-1 text-xs rounded-md font-medium ${getPriorityColor(
-                      ticket.priority
-                    )}`}
-                  >
-                    <Info className="w-4" /> {ticket.priority}
-                  </div>
-                </div>
+                      <div className="flex justify-between items-center text-sm md:text-base  text-muted-foreground">
+                        <span>{ticket?.message_body}</span>
+                        <div
+                          className={`px-4 py-1 flex items-center gap-x-1 text-xs rounded-md font-medium ${getPriorityColor(
+                            ticket.priority
+                          )}`}
+                        >
+                          <Info className="w-4" /> {ticket.priority}
+                        </div>
+                      </div>
 
-                <div className="flex justify-between items-center text-sm text-muted-foreground pt-2">
-                  <span className="font-medium">#{ticket.contactus_id}</span>
-                  <div className="text-right flex items-center gap-x-2.5 leading-tight text-xs">
-                    <div>
-                      Created:{" "}
-                      <span className="font-medium">
-                        {getDaysAgo(ticket?.created_at)}
-                      </span>
+                      <div className="flex justify-between items-center text-sm text-muted-foreground pt-2">
+                        <span className="font-medium">
+                          #{ticket.contactus_id}
+                        </span>
+                        <div className="text-right flex items-center gap-x-2.5 leading-tight text-xs">
+                          <div>
+                            Created:{" "}
+                            <span className="font-medium">
+                              {getDaysAgo(ticket?.created_at)}
+                            </span>
+                          </div>
+                          {/* <div>
+                        Updated:{" "}
+                        <span className="font-medium">
+                          {getDaysAgo(ticket.updatedAt)}
+                        </span>
+                      </div> */}
+                        </div>
+                      </div>
                     </div>
-                    {/* <div>
-                      Updated:{" "}
-                      <span className="font-medium">
-                        {getDaysAgo(ticket.updatedAt)}
-                      </span>
-                    </div> */}
-                  </div>
-                </div>
+                  );
+                })}
               </div>
-                )
-              })
-            
-            ) }
+            )}
           </li>
           <li className="">
             <div className="max-w-3xl mx-auto p-6 bg-white shadow-sm rounded-lg">
@@ -301,7 +309,11 @@ export default function Support({ profileInfo }: Props) {
                     >
                       Issue Type
                     </Label>
-                    <Select onValueChange={(val) => setValue("issueType", val)}>
+                    <Select
+                      defaultValue={watch("issueType")}
+                      value={watch("issueType")}
+                      onValueChange={(val) => setValue("issueType", val)}
+                    >
                       <SelectTrigger className="w-full cursor-pointer">
                         <SelectValue placeholder="Select Type" />
                       </SelectTrigger>
