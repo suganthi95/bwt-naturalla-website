@@ -45,7 +45,7 @@ const [image, setImage] = useState<File | null>(null);
   };
 
   const handleSubmit = () => {
-    if (!title || !description || !rating || !image) {
+    if (!title || !description || !rating) {
       toast.error("Please fill in all fields");
       return;
     }
@@ -56,7 +56,7 @@ const [image, setImage] = useState<File | null>(null);
     formData.append("review_title", title);
     formData.append("review_txt", description);
     formData.append("ratings", rating.toString());
-    formData.append("review_images[0]",image)
+    formData.append("review_images[0]",image ?? "")
 
     mutate(
       { formData, token },
@@ -86,26 +86,26 @@ const [image, setImage] = useState<File | null>(null);
       <div className="flex items-center gap-x-2">
         <div className="w-20 h-20 flex-shrink-0 bg-gray-100 rounded overflow-hidden">
           <img
-            src={Product.product_thumbnail_image}
-            alt={Product.product_name}
+            src={Product?.product_thumbnail_image}
+            alt={Product?.product_name}
             className="w-full h-full object-cover"
           />
         </div>
         <div>
-          <h5 className="font-medium">{Product.product_name}</h5>
+          <h5 className="font-medium">{Product?.product_name}</h5>
           <div className="flex justify-between mt-2">
             <div className="text-gray-600">
               <p>
                 Qty:{" "}
                 <span className="font-semibold text-textPrimary">
-                  {Product.quantity}
+                  {Product?.quantity}
                 </span>
               </p>
               <p>
                 {" "}
                 Price{" "}
                 <span className="font-semibold text-textPrimary">
-                  Rs. {Product.order_amount}
+                  Rs. {Product?.order_amount}
                 </span>{" "}
               </p>
             </div>

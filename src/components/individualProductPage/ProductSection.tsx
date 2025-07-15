@@ -23,6 +23,8 @@ import { addWishItem, removeWishlistItem } from "@/redux/slices/wishSlice";
 import { useAddToCart } from "@/services/cart";
 import axios from "axios";
 import { Truck, BadgeDollarSign } from "lucide-react";
+import ShareButton from "./ShareButton";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 
 // const productImages = [
 //   ASSETS.PRODUCT1,
@@ -108,10 +110,10 @@ export default function ProductSection({ media, products }: Props) {
     }
   }, []);
 
-  const handleCopyurl = async () => {
-    await navigator.clipboard.writeText(window.location.href);
-    toast.info("product url copied");
-  };
+  // const handleCopyurl = async () => {
+  //   await navigator.clipboard.writeText(window.location.href);
+  //   toast.info("product url copied");
+  // };
 
   const mainSliderSettings = {
     asNavFor: nav2!,
@@ -237,15 +239,21 @@ export default function ProductSection({ media, products }: Props) {
             </ul>
           </div>
           <div className="flex flex-col gap-y-5">
-            <Button
-              variant="outline"
-              size="icon"
-              className="hover:scale-90"
-              onClick={handleCopyurl}
-            >
-              <Share2 className="w-5 h-5" />
-            </Button>
-
+            <Dialog>
+              <DialogTrigger>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="hover:scale-90"
+                  // onClick={handleCopyurl}
+                >
+                  <Share2 className="w-5 h-5" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <ShareButton  url={window.location.href} />
+              </DialogContent>
+            </Dialog>
             <button
               disabled={products?.current_stock <= 0}
               onClick={() => {
@@ -356,13 +364,12 @@ export default function ProductSection({ media, products }: Props) {
             <Input
               type="number"
               value={quantity}
-           onChange={(e) => setQuantity(Number(e.target.value))}
+              onChange={(e) => setQuantity(Number(e.target.value))}
               className="w-10  text-2xl  font-semibold border-none text-center"
               min={1}
             />
             <Button
-                          disabled={quantity >= products?.current_stock}
-
+              disabled={quantity >= products?.current_stock}
               variant="outline"
               size="icon"
               className="cursor-pointer  border-none  w-fit text-xl font-semibold"

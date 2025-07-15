@@ -12,7 +12,7 @@ export const useSignup = ()=>{
 export const useLogin = ()=>{
     return useMutation({
         mutationKey:['login'],
-        mutationFn:(args:{phone_no:number,password ?:string})=>login(args.phone_no , args.password)
+        mutationFn:(args:{phone_no:number, login_through:string , email?:string,password ?:string})=>login(args.phone_no ,args.login_through,args.email, args.password)
     })
 }
 

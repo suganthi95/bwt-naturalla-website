@@ -51,7 +51,12 @@ export default function Login() {
   const onSubmit = (values: FormValues) => {
     if (emailRegex.test(values.inputValue)) {
       mutate(
-        { phone_no: Number(values.inputValue) },
+        {
+          phone_no: Number(values.inputValue),
+          login_through: "email",
+          email: values.inputValue,
+          password: values.password,
+        },
         {
           onSuccess: (data) => {
             navigate("/");
@@ -71,7 +76,7 @@ export default function Login() {
       }
 
       mutate(
-        { phone_no: Number(values.inputValue) },
+        { phone_no: Number(values.inputValue), login_through: "mobile" },
         {
           onSuccess: () => {
             navigate("/login-verify", {

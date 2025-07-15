@@ -18,8 +18,8 @@ import { getDaysAgo } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { Headphones, Info, Loader2 } from "lucide-react";
-import { useEffect } from "react";
+import { Headphones, Info, Loader2, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
@@ -39,6 +39,8 @@ interface Props {
 }
 export default function Support({ profileInfo }: Props) {
   const { token } = useSelector((state: RootState) => state.auth);
+  const [selectedPriority, setSelectedPriority] = useState("");
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const contactSchema = z.object({
     fullName: z.string().min(2, "Full name is required"),
@@ -46,10 +48,12 @@ export default function Support({ profileInfo }: Props) {
     phone: z.string().min(10, "Phone number is required"),
     // issueCategory: z.string().min(1, "Select a category"),
     issueType: z.string().min(1, "Select an issue type"),
+    attachment: z.any().optional(),
     message: z.string().min(10, "Message is required"),
   });
 
   const { data, isLoading } = useGetTickets(token ?? "");
+  const [filteredTickets, setFilteredTickets] = useState<ContactUsTicket[]>([]);
   const { mutate, isPending } = useRaiseTicket();
   type ContactFormData = z.infer<typeof contactSchema>;
 
@@ -78,6 +82,20 @@ export default function Support({ profileInfo }: Props) {
         return "";
     }
   };
+
+  useEffect(() => {
+    if (!data) return;
+
+    if (selectedPriority === "all" || selectedPriority === "") {
+      setFilteredTickets(data);
+      return;
+    }
+    const filtered = data?.filter((item: ContactUsTicket) =>
+      item?.priority?.includes(selectedPriority)
+    );
+
+    setFilteredTickets(filtered);
+  }, [selectedPriority, data]);
 
   const {
     register,
@@ -141,7 +159,7 @@ export default function Support({ profileInfo }: Props) {
               <Headphones />
               Your Support Tickets
             </h2>
-            <Select onValueChange={(value) => console.log(value)}>
+            <Select onValueChange={(value) => setSelectedPriority(value)}>
               <SelectTrigger className="w-[200px] cursor-pointer">
                 <SelectValue placeholder="Show - All Status" />
               </SelectTrigger>
@@ -156,7 +174,7 @@ export default function Support({ profileInfo }: Props) {
               <TicketCardSkeleton />
             ) : (
               <div className="overflow-y-auto mt-4 h-96 space-y-3.5">
-                {data?.map((ticket: ContactUsTicket) => {
+                {filteredTickets?.map((ticket: ContactUsTicket) => {
                   return (
                     <div
                       key={ticket.contactus_id}
@@ -335,6 +353,50 @@ export default function Support({ profileInfo }: Props) {
                       </p>
                     )}
                   </div>
+                </div>
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="attachment"
+                    className="text-sm font-semibold text-title"
+                  >
+                    Attach Image (optional)
+                  </Label>
+
+                  <div className="flex items-center gap-4">
+                    <Input
+                      id="attachment"
+                      type="file"
+                      accept="image/*"
+                      {...register("attachment")}
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          setValue("attachment", e.target.files);
+                          setImagePreview(URL.createObjectURL(file));
+                        }
+                      }}
+                      className="w-full cursor-pointer file:bg-primary file:text-white  file:px-4 file:rounded-md file:border-0"
+                    />
+                  </div>
+
+                  {imagePreview && (
+                    <div className="pt-2 flex items-start gap-x-1.5">
+                      <img
+                        src={imagePreview}
+                        alt="Selected"
+                        className="h-28 w-28 object-cover rounded-md shadow border"
+                      />
+                      <div
+                        className="rounded-full bg-white shadow-2xl size-4 cursor-pointer"
+                        onClick={() => {
+                          setImagePreview("");
+                          setValue("attachment", "");
+                        }}
+                      >
+                        <X className="text-red-600 w-4" />
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-2">
