@@ -17,36 +17,75 @@ import axios from "axios";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const formSchema = z.object({
   inputValue: z.string().min(10, "Phone number is too short"),
+  password: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 export default function Login() {
   const { mutate, isPending } = useLogin();
+  const [isEmailLogin, setIsEmailLogin] = useState(false);
   const navigate = useNavigate();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       inputValue: "",
+      password: "",
     },
   });
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const numberRegex = /^[0-9]{7,15}$/;
+  useEffect(() => {
+    const value = form.watch("inputValue");
+    if (emailRegex.test(value)) {
+      setIsEmailLogin(true);
+    } else {
+      setIsEmailLogin(false);
+    }
+  }, [form.watch("inputValue")]);
 
   const onSubmit = (values: FormValues) => {
-    mutate(Number(values.inputValue), {
-      onSuccess: () => {
-        navigate("/login-verify", {
-          state: { phone_no: Number(values.inputValue) },
-        });
-      },
-      onError(error) {
-        if (axios.isAxiosError(error)) {
-          toast.error(error?.response?.data?.message);
+    if (emailRegex.test(values.inputValue)) {
+      mutate(
+        { phone_no: Number(values.inputValue) },
+        {
+          onSuccess: (data) => {
+            navigate("/");
+            toast.success(data?.message);
+          },
+          onError(error) {
+            if (axios.isAxiosError(error)) {
+              toast.error(error?.response?.data?.message);
+            }
+          },
         }
-      },
-    });
+      );
+    } else {
+      if (!numberRegex.test(values.inputValue)) {
+        toast.error("Please enter a valid phone number");
+        return;
+      }
+
+      mutate(
+        { phone_no: Number(values.inputValue) },
+        {
+          onSuccess: () => {
+            navigate("/login-verify", {
+              state: { phone_no: Number(values.inputValue) },
+            });
+          },
+          onError(error) {
+            if (axios.isAxiosError(error)) {
+              toast.error(error?.response?.data?.message);
+            }
+          },
+        }
+      );
+    }
   };
 
   return (
@@ -68,7 +107,7 @@ export default function Login() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-textPrimary font-semibold ">
-                  Mobile number
+                    Email or Mobile number
                   </FormLabel>
                   <FormControl>
                     <Input className="h-11" placeholder="" {...field} />
@@ -77,6 +116,23 @@ export default function Login() {
                 </FormItem>
               )}
             />
+            {isEmailLogin && (
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-textPrimary font-semibold ">
+                      Password
+                    </FormLabel>
+                    <FormControl>
+                      <Input className="h-11" placeholder="" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
 
             <Button type="submit" className="w-full">
               {isPending ? <Loader2 className="animate-spin" /> : "Continue"}

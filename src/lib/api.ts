@@ -22,8 +22,8 @@ export const signup = async (
   });
   return response.data;
 };
-export const login = async (phone_no: number) => {
-  const response = await api.post("v1/auth/login", { phone_no });
+export const login = async (phone_no: number,password?:string) => {
+  const response = await api.post("v1/auth/login", { phone_no , password });
   return response.data;
 };
 export const verifyAccount = async (
