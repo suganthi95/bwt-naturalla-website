@@ -35,6 +35,7 @@ export const useGetWishListItems = (token:string)=>{
       queryFn:()=>getWhislistItems(token),
       select:(data)=>data,
       staleTime:1000*60*5,
+      enabled:!!token,
       retry:1,
     })
 }

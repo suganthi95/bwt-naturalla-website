@@ -7,12 +7,8 @@ import {
   FaSnapchatGhost,
   FaPinterestP,
 } from "react-icons/fa";
-import { useSelector } from "react-redux";
-import type { RootState } from "@/redux/store";
-
 export default function Footer() {
 
-  const { status } = useSelector((data: RootState) => data.auth);
 
   return (
     <footer className="bg-[#232323] text-white py-12 lato">
@@ -121,7 +117,7 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link to={status ? "/contact-us" : "/login"} className="text-white/50">
+              <Link to={ "/contact-us" } className="text-white/50">
                 Contact Us
               </Link>
             </li>

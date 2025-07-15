@@ -37,6 +37,7 @@ export const useGetCartItems = (token:string)=>{
         queryFn:()=>getCartItems(token),
         select:(data)=>data,
         staleTime:1000*60*5,
+        enabled:!!token,
         retry:1
     })
 }
