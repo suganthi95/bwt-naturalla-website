@@ -252,7 +252,7 @@ export default function Order({ Orders, handleTab }: Props) {
                     </p>
                   </div>
                   {!item.has_reviewed &&
-                    // order?.order_status === "Delivered" && 
+                    order?.order_status === "Delivered" && 
                     (
                       <Dialog
                         open={IsReviewopen}
