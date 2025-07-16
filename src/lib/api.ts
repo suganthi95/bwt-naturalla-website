@@ -491,8 +491,7 @@ export const getIssueTypes = async (token: string) => {
       Authorization: token,
     },
   });
-    return response.data;
-
+  return response.data;
 };
 
 export const raiseTicket = async (data: any) => {
@@ -503,11 +502,31 @@ export const raiseTicket = async (data: any) => {
   formdata.append("contact_email", data.email);
   formdata.append("contact_phone_no", data.phone);
   formdata.append("subject", data.subject);
-  formdata.append("issue_type_id",data.issue_type_id)
+  formdata.append("issue_type_id", data.issue_type_id);
   formdata.append("message_body", data.message);
-  formdata.append("subissue_id",data.subissue_id)
+  formdata.append("subissue_id", data.subissue_id);
   formdata.append("attachment", data.attachments);
   const response = await api.post(`v1/contact-us/submission`, formdata, {
+    headers: {
+      Authorization: data.token,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return response.data;
+};
+
+export const contactUs = async (data: any) => {
+  const formdata = new FormData();
+
+  formdata.append("first_name", data.full_name);
+  formdata.append("last_name", data.full_name);
+  formdata.append("contact_email", data.email);
+  formdata.append("contact_phone_no", data.phone);
+  formdata.append("subject", data.subject);
+  formdata.append("message_body", data.message);
+
+  const response = await api.post(`v1/contact-us/raise/ticket`, formdata, {
     headers: {
       Authorization: data.token,
       "Content-Type": "multipart/form-data",

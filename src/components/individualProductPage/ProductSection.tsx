@@ -1,6 +1,6 @@
 import Slider from "react-slick";
 import { useRef, useState, useEffect } from "react";
-import { Ban, Heart, Loader2, Share2, X } from "lucide-react";
+import { Ban, Heart, Loader2, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -72,11 +72,8 @@ export default function ProductSection({ media, products }: Props) {
   const [nav2, setNav2] = useState<Slider | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  // const [Pincode, setPincode] = useState(() => localStorage.getItem("pincode"));
   const [Pincode, setPincode] = useState("");
-  // const [Messages, setMessage] = useState(() =>
-  //   localStorage.getItem("delivery")
-  // );
+
   const [Messages, setMessage] = useState("");
   const [liked, setLiked] = useState(false);
 
@@ -85,21 +82,13 @@ export default function ProductSection({ media, products }: Props) {
     if (quantity > 1) {
       setQuantity(quantity - 1);
       dispatch(decreaseQuantity(cart_id));
-      // UpdateCart({
-      //   cart_id,
-      //   quantity: -1,
-      //   token,
-      // });
+   
     }
   };
 
   const handleIncrease = (cart_id: number) => {
     setQuantity(quantity + 1);
-    // UpdateCart({
-    //   cart_id,
-    //   quantity: 1,
-    //   token,
-    // });
+  
     dispatch(increaseQuantity(cart_id));
   };
 
@@ -312,7 +301,9 @@ export default function ProductSection({ media, products }: Props) {
           </div>
         </div>
 
+          {averageRatings?
         <p className="flex items-center gap-x-0.5 text-sm">
+       
           {Array.from({ length: 5 }).map((_, i) =>
             i < averageRatings ? (
               <Icons.Star key={i} className="text-yellow-500 w-4 h-4" />
@@ -320,10 +311,12 @@ export default function ProductSection({ media, products }: Props) {
               <Icons.Un_Star key={i} className="text-gray-300 w-4 h-4" />
             )
           )}
-          <span className="font-medium ml-1">
-            {isNaN(averageRatings) ? 0 : averageRatings}/5
+          <span className="font-semibold ml-1">
+            {isNaN(averageRatings) ? 0 : averageRatings} / 5
           </span>
+         
         </p>
+          :""}
         <div className="flex items-center gap-x-2">
           <p className=" font-bold text-title  text-sm md:text-[32px]">
             Rs. {products?.unit_price}
@@ -464,24 +457,16 @@ export default function ProductSection({ media, products }: Props) {
           </Button>
         )}
 
-        <div className="flex items-center gap-2 border rounded-md px-2 py-1 w-full lg:w-fit">
-          <div className="relative w-full md:w-72">
+        <div className="flex items-center justify-between border rounded-md px-1 py-1 w-full lg:w-fit">
+          <div className="relative w-full md:w-[254px]">
             <Input
               type="number"
               value={Pincode ?? ""}
-              placeholder="Enter PIN code to check delivery date"
+              placeholder="Enter Pincode for Delivery"
               onChange={(e) => setPincode(e.target.value)}
-              className="border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-8 text-sm pr-8 pl-2"
+              className="border-none placeholder:text-sm focus-visible:ring-0 focus-visible:ring-offset-0 h-8 text-sm pr-8 pl-2"
             />
-            {Pincode && (
-              <X
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground cursor-pointer"
-                onClick={() => {
-                  setPincode("");
-                  setMessage("");
-                }}
-              />
-            )}
+          
           </div>
           <Button
             onClick={checkDeliveryInfo}

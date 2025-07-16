@@ -1345,11 +1345,11 @@ export default function CheckoutPage() {
                   </h1>
                 </AccordionTrigger>
                 <AccordionContent>
-                  {subtotal < 500 && (
+                  {/* {subtotal < 500 && (
                     <div className="mb-3 p-3 bg-yellow-100 text-yellow-800 rounded-md text-xs font-medium transition-all duration-300 ease-in-out opacity-100">
                       Minimum order value must be ₹500 to apply the discount.
                     </div>
-                  )}
+                  )} */}
 
                   <div className="relative flex items-center mb-5">
                     <TicketPercent className="absolute left-3 w-4 h-4 text-gray-400" />

@@ -23,7 +23,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Headphones, Info, Loader2, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
@@ -45,6 +45,7 @@ export default function Support({ profileInfo }: Props) {
   const { token } = useSelector((state: RootState) => state.auth);
   const [selectedPriority, setSelectedPriority] = useState("");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const queryClient = useQueryClient();
   const contactSchema = z.object({
     fullName: z.string().min(2, "Full name is required"),
@@ -121,7 +122,6 @@ export default function Support({ profileInfo }: Props) {
     });
   }, [reset, profileInfo]);
   const onSubmit = (values: ContactFormData) => {
-    
     const data = {
       token: token ?? "",
       full_name: values.fullName,
@@ -144,11 +144,11 @@ export default function Support({ profileInfo }: Props) {
           email: profileInfo.email,
           phone: profileInfo?.phone_no,
           issueType: "",
-          issueCategory:"",
+          issueCategory: "",
           message: "",
-          attachment:null
+          attachment: null,
         });
-        setImagePreview("")
+        setImagePreview("");
       },
       onError: (error) => {
         if (axios.isAxiosError(error)) {
@@ -395,21 +395,22 @@ export default function Support({ profileInfo }: Props) {
                   </Label>
 
                   <div className="flex items-center gap-4">
-                    <Input
-                      id="attachment"
-                      type="file"
-                      accept="image/*"
-                      {...register("attachment")}
-                      onChange={(e) => {
-                      
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          setValue("attachment", e.target.files?.[0]);
-                          setImagePreview(URL.createObjectURL(file));
-                        }
-                      }}
-                      className="w-full cursor-pointer file:bg-primary file:text-white  file:px-4 file:rounded-md file:border-0"
-                    />
+                    <div className="flex items-center gap-4">
+                      <Input
+                        ref={fileInputRef}
+                        id="attachment"
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            setValue("attachment", file);
+                            setImagePreview(URL.createObjectURL(file));
+                          }
+                        }}
+                        className="w-full cursor-pointer file:bg-primary file:text-white file:px-4 file:rounded-md file:border-0"
+                      />
+                    </div>
                   </div>
 
                   {imagePreview && (
@@ -423,7 +424,10 @@ export default function Support({ profileInfo }: Props) {
                         className="rounded-full bg-white shadow-2xl size-4 cursor-pointer"
                         onClick={() => {
                           setImagePreview("");
-                          setValue("attachment", "");
+                          setValue("attachment", null);
+                          if (fileInputRef.current) {
+                            fileInputRef.current.value = ""; 
+                          }
                         }}
                       >
                         <X className="text-red-600 w-4" />

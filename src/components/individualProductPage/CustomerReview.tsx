@@ -263,10 +263,10 @@ export default function CustomerReview({ Product }: Props) {
                 </div>
 
                 <h3 className="font-semibold text-title ">
-                  Great quality and fast delivery
+                {item?.review_title}
                 </h3>
 
-                <p className="text-lg text-lead">{item?.review_txt}</p>
+                <p className=" text-sm md:text-base text-lead line-clamp-3">{item?.review_txt}</p>
               </div>
             );
           })}

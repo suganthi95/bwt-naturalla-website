@@ -1,5 +1,5 @@
-import { getCategories, landingPageDetails } from "@/lib/api"
-import { useQuery } from "@tanstack/react-query"
+import { contactUs, getCategories, landingPageDetails } from "@/lib/api"
+import { useMutation, useQuery } from "@tanstack/react-query"
 
 export const useGetLandingPageDetails = ()=>{
     return useQuery({
@@ -19,4 +19,12 @@ export const useGetCategories = (token:string)=>{
         staleTime:1000*60*10,
         retry:1
     })
+}
+
+export const useContactUs = ()=>{
+  return useMutation({
+    mutationKey:['contactus'],
+    mutationFn:(data:any)=>contactUs(data),
+  })
+
 }
