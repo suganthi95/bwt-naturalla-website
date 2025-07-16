@@ -59,7 +59,6 @@ export default function LoginVerify() {
         },
       }
     );
-    console.log(values);
   };
 
   return (

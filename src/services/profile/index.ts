@@ -4,6 +4,7 @@ import {
   editAddress,
   getAddress,
   getDashboard,
+  getIssueTypes,
   getOrders,
   getOrdersDetails,
   getProfileInfo,
@@ -123,6 +124,16 @@ export const useGetTickets = (token: string) => {
     retry: 1,
   });
 };
+export const useGetIssueTypes = (token: string) => {
+  return useQuery({
+    queryKey: ["getIssueTypes"],
+    queryFn: () => getIssueTypes(token),
+    select: (data) => data?.data,
+    staleTime: 1000 * 60 * 5,
+    retry: 1,
+  });
+};
+
 
 export const useRaiseTicket = ()=>{
   return useMutation({

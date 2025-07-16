@@ -319,7 +319,6 @@ export default function CheckoutPage() {
               Array.isArray(data?.product_ids) &&
               data?.product_ids.includes(Number(product.product_id))
           );
-          console.log(isAnyProductMatched);
 
           if (!isAnyProductMatched) {
             toast.warning("Coupon not applicable to any product in your cart.");

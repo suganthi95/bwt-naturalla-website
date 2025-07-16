@@ -18,6 +18,8 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Userlogin } from "@/redux/slices/authSlice";
 
 const formSchema = z.object({
   inputValue: z.string().min(10, "Phone number is too short"),
@@ -28,6 +30,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function Login() {
   const { mutate, isPending } = useLogin();
+  const dispatch = useDispatch()
   const [isEmailLogin, setIsEmailLogin] = useState(false);
   const navigate = useNavigate();
   const form = useForm<FormValues>({
@@ -61,6 +64,7 @@ export default function Login() {
           onSuccess: (data) => {
             navigate("/");
             toast.success(data?.message);
+            dispatch(Userlogin(data));
           },
           onError(error) {
             if (axios.isAxiosError(error)) {

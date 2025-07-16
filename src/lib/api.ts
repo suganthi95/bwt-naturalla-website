@@ -23,8 +23,18 @@ export const signup = async (
   return response.data;
 };
 
-export const login = async (phone_no: number, login_through:string , email ?:string, password?:string) => {
-  const response = await api.post("v1/auth/login", { phone_no ,login_through,email, password });
+export const login = async (
+  phone_no: number,
+  login_through: string,
+  email?: string,
+  password?: string
+) => {
+  const response = await api.post("v1/auth/login", {
+    phone_no,
+    login_through,
+    email,
+    password,
+  });
   return response.data;
 };
 export const verifyAccount = async (
@@ -475,6 +485,16 @@ export const getTicket = async (token: string) => {
   return response.data;
 };
 
+export const getIssueTypes = async (token: string) => {
+  const response = await api.get("v1/contact-us/issue/types", {
+    headers: {
+      Authorization: token,
+    },
+  });
+    return response.data;
+
+};
+
 export const raiseTicket = async (data: any) => {
   const formdata = new FormData();
 
@@ -483,9 +503,10 @@ export const raiseTicket = async (data: any) => {
   formdata.append("contact_email", data.email);
   formdata.append("contact_phone_no", data.phone);
   formdata.append("subject", data.subject);
+  formdata.append("issue_type_id",data.issue_type_id)
   formdata.append("message_body", data.message);
-  // formdata.append("attachment", data.attachments);
-
+  formdata.append("subissue_id",data.subissue_id)
+  formdata.append("attachment", data.attachments);
   const response = await api.post(`v1/contact-us/submission`, formdata, {
     headers: {
       Authorization: data.token,

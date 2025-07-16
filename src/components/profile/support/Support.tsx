@@ -12,8 +12,12 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import type { RootState } from "@/redux/store";
-import { useGetTickets, useRaiseTicket } from "@/services/profile";
-import type { ContactUsTicket } from "@/types/type";
+import {
+  useGetIssueTypes,
+  useGetTickets,
+  useRaiseTicket,
+} from "@/services/profile";
+import type { ContactUsTicket, IssueType, SubIssue } from "@/types/type";
 import { getDaysAgo } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -46,13 +50,14 @@ export default function Support({ profileInfo }: Props) {
     fullName: z.string().min(2, "Full name is required"),
     email: z.string().email("Invalid email"),
     phone: z.string().min(10, "Phone number is required"),
-    // issueCategory: z.string().min(1, "Select a category"),
+    issueCategory: z.string().min(1, "Select a category"),
     issueType: z.string().min(1, "Select an issue type"),
     attachment: z.any().optional(),
     message: z.string().min(10, "Message is required"),
   });
 
   const { data, isLoading } = useGetTickets(token ?? "");
+  const { data: IssueTypeLists } = useGetIssueTypes(token ?? "");
   const [filteredTickets, setFilteredTickets] = useState<ContactUsTicket[]>([]);
   const { mutate, isPending } = useRaiseTicket();
   type ContactFormData = z.infer<typeof contactSchema>;
@@ -116,13 +121,19 @@ export default function Support({ profileInfo }: Props) {
     });
   }, [reset, profileInfo]);
   const onSubmit = (values: ContactFormData) => {
+    
     const data = {
       token: token ?? "",
       full_name: values.fullName,
       email: values.email,
       phone: values.phone,
-      subject: values.issueType,
+      subject: IssueTypeLists?.find(
+        (item: IssueType) => item.issue_type_id === Number(values.issueCategory)
+      )?.issue_type,
+      issue_type_id: Number(values.issueCategory),
       message: values.message,
+      subissue_id: values.issueType,
+      attachments: values.attachment,
     };
     mutate(data, {
       onSuccess: (data) => {
@@ -133,8 +144,11 @@ export default function Support({ profileInfo }: Props) {
           email: profileInfo.email,
           phone: profileInfo?.phone_no,
           issueType: "",
+          issueCategory:"",
           message: "",
+          attachment:null
         });
+        setImagePreview("")
       },
       onError: (error) => {
         if (axios.isAxiosError(error)) {
@@ -182,7 +196,7 @@ export default function Support({ profileInfo }: Props) {
                     >
                       <div className="flex justify-between items-center">
                         <h3 className="md:text-lg font-semibold text-neutral-800">
-                          {ticket.subject}
+                          {ticket.issue_type}
                         </h3>
                         <div
                           className={`px-4 py-1 text-xs rounded-md font-medium ${getStatusColor(
@@ -194,7 +208,7 @@ export default function Support({ profileInfo }: Props) {
                       </div>
 
                       <div className="flex justify-between items-center text-sm md:text-base  text-muted-foreground">
-                        <span>{ticket?.message_body}</span>
+                        <span>{ticket?.sub_issue}</span>
                         <div
                           className={`px-4 py-1 flex items-center gap-x-1 text-xs rounded-md font-medium ${getPriorityColor(
                             ticket.priority
@@ -298,20 +312,33 @@ export default function Support({ profileInfo }: Props) {
                   </div>
                 </div>
 
-                <div className="grid  gap-4 w-full">
-                  {/* <div className="space-y-2 w-full">
-                    <Label htmlFor="issueCategory" className="text-sm font-semibold text-title">Issue Category</Label>
-                    <Select
-                      onValueChange={(val) => setValue("issueCategory", val)}
-                      
+                <div className="grid grid-cols-2 gap-4 w-full">
+                  {/* Issue Category */}
+                  <div className="space-y-2 w-full">
+                    <Label
+                      htmlFor="issueCategory"
+                      className="text-sm font-semibold text-title"
                     >
-                      <SelectTrigger  className="w-full cursor-pointer">
+                      Issue Category
+                    </Label>
+                    <Select
+                      onValueChange={(val) => {
+                        setValue("issueCategory", val);
+                        setValue("issueType", "");
+                      }}
+                    >
+                      <SelectTrigger className="w-full cursor-pointer">
                         <SelectValue placeholder="Select Category" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="billing">Billing</SelectItem>
-                        <SelectItem value="technical">Technical</SelectItem>
-                        <SelectItem value="support">Support</SelectItem>
+                        {IssueTypeLists?.map((cate: IssueType) => (
+                          <SelectItem
+                            key={cate.issue_type_id}
+                            value={String(cate.issue_type_id)}
+                          >
+                            {cate.issue_type}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     {errors.issueCategory && (
@@ -319,7 +346,9 @@ export default function Support({ profileInfo }: Props) {
                         {errors.issueCategory.message}
                       </p>
                     )}
-                  </div> */}
+                  </div>
+
+                  {/* Issue Type */}
                   <div className="space-y-2 w-full">
                     <Label
                       htmlFor="issueType"
@@ -328,7 +357,6 @@ export default function Support({ profileInfo }: Props) {
                       Issue Type
                     </Label>
                     <Select
-                      defaultValue={watch("issueType")}
                       value={watch("issueType")}
                       onValueChange={(val) => setValue("issueType", val)}
                     >
@@ -336,15 +364,18 @@ export default function Support({ profileInfo }: Props) {
                         <SelectValue placeholder="Select Type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Bug Report">Bug Report</SelectItem>
-                        <SelectItem value="Feature Request">
-                          Feature Request
-                        </SelectItem>
-                        <SelectItem value="Payment Gateway Issue">
-                          Payment Gateway Issue
-                        </SelectItem>
-
-                        <SelectItem value="other">Other</SelectItem>
+                        {IssueTypeLists?.find(
+                          (item: IssueType) =>
+                            item.issue_type_id ===
+                            Number(watch("issueCategory"))
+                        )?.sub_issues.map((sub: SubIssue) => (
+                          <SelectItem
+                            key={sub.subissue_id}
+                            value={String(sub.subissue_id)}
+                          >
+                            {sub.sub_issue}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     {errors.issueType && (
@@ -354,6 +385,7 @@ export default function Support({ profileInfo }: Props) {
                     )}
                   </div>
                 </div>
+
                 <div className="space-y-2">
                   <Label
                     htmlFor="attachment"
@@ -369,9 +401,10 @@ export default function Support({ profileInfo }: Props) {
                       accept="image/*"
                       {...register("attachment")}
                       onChange={(e) => {
+                      
                         const file = e.target.files?.[0];
                         if (file) {
-                          setValue("attachment", e.target.files);
+                          setValue("attachment", e.target.files?.[0]);
                           setImagePreview(URL.createObjectURL(file));
                         }
                       }}

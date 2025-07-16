@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dialog";
 import WriteReview from "./WrtiteReview";
 import UpdateReview from "./UpdateReview";
+import { Button } from "@/components/ui/button";
 interface Props {
   Orders: Order[];
   handleTab: (val: string) => void;
@@ -60,16 +61,21 @@ export default function Order({ Orders, handleTab }: Props) {
             <ChevronLeft />
             Back to Orders
           </button>
-          <button
-            disabled={!data?.payment[0]?.invoice_url}
-            onClick={() => {
-              window.open(data?.payment[0]?.invoice_url, "_blank");
-            }}
-            className="text-green-700 hover:text-green-800 flex items-center cursor-pointer !rounded-button whitespace-nowrap"
-          >
-            <i className="fas fa-download mr-2"></i>
-            Download Invoice
-          </button>
+          {data?.payment[0]?.invoice_url && (
+            <Button
+              // disabled={!data?.payment[0]?.invoice_url}
+              onClick={() => {
+                window.open(data?.payment[0]?.invoice_url, "_blank");
+              }}
+              className={`  ${
+                !data?.payment[0]?.invoice_url
+                  ? "cursor-not-allowed"
+                  : "cursor-pointer"
+              }  text-green-700 bg-transparent hover:text-green-800 flex items-center  !rounded-button `}
+            >
+              Download Invoice
+            </Button>
+          )}
         </div>
         <div className="border-b pb-4 mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
           <div>
@@ -252,8 +258,7 @@ export default function Order({ Orders, handleTab }: Props) {
                     </p>
                   </div>
                   {!item.has_reviewed &&
-                    order?.order_status === "Delivered" && 
-                    (
+                    order?.order_status === "Delivered" && (
                       <Dialog
                         open={IsReviewopen}
                         onOpenChange={setIsReviewopen}

@@ -18,7 +18,7 @@ export default function HeroCarousal({ banners }: any) {
 
   return (
     <div className="w-full overflow-hidden">
-      <Slider {...settings} className="h-[70vh] rounded-2xl overflow-hidden border-none">
+      <Slider {...settings} className=" h-96 md:h-[70vh] rounded-2xl overflow-hidden border-none">
         {banners?.map((src: any, index: number) => (
           <img key={`banner-image-${index}`} src={src.media_url} alt={`hero-${index}`} className="w-full h-full object-cover" />
         ))}

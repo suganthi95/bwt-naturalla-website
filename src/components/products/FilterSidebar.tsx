@@ -28,6 +28,7 @@ import {
 } from "@/redux/slices/filterSlice";
 import type { FilterData } from "@/types/type";
 import type { RootState } from "@/redux/store";
+import { useLocation } from "react-router-dom";
 interface Props {
   filterValues: FilterData;
 }
@@ -42,13 +43,14 @@ const sortOptions2 = [
 
 export default function FilterSidebar({ filterValues }: Props) {
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
   const { categories, keywords, maxPrice, minPrice, sortByDate, sortByPrice } =
     useSelector((state: RootState) => state.filter);
   const [badges, setBadges] = useState<string[]>(keywords);
   const defaultMin = filterValues?.price_range[0]?.min_price ?? 164;
   const defaultMax = filterValues?.price_range[0]?.max_price ?? 5000;
-  const [priceRange, setPriceRange] = useState<[number , number ]>([
+  const [priceRange, setPriceRange] = useState<[number, number]>([
     minPrice,
     maxPrice,
   ]);
@@ -95,7 +97,7 @@ export default function FilterSidebar({ filterValues }: Props) {
     dispatch(setCategories(selectedCategories));
     dispatch(setSortByPrice(sortBy));
     dispatch(setSortDate(sortDate));
-    dispatch(setPriceRanges({ min , max }));
+    dispatch(setPriceRanges({ min, max }));
   };
 
   return (
@@ -204,7 +206,7 @@ export default function FilterSidebar({ filterValues }: Props) {
               <div className="flex gap-4">
                 <Input
                   type="number"
-                  value={min }
+                  value={min}
                   onChange={(e) => {
                     applyFilters();
 
@@ -229,38 +231,47 @@ export default function FilterSidebar({ filterValues }: Props) {
         </AccordionItem>
       </Accordion>
 
-      <Accordion type="single" collapsible className="w-full">
-        <AccordionItem value="category">
-          <AccordionTrigger className="text-sm font-medium underline-none">
-            Categories
-          </AccordionTrigger>
-          <AccordionContent>
-            <div className="mt-2 space-y-2">
-              {filterValues?.category?.map((cat, index) => {
-                const checkboxId = `cat-${index}`;
-                return (
-                  <div
-                    key={cat.category_id}
-                    className="flex items-center gap-2"
-                  >
-                    <Checkbox
-                      id={checkboxId}
-                      checked={selectedCategories.includes(cat.category_title)}
-                      onCheckedChange={() => {
-                        toggleCategoryby(cat.category_title);
-                        // applyFilters();
-                      }}
-                    />
-                    <label htmlFor={checkboxId} className="text-sm">
-                      {cat.category_title}
-                    </label>
-                  </div>
-                );
-              })}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+      {[
+        "/products/today-offer",
+        "/products/all",
+        "/products/best-sellers",
+        "/products/trending-now",
+      ].includes(pathname) && (
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="category">
+            <AccordionTrigger className="text-sm font-medium underline-none">
+              Categories
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="mt-2 space-y-2">
+                {filterValues?.category?.map((cat, index) => {
+                  const checkboxId = `cat-${index}`;
+                  return (
+                    <div
+                      key={cat.category_id}
+                      className="flex items-center gap-2"
+                    >
+                      <Checkbox
+                        id={checkboxId}
+                        checked={selectedCategories.includes(
+                          cat.category_title
+                        )}
+                        onCheckedChange={() => {
+                          toggleCategoryby(cat.category_title);
+                          // applyFilters();
+                        }}
+                      />
+                      <label htmlFor={checkboxId} className="text-sm">
+                        {cat.category_title}
+                      </label>
+                    </div>
+                  );
+                })}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      )}
 
       <h2 className="font-semibold text-xl text-title">Sort By</h2>
 

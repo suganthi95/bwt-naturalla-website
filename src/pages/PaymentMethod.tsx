@@ -46,7 +46,6 @@ export default function PaymentMethod() {
   //   setCartItems(items);
   // }, [items]);
 
-  // console.log(cartItems[0]?.quantity);
 
   const CouponDetails = useSelector((state: RootState) => state.coupon);
   const { mutate, isPending } = useCreateOrder();
@@ -60,7 +59,6 @@ export default function PaymentMethod() {
     isLoading,
     isFetching,
   } = useGetProviders(token);
-  console.log(PaymentProviders);
 
   // const [finalData, setFinalData] = useState(null);
 
@@ -80,13 +78,11 @@ export default function PaymentMethod() {
   const {
     setValue,
     watch,
-    formState: { errors },
   } = useForm({
     defaultValues: {
       payment: "",
     },
   });
-  console.log(errors);
 
   const selectedRole = watch("payment");
 
@@ -208,7 +204,6 @@ export default function PaymentMethod() {
               description: "Payment",
               image: ASSETS.LOGO,
               handler: function (response: any) {
-                console.log("razorpay handler work");
 
                 verifyRazorpay(
                   {
