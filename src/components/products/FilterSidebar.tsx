@@ -101,7 +101,7 @@ export default function FilterSidebar({ filterValues }: Props) {
   };
 
   return (
-    <div className="w-full  space-y-6 overflow-hidden">
+    <div className="w-full  space-y-6">
       <div className="flex items-end lg:items-center justify-end lg:justify-between">
         <h2 className="text-xl hidden lg:block font-semibold">Filters</h2>
 
@@ -130,7 +130,7 @@ export default function FilterSidebar({ filterValues }: Props) {
             </Button>
           </PopoverTrigger>
 
-          <PopoverContent className="p-0 w-full">
+          <PopoverContent className="p-0 w-56">
             <Command>
               <CommandInput placeholder="Search tags..." />
               <CommandList>
@@ -142,6 +142,7 @@ export default function FilterSidebar({ filterValues }: Props) {
                   )
                   .map((tag, idx) => (
                     <CommandItem
+                    className="capitalize"
                       key={idx}
                       value={tag}
                       onSelect={() => {
@@ -275,7 +276,7 @@ export default function FilterSidebar({ filterValues }: Props) {
 
       <h2 className="font-semibold text-xl text-title">Sort By</h2>
 
-      <div>
+      <div className="w-full">
         <Accordion collapsible type="single">
           <AccordionItem value="price" className="underline-none">
             <AccordionTrigger className="underline-none cursor-pointer">
@@ -294,7 +295,7 @@ export default function FilterSidebar({ filterValues }: Props) {
                 className="space-y-2 mt-2"
               >
                 {sortOptions.map((opt) => (
-                  <div key={opt.value} className="flex items-center gap-2">
+                  <div key={opt.value} className="flex  px-1 items-center gap-2">
                     <RadioGroupItem value={opt.value} id={opt.value} />
                     <label htmlFor={opt.value}>{opt.label}</label>
                   </div>
@@ -323,9 +324,9 @@ export default function FilterSidebar({ filterValues }: Props) {
                 className="space-y-2 mt-2"
               >
                 {sortOptions2.map((opt) => (
-                  <div key={opt.value} className="flex items-center gap-2">
+                  <div key={opt.value} className="flex items-center px-1 gap-2">
                     <RadioGroupItem value={opt.value} id={opt.value} />
-                    <label htmlFor={opt.value}>{opt.label}</label>
+                    <label htmlFor={opt.value}>{opt.label} </label>
                   </div>
                 ))}
               </RadioGroup>

@@ -135,42 +135,7 @@ export default function LatestProduct({ title, Products }: Props) {
           })}
         </ul>
       </div>
-      {/* <div className="bg-primary relative p-1 h-24 lg:h-28 place-items-center  grid grid-cols-2 mt-10 mb-10 w-full">
-        <div className="container mx-auto">
-          <div className="absolute -top-12 md:-top-10 left-2 lg:left-20 bg-[#70BF44] text-white lato font-extrabold text-2xl rounded-full aspect-square size-24 lg:size-32 grid place-items-center rotate-[-20deg] shadow-lg">
-            <div className="flex flex-col items-center justify-center leading-tight rotate-[-1deg]">
-              <p className="tracking-wider text-sm md:text-xl">Flat</p>
-              <p className="md:text-3xl">20 %</p>
-              <p className="tracking-wider text-sm md:text-xl">OFF</p>
-            </div>
-          </div>
-          <img
-            src={ASSETS.ALOWERA_FRAME}
-            alt="img"
-            className="absolute w-8/12 z-50 2xl:w-1/4  lg:left-44 -top-10 lg:-top-24 "
-          />
-          <div className="absolute left-12 xl:left-96  top-7 ">
-            <img
-              src={ASSETS.PRODUCT_BANNER}
-              alt="productbanner"
-              className="w-3/12 -ml-10"
-            />
-            <div className="absolute top-2 flex items-center justify-center">
-              <p className="text-primary text-sm sm:text-lg  font-semibold text-center">
-                Aloevera Moisturizer
-              </p>
-            </div>{" "}
-          </div>
-        </div>
-        <div className="p-2 px-4 h-auto sm:h-14 w-full sm:w-7/12 rounded-xl bg-white border-2 border-dashed border-black flex items-center justify-center">
-          <p className="font-semibold text-title text-[14px] sm:text-[28px] md:text-[32px] flex  gap-x-1 flex-col md:flex-row text-center">
-            Use Code :
-            <span className="text-title font-bold text-[14px] sm:text-[28px] md:text-[32px]">
-              NATURA20
-            </span>
-          </p>
-        </div>
-      </div> */}
+     
     </div>
   );
 }

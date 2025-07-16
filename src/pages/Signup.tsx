@@ -266,7 +266,7 @@ export default function Signup() {
     </p>
   </div>
 
-  <p className="static bottom-2.5 text-xs md:text-sm text-title text-center px-2 text-wrap">
+  <p className="fixed bottom-2.5 text-xs md:text-sm text-title text-center px-2 text-wrap">
     Copyrights © All Rights Reserved ® 2025 Naturalla Stores
   </p>
 </section>

@@ -49,13 +49,11 @@ export default function TodayDeals({ Products }: Props) {
     <div className="container mx-auto">
       <div className="flex justify-between font-semibold  items-center">
         <p className="text-title text-sm md:text-xl cursor-pointer ">
-         Today's Offer
+          Today's Offer
         </p>
         <p
           className="text-title text-sm md:text-xl cursor-pointer hover:underline underline-primary"
           onClick={() =>
-            // navigate("/products/today-deals", { state: { isin_todays_deal: "true" } })
-
             navigate("/products/today-offer?isin_todays_deal=true", {
               state: { title: "Today Offer" },
             })
@@ -67,7 +65,7 @@ export default function TodayDeals({ Products }: Props) {
       <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-x-14 lg:gap-x-20 mt-4 md:mt-8">
         {Products?.slice(0, 3)?.map((item, index) => {
           return (
-            <li key={index} className="space-y-2 relative overflow-hidden">
+            <li key={index} className="space-y-2 relative ">
               <img
                 src={item.thumbnail_image_url}
                 alt={item?.product_name}
