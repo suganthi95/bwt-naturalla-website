@@ -29,7 +29,7 @@ export default function HeroCarousal({ banners }: any) {
             key={`banner-image-${index}`}
             src={src.media_url}
             alt={`hero-${index}`}
-            className="w-full h-full object-cover"
+            className="w-full h-full cursor-pointer object-cover"
           />
         ))}
       </Slider>

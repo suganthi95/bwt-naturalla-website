@@ -117,14 +117,14 @@ export default function ProductById() {
                 {whatsout.map((item, index) => (
                   <li
                     key={index}
-                    className="flex flex-col items-center py-6 px-3 border w-10/12 rounded-lg  text-center"
+                    className="flex flex-col items-center  py-3 md:py-6 px-3 border w-10/12 rounded-lg  text-center"
                   >
                     <img
                       src={item.Img}
                       alt={item.title}
-                      className="md:size-24 mb-2"
+                      className="size-10 md:size-24 mb-2"
                     />
-                    <p className="font-semibold text-title">{item.title}</p>
+                    <p className="font-semibold text-sm md:text-b text-title">{item.title}</p>
                   </li>
                 ))}
               </ul>
