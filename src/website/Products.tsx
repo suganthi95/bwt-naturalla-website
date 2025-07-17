@@ -17,7 +17,7 @@ export default function Products() {
   const best_selling = searchParams.get("best_selling");
   const is_featured = searchParams.get("is_featured");
   const isin_todays_deal = searchParams.get("isin_todays_deal");
-  const category_id = searchParams.get("category");
+  const category_id = searchParams.get("category_id");
   const subcategory_id = searchParams.get("subcategory_id");
   const product_name = searchParams.get("product_name");
   const latest_product = searchParams.get("latest_product");

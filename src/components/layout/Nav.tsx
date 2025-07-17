@@ -210,7 +210,7 @@ export default function Nav() {
 
                                 if (index === 5 && category) {
                                   navigate(
-                                    `/products/${category.category_title}?category=${category.category_id}&sub=${category.category_title}`,
+                                    `/products/${category.category_title}?category_id=${category.category_id}&sub=${category.category_title}`,
                                     {
                                       state: {
                                         category_id: `${category.category_id}`,
@@ -265,7 +265,7 @@ export default function Nav() {
                                             queryKey: ["filterbyfeature"],
                                           });
                                           navigate(
-                                            `/products/${category.category_title}?category=${category.category_id}&sub=${category.category_title}`,
+                                            `/products/${category.category_title}?category_id=${category.category_id}&sub=${category.category_title}`,
                                             {
                                               state: {
                                                 category_id: `${category.category_id}`,
@@ -638,7 +638,7 @@ export default function Nav() {
                               queryKey: ["filterbyfeature"],
                             });
                             navigate(
-                              `/products/${category.category_title}?category=${category.category_id}&sub=${category.category_title}`,
+                              `/products/${category.category_title}?category_id=${category.category_id}&sub=${category.category_title}`,
                               {
                                 state: {
                                   category_id: `${category.category_id}`,
@@ -683,7 +683,7 @@ export default function Nav() {
                                         queryKey: ["filterbyfeature"],
                                       });
                                       navigate(
-                                        `/products/${category.category_title}?category=${category.category_id}&sub=${category.category_title}`,
+                                        `/products/${category.category_title}?category_id=${category.category_id}&sub=${category.category_title}`,
                                         {
                                           state: {
                                             category_id: `${category.category_id}`,

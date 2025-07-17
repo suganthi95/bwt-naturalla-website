@@ -63,16 +63,16 @@ export default function Support({ profileInfo }: Props) {
   const { mutate, isPending } = useRaiseTicket();
   type ContactFormData = z.infer<typeof contactSchema>;
 
-  const getStatusColor = (status: string) => {
+    const getStatusColor = (status: string) => {
     switch (status) {
-      case "Open":
-        return "bg-green-100 text-green-800";
-      case "Closed":
-        return "bg-gray-100 text-gray-800";
-      case "Pending":
-        return "bg-yellow-100 text-yellow-800";
+      case "unresolved":
+        return "bg-[#FEE2E2] text-[#991B1B]";
+      case "in-progress":
+        return "bg-[#DBEAFE] text-[#1E40AF]";
+      case "resolved":
+        return "bg-[#DCFCE7] text-[#166534]";
       default:
-        return "bg-red-100 text-red-800";
+        return "bg-gray-100 text-gray-700";
     }
   };
 
@@ -199,7 +199,7 @@ export default function Support({ profileInfo }: Props) {
                           {ticket.issue_type}
                         </h3>
                         <div
-                          className={`px-4 py-1 text-xs rounded-md font-medium ${getStatusColor(
+                          className={`px-3 py-1 text-xs rounded-xl font-medium ${getStatusColor(
                             ticket.status
                           )}`}
                         >

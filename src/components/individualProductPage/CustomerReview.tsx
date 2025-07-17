@@ -5,10 +5,13 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import type { Product } from "@/types/Home";
+import { useState } from "react";
+import { getDaysAgo } from "@/utils";
 interface Props {
   Product: Product;
 }
 export default function CustomerReview({ Product }: Props) {
+  const [readMore, setReadMore] = useState<Record<number, boolean>>({});
   var settings = {
     dots: true,
     infinite: false,
@@ -247,7 +250,7 @@ export default function CustomerReview({ Product }: Props) {
                         {/* <Icons.Tick /> */}
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        2 hours ago
+                        {getDaysAgo(item?.created_at)}
                       </p>
                     </div>
                   </div>
@@ -263,10 +266,29 @@ export default function CustomerReview({ Product }: Props) {
                 </div>
 
                 <h3 className="font-semibold text-title ">
-                {item?.review_title}
+                  {item?.review_title}
                 </h3>
-
-                <p className=" text-sm md:text-base text-lead line-clamp-3">{item?.review_txt}</p>
+                <div>
+                  <p
+                    key={index}
+                    className={`text-sm md:text-base text-lead ${
+                      readMore[index] ? "" : "line-clamp-3"
+                    }`}
+                  >
+                    {item?.review_txt}{" "}
+                  </p>
+                  <span
+                    onClick={() =>
+                      setReadMore((prev) => ({
+                        ...prev,
+                        [index]: !prev[index],
+                      }))
+                    }
+                    className="cursor-pointer hover:underline text-sm"
+                  >
+                    {readMore[index] ? "Read Less" : "Read More"}
+                  </span>
+                </div>
               </div>
             );
           })}
