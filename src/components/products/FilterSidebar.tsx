@@ -295,9 +295,9 @@ export default function FilterSidebar({ filterValues }: Props) {
                 className="space-y-2 mt-2"
               >
                 {sortOptions.map((opt) => (
-                  <div key={opt.value} className="flex  px-1 items-center gap-2">
-                    <RadioGroupItem value={opt.value} id={opt.value} />
-                    <label htmlFor={opt.value}>{opt.label}</label>
+                  <div key={opt.value} className="flex cursor-pointer  px-1 items-center gap-2">
+                    <RadioGroupItem value={opt.value} className="cursor-pointer" id={opt.value} />
+                    <label htmlFor={opt.value} className="cursor-pointer">{opt.label}</label>
                   </div>
                 ))}
               </RadioGroup>
@@ -324,9 +324,9 @@ export default function FilterSidebar({ filterValues }: Props) {
                 className="space-y-2 mt-2"
               >
                 {sortOptions2.map((opt) => (
-                  <div key={opt.value} className="flex items-center px-1 gap-2">
-                    <RadioGroupItem value={opt.value} id={opt.value} />
-                    <label htmlFor={opt.value}>{opt.label} </label>
+                  <div key={opt.value} className="flex cursor-pointer items-center px-1 gap-2">
+                    <RadioGroupItem className="cursor-pointer" value={opt.value} id={opt.value} />
+                    <label htmlFor={opt.value} className="cursor-pointer">{opt.label} </label>
                   </div>
                 ))}
               </RadioGroup>
