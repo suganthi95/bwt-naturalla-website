@@ -210,6 +210,7 @@ export default function ProductSection({ media, products }: Props) {
             <h2 className="text-xl md:text-[32px] font-semibold ">
               {products?.product_name}
             </h2>
+            <p className="font-medium line-clamp-3">{products?.short_description}</p>
             <ul className="grid grid-cols-2 sm:grid-cols-3  md:gap-x-4">
               {products?.icon_data?.slice(0, 3)?.map((item) => {
                 return (

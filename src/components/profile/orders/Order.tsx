@@ -308,7 +308,7 @@ export default function Order({ Orders, handleTab }: Props) {
                           <div
                             className="cursor-pointer"
                             onClick={() => {
-                              setIsopen(false);
+                              setIsReviewopen(false);
                             }}
                           >
                             <X />

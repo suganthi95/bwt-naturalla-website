@@ -91,6 +91,8 @@ export default function Settings({ User }: Props) {
       {
         onSuccess: (data) => {
           setIsVerifyOtp(false);
+          setIsVerifyOtp(true);
+
           toast.success(data?.message);
         },
         onError: (error) => {

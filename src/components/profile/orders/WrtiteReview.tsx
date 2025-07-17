@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import type { ProductReview } from "@/types/type";
 import { Button } from "@/components/ui/button";
+import { useQueryClient } from "@tanstack/react-query";
 interface Props {
   onClose: (val: boolean) => void;
   orderCode: string;
@@ -22,6 +23,7 @@ export default function WriteReview({
   const [title, setTitle] = useState("");
   const { token } = useSelector((state: RootState) => state.auth);
   const [description, setDescription] = useState("");
+  const queryClient = useQueryClient()
   const [rating, setRating] = useState<number | null>(null);
 const [image, setImage] = useState<File | null>(null);
   const { mutate, isPending } = useWriteReview();
@@ -64,6 +66,7 @@ const [image, setImage] = useState<File | null>(null);
         onSuccess(data) {
           onClose(false);
           toast.success(data?.message || "Review submitted successfully");
+          queryClient.invalidateQueries({queryKey:['getorder']})
           setTitle("");
           setDescription("");
           setRating(null);
