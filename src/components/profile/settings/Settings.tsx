@@ -107,13 +107,19 @@ export default function Settings({ User }: Props) {
   const onSubmit = (values: FormValues) => {
     const passwordRegex =
       /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?#&])[A-Za-z\d@$!%*?#&]{8,}$/;
-
-    if (values.password !== values.confirmPassword) {
+      
+    if (
+      (User[0]?.verify_email || isVerfied ) &&
+      values.password && values.password !== values.confirmPassword
+    ) {
       toast.warning("Passwords do not match");
       return;
     }
 
-    if (!passwordRegex.test(values.password ?? "")) {
+    if (
+      (User[0]?.verify_email || isVerfied) &&
+     values.password && !passwordRegex.test(values.password ?? "")
+    ) {
       toast.warning(
         "Password must be at least 8 characters and include uppercase, lowercase, number, and special character"
       );
@@ -126,6 +132,7 @@ export default function Settings({ User }: Props) {
           last_name: values.lastName,
           email: values.email,
           phone_no: Number(values.phoneNumber),
+          password: values.password,
         },
         token: token,
       },
@@ -303,7 +310,7 @@ export default function Settings({ User }: Props) {
           </div>
 
           {User[0]?.verify_email || isVerfied ? (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="password"
@@ -382,14 +389,17 @@ export default function Settings({ User }: Props) {
           ) : (
             <div className="p-2 bg-yellow-50 text-yellow-800 text-xs w-fit rounded-md border border-yellow-200">
               <p>
-                <strong>Note:</strong> Please verify your email to update your
-                password.
+                <strong>Note:</strong> Please click{" "}
+                <span className="text-primary font-medium cursor-pointer hover:underline">
+                  verify
+                </span>{" "}
+                to confirm your email before updating your password.
               </p>
             </div>
           )}
 
           {(User[0]?.verify_email || isVerfied) && (
-            <div className="mt-2 rounded-lg border border-yellow-300 bg-yellow-50 p-3 text-sm text-yellow-800 flex items-start gap-2">
+            <div className="mt-2 rounded-lg border border-yellow-300 bg-yellow-50 p-1 md:p-3  text-yellow-800 flex items-start gap-2">
               <svg
                 className="h-5 w-5 mt-0.5 text-yellow-500"
                 fill="none"

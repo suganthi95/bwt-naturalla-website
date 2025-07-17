@@ -111,9 +111,9 @@ export default function ProductById() {
         </section>
         <section className="mt-10 mb-10 md:mt-20 md:mb-20  ">
           <div className="container mx-auto  flex  w-full">
-            <div className="w-full md:px-24">
+            <div className="w-full px-1 md:px-24">
               <h2 className="font-bold text-xl text-title mb-4">Whats out</h2>
-              <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 ">
+              <ul className="grid gap-y-2.5 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 ">
                 {whatsout.map((item, index) => (
                   <li
                     key={index}

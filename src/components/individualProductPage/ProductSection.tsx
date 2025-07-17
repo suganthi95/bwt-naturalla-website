@@ -47,13 +47,13 @@ const baseUrl = import.meta.env.VITE_FRONTEND_URL;
 const policies = [
   {
     title: "Shipping Policy",
-    icon: <Truck className="w-5 h-5 text-primary" />,
+    icon: <Truck className="w-4 h-4 md:w-5 md:h-5 text-primary" />,
     url: `${baseUrl}/shipping-policy`,
   },
 
   {
     title: "Return & Refund Policy",
-    icon: <BadgeDollarSign className="w-5 h-5 text-primary" />,
+    icon: <BadgeDollarSign className="w-4 h-4 md:w-5 md:h-5 text-primary" />,
     url: `${baseUrl}/returns-and-refunds`,
   },
 ];
@@ -210,8 +210,8 @@ export default function ProductSection({ media, products }: Props) {
             <h2 className="text-xl md:text-[32px] font-semibold ">
               {products?.product_name}
             </h2>
-            <p className="font-medium line-clamp-3">{products?.short_description}</p>
-            <ul className="grid grid-cols-2 sm:grid-cols-3  md:gap-x-4">
+            <p className="font-medium text-sm md:text-base line-clamp-3">{products?.short_description}</p>
+            <ul className="flex items-center flex-wrap gap-2  md:gap-4">
               {products?.icon_data?.slice(0, 3)?.map((item) => {
                 return (
                   <li className="flex items-center gap-x-1.5">
@@ -490,8 +490,8 @@ export default function ProductSection({ media, products }: Props) {
               onClick={() => window.open(item.url, "_blank")}
               className="flex items-center gap-3 cursor-pointer text-sm  rounded-xl transition-all "
             >
-              <div className="bg-primary/10 p-2 rounded-full">{item.icon}</div>
-              <p className="text-sm font-medium text-neutral-700">
+              <div className="bg-primary/10 p-2  rounded-full">{item.icon}</div>
+              <p className="text-xs md:text-sm font-medium text-neutral-700">
                 {item.title}
               </p>
             </div>
