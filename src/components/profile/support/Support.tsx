@@ -368,14 +368,26 @@ export default function Support({ profileInfo }: Props) {
                           (item: IssueType) =>
                             item.issue_type_id ===
                             Number(watch("issueCategory"))
-                        )?.sub_issues.map((sub: SubIssue) => (
-                          <SelectItem
-                            key={sub.subissue_id}
-                            value={String(sub.subissue_id)}
-                          >
-                            {sub.sub_issue}
+                        )?.sub_issues.length ? (
+                          IssueTypeLists?.find(
+                            (item: IssueType) =>
+                              item.issue_type_id ===
+                              Number(watch("issueCategory"))
+                          )?.sub_issues.map((sub: SubIssue) => (
+                            <SelectItem
+                              key={sub.subissue_id}
+                              value={String(sub.subissue_id)}
+                            >
+                              {sub.sub_issue}
+                            </SelectItem>
+                          ))
+                        ) : (
+                          <SelectItem disabled value="null">
+                            {watch("issueCategory")
+                              ? "No sub-issues found"
+                              : "Please select an issue category first"}
                           </SelectItem>
-                        ))}
+                        )}
                       </SelectContent>
                     </Select>
                     {errors.issueType && (
@@ -426,7 +438,7 @@ export default function Support({ profileInfo }: Props) {
                           setImagePreview("");
                           setValue("attachment", null);
                           if (fileInputRef.current) {
-                            fileInputRef.current.value = ""; 
+                            fileInputRef.current.value = "";
                           }
                         }}
                       >

@@ -15,7 +15,7 @@ import { Icons } from "@/assets/icons";
 import { useLogin } from "@/services/auth";
 import axios from "axios";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -30,7 +30,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function Login() {
   const { mutate, isPending } = useLogin();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [isEmailLogin, setIsEmailLogin] = useState(false);
   const navigate = useNavigate();
   const form = useForm<FormValues>({
@@ -125,21 +125,44 @@ export default function Login() {
                 </FormItem>
               )}
             />
+
             {isEmailLogin && (
               <FormField
                 control={form.control}
                 name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-textPrimary font-semibold ">
-                      Password
-                    </FormLabel>
-                    <FormControl>
-                      <Input className="h-11" placeholder="" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                render={({ field }) => {
+                  const [showPassword, setShowPassword] = useState(false);
+
+                  return (
+                    <FormItem>
+                      <FormLabel className="text-textPrimary font-semibold">
+                        Password <span className="text-red-500">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            className="h-11 pr-10"
+                            placeholder="••••••"
+                            type={showPassword ? "text" : "password"}
+                            {...field}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            className="absolute right-3 cursor-pointer top-1/2 -translate-y-1/2 text-gray-500"
+                          >
+                            {showPassword ? (
+                              <EyeOff className="w-5 h-5" />
+                            ) : (
+                              <Eye className="w-5 h-5" />
+                            )}
+                          </button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
               />
             )}
 

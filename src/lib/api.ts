@@ -49,6 +49,29 @@ export const verifyAccount = async (
   });
   return response.data;
 };
+
+export const verifyEmail = async (token: string, email: string) => {
+  const response = await api.post(
+    "v1/profile/verify/email",
+    { email },
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
+  return response.data;
+};
+export const verifyOtp  = async(token: string, email:string, otp: string)=>{
+  const response = await api.post("v1/profile/verify/otp",{email,otp},{
+    headers:{
+      Authorization:token
+    }
+  })
+    return response.data;
+
+}
+
 export const landingPageDetails = async () => {
   const response = await api.get("v1/product/deals-sellings/webapp");
   return response.data;

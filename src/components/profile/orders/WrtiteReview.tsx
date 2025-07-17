@@ -56,7 +56,7 @@ const [image, setImage] = useState<File | null>(null);
     formData.append("review_title", title);
     formData.append("review_txt", description);
     formData.append("ratings", rating.toString());
-    formData.append("review_images[0]",image ?? "")
+    formData.append("review_images",image ?? "")
 
     mutate(
       { formData, token },

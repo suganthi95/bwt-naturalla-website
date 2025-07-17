@@ -2,7 +2,6 @@ import { ASSETS } from "@/assets/assets";
 import { Icons } from "@/assets/icons";
 
 import Dashboard from "@/components/profile/dashboard/Dashboard";
-import { Button } from "@/components/ui/button";
 import UserAddress from "@/components/profile/address/UserAddress";
 import Order from "@/components/profile/orders/Order";
 import { useState } from "react";
@@ -67,11 +66,11 @@ export default function Myprofile() {
                 </p>
               </div>
 
-              <div className="text-center md:text-right mt-2 md:mt-0">
+              {/* <div className="text-center md:text-right mt-2 md:mt-0">
                 <Button onClick={() => setActiveTab("settings")} size="sm">
                   Edit
                 </Button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

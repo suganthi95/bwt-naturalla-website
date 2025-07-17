@@ -13,6 +13,8 @@ import {
   raiseTicket,
   updateProfile,
   updateProfileImage,
+  verifyEmail,
+  verifyOtp,
 } from "@/lib/api";
 import type { AddressPayload, Profile } from "@/types/type";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -33,6 +35,21 @@ export const useUpdateProfile = () => {
     mutationKey: ["updateprofile"],
     mutationFn: (args: { token: string; payload: Profile }) =>
       updateProfile(args.token, args.payload),
+  });
+};
+
+export const useVerifyEmail = () => {
+  return useMutation({
+    mutationKey: ["verifyEmail"],
+    mutationFn: (args: { token: string; email: string }) =>
+      verifyEmail(args.token, args.email),
+  });
+};
+export const useVerifyOtp = () => {
+  return useMutation({
+    mutationKey: ["verifyotp"],
+    mutationFn: (args: { token: string; email:string; otp: string }) =>
+      verifyOtp(args.token,args.email, args.otp),
   });
 };
 export const useUpdateProfileImage = () => {
@@ -134,11 +151,9 @@ export const useGetIssueTypes = (token: string) => {
   });
 };
 
-
-export const useRaiseTicket = ()=>{
+export const useRaiseTicket = () => {
   return useMutation({
-    mutationKey:['raiseTicket'],
-    mutationFn:(data:any)=>raiseTicket(data),
-  })
-
-}
+    mutationKey: ["raiseTicket"],
+    mutationFn: (data: any) => raiseTicket(data),
+  });
+};

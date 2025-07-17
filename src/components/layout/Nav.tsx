@@ -176,12 +176,12 @@ export default function Nav() {
                 onClick={() => navigate("/")}
                 src={ASSETS.LOGO}
                 alt="hero-image"
-                className="w-16 md:w-24 object-cover"
+                className="w-16 md:w-24  cursor-pointer object-cover"
               />
             </div>
             <ul className="xl:flex items-center hidden  justify-center gap-x-7">
               {NavData.map((item, index) => {
-                const IsDropDown = [2, 3, 4].includes(index);
+                const IsDropDown = [2, 3, 4, 5].includes(index);
 
                 return (
                   <li key={item.id} className="relative">
@@ -199,86 +199,123 @@ export default function Nav() {
                                   ? "font-bold underline underline-offset-8 decoration-2"
                                   : "font-normal no-underline"
                               }`}
+                              onClick={() => {
+                                const category = categories?.find(
+                                  (cate: any) => {
+                                    return cate.category_title.includes(
+                                      item.name
+                                    );
+                                  }
+                                );
+
+                                if (index === 5 && category) {
+                                  navigate(
+                                    `/products/${category.category_title}?category=${category.category_id}&sub=${category.category_title}`,
+                                    {
+                                      state: {
+                                        category_id: `${category.category_id}`,
+                                        title: `${category.category_title}`,
+                                      },
+                                      replace: true,
+                                    }
+                                  );
+                                  queryClient.invalidateQueries({
+                                    queryKey: ["filterbyfeature"],
+                                  });
+                                }
+                              }}
                             >
                               {item.name}
-                              {openDropdownId === item.id ? (
-                                <ChevronUp className="w-3" />
-                              ) : (
-                                <ChevronDown className="w-3" />
+                              {index !== 5 && (
+                                <>
+                                  {openDropdownId === item.id ? (
+                                    <ChevronUp className="w-3" />
+                                  ) : (
+                                    <ChevronDown className="w-3" />
+                                  )}
+                                </>
                               )}
                             </button>
                           </PopoverTrigger>
-
-                          <PopoverContent
-                            align="start"
-                            className="-mt-2 w-64 bg-white shadow-lg rounded-xl p-4 z-50"
-                            sideOffset={8}
-                            avoidCollisions={false}
-                          >
-                            <motion.div
-                              initial={{ opacity: 0, y: -10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -10 }}
-                              transition={{ duration: 0.2 }}
-                              className="space-y-4"
+                          {index === 5 ? (
+                            ""
+                          ) : (
+                            <PopoverContent
+                              align="start"
+                              className="-mt-2 w-64 bg-white shadow-lg rounded-xl p-4 z-50"
+                              sideOffset={8}
+                              avoidCollisions={false}
                             >
-                              {categories
-                                ?.filter((cat: any) =>
-                                  cat.category_title.includes(item.name)
-                                )
-                                ?.map((category: any) => (
-                                  <div key={category.category_id}>
-                                    <p
-                                      onClick={() => {
-                                        queryClient.invalidateQueries({
-                                          queryKey: ["filterbyfeature"],
-                                        });
-                                        navigate(
-                                          `/products/${category.category_title}?category=${category.category_id}&sub=${category.category_title}`,
-                                          {
-                                            state: {
-                                              category_id: `${category.category_id}`,
-                                              title: `${category.category_title}`,
-                                            },
-                                          }
-                                        );
-                                        setOpenDropdownId(null);
-                                      }}
-                                      className="text-sm font-semibold text-gray-800 cursor-pointer"
-                                    >
-                                      {category.category_title}
-                                    </p>
-                                    <ul className="ml-2 mt-2 space-y-1">
-                                      {category?.subcategories?.map(
-                                        (sub: any) => (
-                                          <li key={sub.subcategory_id}>
-                                            <Link
-                                              onClick={() => {
-                                                queryClient.invalidateQueries({
-                                                  queryKey: ["filterbyfeature"],
-                                                });
-                                                setOpenDropdownId(null);
-                                              }}
-                                              to={`/products/${sub.subcategory_name.toLowerCase()}?category_id=${
-                                                category.category_id
-                                              }&subcategory_id=${
-                                                sub.subcategory_id
-                                              }`}
-                                              state={{
-                                                title: sub.subcategory_name,
-                                              }}
-                                              className="text-sm text-gray-600 hover:text-primary transition"
-                                            >
-                                              {sub.subcategory_name}
-                                            </Link>
-                                          </li>
-                                        )
-                                      )}
-                                    </ul>
-                                  </div>
-                                ))}
-                            </motion.div>
-                          </PopoverContent>
+                              <motion.div
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.2 }}
+                                className="space-y-4"
+                              >
+                                {categories
+                                  ?.filter((cat: any) =>
+                                    cat.category_title.includes(item.name)
+                                  )
+                                  ?.map((category: any) => (
+                                    <div key={category.category_id}>
+                                      <p
+                                        onClick={() => {
+                                          queryClient.invalidateQueries({
+                                            queryKey: ["filterbyfeature"],
+                                          });
+                                          navigate(
+                                            `/products/${category.category_title}?category=${category.category_id}&sub=${category.category_title}`,
+                                            {
+                                              state: {
+                                                category_id: `${category.category_id}`,
+                                                title: `${category.category_title}`,
+                                              },
+                                              replace: true,
+                                            }
+                                          );
+                                          setOpenDropdownId(null);
+                                        }}
+                                        className="text-sm font-semibold text-gray-800 cursor-pointer"
+                                      >
+                                        {category.category_title}
+                                      </p>
+                                      <ul className="ml-2 mt-2 space-y-1">
+                                        {category?.subcategories?.map(
+                                          (sub: any) => (
+                                            <li key={sub.subcategory_id}>
+                                              <Link
+                                                onClick={() => {
+                                                  queryClient.invalidateQueries(
+                                                    {
+                                                      queryKey: [
+                                                        "filterbyfeature",
+                                                      ],
+                                                    }
+                                                  );
+                                                  setOpenDropdownId(null);
+                                                }}
+                                                to={`/products/${sub.subcategory_name.toLowerCase()}?category_id=${
+                                                  category.category_id
+                                                }&subcategory_id=${
+                                                  sub.subcategory_id
+                                                }`}
+                                                state={{
+                                                  title: sub.subcategory_name,
+                                                }}
+                                                className="text-sm text-gray-600 hover:text-primary transition"
+                                              >
+                                                {sub.subcategory_name}
+                                              </Link>
+                                            </li>
+                                          )
+                                        )}
+                                      </ul>
+                                    </div>
+                                  ))}
+                              </motion.div>
+                            </PopoverContent>
+                          )}
                         </Popover>
                       </div>
                     ) : [0, 6].includes(index) ? (
@@ -587,11 +624,31 @@ export default function Nav() {
                   return (
                     <div key={item.id} className="flex flex-col">
                       <button
-                        onClick={() =>
+                        onClick={() => {
                           setOpenMobileDropdownId(
                             isDropdownOpen ? null : item.id
-                          )
-                        }
+                          );
+
+                          const category = categories?.find((cate: any) => {
+                            return cate.category_title.includes(item.name);
+                          });
+
+                          if (index === 5 && category) {
+                            queryClient.invalidateQueries({
+                              queryKey: ["filterbyfeature"],
+                            });
+                            navigate(
+                              `/products/${category.category_title}?category=${category.category_id}&sub=${category.category_title}`,
+                              {
+                                state: {
+                                  category_id: `${category.category_id}`,
+                                  title: `${category.category_title}`,
+                                },
+                                replace: true,
+                              }
+                            );
+                          }
+                        }}
                         className={`flex justify-between items-center text-base text-neutral-800 w-full ${
                           pathname === item.link
                             ? "font-semibold text-primary underline underline-offset-4"
@@ -607,7 +664,7 @@ export default function Nav() {
                       </button>
 
                       <AnimatePresence>
-                        {isDropdownOpen && (
+                        {isDropdownOpen && index !== 5 && (
                           <motion.div
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: "auto", opacity: 1 }}
