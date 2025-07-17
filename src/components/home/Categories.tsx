@@ -31,7 +31,7 @@ export default function Categories() {
       ].map((item, index) => (
         <li
           key={index}
-          className="bg-[#F8F6F2] rounded-xl border border-xl flex items-center justify-center p-4 gap-x-4 min-h-[180px]"
+          className="bg-[#F8F6F2] rounded-xl cursor-pointer border border-xl flex items-center justify-center p-4 gap-x-4 min-h-[180px]"
           onClick={() =>
             navigate(`/products/${item.label} ` , {
               state: { category_id: `` },

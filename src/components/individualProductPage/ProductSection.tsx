@@ -82,12 +82,13 @@ export default function ProductSection({ media, products }: Props) {
     if (quantity > 1) {
       setQuantity(quantity - 1);
       dispatch(decreaseQuantity(cart_id));
+   
     }
   };
 
   const handleIncrease = (cart_id: number) => {
     setQuantity(quantity + 1);
-
+  
     dispatch(increaseQuantity(cart_id));
   };
 
@@ -239,7 +240,7 @@ export default function ProductSection({ media, products }: Props) {
                 </Button>
               </DialogTrigger>
               <DialogContent>
-                <ShareButton url={window.location.href} />
+                <ShareButton  url={window.location.href} />
               </DialogContent>
             </Dialog>
             <button
@@ -300,22 +301,22 @@ export default function ProductSection({ media, products }: Props) {
           </div>
         </div>
 
-        {averageRatings ? (
-          <p className="flex items-center gap-x-0.5 text-sm">
-            {Array.from({ length: 5 }).map((_, i) =>
-              i < averageRatings ? (
-                <Icons.Star key={i} className="text-yellow-500 w-4 h-4" />
-              ) : (
-                <Icons.Un_Star key={i} className="text-gray-300 w-4 h-4" />
-              )
-            )}
-            <span className="font-semibold ml-1">
-              {isNaN(averageRatings) ? 0 : averageRatings} / 5
-            </span>
-          </p>
-        ) : (
-          ""
-        )}
+          {averageRatings?
+        <p className="flex items-center gap-x-0.5 text-sm">
+       
+          {Array.from({ length: 5 }).map((_, i) =>
+            i < averageRatings ? (
+              <Icons.Star key={i} className="text-yellow-500 w-4 h-4" />
+            ) : (
+              <Icons.Un_Star key={i} className="text-gray-300 w-4 h-4" />
+            )
+          )}
+          <span className="font-semibold ml-1">
+            {isNaN(averageRatings) ? 0 : averageRatings} / 5
+          </span>
+         
+        </p>
+          :""}
         <div className="flex items-center gap-x-2">
           <p className=" font-bold text-title  text-sm md:text-[32px]">
             Rs. {products?.unit_price}
@@ -343,36 +344,33 @@ export default function ProductSection({ media, products }: Props) {
               </span>
             </p>
           </div>
-          <div className="flex items-center gap-2 border rounded-lg p-1 px-2 sm:px-4 w-fit">
+          <div className="flex items-center gap-2 border w-fit p-1 mt-2 px-2 md:px-4 rounded-lg">
             <Button
               variant="outline"
               size="icon"
               disabled={products?.quantity < 2}
-              className="border-none cursor-pointer h-10 w-10 text-xl font-bold p-0 sm:h-11 sm:w-11"
+              className="border-none cursor-pointer  w-fit md:text-xl font-semibold"
               onClick={() => handleDecrease(products?.cart_id)}
             >
-              −
+              {" −"}
             </Button>
-
             <Input
               type="number"
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
-              className="w-12 h-10 sm:h-11 text-center text-base sm:text-xl font-semibold border-none focus-visible:ring-0"
+              className=" w-10  text-xl  font-semibold border-none text-center"
               min={1}
             />
-
             <Button
               disabled={quantity >= products?.current_stock}
               variant="outline"
               size="icon"
-              className="border-none cursor-pointer h-10 w-10 text-xl font-bold p-0 sm:h-11 sm:w-11"
+              className="cursor-pointer  border-none  w-fit md:text-xl font-semibold"
               onClick={() => handleIncrease(products.cart_id)}
             >
               +
             </Button>
           </div>
-
           <AnimatePresence>
             {quantity >= products?.current_stock && (
               <motion.p
@@ -468,6 +466,7 @@ export default function ProductSection({ media, products }: Props) {
               onChange={(e) => setPincode(e.target.value)}
               className="border-none placeholder:text-sm focus-visible:ring-0 focus-visible:ring-offset-0 h-8 text-sm pr-8 pl-2"
             />
+          
           </div>
           <Button
             onClick={checkDeliveryInfo}
