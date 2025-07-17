@@ -43,6 +43,7 @@ export default function Settings({ User }: Props) {
   const { token } = useSelector((state: RootState) => state.auth);
   const { mutate, isPending } = useUpdateProfile();
   const [IsVerifyOtp, setIsVerifyOtp] = useState(false);
+  const [isEditing, setIsEditing] = useState(true);
   const [isVerfied, setIsVerified] = useState(false);
   const [email, setEmail] = useState<string>("");
   const [otpValue, setOtpValue] = useState("");
@@ -107,10 +108,11 @@ export default function Settings({ User }: Props) {
   const onSubmit = (values: FormValues) => {
     const passwordRegex =
       /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?#&])[A-Za-z\d@$!%*?#&]{8,}$/;
-      
+
     if (
-      (User[0]?.verify_email || isVerfied ) &&
-      values.password && values.password !== values.confirmPassword
+      (User[0]?.verify_email || isVerfied) &&
+      values.password &&
+      values.password !== values.confirmPassword
     ) {
       toast.warning("Passwords do not match");
       return;
@@ -118,7 +120,8 @@ export default function Settings({ User }: Props) {
 
     if (
       (User[0]?.verify_email || isVerfied) &&
-     values.password && !passwordRegex.test(values.password ?? "")
+      values.password &&
+      !passwordRegex.test(values.password ?? "")
     ) {
       toast.warning(
         "Password must be at least 8 characters and include uppercase, lowercase, number, and special character"
@@ -132,7 +135,7 @@ export default function Settings({ User }: Props) {
           last_name: values.lastName,
           email: values.email,
           phone_no: Number(values.phoneNumber),
-          password: values.password,
+          password: values.password ? values?.password : null,
         },
         token: token,
       },
@@ -158,6 +161,7 @@ export default function Settings({ User }: Props) {
             <FormField
               control={form.control}
               name="firstName"
+              disabled={isEditing}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-textPrimary font-semibold ">
@@ -173,6 +177,7 @@ export default function Settings({ User }: Props) {
             <FormField
               control={form.control}
               name="lastName"
+              disabled={isEditing}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-textPrimary font-semibold ">
@@ -192,6 +197,7 @@ export default function Settings({ User }: Props) {
               <FormField
                 control={form.control}
                 name="email"
+                disabled={isEditing}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-textPrimary font-semibold">
@@ -268,6 +274,7 @@ export default function Settings({ User }: Props) {
             <FormField
               control={form.control}
               name="phoneNumber"
+              disabled={isEditing}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-textPrimary font-semibold ">
@@ -314,6 +321,7 @@ export default function Settings({ User }: Props) {
               <FormField
                 control={form.control}
                 name="password"
+                disabled={isEditing}
                 render={({ field }) => {
                   const [showPassword, setShowPassword] = useState(false);
 
@@ -351,6 +359,7 @@ export default function Settings({ User }: Props) {
               <FormField
                 control={form.control}
                 name="confirmPassword"
+                disabled={isEditing}
                 render={({ field }) => {
                   const [showPassword, setShowPassword] = useState(false);
 
@@ -422,10 +431,29 @@ export default function Settings({ User }: Props) {
               </p>
             </div>
           )}
-
-          <Button type="submit" disabled={isPending} className="w-fit">
-            {isPending ? <Loader2 className="animate-spin" /> : "Save"}
-          </Button>
+          <div>
+            {isEditing ? (
+              <Button type="button" onClick={() => setIsEditing(false)}>
+                Edit
+              </Button>
+            ) : (
+              <div className="space-x-2">
+                {" "}
+                <Button type="submit" disabled={isPending} className="w-fit">
+                  {isPending ? <Loader2 className="animate-spin" /> : "Save"}
+                </Button>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => {
+                    setIsEditing(true);
+                  }}
+                >
+                  Cancel
+                </Button>
+              </div>
+            )}
+          </div>
         </form>
       </Form>
     </div>

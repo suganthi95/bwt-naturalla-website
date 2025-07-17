@@ -204,7 +204,7 @@ export type Profile = {
   last_name: string;
   email: string;
   phone_no: number;
-  password?: string;
+  password?: string | null;
 };
 export interface OrderAddressPayload {
   address_first_name: string;
