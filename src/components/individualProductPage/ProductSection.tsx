@@ -346,7 +346,7 @@ export default function ProductSection({ media, products }: Props) {
               </span>
             </p>
             <p className="px-2 py-0.5  text-xs md:text-sm  text-neutral-700  font-medium">
-              Size {products?.units}
+               {products?.units}
             </p>
           </div>
           

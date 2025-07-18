@@ -134,7 +134,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                             {item?.unit_price}
                             <span className="hidden sm:inline border-l h-3 border-gray-300"></span>
                            
-                            <span className="text-[13px]">Size</span>{" "}
+                            {/* <span className="text-[13px]">Size</span>{" "} */}
                             {item?.units}
                           </p>
 

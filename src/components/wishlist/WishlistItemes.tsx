@@ -77,7 +77,7 @@ export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
                         <p className="text-sm flex flex-wrap items-center gap-x-2 mt-0.5 text-[#939393]">
                           <span>1 unit</span>₹{item?.unit_price}
                           <span className="hidden sm:inline border-l h-3 border-gray-300"></span>
-                          <span>Size</span>
+                          {/* <span>Size</span> */}
                           {item?.units}
                         </p>
 
