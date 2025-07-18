@@ -1341,7 +1341,7 @@ export default function CheckoutPage() {
               <AccordionItem value="price" className="border-none">
                 <AccordionTrigger className="cursor-pointer">
                   <h1 className="md:text-2xl font-semibold ">
-                    Shipping Details
+                  Price Details 
                   </h1>
                 </AccordionTrigger>
                 <AccordionContent>

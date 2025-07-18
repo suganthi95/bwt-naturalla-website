@@ -428,11 +428,7 @@ export default function ProductSection({ media, products }: Props) {
                       onSuccess() {
                         dispatch(addItem(products));
                       },
-                      onError: (error) => {
-                        if (axios.isAxiosError(error)) {
-                          toast.error(error?.response?.data?.messgae);
-                        }
-                      },
+                   
                     }
                   );
                 } else {
