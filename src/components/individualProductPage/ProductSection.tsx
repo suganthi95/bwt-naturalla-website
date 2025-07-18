@@ -82,13 +82,12 @@ export default function ProductSection({ media, products }: Props) {
     if (quantity > 1) {
       setQuantity(quantity - 1);
       dispatch(decreaseQuantity(cart_id));
-   
     }
   };
 
   const handleIncrease = (cart_id: number) => {
     setQuantity(quantity + 1);
-  
+
     dispatch(increaseQuantity(cart_id));
   };
 
@@ -210,7 +209,9 @@ export default function ProductSection({ media, products }: Props) {
             <h2 className="text-xl md:text-[32px] font-semibold ">
               {products?.product_name}
             </h2>
-            <p className="font-medium text-sm md:text-base line-clamp-3">{products?.short_description}</p>
+            <p className="font-medium text-sm md:text-base line-clamp-3">
+              {products?.short_description}
+            </p>
             <ul className="flex items-center flex-wrap gap-2  md:gap-4">
               {products?.icon_data?.slice(0, 3)?.map((item) => {
                 return (
@@ -241,7 +242,7 @@ export default function ProductSection({ media, products }: Props) {
                 </Button>
               </DialogTrigger>
               <DialogContent>
-                <ShareButton  url={window.location.href} />
+                <ShareButton url={window.location.href} />
               </DialogContent>
             </Dialog>
             <button
@@ -302,22 +303,22 @@ export default function ProductSection({ media, products }: Props) {
           </div>
         </div>
 
-          {averageRatings?
-        <p className="flex items-center gap-x-0.5 text-sm">
-       
-          {Array.from({ length: 5 }).map((_, i) =>
-            i < averageRatings ? (
-              <Icons.Star key={i} className="text-yellow-500 w-4 h-4" />
-            ) : (
-              <Icons.Un_Star key={i} className="text-gray-300 w-4 h-4" />
-            )
-          )}
-          <span className="font-semibold ml-1">
-            {isNaN(averageRatings) ? 0 : averageRatings} / 5
-          </span>
-         
-        </p>
-          :""}
+        {averageRatings ? (
+          <p className="flex items-center gap-x-0.5 text-sm">
+            {Array.from({ length: 5 }).map((_, i) =>
+              i < averageRatings ? (
+                <Icons.Star key={i} className="text-yellow-500 w-4 h-4" />
+              ) : (
+                <Icons.Un_Star key={i} className="text-gray-300 w-4 h-4" />
+              )
+            )}
+            <span className="font-semibold ml-1">
+              {isNaN(averageRatings) ? 0 : averageRatings} / 5
+            </span>
+          </p>
+        ) : (
+          ""
+        )}
         <div className="flex items-center gap-x-2">
           <p className=" font-bold text-title  text-sm md:text-[32px]">
             Rs. {products?.unit_price}
@@ -337,14 +338,18 @@ export default function ProductSection({ media, products }: Props) {
           )}
         </div>
         <div className="flex md:flex-col items-center lg:items-start  justify-between">
-          <div>
+          <div className="flex flex-col items-start md:flex-row md:items-center gap-x-3 md:justify-center">
             <p className="flex items-center gap-x-1.5 text-lead">
               Price <span> : </span>{" "}
               <span className="text-title font-bold t">
                 Rs {products?.unit_price}
               </span>
             </p>
+            <p className="px-2 py-0.5  text-xs md:text-sm  text-neutral-700  font-medium">
+              Size {products?.units}
+            </p>
           </div>
+          
           <div className="flex items-center gap-2 border w-fit p-1 mt-2 px-2 md:px-4 rounded-lg">
             <Button
               variant="outline"
@@ -391,20 +396,11 @@ export default function ProductSection({ media, products }: Props) {
             <Button
               onClick={() => {
                 if (status) {
-                  addtoCart(
-                    {
-                      product_id: products.product_id,
-                      quantity: quantity,
-                      token: token,
-                    },
-                    {
-                      onError: (error) => {
-                        if (axios.isAxiosError(error)) {
-                          toast.error(error?.response?.data?.messgae);
-                        }
-                      },
-                    }
-                  );
+                  addtoCart({
+                    product_id: products.product_id,
+                    quantity: quantity,
+                    token: token,
+                  });
 
                   navigate("/checkout");
                 } else {
@@ -467,7 +463,6 @@ export default function ProductSection({ media, products }: Props) {
               onChange={(e) => setPincode(e.target.value)}
               className="border-none placeholder:text-sm focus-visible:ring-0 focus-visible:ring-offset-0 h-8 text-sm pr-8 pl-2"
             />
-          
           </div>
           <Button
             onClick={checkDeliveryInfo}

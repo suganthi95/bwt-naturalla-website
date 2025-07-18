@@ -173,7 +173,26 @@ export default function Nav() {
                 <MenuToggle open={IsMenuopen} handleclick={handleclick} />
               </div>
               <img
-                onClick={() => navigate("/")}
+                onClick={() => {
+                  navigate("/");
+                  document.title = "Naturalla – Natural Skincare Products";
+
+                  const setMetaDescription = (content: string) => {
+                    let tag = document.querySelector(
+                      'meta[name="description"]'
+                    ) as HTMLMetaElement;
+                    if (!tag) {
+                      tag = document.createElement("meta");
+                      tag.setAttribute("name", "description");
+                      document.head.appendChild(tag);
+                    }
+                    tag.setAttribute("content", content);
+                  };
+
+                  setMetaDescription(
+                    "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                  );
+                }}
                 src={ASSETS.LOGO}
                 alt="hero-image"
                 className="w-16 md:w-24  cursor-pointer object-cover"
@@ -193,142 +212,183 @@ export default function Nav() {
                       >
                         <Popover open={openDropdownId === item.id}>
                           <PopoverTrigger asChild>
-                            <button
-                              className={`text-primary font-semibold flex items-center gap-x-1 tracking-wide py-2 cursor-pointer ${
+                            <div
+                              className={`text-primary focus-within:border-none focus-visible:border-none font-semibold flex items-center gap-x-1 tracking-wide py-2 cursor-pointer ${
                                 pathname === item.link
                                   ? "font-bold underline underline-offset-8 decoration-2"
                                   : "font-normal no-underline"
                               }`}
-                              onClick={() => {
-                                const category = categories?.find(
-                                  (cate: any) => {
-                                    return cate.category_title.includes(
-                                      item.name
-                                    );
-                                  }
-                                );
+                              // onClick={() => {
+                              //   const category = categories?.find(
+                              //     (cate: any) => {
+                              //       return cate.category_title.includes(
+                              //         item.name
+                              //       );
+                              //     }
+                              //   );
 
-                                if (index === 5 && category) {
-                                  navigate(
-                                    `/products/${category.category_title}?category_id=${category.category_id}&sub=${category.category_title}`,
-                                    {
-                                      state: {
-                                        category_id: `${category.category_id}`,
-                                        title: `${category.category_title}`,
-                                      },
-                                      replace: true,
-                                    }
-                                  );
-                                  queryClient.invalidateQueries({
-                                    queryKey: ["filterbyfeature"],
-                                  });
-                                }
-                              }}
+                              //   if (index === 5 && category) {
+                              //     navigate(
+                              //       `/products/${category.category_title}?category_id=${category.category_id}&sub=${category.category_title}`,
+                              //       {
+                              //         state: {
+                              //           category_id: `${category.category_id}`,
+                              //           title: `${category.category_title}`,
+                              //         },
+                              //         replace: true,
+                              //       }
+                              //     );
+                              //     queryClient.invalidateQueries({
+                              //       queryKey: ["filterbyfeature"],
+                              //     });
+                              //   }
+                              // }}
                             >
                               {item.name}
-                              {index !== 5 && (
-                                <>
-                                  {openDropdownId === item.id ? (
-                                    <ChevronUp className="w-3" />
-                                  ) : (
-                                    <ChevronDown className="w-3" />
-                                  )}
-                                </>
-                              )}
-                            </button>
+
+                              <>
+                                {openDropdownId === item.id ? (
+                                  <ChevronUp className="w-3" />
+                                ) : (
+                                  <ChevronDown className="w-3" />
+                                )}
+                              </>
+                            </div>
                           </PopoverTrigger>
-                          {index === 5 ? (
-                            ""
-                          ) : (
-                            <PopoverContent
-                              align="start"
-                              className="-mt-2 w-64 bg-white shadow-lg rounded-xl p-4 z-50"
-                              sideOffset={8}
-                              avoidCollisions={false}
+
+                          <PopoverContent
+                            align="start"
+                            className="-mt-2 w-64 bg-white shadow-lg rounded-xl p-4 z-50"
+                            sideOffset={8}
+                            avoidCollisions={false}
+                          >
+                            <motion.div
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                              transition={{ duration: 0.2 }}
+                              className="space-y-4"
                             >
-                              <motion.div
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -10 }}
-                                transition={{ duration: 0.2 }}
-                                className="space-y-4"
-                              >
-                                {categories
-                                  ?.filter((cat: any) =>
-                                    cat.category_title.includes(item.name)
-                                  )
-                                  ?.map((category: any) => (
-                                    <div key={category.category_id}>
-                                      <p
-                                        onClick={() => {
-                                          queryClient.invalidateQueries({
-                                            queryKey: ["filterbyfeature"],
-                                          });
-                                          navigate(
-                                            `/products/${category.category_title}?category_id=${category.category_id}&sub=${category.category_title}`,
-                                            {
-                                              state: {
-                                                category_id: `${category.category_id}`,
-                                                title: `${category.category_title}`,
-                                              },
-                                              replace: true,
-                                            }
-                                          );
-                                          setOpenDropdownId(null);
-                                        }}
-                                        className="text-sm font-semibold text-gray-800 cursor-pointer"
-                                      >
-                                        {category.category_title}
-                                      </p>
-                                      <ul className="ml-2 mt-2 space-y-1">
-                                        {category?.subcategories?.map(
-                                          (sub: any) => (
-                                            <li key={sub.subcategory_id}>
-                                              <Link
-                                                onClick={() => {
-                                                  queryClient.invalidateQueries(
-                                                    {
-                                                      queryKey: [
-                                                        "filterbyfeature",
-                                                      ],
-                                                    }
+                              {categories
+                                ?.filter((cat: any) =>
+                                  cat.category_title.includes(item.name)
+                                )
+                                ?.map((category: any) => (
+                                  <div key={category.category_id}>
+                                    <p
+                                      onClick={() => {
+                                        queryClient.invalidateQueries({
+                                          queryKey: ["filterbyfeature"],
+                                        });
+                                        navigate(
+                                          `/products/${category.category_title}?category_id=${category.category_id}&sub=${category.category_title}`,
+                                          {
+                                            state: {
+                                              category_id: `${category.category_id}`,
+                                              title: `${category.category_title}`,
+                                            },
+                                            replace: true,
+                                          }
+                                        );
+                                        document.title =
+                                          "Naturalla – Natural Skincare Products";
+
+                                        const setMetaDescription = (
+                                          content: string
+                                        ) => {
+                                          let tag = document.querySelector(
+                                            'meta[name="description"]'
+                                          ) as HTMLMetaElement;
+                                          if (!tag) {
+                                            tag =
+                                              document.createElement("meta");
+                                            tag.setAttribute(
+                                              "name",
+                                              "description"
+                                            );
+                                            document.head.appendChild(tag);
+                                          }
+                                          tag.setAttribute("content", content);
+                                        };
+
+                                        setMetaDescription(
+                                          "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                                        );
+                                        setOpenDropdownId(null);
+                                      }}
+                                      className="text-sm font-semibold text-gray-800 cursor-pointer"
+                                    >
+                                      {category.category_title}
+                                    </p>
+                                    <ul className="ml-2 mt-2 space-y-1">
+                                      {category?.subcategories?.map(
+                                        (sub: any) => (
+                                          <li key={sub.subcategory_id}>
+                                            <Link
+                                              onClick={() => {
+                                                queryClient.invalidateQueries({
+                                                  queryKey: ["filterbyfeature"],
+                                                });
+                                                document.title =
+                                                  "Naturalla – Natural Skincare Products";
+
+                                                const setMetaDescription = (
+                                                  content: string
+                                                ) => {
+                                                  let tag =
+                                                    document.querySelector(
+                                                      'meta[name="description"]'
+                                                    ) as HTMLMetaElement;
+                                                  if (!tag) {
+                                                    tag =
+                                                      document.createElement(
+                                                        "meta"
+                                                      );
+                                                    tag.setAttribute(
+                                                      "name",
+                                                      "description"
+                                                    );
+                                                    document.head.appendChild(
+                                                      tag
+                                                    );
+                                                  }
+                                                  tag.setAttribute(
+                                                    "content",
+                                                    content
                                                   );
-                                                  setOpenDropdownId(null);
-                                                }}
-                                                to={`/products/${sub.subcategory_name.toLowerCase()}?category_id=${
-                                                  category.category_id
-                                                }&subcategory_id=${
-                                                  sub.subcategory_id
-                                                }`}
-                                                state={{
-                                                  title: sub.subcategory_name,
-                                                }}
-                                                className="text-sm text-gray-600 hover:text-primary transition"
-                                              >
-                                                {sub.subcategory_name}
-                                              </Link>
-                                            </li>
-                                          )
-                                        )}
-                                      </ul>
-                                    </div>
-                                  ))}
-                              </motion.div>
-                            </PopoverContent>
-                          )}
+                                                };
+
+                                                setMetaDescription(
+                                                  "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                                                );
+                                                setOpenDropdownId(null);
+                                              }}
+                                              to={`/products/${sub.subcategory_name.toLowerCase()}?category_id=${
+                                                category.category_id
+                                              }&subcategory_id=${
+                                                sub.subcategory_id
+                                              }`}
+                                              state={{
+                                                title: sub.subcategory_name,
+                                              }}
+                                              className="text-sm text-gray-600 hover:text-primary transition"
+                                            >
+                                              {sub.subcategory_name}
+                                            </Link>
+                                          </li>
+                                        )
+                                      )}
+                                    </ul>
+                                  </div>
+                                ))}
+                            </motion.div>
+                          </PopoverContent>
                         </Popover>
                       </div>
                     ) : [0, 6].includes(index) ? (
                       <button
                         onClick={() => {
-                          if (index === 5) {
-                            queryClient.invalidateQueries({
-                              queryKey: ["filterbyfeature"],
-                            });
-                            navigate("/products/combo?best_selling=true", {
-                              state: { title: "Combo's" },
-                            });
-                          } else if (index === 6) {
+                          if (index === 6) {
                             queryClient.invalidateQueries({
                               queryKey: ["filterbyfeature"],
                             });
@@ -347,6 +407,24 @@ export default function Nav() {
                               { state: { title: "Today's Offer" } }
                             );
                           }
+                          document.title =
+                            "Naturalla – Natural Skincare Products";
+
+                          const setMetaDescription = (content: string) => {
+                            let tag = document.querySelector(
+                              'meta[name="description"]'
+                            ) as HTMLMetaElement;
+                            if (!tag) {
+                              tag = document.createElement("meta");
+                              tag.setAttribute("name", "description");
+                              document.head.appendChild(tag);
+                            }
+                            tag.setAttribute("content", content);
+                          };
+
+                          setMetaDescription(
+                            "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                          );
                         }}
                         className={`text-primary font-semibold cursor-pointer tracking-wide py-2 ${
                           pathname === "/products/best-selling"
@@ -358,11 +436,29 @@ export default function Nav() {
                       </button>
                     ) : (
                       <Link
-                        onClick={() =>
+                        onClick={() => {
                           queryClient.invalidateQueries({
                             queryKey: ["filterbyfeature"],
-                          })
-                        }
+                          });
+                          document.title =
+                            "Naturalla – Natural Skincare Products";
+
+                          const setMetaDescription = (content: string) => {
+                            let tag = document.querySelector(
+                              'meta[name="description"]'
+                            ) as HTMLMetaElement;
+                            if (!tag) {
+                              tag = document.createElement("meta");
+                              tag.setAttribute("name", "description");
+                              document.head.appendChild(tag);
+                            }
+                            tag.setAttribute("content", content);
+                          };
+
+                          setMetaDescription(
+                            "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                          );
+                        }}
                         to={item.link}
                         className={`text-primary font-semibold tracking-wide py-2 ${
                           pathname === item.link
@@ -618,7 +714,7 @@ export default function Nav() {
             <ul className="flex flex-col px-4 py-6 gap-4">
               {NavData.map((item, index) => {
                 const isDropdownOpen = openMobileDropdownId === item.id;
-                const IsDropDown = [2, 3, 4].includes(index);
+                const IsDropDown = [2, 3, 4, 5].includes(index);
 
                 if (IsDropDown) {
                   return (
@@ -628,26 +724,24 @@ export default function Nav() {
                           setOpenMobileDropdownId(
                             isDropdownOpen ? null : item.id
                           );
+                          document.title =
+                            "Naturalla – Natural Skincare Products";
 
-                          const category = categories?.find((cate: any) => {
-                            return cate.category_title.includes(item.name);
-                          });
+                          const setMetaDescription = (content: string) => {
+                            let tag = document.querySelector(
+                              'meta[name="description"]'
+                            ) as HTMLMetaElement;
+                            if (!tag) {
+                              tag = document.createElement("meta");
+                              tag.setAttribute("name", "description");
+                              document.head.appendChild(tag);
+                            }
+                            tag.setAttribute("content", content);
+                          };
 
-                          if (index === 5 && category) {
-                            queryClient.invalidateQueries({
-                              queryKey: ["filterbyfeature"],
-                            });
-                            navigate(
-                              `/products/${category.category_title}?category_id=${category.category_id}&sub=${category.category_title}`,
-                              {
-                                state: {
-                                  category_id: `${category.category_id}`,
-                                  title: `${category.category_title}`,
-                                },
-                                replace: true,
-                              }
-                            );
-                          }
+                          setMetaDescription(
+                            "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                          );
                         }}
                         className={`flex justify-between items-center text-base text-neutral-800 w-full ${
                           pathname === item.link
@@ -691,6 +785,29 @@ export default function Nav() {
                                           },
                                         }
                                       );
+                                      document.title =
+                                        "Naturalla – Natural Skincare Products";
+
+                                      const setMetaDescription = (
+                                        content: string
+                                      ) => {
+                                        let tag = document.querySelector(
+                                          'meta[name="description"]'
+                                        ) as HTMLMetaElement;
+                                        if (!tag) {
+                                          tag = document.createElement("meta");
+                                          tag.setAttribute(
+                                            "name",
+                                            "description"
+                                          );
+                                          document.head.appendChild(tag);
+                                        }
+                                        tag.setAttribute("content", content);
+                                      };
+
+                                      setMetaDescription(
+                                        "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                                      );
                                       setOpenMobileDropdownId(null);
                                       setIsMenuopen(false);
                                     }}
@@ -707,6 +824,38 @@ export default function Nav() {
                                               queryClient.invalidateQueries({
                                                 queryKey: ["filterbyfeature"],
                                               });
+                                              document.title =
+                                                "Naturalla – Natural Skincare Products";
+
+                                              const setMetaDescription = (
+                                                content: string
+                                              ) => {
+                                                let tag =
+                                                  document.querySelector(
+                                                    'meta[name="description"]'
+                                                  ) as HTMLMetaElement;
+                                                if (!tag) {
+                                                  tag =
+                                                    document.createElement(
+                                                      "meta"
+                                                    );
+                                                  tag.setAttribute(
+                                                    "name",
+                                                    "description"
+                                                  );
+                                                  document.head.appendChild(
+                                                    tag
+                                                  );
+                                                }
+                                                tag.setAttribute(
+                                                  "content",
+                                                  content
+                                                );
+                                              };
+
+                                              setMetaDescription(
+                                                "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                                              );
                                               setOpenMobileDropdownId(null);
                                               setIsMenuopen(false);
                                             }}
@@ -743,14 +892,7 @@ export default function Nav() {
                         queryClient.invalidateQueries({
                           queryKey: ["filterbyfeature"],
                         });
-                        if (index === 5) {
-                          queryClient.invalidateQueries({
-                            queryKey: ["filterbyfeature"],
-                          });
-                          navigate("/products/combo`s?best_selling=true", {
-                            state: { title: "Combo's" },
-                          });
-                        } else if (index === 6) {
+                        if (index === 6) {
                           queryClient.invalidateQueries({
                             queryKey: ["filterbyfeature"],
                           });
@@ -771,6 +913,24 @@ export default function Nav() {
                             }
                           );
                         }
+                        document.title =
+                          "Naturalla – Natural Skincare Products";
+
+                        const setMetaDescription = (content: string) => {
+                          let tag = document.querySelector(
+                            'meta[name="description"]'
+                          ) as HTMLMetaElement;
+                          if (!tag) {
+                            tag = document.createElement("meta");
+                            tag.setAttribute("name", "description");
+                            document.head.appendChild(tag);
+                          }
+                          tag.setAttribute("content", content);
+                        };
+
+                        setMetaDescription(
+                          "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                        );
                         setIsMenuopen(false);
                       }}
                       className={`text-base text-neutral-800 text-left ${
@@ -792,6 +952,23 @@ export default function Nav() {
                       queryClient.invalidateQueries({
                         queryKey: ["filterbyfeature"],
                       });
+                      document.title = "Naturalla – Natural Skincare Products";
+
+                      const setMetaDescription = (content: string) => {
+                        let tag = document.querySelector(
+                          'meta[name="description"]'
+                        ) as HTMLMetaElement;
+                        if (!tag) {
+                          tag = document.createElement("meta");
+                          tag.setAttribute("name", "description");
+                          document.head.appendChild(tag);
+                        }
+                        tag.setAttribute("content", content);
+                      };
+
+                      setMetaDescription(
+                        "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                      );
                       setIsMenuopen(false);
                     }}
                     className={`text-base text-neutral-800 ${
@@ -812,7 +989,6 @@ export default function Nav() {
   );
 }
 
-// Custom Arrow Components
 function CustomPrevArrow({ onClick }: { onClick?: () => void }) {
   return (
     <div
