@@ -50,17 +50,7 @@ function ContactUs() {
     },
   });
 
-  // const { mutate, isPending } = useMutation({
-  //     mutationKey: [ "contact" ],
-  //     mutationFn: contact,
-  //     onSuccess: (data) => {
-  //         toast.success(data?.message);
-  //         form.reset();
-  //     },
-  //     onError: (error: AxiosError<any>) => {
-  //         toast.error(error?.response?.data.message)
-  //     }
-  // })
+
 
   const onSubmit = (data: FormValues) => {
     const finalData = {
@@ -82,7 +72,7 @@ function ContactUs() {
   };
 
   return (
-    <div className="min-h-screen container pt-10">
+    <div className="min-h-screen container mt-10 mb-10 ">
       <h1 className="text-2xl font-semibold">Contact Us</h1>
 
       <Form {...form}>

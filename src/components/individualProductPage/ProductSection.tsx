@@ -345,7 +345,7 @@ export default function ProductSection({ media, products }: Props) {
                 Rs {products?.unit_price}
               </span>
             </p>
-            <p className="px-2 py-0.5  text-xs md:text-sm  text-neutral-700  font-medium">
+            <p className="  text-xs md:text-sm  text-neutral-700  font-medium">
                {products?.units}
             </p>
           </div>

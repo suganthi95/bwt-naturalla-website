@@ -135,8 +135,18 @@ export default function Login() {
 
                   return (
                     <FormItem>
-                      <FormLabel className="text-textPrimary font-semibold">
-                        Password <span className="text-red-500">*</span>
+                      <FormLabel className="text-textPrimary flex items-center justify-between font-semibold">
+                        <p>
+                          Password <span className="text-red-500">*</span>
+                        </p>
+                        <span
+                          onClick={() => {
+                            navigate("/forgot-password");
+                          }}
+                          className="text-sm float-right cursor-pointer text-[#007AFF] underline underline-[#007AFF]"
+                        >
+                          Forgot password ?{" "}
+                        </span>
                       </FormLabel>
                       <FormControl>
                         <div className="relative">

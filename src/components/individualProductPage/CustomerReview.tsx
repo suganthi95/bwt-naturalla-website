@@ -1,6 +1,5 @@
 import { Icons } from "@/assets/icons";
-import { Input } from "../ui/input";
-import { Search } from "lucide-react";
+
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -19,6 +18,7 @@ export default function CustomerReview({ Product }: Props) {
     slidesToShow: 2,
     slidesToScroll: 2,
     initialSlide: 0,
+    cssEase: "ease",
     responsive: [
       {
         breakpoint: 1024,
@@ -92,9 +92,9 @@ export default function CustomerReview({ Product }: Props) {
       <div className=" space-y-6">
         <h2 className="font-bold text-xl text-title">Customer Reviews</h2>
 
-        <div className="flex   gap-6 items-start">
+        <div className="flex flex-col md:flex-row   gap-6 items-center md:items-start">
           <div className="flex flex-col lg:w-5/12 xl:w-3/12  items-center gap-1">
-            <div className="space-y-1.5">
+            <div className="space-y-1.5 ">
               <div className="flex items-center gap-x-1">
                 {Array.from({ length: 5 }).map((_, i) =>
                   i < averageRatings ? (
@@ -196,14 +196,7 @@ export default function CustomerReview({ Product }: Props) {
             </div>
           </div>
 
-          {/* <div className="flex flex-col justify-center items-center  gap-4 w-full  border-gray-300">
-              <Button variant="outline" className="w-40">
-                Write a Review
-              </Button>
-              <Button variant="default" className="w-40">
-                Ask a Question
-              </Button>
-            </div> */}
+         
         </div>
       </div>
       <div className="mt-10">
@@ -211,16 +204,16 @@ export default function CustomerReview({ Product }: Props) {
           <h2 className="font-bold text-sm md:text-xl text-title">
             {Product?.review_count[0].total_reviews} Comments
           </h2>
-          <div className="relative">
+          {/* <div className="relative">
             <Input
               type="text"
               placeholder="Search..."
               className="pl-10 pr-4 py-2  border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary text-sm"
             />
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4" />
-          </div>
+          </div> */}
         </div>
-        <Slider {...settings} className="mt-6 space-x-10">
+        <Slider {...settings} className="mt-6 ">
           {Product?.reviews?.map((item, index) => {
             return (
               <div
@@ -264,6 +257,11 @@ export default function CustomerReview({ Product }: Props) {
                     )}
                   </div>
                 </div>
+                <img
+                  src={item?.profile_pic}
+                  alt="avatar"
+                  className="w-10 h-10 rounded-full object-cover"
+                />
 
                 <h3 className="font-semibold text-title ">
                   {item?.review_title}
@@ -277,6 +275,7 @@ export default function CustomerReview({ Product }: Props) {
                   >
                     {item?.review_txt}{" "}
                   </p>
+                  {item?.review_txt?.length > 50 &&
                   <span
                     onClick={() =>
                       setReadMore((prev) => ({
@@ -288,6 +287,7 @@ export default function CustomerReview({ Product }: Props) {
                   >
                     {readMore[index] ? "Read Less" : "Read More"}
                   </span>
+          }
                 </div>
               </div>
             );

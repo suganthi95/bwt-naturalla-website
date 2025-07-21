@@ -459,3 +459,12 @@
     transform: translateX(-50%);
   }
 }
+.slick-slide > div {
+  margin: 0 4px;
+  box-sizing: border-box;
+}
+@media (min-width: 768px) {
+  .slick-slide > div {
+    margin: 0 8px;
+  }
+}

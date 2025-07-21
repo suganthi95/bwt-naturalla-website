@@ -24,7 +24,7 @@ export default function Blogs() {
             </p>
           </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-2  lg:grid-cols-3  gap-8 md:gap-14 lg:gap-x-0.5 mt-4 md:mt-8">
+        <div className="grid md:grid-cols-2  lg:grid-cols-3  gap-8 md:gap-14 lg:gap-x-0.5 mt-4 md:mt-8">
             {TopBlogs?.slice(0, 3)?.map((item: Blog, index: number) => (
               <div
                 key={index}

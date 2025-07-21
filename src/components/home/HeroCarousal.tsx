@@ -7,10 +7,10 @@ function NextArrow(props: any) {
   const { onClick } = props;
   return (
     <div
-      className="absolute right-4 top-1/2 z-20 -translate-y-1/2 cursor-pointer bg-black/50 hover:bg-black text-white p-2 rounded-full"
+      className="absolute right-2 md:right-4 top-1/2 z-20 -translate-y-1/2 cursor-pointer bg-black/50 hover:bg-black text-white p-1 md:p-2 rounded-full"
       onClick={onClick}
     >
-      <ChevronRight size={24} />
+      <ChevronRight className="size-3 md:size-24" />
     </div>
   );
 }
@@ -19,10 +19,10 @@ function PrevArrow(props: any) {
   const { onClick } = props;
   return (
     <div
-      className="absolute left-4 top-1/2 z-20 -translate-y-1/2 cursor-pointer bg-black/50 hover:bg-black text-white p-2 rounded-full"
+      className="absolute left-2 md:left-4 top-1/2 z-20 -translate-y-1/2 cursor-pointer bg-black/50 hover:bg-black text-white  p-1 md:p-2 rounded-full"
       onClick={onClick}
     >
-      <ChevronLeft size={24} />
+      <ChevronLeft className="size-3 md:size-24" />
     </div>
   );
 }
@@ -44,14 +44,14 @@ export default function HeroCarousal({ banners }: any) {
 
   return (
     <div className="w-full relative">
-      <Slider {...settings} className="h-96 md:h-[70vh] rounded-2xl overflow-hidden">
+      <Slider {...settings} className=" md:h-[70vh] rounded-2xl overflow-hidden">
         {banners?.map((src: any, index: number) => (
           <img
             key={`banner-image-${index}`}
             src={src.media_url}
             alt={`hero-${index}`}
             onClick={() => window.open(src?.cta_link, "_self")}
-            className="w-full h-full cursor-pointer object-cover"
+            className="w-full h-40 md:h-full cursor-pointer object-cover"
           />
         ))}
       </Slider>

@@ -456,7 +456,6 @@ export default function CheckoutPage() {
 
   return (
     <main>
-      
       <section className="container mx-auto  mb-10 md:mb-20">
         <div className="flex  w-full gap-x-10 flex-col lg:flex-row">
           <div className="w-full h-full lg:w-8/12">
@@ -670,13 +669,13 @@ export default function CheckoutPage() {
                     <AccordionTrigger className="cursor-pointer ">
                       <h1 className="md:text-2xl flex flex-col items-start   font-semibold ">
                         Shipping Details
-                        <p className="text-red-600 text-xs font-semibold bg-red-100 px-3 py-1 rounded">
-                          ⚠️ NOTE: After filling in the Shipping Details, please
-                          click 'Add' button to proceed
-                        </p>
                       </h1>
                     </AccordionTrigger>
-                    <AccordionContent>
+                    <AccordionContent className=" ">
+                      <p className="text-red-600 text-xs  mb-2 w-fit  font-semibold  bg-red-100 px-3 py-1 rounded">
+                        ⚠️ NOTE: After filling in the Shipping Details, please
+                        click 'Add' button to proceed
+                      </p>
                       <div className="mt-2space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <FormField
@@ -1340,9 +1339,7 @@ export default function CheckoutPage() {
             <Accordion type="single" collapsible defaultValue="price">
               <AccordionItem value="price" className="border-none">
                 <AccordionTrigger className="cursor-pointer">
-                  <h1 className="md:text-2xl font-semibold ">
-                  Price Details 
-                  </h1>
+                  <h1 className="md:text-2xl font-semibold ">Price Details</h1>
                 </AccordionTrigger>
                 <AccordionContent>
                   {/* {subtotal < 500 && (

@@ -14,14 +14,16 @@ const SignUp = React.lazy(() => import("./pages/Signup"));
 const Login = React.lazy(() => import("./pages/Login"));
 const SignupVerify = React.lazy(() => import("./pages/SignupVerify"));
 const LoginVerify = React.lazy(() => import("./pages/LoginVerify"));
-
+const ForgotPassword = React.lazy(() => import("./pages/ForgotPassword"));
+const OpenEmail = React.lazy(() => import("./pages/OpenEmail.tsx"));
+const ResetPassword = React.lazy(() => import("./pages/ResetPassword.tsx"));
+const PasswordUpdated = React.lazy(()=>import('./pages/PasswordUpdated.tsx'))
 const ProductById = React.lazy(() => import("@/pages/ProductById"));
 const Products = React.lazy(() => import("@/website/Products"));
 const Blogs = React.lazy(() => import("@/website/Blogs"));
 const BlogDetails = React.lazy(() => import("@/website/BlogDetails"));
 const Categories = React.lazy(() => import("@/pages/Categories"));
 const ContactUs = React.lazy(() => import("@/pages/ContactUs"));
-
 
 const CheckoutPage = React.lazy(() => import("@/pages/CheckoutPage"));
 const OrderSuccess = React.lazy(() => import("@/pages/Order_Success"));
@@ -43,19 +45,23 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/sign-up-verify" element={<SignupVerify />} />
           <Route path="/login-verify" element={<LoginVerify />} />
-        
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/open-mail" element={<OpenEmail />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+                    <Route path="/password-updated" element={<PasswordUpdated />} />
+
 
           <Route path="/" element={<Layout />}>
             <Route path="/terms-and-conditions" element={<Terms />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/shipping-policy" element={<ShippingPolicy />} />
-          <Route path="/returns-and-refunds" element={<ReturnRefund />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/shipping-policy" element={<ShippingPolicy />} />
+            <Route path="/returns-and-refunds" element={<ReturnRefund />} />
             <Route index element={<Home />} />
             <Route
               path="/product/:id"
               element={
                 // <ProtectedRoute>
-                  <ProductById />
+                <ProductById />
                 // </ProtectedRoute>
               }
             />
@@ -63,36 +69,26 @@ const App = () => {
               path="/products/:filter"
               element={
                 // <ProtectedRoute>
-                  <Products />
+                <Products />
                 // </ProtectedRoute>
               }
             />
-            <Route
-              path="/categories"
-              element={
-                  <Categories />
-              }
-            />
-            <Route
-              path="/contact-us"
-              element={
-                  <ContactUs />
-              }
-            />
-              
+            <Route path="/categories" element={<Categories />} />
+            <Route path="/contact-us" element={<ContactUs />} />
+
             <Route
               path="/blogs"
               element={
                 // <ProtectedRoute>
-                  < Blogs/>
+                <Blogs />
                 // </ProtectedRoute>
               }
             />
-               <Route
+            <Route
               path="/blogs/detail/:id"
               element={
                 // <ProtectedRoute>
-                  < BlogDetails/>
+                <BlogDetails />
                 // </ProtectedRoute>
               }
             />

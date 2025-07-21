@@ -49,7 +49,7 @@ export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
   }
 
   return (
-    <ScrollArea className="space-y-6 p-4  h-screen">
+    <ScrollArea className="space-y-6 p-4 h-full  md:h-screen">
       <h2 className="text-lg font-bold text-title mb-3">Wishlist</h2>
       {items?.length === 0 ? (
         <EmptyWishlist onClose={onClose} />

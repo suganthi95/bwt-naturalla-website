@@ -35,14 +35,14 @@ import { Button } from "../ui/button";
 import { useGetWishListItems } from "@/services/whistlist";
 import WishlistItemes from "../wishlist/WishlistItemes";
 import { removeWishlist, setWishItems } from "@/redux/slices/wishSlice";
-import { useGetCategories } from "@/services/home";
+import { useGetCategories, useGetPromoLists } from "@/services/home";
 import { useQueryClient } from "@tanstack/react-query";
 import { useGetProfileInfo } from "@/services/profile";
-const messages = [
-  "🎉 Flat 30% Off on Selected Products | Use Code : DEAL30 🎉",
-  "🚚 Free Shipping on Orders Above ₹499 🚚",
-  "🔥 New Deals Every Day — Don't Miss Out! 🔥",
-];
+// const messages = [
+//   "🎉 Flat 30% Off on Selected Products | Use Code : DEAL30 🎉",
+//   "🚚 Free Shipping on Orders Above ₹499 🚚",
+//   "🔥 New Deals Every Day — Don't Miss Out! 🔥",
+// ];
 
 export default function Nav() {
   const { pathname } = useLocation();
@@ -62,6 +62,7 @@ export default function Nav() {
   const { data: profileInfo } = useGetProfileInfo(auth?.token);
 
   const { data: categories } = useGetCategories(auth.token);
+  const {data:messages} = useGetPromoLists()
   const {
     data: wishlist,
     isSuccess: iswishisSuccess,
@@ -153,12 +154,12 @@ export default function Nav() {
       transition={{ duration: 0.35, ease: "easeInOut" }}
       className="sticky top-0 z-50"
     >
-      <div className="w-full bg-primary  mx-auto px-4 py-1 overflow-hidden">
+      <div className="w-full bg-primary  mx-auto md:px-4 py-1 overflow-hidden">
         <Slider {...settings}>
-          {messages.map((msg, index) => (
+          {messages?.map((msg:any, index:number) => (
             <div key={index}>
-              <p className="text-center text-menu text-xs md:text-sm font-semibold truncate">
-                {msg}
+              <p className="text-center text-menu text-xs   md:text-sm font-semibold truncate">
+                {msg?.promo_offer_txt}
               </p>
             </div>
           ))}

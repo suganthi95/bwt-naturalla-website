@@ -1,5 +1,5 @@
-import { login, signup, verifyAccount } from "@/lib/api"
-import { useMutation } from "@tanstack/react-query"
+import { forgotPassword, login, resetPassword, signup, verifyAccount, verifyForgorPasswordToken } from "@/lib/api"
+import { useMutation, useQuery } from "@tanstack/react-query"
 
 export const useSignup = ()=>{
     return useMutation({
@@ -20,5 +20,26 @@ export const useVerifyAccount = ()=>{
     return useMutation({
         mutationKey:['verifyaccount'],
         mutationFn:(args:{otp:number,phone_no:number,signup:boolean})=>verifyAccount(args.otp,args.phone_no,args.signup)
+    })
+}
+
+export const useForgotPassword = ()=>{
+    return useMutation({
+        mutationKey:['forgotPassword'],
+        mutationFn:(email:string)=>forgotPassword(email)
+    })
+}
+export const useVerifyForgotPasswordToken = (token:string)=>{
+    return useQuery({
+        queryKey:['forgotPasswordTokenVerify',token],
+        queryFn:()=>verifyForgorPasswordToken(token),
+        enabled:!!token,
+        retry:1
+    })
+}
+export const useResetPassword = ()=>{
+    return useMutation({
+        mutationKey:['resetPassword'],
+        mutationFn:(args:{password:string,token:string})=>resetPassword(args.password,args.token)
     })
 }
