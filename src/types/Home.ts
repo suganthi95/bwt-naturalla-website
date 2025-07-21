@@ -12,6 +12,7 @@ type ProductReview = {
   created_at: string;
   first_name: string;
   review_title:string;
+  review_media_urls:string[]
   last_name: string;
   email: string | null;
 };

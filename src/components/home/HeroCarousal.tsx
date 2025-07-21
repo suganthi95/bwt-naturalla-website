@@ -10,7 +10,7 @@ function NextArrow(props: any) {
       className="absolute right-2 md:right-4 top-1/2 z-20 -translate-y-1/2 cursor-pointer bg-black/50 hover:bg-black text-white p-1 md:p-2 rounded-full"
       onClick={onClick}
     >
-      <ChevronRight className="size-3 md:size-24" />
+      <ChevronRight className="size-3 md:size-8" />
     </div>
   );
 }
@@ -22,7 +22,7 @@ function PrevArrow(props: any) {
       className="absolute left-2 md:left-4 top-1/2 z-20 -translate-y-1/2 cursor-pointer bg-black/50 hover:bg-black text-white  p-1 md:p-2 rounded-full"
       onClick={onClick}
     >
-      <ChevronLeft className="size-3 md:size-24" />
+      <ChevronLeft className="size-3 md:size-8" />
     </div>
   );
 }
@@ -51,7 +51,7 @@ export default function HeroCarousal({ banners }: any) {
             src={src.media_url}
             alt={`hero-${index}`}
             onClick={() => window.open(src?.cta_link, "_self")}
-            className="w-full h-40 md:h-full cursor-pointer object-cover"
+            className="w-full h-40 md:h-[35rem] cursor-pointer object-cover"
           />
         ))}
       </Slider>

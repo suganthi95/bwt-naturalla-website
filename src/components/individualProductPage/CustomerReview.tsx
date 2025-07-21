@@ -257,12 +257,13 @@ export default function CustomerReview({ Product }: Props) {
                     )}
                   </div>
                 </div>
+                {item?.review_media_urls &&  item?.review_media_urls?.length >=0 && 
                 <img
-                  src={item?.profile_pic}
+                  src={item?.review_media_urls[0]}
                   alt="avatar"
-                  className="w-10 h-10 rounded-full object-cover"
+                  className="w-14 h-14 object-cover"
                 />
-
+                }
                 <h3 className="font-semibold text-title ">
                   {item?.review_title}
                 </h3>
