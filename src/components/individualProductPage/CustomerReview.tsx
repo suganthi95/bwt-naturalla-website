@@ -248,7 +248,7 @@ export default function CustomerReview({ Product }: Props) {
 
                   <div className="flex items-center gap-0.5">
                     {[...Array(5)].map((_, i) =>
-                      i <= item.ratings ? (
+                      i < item.ratings ? (
                         <Icons.Star
                           key={i}
                           className="w-4 h-4 fill-yellow-400"
