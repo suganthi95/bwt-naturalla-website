@@ -57,7 +57,7 @@ export default function ResetPassword() {
   });
 
   if (data?.status === false || isError) {
-     navigate("/login");
+    navigate("/login");
     if (isAxiosError(error)) {
       toast.warning(error?.response?.data?.message);
     }
@@ -142,7 +142,7 @@ export default function ResetPassword() {
                         <Input
                           className="h-11"
                           placeholder="••••••"
-                          type="password"
+                          type={showPassword ? "text" : "password"}
                           {...field}
                         />
                         <button
@@ -173,8 +173,6 @@ export default function ResetPassword() {
             </Button>
           </form>
         </Form>
-
-       
       </div>
       <p className="fixed bottom-2.5 text-sm text-title">
         Copyrights © All Rights Reserved ® 2025 Naturalla Stores

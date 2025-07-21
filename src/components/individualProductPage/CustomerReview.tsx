@@ -195,8 +195,6 @@ export default function CustomerReview({ Product }: Props) {
               </span>
             </div>
           </div>
-
-         
         </div>
       </div>
       <div className="mt-10">
@@ -249,21 +247,21 @@ export default function CustomerReview({ Product }: Props) {
                   </div>
 
                   <div className="flex items-center gap-0.5">
-                    {[...Array(item?.ratings)].map((_, i) => (
-                      <Icons.Star key={i} className="w-4 h-4 fill-yellow-400" />
-                    ))}
-                    {item?.ratings !== 5 && (
-                      <Icons.Un_Star className="w-4 h-4 fill-muted" />
+                    {[...Array(5)].map((_, i) =>
+                      i < item.ratings ? (
+                        <Icons.Star
+                          key={i}
+                          className="w-4 h-4 fill-yellow-400"
+                        />
+                      ) : (
+                        <Icons.Un_Star key={i} className="w-4 h-4 fill-muted" />
+                      )
                     )}
+
+                  
                   </div>
                 </div>
-                {item?.review_media_urls &&  item?.review_media_urls?.length >=0 && 
-                <img
-                  src={item?.review_media_urls[0]}
-                  alt="avatar"
-                  className="w-14 h-14 object-cover"
-                />
-                }
+
                 <h3 className="font-semibold text-title ">
                   {item?.review_title}
                 </h3>
@@ -276,20 +274,27 @@ export default function CustomerReview({ Product }: Props) {
                   >
                     {item?.review_txt}{" "}
                   </p>
-                  {item?.review_txt?.length > 50 &&
-                  <span
-                    onClick={() =>
-                      setReadMore((prev) => ({
-                        ...prev,
-                        [index]: !prev[index],
-                      }))
-                    }
-                    className="cursor-pointer hover:underline text-sm"
-                  >
-                    {readMore[index] ? "Read Less" : "Read More"}
-                  </span>
-          }
+                  {item?.review_txt?.length > 50 && (
+                    <span
+                      onClick={() =>
+                        setReadMore((prev) => ({
+                          ...prev,
+                          [index]: !prev[index],
+                        }))
+                      }
+                      className="cursor-pointer hover:underline text-sm"
+                    >
+                      {readMore[index] ? "Read Less" : "Read More"}
+                    </span>
+                  )}
                 </div>
+                {item?.review_media_urls && item?.review_media_urls[0] && (
+                  <img
+                    src={item?.review_media_urls[0]}
+                    alt="avatar"
+                    className="w-14 h-14 object-cover"
+                  />
+                )}
               </div>
             );
           })}
