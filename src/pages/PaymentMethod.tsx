@@ -22,7 +22,7 @@ import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import {useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useRazorpay } from "react-razorpay";
 import { removeCartItems } from "@/redux/slices/cartSlice";
@@ -45,7 +45,6 @@ export default function PaymentMethod() {
   // useEffect(() => {
   //   setCartItems(items);
   // }, [items]);
-
 
   const CouponDetails = useSelector((state: RootState) => state.coupon);
   const { mutate, isPending } = useCreateOrder();
@@ -75,10 +74,7 @@ export default function PaymentMethod() {
     navigate("/order-failure");
     setShouldPoll(false);
   }
-  const {
-    setValue,
-    watch,
-  } = useForm({
+  const { setValue, watch } = useForm({
     defaultValues: {
       payment: "",
     },
@@ -204,7 +200,6 @@ export default function PaymentMethod() {
               description: "Payment",
               image: ASSETS.LOGO,
               handler: function (response: any) {
-
                 verifyRazorpay(
                   {
                     token: token,
@@ -285,7 +280,7 @@ export default function PaymentMethod() {
         }
         if (data.resp.state === "COMPLETED") {
           clearInterval(interval);
-          navigate("/order-success" , {replace:true});
+          navigate("/order-success", { replace: true });
           setLoading(false);
           localStorage.removeItem("merchantTransactionId");
           // setFinalData(data);
@@ -299,6 +294,14 @@ export default function PaymentMethod() {
           navigate("/order-failure");
           clearInterval(interval);
           setShouldPoll(false);
+        } else if (data.resp.state === "PENDING") {
+          setTimeout(() => {
+            setLoading(false);
+            localStorage.removeItem("merchantTransactionId");
+            navigate("/order-failure");
+            clearInterval(interval);
+            setShouldPoll(false);
+          }, 3000);
         }
       } catch (error) {
         console.error("Polling error:", error);
