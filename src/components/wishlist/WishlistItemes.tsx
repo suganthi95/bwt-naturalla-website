@@ -121,7 +121,7 @@ export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
 
                       <button
                         onClick={() => handleRemoveProduct(item?.product_id)}
-                        className="text-gray-500 hover:text-red-500 transition"
+                        className="text-gray-500 cursor-pointer hover:text-red-500 transition"
                       >
                         {removingItemId === item?.cart_id ? (
                           <Loader2 className="w-4 h-4 animate-spin text-red-500" />

@@ -194,7 +194,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                           onClick={() =>
                             handleRemoveProduct(item?.cart_id, item?.quantity)
                           }
-                          className="text-gray-500 hover:text-red-500"
+                          className="text-gray-500 cursor-pointer hover:text-red-500"
                         >
                           {removingItemId === item?.cart_id ? (
                             <Loader2 className="w-4 h-4 animate-spin text-red-500" />

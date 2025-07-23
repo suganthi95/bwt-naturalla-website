@@ -57,7 +57,7 @@ export default function Products() {
           <FilterSidebar filterValues={data} />
         </div>
   
-        <div className=" lg:w-10/12">
+        <div className=" w-full lg:w-10/12">
           <ProductsList Products={products} title={title ?? ""} />
         </div>
       </section>

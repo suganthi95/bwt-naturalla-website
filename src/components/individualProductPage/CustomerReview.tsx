@@ -113,12 +113,12 @@ export default function CustomerReview({ Product }: Props) {
             </div>
           </div>
 
-          <div className="space-y-4 l w-full  px-1 lg:px-2 lg:border-l lg:border-r  border-gray-300">
+          <div className="space-y-4  lg:w-full  px-1 lg:px-2 lg:border-l lg:border-r  border-gray-300">
             <div className="flex items-center md:gap-2">
               <p className="text-sm min-w-[60px] text-[#007AFF] whitespace-nowrap">
                 5 star
               </p>
-              <div className="relative w-full h-3 border rounded">
+              <div className="relative w-72 md:w-full h-3 border rounded">
                 <div
                   className="absolute truncate text-sm md:text-base top-0 left-0 h-3 bg-yellow-400 rounded"
                   style={{
@@ -126,7 +126,7 @@ export default function CustomerReview({ Product }: Props) {
                   }}
                 ></div>
               </div>
-              <span className="w-12 truncate  text-sm text-right text-[#007AFF] ">
+              <span className="w-12 truncate   text-sm text-right text-[#007AFF] ">
                 {FiveStar.toFixed()} %
               </span>
             </div>
@@ -134,7 +134,7 @@ export default function CustomerReview({ Product }: Props) {
               <p className="text-sm min-w-[60px] text-[#007AFF] whitespace-nowrap">
                 4 star
               </p>
-              <div className="relative w-full h-3 border rounded">
+              <div className="relative w-72 md:w-full h-3 border rounded">
                 <div
                   className="absolute top-0 left-0 h-3 bg-yellow-400 rounded"
                   style={{
@@ -142,7 +142,7 @@ export default function CustomerReview({ Product }: Props) {
                   }}
                 ></div>
               </div>
-              <span className="w-12  text-sm text-right text-[#007AFF] ">
+              <span className="w-12 truncate  text-sm text-right text-[#007AFF] ">
                 {FourStar.toFixed()} %
               </span>
             </div>
@@ -150,7 +150,7 @@ export default function CustomerReview({ Product }: Props) {
               <p className="text-sm min-w-[60px] text-[#007AFF] whitespace-nowrap">
                 3 star
               </p>
-              <div className="relative w-full h-3 border rounded">
+              <div className="relative  w-72 md:w-full h-3 border rounded">
                 <div
                   className="absolute top-0 left-0 h-3 bg-yellow-400 rounded"
                   style={{
@@ -166,7 +166,7 @@ export default function CustomerReview({ Product }: Props) {
               <p className="text-sm min-w-[60px] text-[#007AFF] whitespace-nowrap">
                 2 star
               </p>
-              <div className="relative w-full h-3 border rounded">
+              <div className="relative  w-72 md:w-full h-3 border rounded">
                 <div
                   className="absolute top-0 left-0 h-3 bg-yellow-400 rounded"
                   style={{
@@ -182,7 +182,7 @@ export default function CustomerReview({ Product }: Props) {
               <p className="text-sm min-w-[60px] text-[#007AFF] whitespace-nowrap">
                 1 star
               </p>
-              <div className="relative w-full h-3 border rounded">
+              <div className="relative  w-72 md:w-full h-3 border rounded">
                 <div
                   className="absolute top-0 left-0 h-3 bg-yellow-400 rounded"
                   style={{

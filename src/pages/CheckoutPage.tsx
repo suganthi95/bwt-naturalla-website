@@ -172,7 +172,7 @@ export default function CheckoutPage() {
   const { mutate: CheckCoupon, isPending } = useCheckCouponCode();
   const { mutate: removeCart } = useDeleteCart();
   const dispatch = useDispatch();
-  const { items, tax_detail } = useSelector((state: RootState) => state.cart);
+  const { items,tax_detail } = useSelector((state: RootState) => state.cart);
   // const CouponDetails = useSelector((state: RootState) => state.coupon);
   // const [Messages, setMessage] = useState("");
   // const [Isloading, setIsloading] = useState(false);
