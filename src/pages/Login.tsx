@@ -189,7 +189,7 @@ export default function Login() {
           </a>
         </p>
       </div>
-      <p className="fixed bottom-2.5 text-sm text-title">
+      <p className="fixed bottom-2.5 text-xs text-center  md:text-sm text-title">
         Copyrights © All Rights Reserved ® 2025 Naturalla Stores
       </p>
     </section>

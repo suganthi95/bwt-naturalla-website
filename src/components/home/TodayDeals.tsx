@@ -66,15 +66,24 @@ export default function TodayDeals({ Products }: Props) {
         {Products?.slice(0, 3)?.map((item, index) => {
           return (
             <li key={index} className="space-y-2 relative ">
-              <img
-                src={item.thumbnail_image_url}
-                alt={item?.product_name}
-                className="w-[388px] h-[388px] rounded-[16px] object-cover  mx-auto cursor-pointer"
-                onClick={() => navigate(`/product/${item.slug}`)}
-              />
-              <div className="  absolute bg-[#E95144] font-bold text-white rounded-r  group-hover:hidden text-sm  right-1 sm:right-4  md:right-2 top-0  px-4 py-1">
-                {Math.round(Number(item?.discount_percent))}% OFF
-              </div>{" "}
+              <div className="relative w-full max-w-[388px] mx-auto">
+                <img
+                  src={item.thumbnail_image_url}
+                  alt={item?.product_name}
+                  className="w-full h-auto aspect-square max-w-[388px] rounded-[16px] object-cover mx-auto cursor-pointer"
+                  onClick={() => navigate(`/product/${item.slug}`)}
+                />
+                <div
+                  className="absolute top-0 right-0 sm:top-0 sm:right-0 md:top-0 md:right-0
+               bg-[#E95144] font-bold text-white rounded-r-[5px]
+               px-3 py-1 text-xs sm:text-sm group-hover:hidden
+               shadow-md"
+                >
+                  {Math.round(Number(item?.discount_percent))}% OFF
+                  
+                </div>
+              </div>
+
               <p
                 onClick={() => navigate(`/product/${item.slug}`)}
                 className="text-primary font-medium cursor-pointer hover:text-primary transition-colors duration-300 text-xl"

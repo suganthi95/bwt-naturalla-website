@@ -346,7 +346,7 @@ export default function ProductSection({ media, products }: Props) {
               </span>
             </p>
             <p className="  text-xs md:text-sm  text-neutral-700  font-medium">
-               {products?.units}
+              ({products?.units})
             </p>
           </div>
           
@@ -364,7 +364,7 @@ export default function ProductSection({ media, products }: Props) {
               type="number"
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
-              className=" w-10  text-xl  font-semibold border-none text-center"
+              className=" w-13  text-xl  font-semibold border-none text-center"
               min={1}
             />
             <Button
