@@ -15,7 +15,7 @@ const initialState: FilterState = {
   keywords: [],
   searchInput: "",
   minPrice: 0,
-  maxPrice: 10000,
+  maxPrice: 1000,
   categories: [],
   sortByPrice: "",
   sortByDate: "",

@@ -280,9 +280,9 @@ export default function PaymentMethod() {
         }
         if (data.resp.state === "COMPLETED") {
           clearInterval(interval);
+          localStorage.removeItem("merchantTransactionId");
           navigate("/order-success", { replace: true });
           setLoading(false);
-          localStorage.removeItem("merchantTransactionId");
           // setFinalData(data);
           setShouldPoll(false);
           dispatch(removeCartItems());

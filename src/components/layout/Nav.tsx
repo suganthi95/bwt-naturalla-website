@@ -38,6 +38,7 @@ import { removeWishlist, setWishItems } from "@/redux/slices/wishSlice";
 import { useGetCategories, useGetPromoLists } from "@/services/home";
 import { useQueryClient } from "@tanstack/react-query";
 import { useGetProfileInfo } from "@/services/profile";
+import { clearFilters } from "@/redux/slices/filterSlice";
 // const messages = [
 //   "🎉 Flat 30% Off on Selected Products | Use Code : DEAL30 🎉",
 //   "🚚 Free Shipping on Orders Above ₹499 🚚",
@@ -62,7 +63,7 @@ export default function Nav() {
   const { data: profileInfo } = useGetProfileInfo(auth?.token);
 
   const { data: categories } = useGetCategories(auth.token);
-  const {data:messages} = useGetPromoLists()
+  const { data: messages } = useGetPromoLists();
   const {
     data: wishlist,
     isSuccess: iswishisSuccess,
@@ -114,6 +115,10 @@ export default function Nav() {
   //   }
   // };
 
+  const clearAll = () => {
+    dispatch(clearFilters());
+  };
+
   const handleSearchSubmit = () => {
     navigate(`/products/${searchTerm}`, {
       state: { product_name: searchTerm },
@@ -156,7 +161,7 @@ export default function Nav() {
     >
       <div className="w-full bg-primary  mx-auto md:px-4 py-1 overflow-hidden">
         <Slider {...settings}>
-          {messages?.map((msg:any, index:number) => (
+          {messages?.map((msg: any, index: number) => (
             <div key={index}>
               <p className="text-center text-menu text-xs   md:text-sm font-semibold truncate">
                 {msg?.promo_offer_txt}
@@ -176,6 +181,7 @@ export default function Nav() {
               <img
                 onClick={() => {
                   navigate("/");
+                  clearAll();
                   document.title = "Naturalla – Natural Skincare Products";
 
                   const setMetaDescription = (content: string) => {
@@ -219,31 +225,9 @@ export default function Nav() {
                                   ? "font-bold underline underline-offset-8 decoration-2"
                                   : "font-normal no-underline"
                               }`}
-                              // onClick={() => {
-                              //   const category = categories?.find(
-                              //     (cate: any) => {
-                              //       return cate.category_title.includes(
-                              //         item.name
-                              //       );
-                              //     }
-                              //   );
-
-                              //   if (index === 5 && category) {
-                              //     navigate(
-                              //       `/products/${category.category_title}?category_id=${category.category_id}&sub=${category.category_title}`,
-                              //       {
-                              //         state: {
-                              //           category_id: `${category.category_id}`,
-                              //           title: `${category.category_title}`,
-                              //         },
-                              //         replace: true,
-                              //       }
-                              //     );
-                              //     queryClient.invalidateQueries({
-                              //       queryKey: ["filterbyfeature"],
-                              //     });
-                              //   }
-                              // }}
+                              onClick={() => {
+                                clearAll();
+                              }}
                             >
                               {item.name}
 
@@ -291,6 +275,7 @@ export default function Nav() {
                                             replace: true,
                                           }
                                         );
+                                        clearAll();
                                         document.title =
                                           "Naturalla – Natural Skincare Products";
 
@@ -330,6 +315,8 @@ export default function Nav() {
                                                 queryClient.invalidateQueries({
                                                   queryKey: ["filterbyfeature"],
                                                 });
+
+                                                clearAll();
                                                 document.title =
                                                   "Naturalla – Natural Skincare Products";
 
@@ -399,6 +386,7 @@ export default function Nav() {
                                 state: { title: "Trending Now" },
                               }
                             );
+                            clearAll();
                           } else {
                             queryClient.invalidateQueries({
                               queryKey: ["filterbyfeature"],
@@ -407,6 +395,7 @@ export default function Nav() {
                               "/products/today-offer?isin_todays_deal=true",
                               { state: { title: "Today's Offer" } }
                             );
+                            clearAll();
                           }
                           document.title =
                             "Naturalla – Natural Skincare Products";
@@ -441,6 +430,7 @@ export default function Nav() {
                           queryClient.invalidateQueries({
                             queryKey: ["filterbyfeature"],
                           });
+                          clearAll();
                           document.title =
                             "Naturalla – Natural Skincare Products";
 
@@ -598,7 +588,10 @@ export default function Nav() {
                         )}
                         <div className="space-y-1 text-sm text-muted-foreground">
                           <Link
-                            onClick={() => setIsProfile(false)}
+                            onClick={() => {
+                              clearAll();
+                              setIsProfile(false);
+                            }}
                             to="/my-profile"
                             className="block hover:text-primary"
                           >
@@ -608,6 +601,7 @@ export default function Nav() {
                             <p
                               onClick={() => {
                                 dispatch(logout());
+                                clearAll();
                                 dispatch(removeCartItems());
                                 dispatch(removeWishlist());
                                 setIsProfile(false);
@@ -621,6 +615,7 @@ export default function Nav() {
                             <p
                               onClick={() => {
                                 navigate("/login");
+                                clearAll();
                               }}
                               className="block cursor-pointer w-full text-left hover:text-primary"
                             >
@@ -633,7 +628,15 @@ export default function Nav() {
                   </PopoverContent>
                 </Popover>
               ) : (
-                <Button onClick={() => navigate("/login")}>Login</Button>
+                <Button
+                  onClick={() => {
+                    navigate("/login");
+
+                    clearAll();
+                  }}
+                >
+                  Login
+                </Button>
               )}
             </div>
           </div>
@@ -725,6 +728,7 @@ export default function Nav() {
                           setOpenMobileDropdownId(
                             isDropdownOpen ? null : item.id
                           );
+                          clearAll();
                           document.title =
                             "Naturalla – Natural Skincare Products";
 
@@ -786,6 +790,7 @@ export default function Nav() {
                                           },
                                         }
                                       );
+                                      clearAll();
                                       document.title =
                                         "Naturalla – Natural Skincare Products";
 
@@ -825,6 +830,8 @@ export default function Nav() {
                                               queryClient.invalidateQueries({
                                                 queryKey: ["filterbyfeature"],
                                               });
+
+                                              clearAll();
                                               document.title =
                                                 "Naturalla – Natural Skincare Products";
 
@@ -893,6 +900,7 @@ export default function Nav() {
                         queryClient.invalidateQueries({
                           queryKey: ["filterbyfeature"],
                         });
+                        clearAll();
                         if (index === 6) {
                           queryClient.invalidateQueries({
                             queryKey: ["filterbyfeature"],
@@ -953,6 +961,7 @@ export default function Nav() {
                       queryClient.invalidateQueries({
                         queryKey: ["filterbyfeature"],
                       });
+                      clearAll();
                       document.title = "Naturalla – Natural Skincare Products";
 
                       const setMetaDescription = (content: string) => {
