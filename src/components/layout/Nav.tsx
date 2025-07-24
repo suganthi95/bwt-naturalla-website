@@ -89,6 +89,7 @@ export default function Nav() {
     infinite: true,
     speed: 500,
     slidesToShow: 1,
+        adaptiveHeight: true,
     slidesToScroll: 1,
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
@@ -162,7 +163,7 @@ export default function Nav() {
       <div className="w-full bg-primary  mx-auto md:px-4 py-1 overflow-hidden">
         <Slider {...settings}>
           {messages?.map((msg: any, index: number) => (
-            <div key={index}>
+            <div key={index} className="">
               <p className="text-center text-menu text-xs   md:text-sm font-semibold truncate">
                 {msg?.promo_offer_txt}
               </p>
