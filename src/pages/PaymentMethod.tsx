@@ -87,11 +87,19 @@ export default function PaymentMethod() {
     0
   );
 
-  const tax = items?.reduce((acc, item) => {
-    const productTax =
-      (item.unit_price * item.quantity * item.tax_percent) / 100;
-    return acc + Math.round(productTax);
+  // const tax = items?.reduce((acc, item) => {
+  //   const productTax =
+  //     (item.unit_price * item.quantity * item.tax_percent) / 100;
+  //   return acc + Math.round(productTax);
+  // }, 0);
+  
+  // update tax calculation
+    const tax = items?.reduce((acc, item) => {
+    const productTotal = item.unit_price * item.quantity;
+    const tax = (productTotal * item.tax_percent) / (100 + item.tax_percent);
+    return acc + Math.round(tax);
   }, 0);
+
 
   let shipping = 0;
 

@@ -172,7 +172,7 @@ export default function CheckoutPage() {
   const { mutate: CheckCoupon, isPending } = useCheckCouponCode();
   const { mutate: removeCart } = useDeleteCart();
   const dispatch = useDispatch();
-  const { items,tax_detail } = useSelector((state: RootState) => state.cart);
+  const { items, tax_detail } = useSelector((state: RootState) => state.cart);
   // const CouponDetails = useSelector((state: RootState) => state.coupon);
   // const [Messages, setMessage] = useState("");
   // const [Isloading, setIsloading] = useState(false);
@@ -405,10 +405,11 @@ export default function CheckoutPage() {
     0
   );
 
-  const tax = items?.reduce((acc, item) => {
-    const productTax =
-      (item.unit_price * item.quantity * item.tax_percent) / 100;
-    return acc + Math.round(productTax);
+  // update tax calculation
+    const tax = items?.reduce((acc, item) => {
+    const productTotal = item.unit_price * item.quantity;
+    const tax = (productTotal * item.tax_percent) / (100 + item.tax_percent);
+    return acc + Math.round(tax);
   }, 0);
 
   // Default shipping

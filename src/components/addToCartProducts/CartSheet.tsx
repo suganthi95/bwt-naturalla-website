@@ -78,11 +78,20 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
     (acc, item) => acc + item.unit_price * item.quantity,
     0
   );
-  const tax = items?.reduce((acc, item) => {
-    const productTax =
-      (item.unit_price * item.quantity * item.tax_percent) / 100;
-    return acc + Math.round(productTax);
+  
+  // const tax = items?.reduce((acc, item) => {
+  //   const productTax =
+  //     (item.unit_price * item.quantity * item.tax_percent) / 100;
+  //   return acc + Math.round(productTax);
+  // }, 0);
+
+  // update tax calculation
+    const tax = items?.reduce((acc, item) => {
+    const productTotal = item.unit_price * item.quantity;
+    const tax = (productTotal * item.tax_percent) / (100 + item.tax_percent);
+    return acc + Math.round(tax);
   }, 0);
+
   const discount = 0;
   const shipping =
     tax_detail?.min_amount <= subtotal ? 0 : tax_detail?.shipping_fee;
