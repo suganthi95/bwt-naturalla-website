@@ -35,14 +35,15 @@ import { Button } from "../ui/button";
 import { useGetWishListItems } from "@/services/whistlist";
 import WishlistItemes from "../wishlist/WishlistItemes";
 import { removeWishlist, setWishItems } from "@/redux/slices/wishSlice";
-import { useGetCategories } from "@/services/home";
+import { useGetCategories, useGetPromoLists } from "@/services/home";
 import { useQueryClient } from "@tanstack/react-query";
 import { useGetProfileInfo } from "@/services/profile";
-const messages = [
-  "🎉 Flat 30% Off on Selected Products | Use Code : DEAL30 🎉",
-  "🚚 Free Shipping on Orders Above ₹499 🚚",
-  "🔥 New Deals Every Day — Don't Miss Out! 🔥",
-];
+import { clearFilters } from "@/redux/slices/filterSlice";
+// const messages = [
+//   "🎉 Flat 30% Off on Selected Products | Use Code : DEAL30 🎉",
+//   "🚚 Free Shipping on Orders Above ₹499 🚚",
+//   "🔥 New Deals Every Day — Don't Miss Out! 🔥",
+// ];
 
 export default function Nav() {
   const { pathname } = useLocation();
@@ -62,6 +63,7 @@ export default function Nav() {
   const { data: profileInfo } = useGetProfileInfo(auth?.token);
 
   const { data: categories } = useGetCategories(auth.token);
+  const { data: messages } = useGetPromoLists();
   const {
     data: wishlist,
     isSuccess: iswishisSuccess,
@@ -113,6 +115,10 @@ export default function Nav() {
   //   }
   // };
 
+  const clearAll = () => {
+    dispatch(clearFilters());
+  };
+
   const handleSearchSubmit = () => {
     navigate(`/products/${searchTerm}`, {
       state: { product_name: searchTerm },
@@ -153,12 +159,12 @@ export default function Nav() {
       transition={{ duration: 0.35, ease: "easeInOut" }}
       className="sticky top-0 z-50"
     >
-      <div className="w-full bg-primary  mx-auto px-4 py-1 overflow-hidden">
+      <div className="w-full bg-primary  mx-auto md:px-4 py-1 overflow-hidden">
         <Slider {...settings}>
-          {messages.map((msg, index) => (
+          {messages?.map((msg: any, index: number) => (
             <div key={index}>
-              <p className="text-center text-menu text-xs md:text-sm font-semibold truncate">
-                {msg}
+              <p className="text-center text-menu text-xs   md:text-sm font-semibold truncate">
+                {msg?.promo_offer_txt}
               </p>
             </div>
           ))}
@@ -173,15 +179,35 @@ export default function Nav() {
                 <MenuToggle open={IsMenuopen} handleclick={handleclick} />
               </div>
               <img
-                onClick={() => navigate("/")}
+                onClick={() => {
+                  navigate("/");
+                  clearAll();
+                  document.title = "Naturalla – Natural Skincare Products";
+
+                  const setMetaDescription = (content: string) => {
+                    let tag = document.querySelector(
+                      'meta[name="description"]'
+                    ) as HTMLMetaElement;
+                    if (!tag) {
+                      tag = document.createElement("meta");
+                      tag.setAttribute("name", "description");
+                      document.head.appendChild(tag);
+                    }
+                    tag.setAttribute("content", content);
+                  };
+
+                  setMetaDescription(
+                    "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                  );
+                }}
                 src={ASSETS.LOGO}
                 alt="hero-image"
-                className="w-24 md:w-40"
+                className="w-16 md:w-24  cursor-pointer object-cover"
               />
             </div>
             <ul className="xl:flex items-center hidden  justify-center gap-x-7">
               {NavData.map((item, index) => {
-                const IsDropDown = [2, 3, 4].includes(index);
+                const IsDropDown = [2, 3, 4, 5].includes(index);
 
                 return (
                   <li key={item.id} className="relative">
@@ -193,20 +219,26 @@ export default function Nav() {
                       >
                         <Popover open={openDropdownId === item.id}>
                           <PopoverTrigger asChild>
-                            <button
-                              className={`text-primary font-semibold flex items-center gap-x-1 tracking-wide py-2 cursor-pointer ${
+                            <div
+                              className={`text-primary focus-within:border-none focus-visible:border-none font-semibold flex items-center gap-x-1 tracking-wide py-2 cursor-pointer ${
                                 pathname === item.link
                                   ? "font-bold underline underline-offset-8 decoration-2"
                                   : "font-normal no-underline"
                               }`}
+                              onClick={() => {
+                                clearAll();
+                              }}
                             >
                               {item.name}
-                              {openDropdownId === item.id ? (
-                                <ChevronUp className="w-3" />
-                              ) : (
-                                <ChevronDown className="w-3" />
-                              )}
-                            </button>
+
+                              <>
+                                {openDropdownId === item.id ? (
+                                  <ChevronUp className="w-3" />
+                                ) : (
+                                  <ChevronDown className="w-3" />
+                                )}
+                              </>
+                            </div>
                           </PopoverTrigger>
 
                           <PopoverContent
@@ -234,13 +266,39 @@ export default function Nav() {
                                           queryKey: ["filterbyfeature"],
                                         });
                                         navigate(
-                                          `/products/${category.category_title}?category=${category.category_id}&sub=${category.category_title}`,
+                                          `/products/${category.category_title}?category_id=${category.category_id}&sub=${category.category_title}`,
                                           {
                                             state: {
                                               category_id: `${category.category_id}`,
                                               title: `${category.category_title}`,
                                             },
+                                            replace: true,
                                           }
+                                        );
+                                        clearAll();
+                                        document.title =
+                                          "Naturalla – Natural Skincare Products";
+
+                                        const setMetaDescription = (
+                                          content: string
+                                        ) => {
+                                          let tag = document.querySelector(
+                                            'meta[name="description"]'
+                                          ) as HTMLMetaElement;
+                                          if (!tag) {
+                                            tag =
+                                              document.createElement("meta");
+                                            tag.setAttribute(
+                                              "name",
+                                              "description"
+                                            );
+                                            document.head.appendChild(tag);
+                                          }
+                                          tag.setAttribute("content", content);
+                                        };
+
+                                        setMetaDescription(
+                                          "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
                                         );
                                         setOpenDropdownId(null);
                                       }}
@@ -257,6 +315,40 @@ export default function Nav() {
                                                 queryClient.invalidateQueries({
                                                   queryKey: ["filterbyfeature"],
                                                 });
+
+                                                clearAll();
+                                                document.title =
+                                                  "Naturalla – Natural Skincare Products";
+
+                                                const setMetaDescription = (
+                                                  content: string
+                                                ) => {
+                                                  let tag =
+                                                    document.querySelector(
+                                                      'meta[name="description"]'
+                                                    ) as HTMLMetaElement;
+                                                  if (!tag) {
+                                                    tag =
+                                                      document.createElement(
+                                                        "meta"
+                                                      );
+                                                    tag.setAttribute(
+                                                      "name",
+                                                      "description"
+                                                    );
+                                                    document.head.appendChild(
+                                                      tag
+                                                    );
+                                                  }
+                                                  tag.setAttribute(
+                                                    "content",
+                                                    content
+                                                  );
+                                                };
+
+                                                setMetaDescription(
+                                                  "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                                                );
                                                 setOpenDropdownId(null);
                                               }}
                                               to={`/products/${sub.subcategory_name.toLowerCase()}?category_id=${
@@ -284,14 +376,7 @@ export default function Nav() {
                     ) : [0, 6].includes(index) ? (
                       <button
                         onClick={() => {
-                          if (index === 5) {
-                            queryClient.invalidateQueries({
-                              queryKey: ["filterbyfeature"],
-                            });
-                            navigate("/products/combo?best_selling=true", {
-                              state: { title: "Combo's" },
-                            });
-                          } else if (index === 6) {
+                          if (index === 6) {
                             queryClient.invalidateQueries({
                               queryKey: ["filterbyfeature"],
                             });
@@ -301,6 +386,7 @@ export default function Nav() {
                                 state: { title: "Trending Now" },
                               }
                             );
+                            clearAll();
                           } else {
                             queryClient.invalidateQueries({
                               queryKey: ["filterbyfeature"],
@@ -309,7 +395,26 @@ export default function Nav() {
                               "/products/today-offer?isin_todays_deal=true",
                               { state: { title: "Today's Offer" } }
                             );
+                            clearAll();
                           }
+                          document.title =
+                            "Naturalla – Natural Skincare Products";
+
+                          const setMetaDescription = (content: string) => {
+                            let tag = document.querySelector(
+                              'meta[name="description"]'
+                            ) as HTMLMetaElement;
+                            if (!tag) {
+                              tag = document.createElement("meta");
+                              tag.setAttribute("name", "description");
+                              document.head.appendChild(tag);
+                            }
+                            tag.setAttribute("content", content);
+                          };
+
+                          setMetaDescription(
+                            "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                          );
                         }}
                         className={`text-primary font-semibold cursor-pointer tracking-wide py-2 ${
                           pathname === "/products/best-selling"
@@ -321,11 +426,30 @@ export default function Nav() {
                       </button>
                     ) : (
                       <Link
-                        onClick={() =>
+                        onClick={() => {
                           queryClient.invalidateQueries({
                             queryKey: ["filterbyfeature"],
-                          })
-                        }
+                          });
+                          clearAll();
+                          document.title =
+                            "Naturalla – Natural Skincare Products";
+
+                          const setMetaDescription = (content: string) => {
+                            let tag = document.querySelector(
+                              'meta[name="description"]'
+                            ) as HTMLMetaElement;
+                            if (!tag) {
+                              tag = document.createElement("meta");
+                              tag.setAttribute("name", "description");
+                              document.head.appendChild(tag);
+                            }
+                            tag.setAttribute("content", content);
+                          };
+
+                          setMetaDescription(
+                            "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                          );
+                        }}
                         to={item.link}
                         className={`text-primary font-semibold tracking-wide py-2 ${
                           pathname === item.link
@@ -464,7 +588,10 @@ export default function Nav() {
                         )}
                         <div className="space-y-1 text-sm text-muted-foreground">
                           <Link
-                            onClick={() => setIsProfile(false)}
+                            onClick={() => {
+                              clearAll();
+                              setIsProfile(false);
+                            }}
                             to="/my-profile"
                             className="block hover:text-primary"
                           >
@@ -474,6 +601,7 @@ export default function Nav() {
                             <p
                               onClick={() => {
                                 dispatch(logout());
+                                clearAll();
                                 dispatch(removeCartItems());
                                 dispatch(removeWishlist());
                                 setIsProfile(false);
@@ -487,6 +615,7 @@ export default function Nav() {
                             <p
                               onClick={() => {
                                 navigate("/login");
+                                clearAll();
                               }}
                               className="block cursor-pointer w-full text-left hover:text-primary"
                             >
@@ -499,7 +628,15 @@ export default function Nav() {
                   </PopoverContent>
                 </Popover>
               ) : (
-                <Button onClick={() => navigate("/login")}>Login</Button>
+                <Button
+                  onClick={() => {
+                    navigate("/login");
+
+                    clearAll();
+                  }}
+                >
+                  Login
+                </Button>
               )}
             </div>
           </div>
@@ -581,17 +718,36 @@ export default function Nav() {
             <ul className="flex flex-col px-4 py-6 gap-4">
               {NavData.map((item, index) => {
                 const isDropdownOpen = openMobileDropdownId === item.id;
-                const IsDropDown = [2, 3, 4].includes(index);
+                const IsDropDown = [2, 3, 4, 5].includes(index);
 
                 if (IsDropDown) {
                   return (
                     <div key={item.id} className="flex flex-col">
                       <button
-                        onClick={() =>
+                        onClick={() => {
                           setOpenMobileDropdownId(
                             isDropdownOpen ? null : item.id
-                          )
-                        }
+                          );
+                          clearAll();
+                          document.title =
+                            "Naturalla – Natural Skincare Products";
+
+                          const setMetaDescription = (content: string) => {
+                            let tag = document.querySelector(
+                              'meta[name="description"]'
+                            ) as HTMLMetaElement;
+                            if (!tag) {
+                              tag = document.createElement("meta");
+                              tag.setAttribute("name", "description");
+                              document.head.appendChild(tag);
+                            }
+                            tag.setAttribute("content", content);
+                          };
+
+                          setMetaDescription(
+                            "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                          );
+                        }}
                         className={`flex justify-between items-center text-base text-neutral-800 w-full ${
                           pathname === item.link
                             ? "font-semibold text-primary underline underline-offset-4"
@@ -607,7 +763,7 @@ export default function Nav() {
                       </button>
 
                       <AnimatePresence>
-                        {isDropdownOpen && (
+                        {isDropdownOpen && index !== 5 && (
                           <motion.div
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: "auto", opacity: 1 }}
@@ -626,13 +782,37 @@ export default function Nav() {
                                         queryKey: ["filterbyfeature"],
                                       });
                                       navigate(
-                                        `/products/${category.category_title}?category=${category.category_id}&sub=${category.category_title}`,
+                                        `/products/${category.category_title}?category_id=${category.category_id}&sub=${category.category_title}`,
                                         {
                                           state: {
                                             category_id: `${category.category_id}`,
                                             title: `${category.category_title}`,
                                           },
                                         }
+                                      );
+                                      clearAll();
+                                      document.title =
+                                        "Naturalla – Natural Skincare Products";
+
+                                      const setMetaDescription = (
+                                        content: string
+                                      ) => {
+                                        let tag = document.querySelector(
+                                          'meta[name="description"]'
+                                        ) as HTMLMetaElement;
+                                        if (!tag) {
+                                          tag = document.createElement("meta");
+                                          tag.setAttribute(
+                                            "name",
+                                            "description"
+                                          );
+                                          document.head.appendChild(tag);
+                                        }
+                                        tag.setAttribute("content", content);
+                                      };
+
+                                      setMetaDescription(
+                                        "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
                                       );
                                       setOpenMobileDropdownId(null);
                                       setIsMenuopen(false);
@@ -650,6 +830,40 @@ export default function Nav() {
                                               queryClient.invalidateQueries({
                                                 queryKey: ["filterbyfeature"],
                                               });
+
+                                              clearAll();
+                                              document.title =
+                                                "Naturalla – Natural Skincare Products";
+
+                                              const setMetaDescription = (
+                                                content: string
+                                              ) => {
+                                                let tag =
+                                                  document.querySelector(
+                                                    'meta[name="description"]'
+                                                  ) as HTMLMetaElement;
+                                                if (!tag) {
+                                                  tag =
+                                                    document.createElement(
+                                                      "meta"
+                                                    );
+                                                  tag.setAttribute(
+                                                    "name",
+                                                    "description"
+                                                  );
+                                                  document.head.appendChild(
+                                                    tag
+                                                  );
+                                                }
+                                                tag.setAttribute(
+                                                  "content",
+                                                  content
+                                                );
+                                              };
+
+                                              setMetaDescription(
+                                                "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                                              );
                                               setOpenMobileDropdownId(null);
                                               setIsMenuopen(false);
                                             }}
@@ -686,14 +900,8 @@ export default function Nav() {
                         queryClient.invalidateQueries({
                           queryKey: ["filterbyfeature"],
                         });
-                        if (index === 5) {
-                          queryClient.invalidateQueries({
-                            queryKey: ["filterbyfeature"],
-                          });
-                          navigate("/products/combo`s?best_selling=true", {
-                            state: { title: "Combo's" },
-                          });
-                        } else if (index === 6) {
+                        clearAll();
+                        if (index === 6) {
                           queryClient.invalidateQueries({
                             queryKey: ["filterbyfeature"],
                           });
@@ -714,6 +922,24 @@ export default function Nav() {
                             }
                           );
                         }
+                        document.title =
+                          "Naturalla – Natural Skincare Products";
+
+                        const setMetaDescription = (content: string) => {
+                          let tag = document.querySelector(
+                            'meta[name="description"]'
+                          ) as HTMLMetaElement;
+                          if (!tag) {
+                            tag = document.createElement("meta");
+                            tag.setAttribute("name", "description");
+                            document.head.appendChild(tag);
+                          }
+                          tag.setAttribute("content", content);
+                        };
+
+                        setMetaDescription(
+                          "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                        );
                         setIsMenuopen(false);
                       }}
                       className={`text-base text-neutral-800 text-left ${
@@ -735,6 +961,24 @@ export default function Nav() {
                       queryClient.invalidateQueries({
                         queryKey: ["filterbyfeature"],
                       });
+                      clearAll();
+                      document.title = "Naturalla – Natural Skincare Products";
+
+                      const setMetaDescription = (content: string) => {
+                        let tag = document.querySelector(
+                          'meta[name="description"]'
+                        ) as HTMLMetaElement;
+                        if (!tag) {
+                          tag = document.createElement("meta");
+                          tag.setAttribute("name", "description");
+                          document.head.appendChild(tag);
+                        }
+                        tag.setAttribute("content", content);
+                      };
+
+                      setMetaDescription(
+                        "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                      );
                       setIsMenuopen(false);
                     }}
                     className={`text-base text-neutral-800 ${
@@ -755,7 +999,6 @@ export default function Nav() {
   );
 }
 
-// Custom Arrow Components
 function CustomPrevArrow({ onClick }: { onClick?: () => void }) {
   return (
     <div

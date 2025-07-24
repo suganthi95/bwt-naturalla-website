@@ -6,10 +6,10 @@ import {
 } from "@/lib/api";
 import {  useMutation, useQuery } from "@tanstack/react-query";
 
-export const useProductDetailsById = (id: string) => {
+export const useProductDetailsById = (data: { id: string, token: string }) => {
   return useQuery({
-    queryKey: ["productdetail", id],
-    queryFn: () => productDetailById(id),
+    queryKey: ["productdetail", data.id],
+    queryFn: () => productDetailById(data.id, data.token),
     staleTime: 1000 * 60 * 5,
     select: (data) => data?.data,
     retry: 1,

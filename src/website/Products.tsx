@@ -53,11 +53,11 @@ export default function Products() {
   return (
     <main>
       <section className="container mx-auto flex  lg:gap-x-10 mt-6 mb-16">
-        <div className=" hidden lg:block w-4/12 xl:w-2/12">
+        <div className="  hidden lg:block w-4/12 xl:w-2/12">
           <FilterSidebar filterValues={data} />
         </div>
   
-        <div className="col-span-5 lg:w-10/12">
+        <div className=" w-full lg:w-10/12">
           <ProductsList Products={products} title={title ?? ""} />
         </div>
       </section>

@@ -49,7 +49,7 @@ export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
   }
 
   return (
-    <ScrollArea className="space-y-6 p-4  h-screen">
+    <ScrollArea className="space-y-6 p-4 h-full  md:h-screen">
       <h2 className="text-lg font-bold text-title mb-3">Wishlist</h2>
       {items?.length === 0 ? (
         <EmptyWishlist onClose={onClose} />
@@ -77,7 +77,7 @@ export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
                         <p className="text-sm flex flex-wrap items-center gap-x-2 mt-0.5 text-[#939393]">
                           <span>1 unit</span>₹{item?.unit_price}
                           <span className="hidden sm:inline border-l h-3 border-gray-300"></span>
-                          <span>Size</span>
+                          {/* <span>Size</span> */}
                           {item?.units}
                         </p>
 
@@ -121,7 +121,7 @@ export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
 
                       <button
                         onClick={() => handleRemoveProduct(item?.product_id)}
-                        className="text-gray-500 hover:text-red-500 transition"
+                        className="text-gray-500 cursor-pointer hover:text-red-500 transition"
                       >
                         {removingItemId === item?.cart_id ? (
                           <Loader2 className="w-4 h-4 animate-spin text-red-500" />

@@ -7,6 +7,7 @@ interface Props {
   categories: Category[];
 }
 export default function TopCategories({ categories }: Props) {
+  
   const navigate = useNavigate();
   const Description = [
     {

@@ -39,7 +39,6 @@ export default function Dashboard({ handleTabChange }: Props) {
       bg: "#FEE7D7",
     },
   ];
-  console.log(RecentOrders);
 
   return (
     <div className="mt-5 space-y-6 px-4 md:px-0">

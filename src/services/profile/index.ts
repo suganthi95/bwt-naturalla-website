@@ -4,12 +4,17 @@ import {
   editAddress,
   getAddress,
   getDashboard,
+  getIssueTypes,
   getOrders,
   getOrdersDetails,
   getProfileInfo,
   getRecentOrders,
+  getTicket,
+  raiseTicket,
   updateProfile,
   updateProfileImage,
+  verifyEmail,
+  verifyOtp,
 } from "@/lib/api";
 import type { AddressPayload, Profile } from "@/types/type";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -21,6 +26,7 @@ export const useGetProfileInfo = (token: string) => {
     select: (data) => data?.data,
     staleTime: 1000 * 60 * 5,
     retry: 1,
+    enabled: Boolean(token),
   });
 };
 
@@ -29,6 +35,21 @@ export const useUpdateProfile = () => {
     mutationKey: ["updateprofile"],
     mutationFn: (args: { token: string; payload: Profile }) =>
       updateProfile(args.token, args.payload),
+  });
+};
+
+export const useVerifyEmail = () => {
+  return useMutation({
+    mutationKey: ["verifyEmail"],
+    mutationFn: (args: { token: string; email: string }) =>
+      verifyEmail(args.token, args.email),
+  });
+};
+export const useVerifyOtp = () => {
+  return useMutation({
+    mutationKey: ["verifyotp"],
+    mutationFn: (args: { token: string; email:string; otp: string }) =>
+      verifyOtp(args.token,args.email, args.otp),
   });
 };
 export const useUpdateProfileImage = () => {
@@ -45,6 +66,7 @@ export const useGetOrders = (token: string) => {
     select: (data) => data?.data,
     staleTime: 1000 * 60 * 5,
     retry: 1,
+    enabled: Boolean(token),
   });
 };
 
@@ -55,6 +77,7 @@ export const useGetOrdersDetails = (token: string, order_id: number) => {
     select: (data) => data,
     staleTime: 1000 * 60 * 5,
     retry: 1,
+    enabled: Boolean(token),
   });
 };
 export const useGetDashboard = (token: string) => {
@@ -106,5 +129,31 @@ export const useDeleteAddress = () => {
     mutationKey: ["deleteaddress"],
     mutationFn: (args: { token: string; id: string }) =>
       deleteAddress(args.token, args.id),
+  });
+};
+
+export const useGetTickets = (token: string) => {
+  return useQuery({
+    queryKey: ["getTickets"],
+    queryFn: () => getTicket(token),
+    select: (data) => data?.data,
+    staleTime: 1000 * 60 * 5,
+    retry: 1,
+  });
+};
+export const useGetIssueTypes = (token: string) => {
+  return useQuery({
+    queryKey: ["getIssueTypes"],
+    queryFn: () => getIssueTypes(token),
+    select: (data) => data?.data,
+    staleTime: 1000 * 60 * 5,
+    retry: 1,
+  });
+};
+
+export const useRaiseTicket = () => {
+  return useMutation({
+    mutationKey: ["raiseTicket"],
+    mutationFn: (data: any) => raiseTicket(data),
   });
 };

@@ -204,7 +204,7 @@ export type Profile = {
   last_name: string;
   email: string;
   phone_no: number;
-  password?: string;
+  password?: string | null;
 };
 export interface OrderAddressPayload {
   address_first_name: string;
@@ -232,4 +232,42 @@ export type Blog = {
   blog_images: number;
   blog_image_url: string;
   created_time:string
+};
+
+
+export type ContactUsTicket = {
+  contactus_id: number;
+  first_name: string;
+  last_name: string;
+  contact_email: string;
+  contact_phone_no: string;
+  subject: string | null;
+  message_body: string;
+  attachment: string[];
+  priority: string;
+  status: string;
+  customer_id: number;
+  created_at: string; // ISO date string
+  issue_type_id: number;
+  subissue_id: number;
+  admin_read_status: boolean;
+  customer_read_status: boolean;
+  issue_type: string;
+  sub_issue: string;
+  created_time: string; // formatted date string
+  attachment_data: string[];
+};
+
+
+export type SubIssue = {
+  sub_issue: string;
+  subissue_id: number;
+};
+
+export type IssueType = {
+  issue_type_id: number;
+  issue_type: string;
+  created_at: string;
+  created_by: string | null;
+  sub_issues: SubIssue[];
 };

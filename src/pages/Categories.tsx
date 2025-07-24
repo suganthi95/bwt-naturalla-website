@@ -33,10 +33,10 @@ function Categories() {
 
     if(isSuccess){
         content = (
-            <div className="grid grid-cols-3 mt-5 gap-10">
+            <div className="grid md:grid-cols-2  xl:grid-cols-3 mt-5 gap-10">
                 {data.map(item => (
                     <Link 
-                        to={`/products/${item.category_title}?category=${item.category_id}&sub=${item.category_title}`} 
+                        to={`/products/top-categories?category_id=${item.category_id}`} 
                         state={{
                             category_id: `${item.category_id}`,
                             title: `${item.category_title}`,

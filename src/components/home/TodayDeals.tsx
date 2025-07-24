@@ -49,13 +49,11 @@ export default function TodayDeals({ Products }: Props) {
     <div className="container mx-auto">
       <div className="flex justify-between font-semibold  items-center">
         <p className="text-title text-sm md:text-xl cursor-pointer ">
-         Today's Offer
+          Today's Offer
         </p>
         <p
           className="text-title text-sm md:text-xl cursor-pointer hover:underline underline-primary"
           onClick={() =>
-            // navigate("/products/today-deals", { state: { isin_todays_deal: "true" } })
-
             navigate("/products/today-offer?isin_todays_deal=true", {
               state: { title: "Today Offer" },
             })
@@ -67,16 +65,25 @@ export default function TodayDeals({ Products }: Props) {
       <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-x-14 lg:gap-x-20 mt-4 md:mt-8">
         {Products?.slice(0, 3)?.map((item, index) => {
           return (
-            <li key={index} className="space-y-2 relative overflow-hidden">
-              <img
-                src={item.thumbnail_image_url}
-                alt={item?.product_name}
-                className="w-[388px] h-[388px] rounded-[16px] object-cover  mx-auto cursor-pointer"
-                onClick={() => navigate(`/product/${item.slug}`)}
-              />
-              <div className="  absolute bg-[#E95144] font-bold text-white rounded-r  group-hover:hidden text-sm  right-1 md:right-2 top-0  px-4 py-1">
-                {Math.round(Number(item?.discount_percent))}% OFF
-              </div>{" "}
+            <li key={index} className="space-y-2 relative ">
+              <div className="relative w-full max-w-[388px] mx-auto">
+                <img
+                  src={item.thumbnail_image_url}
+                  alt={item?.product_name}
+                  className="w-full h-auto aspect-square max-w-[388px] rounded-[16px] object-cover mx-auto cursor-pointer"
+                  onClick={() => navigate(`/product/${item.slug}`)}
+                />
+                <div
+                  className="absolute top-0 right-0 sm:top-0 sm:right-0 md:top-0 md:right-0
+               bg-[#E95144] font-bold text-white rounded-r-[5px]
+               px-3 py-1 text-xs sm:text-sm group-hover:hidden
+               shadow-md"
+                >
+                  {Math.round(Number(item?.discount_percent))}% OFF
+                  
+                </div>
+              </div>
+
               <p
                 onClick={() => navigate(`/product/${item.slug}`)}
                 className="text-primary font-medium cursor-pointer hover:text-primary transition-colors duration-300 text-xl"

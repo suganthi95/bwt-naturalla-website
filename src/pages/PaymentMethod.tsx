@@ -46,8 +46,6 @@ export default function PaymentMethod() {
   //   setCartItems(items);
   // }, [items]);
 
-  // console.log(cartItems[0]?.quantity);
-
   const CouponDetails = useSelector((state: RootState) => state.coupon);
   const { mutate, isPending } = useCreateOrder();
   const { mutate: verifyRazorpay, isPending: verifyRazorpayPending } =
@@ -60,7 +58,6 @@ export default function PaymentMethod() {
     isLoading,
     isFetching,
   } = useGetProviders(token);
-  console.log(PaymentProviders);
 
   // const [finalData, setFinalData] = useState(null);
 
@@ -77,16 +74,11 @@ export default function PaymentMethod() {
     navigate("/order-failure");
     setShouldPoll(false);
   }
-  const {
-    setValue,
-    watch,
-    formState: { errors },
-  } = useForm({
+  const { setValue, watch } = useForm({
     defaultValues: {
       payment: "",
     },
   });
-  console.log(errors);
 
   const selectedRole = watch("payment");
 
@@ -95,11 +87,19 @@ export default function PaymentMethod() {
     0
   );
 
-  const tax = items?.reduce((acc, item) => {
-    const productTax =
-      (item.unit_price * item.quantity * item.tax_percent) / 100;
-    return acc + Math.round(productTax);
+  // const tax = items?.reduce((acc, item) => {
+  //   const productTax =
+  //     (item.unit_price * item.quantity * item.tax_percent) / 100;
+  //   return acc + Math.round(productTax);
+  // }, 0);
+  
+  // update tax calculation
+    const tax = items?.reduce((acc, item) => {
+    const productTotal = item.unit_price * item.quantity;
+    const tax = (productTotal * item.tax_percent) / (100 + item.tax_percent);
+    return acc + Math.round(tax);
   }, 0);
+
 
   let shipping = 0;
 
@@ -208,8 +208,6 @@ export default function PaymentMethod() {
               description: "Payment",
               image: ASSETS.LOGO,
               handler: function (response: any) {
-                console.log("razorpay handler work");
-
                 verifyRazorpay(
                   {
                     token: token,
@@ -289,12 +287,12 @@ export default function PaymentMethod() {
           setShouldPoll(false);
         }
         if (data.resp.state === "COMPLETED") {
-          setLoading(false);
-          navigate("/order-success");
+          clearInterval(interval);
           localStorage.removeItem("merchantTransactionId");
+          navigate("/order-success", { replace: true });
+          setLoading(false);
           // setFinalData(data);
           setShouldPoll(false);
-          clearInterval(interval);
           dispatch(removeCartItems());
           dispatch(removeWishlist());
           dispatch(removeCoupon());
@@ -304,6 +302,14 @@ export default function PaymentMethod() {
           navigate("/order-failure");
           clearInterval(interval);
           setShouldPoll(false);
+        } else if (data.resp.state === "PENDING") {
+          setTimeout(() => {
+            setLoading(false);
+            localStorage.removeItem("merchantTransactionId");
+            navigate("/order-failure");
+            clearInterval(interval);
+            setShouldPoll(false);
+          }, 3000);
         }
       } catch (error) {
         console.error("Polling error:", error);

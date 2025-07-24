@@ -1,6 +1,6 @@
 import Slider from "react-slick";
 import { useRef, useState, useEffect } from "react";
-import { Ban, Heart, Loader2, Share2, X } from "lucide-react";
+import { Ban, Heart, Loader2, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -23,6 +23,8 @@ import { addWishItem, removeWishlistItem } from "@/redux/slices/wishSlice";
 import { useAddToCart } from "@/services/cart";
 import axios from "axios";
 import { Truck, BadgeDollarSign } from "lucide-react";
+import ShareButton from "./ShareButton";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 
 // const productImages = [
 //   ASSETS.PRODUCT1,
@@ -45,13 +47,13 @@ const baseUrl = import.meta.env.VITE_FRONTEND_URL;
 const policies = [
   {
     title: "Shipping Policy",
-    icon: <Truck className="w-5 h-5 text-primary" />,
+    icon: <Truck className="w-4 h-4 md:w-5 md:h-5 text-primary" />,
     url: `${baseUrl}/shipping-policy`,
   },
 
   {
     title: "Return & Refund Policy",
-    icon: <BadgeDollarSign className="w-5 h-5 text-primary" />,
+    icon: <BadgeDollarSign className="w-4 h-4 md:w-5 md:h-5 text-primary" />,
     url: `${baseUrl}/returns-and-refunds`,
   },
 ];
@@ -70,11 +72,8 @@ export default function ProductSection({ media, products }: Props) {
   const [nav2, setNav2] = useState<Slider | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  // const [Pincode, setPincode] = useState(() => localStorage.getItem("pincode"));
   const [Pincode, setPincode] = useState("");
-  // const [Messages, setMessage] = useState(() =>
-  //   localStorage.getItem("delivery")
-  // );
+
   const [Messages, setMessage] = useState("");
   const [liked, setLiked] = useState(false);
 
@@ -83,21 +82,12 @@ export default function ProductSection({ media, products }: Props) {
     if (quantity > 1) {
       setQuantity(quantity - 1);
       dispatch(decreaseQuantity(cart_id));
-      // UpdateCart({
-      //   cart_id,
-      //   quantity: -1,
-      //   token,
-      // });
     }
   };
 
   const handleIncrease = (cart_id: number) => {
     setQuantity(quantity + 1);
-    // UpdateCart({
-    //   cart_id,
-    //   quantity: 1,
-    //   token,
-    // });
+
     dispatch(increaseQuantity(cart_id));
   };
 
@@ -108,10 +98,10 @@ export default function ProductSection({ media, products }: Props) {
     }
   }, []);
 
-  const handleCopyurl = async () => {
-    await navigator.clipboard.writeText(window.location.href);
-    toast.info("product url copied");
-  };
+  // const handleCopyurl = async () => {
+  //   await navigator.clipboard.writeText(window.location.href);
+  //   toast.info("product url copied");
+  // };
 
   const mainSliderSettings = {
     asNavFor: nav2!,
@@ -167,6 +157,10 @@ export default function ProductSection({ media, products }: Props) {
     }
   };
 
+  useEffect(() => {
+    setLiked(products?.in_wishlist);
+  }, [products?.in_wishlist]);
+
   return (
     <div className="flex flex-col container mx-auto space-y-4 xl:flex-row  ">
       <div className="flex w-full lg:w-10/12 xl:w-1/2 gap-4 ">
@@ -209,19 +203,22 @@ export default function ProductSection({ media, products }: Props) {
         </div>
       </div>
 
-      <div className="w-full  space-y-3">
+      <div className="w-full  space-y-2 md:space-y-3">
         <div className="flex items-start w-full justify-between">
           <div className="space-y-2.5">
-            <h2 className="text-2xl md:text-[32px] font-semibold ">
+            <h2 className="text-xl md:text-[32px] font-semibold ">
               {products?.product_name}
             </h2>
-            <ul className="grid grid-cols-2 sm:grid-cols-3  gap-x-4">
+            <p className="font-medium text-sm md:text-base line-clamp-3">
+              {products?.short_description}
+            </p>
+            <ul className="flex items-center flex-wrap gap-2  md:gap-4">
               {products?.icon_data?.slice(0, 3)?.map((item) => {
                 return (
                   <li className="flex items-center gap-x-1.5">
                     <img
                       src={item.icon_url}
-                      className="size-7"
+                      className="size-4 md:size-7"
                       alt={`icon-${item.icon_id}`}
                     />
                     <p className="font-medium text-[#656877]">
@@ -233,15 +230,21 @@ export default function ProductSection({ media, products }: Props) {
             </ul>
           </div>
           <div className="flex flex-col gap-y-5">
-            <Button
-              variant="outline"
-              size="icon"
-              className="hover:scale-90"
-              onClick={handleCopyurl}
-            >
-              <Share2 className="w-5 h-5" />
-            </Button>
-
+            <Dialog>
+              <DialogTrigger>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="hover:scale-90"
+                  // onClick={handleCopyurl}
+                >
+                  <Share2 className="w-5 h-5" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <ShareButton url={window.location.href} />
+              </DialogContent>
+            </Dialog>
             <button
               disabled={products?.current_stock <= 0}
               onClick={() => {
@@ -300,18 +303,22 @@ export default function ProductSection({ media, products }: Props) {
           </div>
         </div>
 
-        <p className="flex items-center gap-x-0.5 text-sm">
-          {Array.from({ length: 5 }).map((_, i) =>
-            i < averageRatings ? (
-              <Icons.Star key={i} className="text-yellow-500 w-4 h-4" />
-            ) : (
-              <Icons.Un_Star key={i} className="text-gray-300 w-4 h-4" />
-            )
-          )}
-          <span className="font-medium ml-1">
-            {isNaN(averageRatings) ? 0 : averageRatings}/5
-          </span>
-        </p>
+        {averageRatings ? (
+          <p className="flex items-center gap-x-0.5 text-sm">
+            {Array.from({ length: 5 }).map((_, i) =>
+              i < averageRatings ? (
+                <Icons.Star key={i} className="text-yellow-500 w-4 h-4" />
+              ) : (
+                <Icons.Un_Star key={i} className="text-gray-300 w-4 h-4" />
+              )
+            )}
+            <span className="font-semibold ml-1">
+              {isNaN(averageRatings) ? 0 : averageRatings} / 5
+            </span>
+          </p>
+        ) : (
+          ""
+        )}
         <div className="flex items-center gap-x-2">
           <p className=" font-bold text-title  text-sm md:text-[32px]">
             Rs. {products?.unit_price}
@@ -331,20 +338,24 @@ export default function ProductSection({ media, products }: Props) {
           )}
         </div>
         <div className="flex md:flex-col items-center lg:items-start  justify-between">
-          <div>
+          <div className="flex flex-col items-start md:flex-row md:items-center gap-x-3 md:justify-center">
             <p className="flex items-center gap-x-1.5 text-lead">
               Price <span> : </span>{" "}
               <span className="text-title font-bold t">
                 Rs {products?.unit_price}
               </span>
             </p>
+            <p className="  text-xs md:text-sm  text-neutral-700  font-medium">
+              ({products?.units})
+            </p>
           </div>
-          <div className="flex items-center gap-2 border w-fit p-1 px-4 rounded-lg">
+          
+          <div className="flex items-center gap-2 border w-fit p-1 mt-2 px-2 md:px-4 rounded-lg">
             <Button
               variant="outline"
               size="icon"
               disabled={products?.quantity < 2}
-              className="border-none cursor-pointer  w-fit text-xl font-semibold"
+              className="border-none cursor-pointer  w-fit md:text-xl font-semibold"
               onClick={() => handleDecrease(products?.cart_id)}
             >
               {" −"}
@@ -353,38 +364,43 @@ export default function ProductSection({ media, products }: Props) {
               type="number"
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
-              className="w-10  text-2xl  font-semibold border-none text-center"
+              className=" w-13  text-xl  font-semibold border-none text-center"
               min={1}
             />
             <Button
+              disabled={quantity >= products?.current_stock}
               variant="outline"
               size="icon"
-              className="cursor-pointer  border-none  w-fit text-xl font-semibold"
+              className="cursor-pointer  border-none  w-fit md:text-xl font-semibold"
               onClick={() => handleIncrease(products.cart_id)}
             >
               +
             </Button>
           </div>
+          <AnimatePresence>
+            {quantity >= products?.current_stock && (
+              <motion.p
+                className="text-xs font-medium text-red-500 mt-1"
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 5 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+              >
+                Product only {products?.current_stock} quantity available
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
         {products?.current_stock > 0 ? (
           <div className="flex items-center gap-x-2">
             <Button
               onClick={() => {
                 if (status) {
-                  addtoCart(
-                    {
-                      product_id: products.product_id,
-                      quantity: quantity,
-                      token: token,
-                    },
-                    {
-                      onError: (error) => {
-                        if (axios.isAxiosError(error)) {
-                          toast.error(error?.response?.data?.messgae);
-                        }
-                      },
-                    }
-                  );
+                  addtoCart({
+                    product_id: products.product_id,
+                    quantity: quantity,
+                    token: token,
+                  });
 
                   navigate("/checkout");
                 } else {
@@ -412,11 +428,7 @@ export default function ProductSection({ media, products }: Props) {
                       onSuccess() {
                         dispatch(addItem(products));
                       },
-                      onError: (error) => {
-                        if (axios.isAxiosError(error)) {
-                          toast.error(error?.response?.data?.messgae);
-                        }
-                      },
+                   
                     }
                   );
                 } else {
@@ -438,24 +450,15 @@ export default function ProductSection({ media, products }: Props) {
           </Button>
         )}
 
-        <div className="flex items-center gap-2 border rounded-md px-2 py-1 w-full lg:w-fit">
-          <div className="relative w-full md:w-72">
+        <div className="flex items-center justify-between border rounded-md px-1 py-1 w-full lg:w-fit">
+          <div className="relative w-full md:w-[254px]">
             <Input
               type="number"
               value={Pincode ?? ""}
-              placeholder="Enter PIN code to check delivery date"
+              placeholder="Enter Pincode for Delivery"
               onChange={(e) => setPincode(e.target.value)}
-              className="border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-8 text-sm pr-8 pl-2"
+              className="border-none placeholder:text-sm focus-visible:ring-0 focus-visible:ring-offset-0 h-8 text-sm pr-8 pl-2"
             />
-            {Pincode && (
-              <X
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground cursor-pointer"
-                onClick={() => {
-                  setPincode("");
-                  setMessage("");
-                }}
-              />
-            )}
           </div>
           <Button
             onClick={checkDeliveryInfo}
@@ -478,8 +481,8 @@ export default function ProductSection({ media, products }: Props) {
               onClick={() => window.open(item.url, "_blank")}
               className="flex items-center gap-3 cursor-pointer text-sm  rounded-xl transition-all "
             >
-              <div className="bg-primary/10 p-2 rounded-full">{item.icon}</div>
-              <p className="text-sm font-medium text-neutral-700">
+              <div className="bg-primary/10 p-2  rounded-full">{item.icon}</div>
+              <p className="text-xs md:text-sm font-medium text-neutral-700">
                 {item.title}
               </p>
             </div>

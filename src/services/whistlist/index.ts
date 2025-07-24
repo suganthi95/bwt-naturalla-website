@@ -31,11 +31,12 @@ export const useAddToWishList = () => {
 
 export const useGetWishListItems = (token:string)=>{
     return useQuery({
-        queryKey:['getwishlist'],
-        queryFn:()=>getWhislistItems(token),
-        select:(data)=>data,
-        staleTime:1000*60*5,
-        retry:1
+      queryKey:['getwishlist'],
+      queryFn:()=>getWhislistItems(token),
+      select:(data)=>data,
+      staleTime:1000*60*5,
+      enabled:!!token,
+      retry:1,
     })
 }
 

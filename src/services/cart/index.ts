@@ -37,6 +37,7 @@ export const useGetCartItems = (token:string)=>{
         queryFn:()=>getCartItems(token),
         select:(data)=>data,
         staleTime:1000*60*5,
+        enabled:!!token,
         retry:1
     })
 }
@@ -70,7 +71,7 @@ export const useUpdateCart = () => {
 
 
 export const useDeleteCart = () => {
-    const queryClient = useQueryClient()
+    // const queryClient = useQueryClient()
   return useMutation({
     mutationKey: ["deletecart"],
     mutationFn: ({
@@ -85,7 +86,7 @@ export const useDeleteCart = () => {
 
     onSuccess: () => {
     //   toast.success("Product added to cart!");
-     queryClient.invalidateQueries({queryKey:['getcart']})
+    //  queryClient.invalidateQueries({queryKey:['getcart']})
     },
 
     onError: (error: any) => {

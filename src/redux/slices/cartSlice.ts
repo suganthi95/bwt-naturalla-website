@@ -13,9 +13,9 @@ type Address = {
   pinCode: string;
   same_billing_address?: boolean;
   billing_first_name?: string | null;
-  billing_last_name?:string | null;
-  billing_address?:string | null;
-  billing_email?:string | null;
+  billing_last_name?: string | null;
+  billing_address?: string | null;
+  billing_email?: string | null;
   billing_phone_no?: string | null;
   billing_city?: string | null;
   billing_state?: string | null;
@@ -78,6 +78,11 @@ export const cartSlice = createSlice({
     },
     removeCartItems: (state) => {
       state.items = [];
+      state.subtotal = 0;
+      state.tax = 0;
+      state.discount = 0;
+      state.shipping = 0;
+      state.total = 0;
     },
     addItem: (state, action: PayloadAction<Product>) => {
       const existingItem = state.items.find(
@@ -102,9 +107,7 @@ export const cartSlice = createSlice({
         existingItem.coupon_amount = action.payload.coupon_amount ?? null;
         existingItem.coupon_id = action.payload.coupon_id ?? null;
         existingItem.prodcut_tax = action.payload.prodcut_tax;
-        existingItem.product_sub_total=action.payload.product_sub_total;
-
-
+        existingItem.product_sub_total = action.payload.product_sub_total;
       } else {
         state.items.push(action.payload);
       }

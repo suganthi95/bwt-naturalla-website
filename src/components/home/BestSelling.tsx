@@ -59,8 +59,8 @@ export default function BestSelling({ title, Products }: Props) {
         <p
           className="text-title text-sm md:text-xl cursor-pointer hover:underline underline-primary"
           onClick={() =>
-            navigate("/products/combo?best_selling=true", {
-              state: { title: "Combo's" },
+            navigate("/products/best-selling?best_selling=true", {
+              state: { title: "Best Selling" },
             })
           }
         >

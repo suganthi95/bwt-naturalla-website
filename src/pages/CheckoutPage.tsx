@@ -23,6 +23,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   useAddOrderAddress,
   useCheckCouponCode,
+  useDeleteCart,
   useGetCartItems,
   useUpdateCart,
 } from "@/services/cart";
@@ -38,6 +39,7 @@ import {
   addItemTotalAmount,
   decreaseQuantity,
   increaseQuantity,
+  removeItem,
   setShippingAddress,
   setTaxDetails,
 } from "@/redux/slices/cartSlice";
@@ -168,7 +170,7 @@ export default function CheckoutPage() {
     useAddOrderAddress();
   const { mutate } = useUpdateCart();
   const { mutate: CheckCoupon, isPending } = useCheckCouponCode();
-  // const { mutate: removeCart } = useDeleteCart();
+  const { mutate: removeCart } = useDeleteCart();
   const dispatch = useDispatch();
   const { items, tax_detail } = useSelector((state: RootState) => state.cart);
   // const CouponDetails = useSelector((state: RootState) => state.coupon);
@@ -178,7 +180,7 @@ export default function CheckoutPage() {
   const [quantity, setQuantity] = useState(1);
   const [CouponDetails, setCouponDetails] = useState<CouponState>();
   const [couponCode, setCouponCode] = useState("");
-  // const [removingItemId, setRemovingItemId] = useState<number | null>(null);
+  const [removingItemId, setRemovingItemId] = useState<number | null>(null);
 
   const [query, setQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -272,14 +274,15 @@ export default function CheckoutPage() {
     });
     dispatch(increaseQuantity(cart_id));
   };
-  // const handleRemoveProduct = (cart_id: number, quantity: number) => {
-  //   setRemovingItemId(cart_id);
-  //   removeCart({
-  //     cart_id,
-  //     quantity,
-  //     token: token,
-  //   });
-  // };
+  const handleRemoveProduct = (cart_id: number, quantity: number) => {
+    setRemovingItemId(cart_id);
+    removeCart({
+      cart_id,
+      quantity,
+      token: token,
+    });
+    dispatch(removeItem(cart_id));
+  };
 
   // const checkDeliveryInfo = async () => {
   //   try {
@@ -312,9 +315,9 @@ export default function CheckoutPage() {
           toast.success("coupon applied");
           let isAnyProductMatched = items?.some(
             (product: Product) =>
-              CouponDetails?.coupon_type === "product_based" &&
+              data?.coupon_type === "product_based" &&
               Array.isArray(data?.product_ids) &&
-              CouponDetails.product_ids.includes(Number(product.product_id))
+              data?.product_ids.includes(Number(product.product_id))
           );
 
           if (!isAnyProductMatched) {
@@ -350,7 +353,6 @@ export default function CheckoutPage() {
   };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    
     addAddress(
       {
         token: token ?? "",
@@ -403,10 +405,11 @@ export default function CheckoutPage() {
     0
   );
 
-  const tax = items?.reduce((acc, item) => {
-    const productTax =
-      (item.unit_price * item.quantity * item.tax_percent) / 100;
-    return acc + Math.round(productTax);
+  // update tax calculation
+    const tax = items?.reduce((acc, item) => {
+    const productTotal = item.unit_price * item.quantity;
+    const tax = (productTotal * item.tax_percent) / (100 + item.tax_percent);
+    return acc + Math.round(tax);
   }, 0);
 
   // Default shipping
@@ -547,7 +550,7 @@ export default function CheckoutPage() {
                                   <span className="text-gray-300">|</span>
                                   <span>₹{product?.unit_price}</span>
                                   <span className="text-gray-300">|</span>
-                                  <span>Size</span>
+                                  {/* <span>Size</span> */}
                                   <span>{product?.units}</span>
                                 </p>
                               </div>
@@ -623,7 +626,7 @@ export default function CheckoutPage() {
                                 </Button>
                               </div>
 
-                              {/* <button
+                              <button
                                 disabled={items.length === 1 && quantity < 2}
                                 onClick={() =>
                                   handleRemoveProduct(
@@ -631,14 +634,14 @@ export default function CheckoutPage() {
                                     product?.quantity
                                   )
                                 }
-                                className="text-gray-500 hover:text-red-500"
+                                className="text-gray-500 cursor-pointer hover:text-red-500"
                               >
                                 {removingItemId === product.cart_id ? (
                                   <Loader2 className="w-4 h-4 animate-spin text-red-500" />
                                 ) : (
                                   <Icons.Remove />
                                 )}
-                              </button> */}
+                              </button>
                             </div>
 
                             {product?.current_stock <= product?.quantity && (
@@ -667,13 +670,13 @@ export default function CheckoutPage() {
                     <AccordionTrigger className="cursor-pointer ">
                       <h1 className="md:text-2xl flex flex-col items-start   font-semibold ">
                         Shipping Details
-                        <p className="text-red-600 text-xs font-semibold bg-red-100 px-3 py-1 rounded">
-                          ⚠️ NOTE: After filing the Shipping Details, please
-                          click 'Add' button to proceed
-                        </p>
                       </h1>
                     </AccordionTrigger>
-                    <AccordionContent>
+                    <AccordionContent className=" ">
+                      <p className="text-red-600 text-xs  mb-2 w-fit  font-semibold  bg-red-100 px-3 py-1 rounded">
+                        ⚠️ NOTE: After filling in the Shipping Details, please
+                        click 'Add' button to proceed
+                      </p>
                       <div className="mt-2space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <FormField
@@ -1337,16 +1340,14 @@ export default function CheckoutPage() {
             <Accordion type="single" collapsible defaultValue="price">
               <AccordionItem value="price" className="border-none">
                 <AccordionTrigger className="cursor-pointer">
-                  <h1 className="md:text-2xl font-semibold ">
-                    Shipping Details
-                  </h1>
+                  <h1 className="md:text-2xl font-semibold ">Price Details</h1>
                 </AccordionTrigger>
                 <AccordionContent>
-                  {subtotal < 500 && (
+                  {/* {subtotal < 500 && (
                     <div className="mb-3 p-3 bg-yellow-100 text-yellow-800 rounded-md text-xs font-medium transition-all duration-300 ease-in-out opacity-100">
                       Minimum order value must be ₹500 to apply the discount.
                     </div>
-                  )}
+                  )} */}
 
                   <div className="relative flex items-center mb-5">
                     <TicketPercent className="absolute left-3 w-4 h-4 text-gray-400" />
@@ -1397,12 +1398,12 @@ export default function CheckoutPage() {
                       </span>
                     </div>
 
-                    {discount > 0 && (
+                    {/* {discount > 0 && (
                       <div className="flex justify-between">
                         <span>Discount</span>
                         <span className="">-₹{discount}</span>
                       </div>
-                    )}
+                    )} */}
 
                     {CouponDiscount > 0 && (
                       <div className="flex justify-between">
@@ -1420,8 +1421,10 @@ export default function CheckoutPage() {
                           </span>
                         ) : (
                           <span className=" text-red-500 text-xs font-medium italic animate-shake">
-                            (Spend ₹{tax_detail.min_amount - subtotal} more for
-                            free shipping)
+                            {/* (Spend ₹{tax_detail.min_amount - subtotal} more for
+                            free shipping) */}
+                            ( Spend ₹{tax_detail.min_amount - subtotal} more to
+                            get free shipping!)
                           </span>
                         )}
                       </span>

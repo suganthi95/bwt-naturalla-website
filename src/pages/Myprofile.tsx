@@ -2,7 +2,6 @@ import { ASSETS } from "@/assets/assets";
 import { Icons } from "@/assets/icons";
 
 import Dashboard from "@/components/profile/dashboard/Dashboard";
-import { Button } from "@/components/ui/button";
 import UserAddress from "@/components/profile/address/UserAddress";
 import Order from "@/components/profile/orders/Order";
 import { useState } from "react";
@@ -13,11 +12,11 @@ import type { RootState } from "@/redux/store";
 import { useGetOrders, useGetProfileInfo } from "@/services/profile";
 import ProfilePictureUpload from "@/components/profile/ProfilePictureUpload";
 import FullScreenLoader from "@/common/FullScreenLoader";
+import Support from "@/components/profile/support/Support";
 
 export default function Myprofile() {
   const [IsProfileUpdate, setIsProfileUpdate] = useState(false);
   const [activeTab, setActiveTab] = useState("dashboard");
-  // const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
     // setSelectedOrder(null);
@@ -67,11 +66,11 @@ export default function Myprofile() {
                 </p>
               </div>
 
-              <div className="text-center md:text-right mt-2 md:mt-0">
+              {/* <div className="text-center md:text-right mt-2 md:mt-0">
                 <Button onClick={() => setActiveTab("settings")} size="sm">
                   Edit
                 </Button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -164,6 +163,16 @@ export default function Myprofile() {
             >
               Settings
             </button>
+              <button
+              onClick={() => handleTabChange("support")}
+              className={`px-6 py-3 font-medium text-sm cursor-pointer !rounded-button whitespace-nowrap ${
+                activeTab === "support"
+                  ? "text-green-800 border-b-2 border-green-800"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Support center
+            </button>
           </nav>
         </div>
         <div>
@@ -176,6 +185,9 @@ export default function Myprofile() {
           )}
           {activeTab === "settings" && (
             <Settings User={profileInfo && profileInfo} />
+          )}
+            {activeTab === "support" && (
+            <Support profileInfo={profileInfo[0] ?? {}}/>
           )}
         </div>
       </div>

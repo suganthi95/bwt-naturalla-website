@@ -13,28 +13,27 @@ import {
 } from "@/components/ui/form";
 import { Icons } from "@/assets/icons";
 
-import { Check, Loader2 } from "lucide-react";
+import { Check, Eye, EyeOff, Loader2 } from "lucide-react";
 import type { User } from "@/types/type";
-import { useUpdateProfile } from "@/services/profile";
+import {
+  useUpdateProfile,
+  useVerifyEmail,
+  useVerifyOtp,
+} from "@/services/profile";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import axios from "axios";
-
-const formSchema = z
-  .object({
-    firstName: z.string().min(2, "First name is required"),
-    lastName: z.string().min(2, "Last name is required"),
-    email: z.string().email("Invalid email"),
-    phoneNumber: z.string().min(10, "Phone number is too short"),
-    // password: z.string().min(6, "Password must be at least 6 characters"),
-    // confirmPassword: z.string().min(6, "Please confirm your password"),
-  })
-  // .refine((data) => data.password === data.confirmPassword, {
-  //   message: "Passwords do not match",
-  //   path: ["confirmPassword"],
-  // });
+import { useState } from "react";
+const formSchema = z.object({
+  firstName: z.string().min(2, "First name is required"),
+  lastName: z.string().min(2, "Last name is required"),
+  email: z.string().email("Invalid email"),
+  phoneNumber: z.string(),
+  password: z.string().optional(),
+  confirmPassword: z.string().optional(),
+});
 
 type FormValues = z.infer<typeof formSchema>;
 interface Props {
@@ -43,9 +42,15 @@ interface Props {
 export default function Settings({ User }: Props) {
   const { token } = useSelector((state: RootState) => state.auth);
   const { mutate, isPending } = useUpdateProfile();
-  // const [showVerify, setshowVerify] = useState(false);
+  const [IsVerifyOtp, setIsVerifyOtp] = useState(false);
+  const [isEditing, setIsEditing] = useState(true);
+  const [isVerfied, setIsVerified] = useState(false);
+  const [email, setEmail] = useState<string>("");
+  const [otpValue, setOtpValue] = useState("");
+  const { mutate: VerifyEmail, isPending: VerifyIsPending } = useVerifyEmail();
+  const { mutate: VerifyOtp, isPending: verifyOtpLoading } = useVerifyOtp();
+
   const queryClient = useQueryClient();
-  // const navigate = useNavigate();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -53,12 +58,76 @@ export default function Settings({ User }: Props) {
       lastName: User[0]?.last_name ?? "",
       email: User[0]?.email ?? "",
       phoneNumber: User[0]?.phone_no ?? "",
-      // password: "",
-      // confirmPassword: "",
+      password: "",
+      confirmPassword: "",
     },
   });
 
+  const handleVerifyEmail = () => {
+    VerifyEmail(
+      { token: token ?? "", email: form.watch("email") },
+      {
+        onSuccess: (data) => {
+          if (!data?.verified) {
+            setIsVerifyOtp(true);
+            setEmail(form.watch("email"));
+          } else {
+            setIsVerifyOtp(false);
+            setIsVerified(true);
+          }
+          toast.success(data?.message);
+        },
+        onError: (error) => {
+          if (axios.isAxiosError(error)) {
+            toast.error(error?.response?.data?.message);
+          }
+        },
+      }
+    );
+  };
+
+  const handleOtpVerify = () => {
+    VerifyOtp(
+      { token: token ?? "", email: email, otp: otpValue },
+      {
+        onSuccess: (data) => {
+          setIsVerifyOtp(false);
+          setIsVerifyOtp(true);
+
+          toast.success(data?.message);
+        },
+        onError: (error) => {
+          if (axios.isAxiosError(error)) {
+            toast.error(error?.response?.data?.message);
+          }
+        },
+      }
+    );
+  };
+
   const onSubmit = (values: FormValues) => {
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?#&])[A-Za-z\d@$!%*?#&]{8,}$/;
+
+    if (
+      (User[0]?.verify_email || isVerfied) &&
+      values.password &&
+      values.password !== values.confirmPassword
+    ) {
+      toast.warning("Passwords do not match");
+      return;
+    }
+
+    if (
+      (User[0]?.verify_email || isVerfied) &&
+      values.password &&
+      !passwordRegex.test(values.password ?? "")
+    ) {
+      toast.warning(
+        "Password must be at least 8 characters and include uppercase, lowercase, number, and special character"
+      );
+      return;
+    }
     mutate(
       {
         payload: {
@@ -66,6 +135,7 @@ export default function Settings({ User }: Props) {
           last_name: values.lastName,
           email: values.email,
           phone_no: Number(values.phoneNumber),
+          password: values.password ? values?.password : null,
         },
         token: token,
       },
@@ -91,6 +161,7 @@ export default function Settings({ User }: Props) {
             <FormField
               control={form.control}
               name="firstName"
+              disabled={isEditing}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-textPrimary font-semibold ">
@@ -106,6 +177,7 @@ export default function Settings({ User }: Props) {
             <FormField
               control={form.control}
               name="lastName"
+              disabled={isEditing}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-textPrimary font-semibold ">
@@ -121,39 +193,88 @@ export default function Settings({ User }: Props) {
             />
           </div>
           <div className="grid md:grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-textPrimary font-semibold ">
-                    Email
-                  </FormLabel>
-                  <FormControl>
-                    <div className="h-11 border rounded-md items-center   flex">
-                      <Input
-                        placeholder="you@example.com"
-                        type="email"
-                        // onFocus={() => {
-                        //   setshowVerify(true);
-                        // }}
-                        {...field}
-                        className="border-none !border-0 "
-                      />
-                      {/* {showVerify &&
-                        (!User[0]?.verify_email || User[0]?.verify_email) && (
-                          <Button className="rounded-l h-full ">Verify</Button>
-                        )} */}
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {!IsVerifyOtp ? (
+              <FormField
+                control={form.control}
+                name="email"
+                disabled={isEditing}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-textPrimary font-semibold">
+                      Email
+                    </FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          type="email"
+                          placeholder="you@example.com"
+                          className="h-11 pr-16"
+                          {...field}
+                        />
+
+                        {!User[0]?.verify_email && !isVerfied ? (
+                          <button
+                            type="button"
+                            className="absolute right-3 cursor-pointer top-1/2 -translate-y-1/2 text-sm text-primary font-medium hover:underline"
+                            onClick={handleVerifyEmail}
+                            disabled={VerifyIsPending}
+                          >
+                            {VerifyIsPending ? (
+                              <span className="inline-flex items-center gap-1 text-muted-foreground">
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                              </span>
+                            ) : (
+                              <span>Verify</span>
+                            )}
+                          </button>
+                        ) : (
+                          <div className="absolute right-3 top-1/2 -translate-y-1/2 size-4 rounded-full bg-green-500 flex items-center justify-center">
+                            <Check className="text-white w-3 h-3" />
+                          </div>
+                        )}
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ) : (
+              <div className="flex flex-col gap-2">
+                <label className="text-textPrimary font-semibold text-sm">
+                  Enter OTP
+                </label>
+
+                <div className="relative">
+                  <Input
+                    type="text"
+                    placeholder="Enter OTP"
+                    className="h-11 pr-24"
+                    value={otpValue}
+                    onChange={(e) => setOtpValue(e.target.value)}
+                  />
+
+                  {verifyOtpLoading ? (
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground inline-flex items-center gap-1">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    </span>
+                  ) : (
+                    <Button
+                      type="button"
+                      variant="link"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-primary text-sm h-auto p-0 font-medium hover:underline"
+                      onClick={handleOtpVerify}
+                    >
+                      Verify
+                    </Button>
+                  )}
+                </div>
+              </div>
+            )}
 
             <FormField
               control={form.control}
               name="phoneNumber"
+              disabled={isEditing}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-textPrimary font-semibold ">
@@ -175,6 +296,7 @@ export default function Settings({ User }: Props) {
                       <div className="h-6 w-px bg-border" />
 
                       <Input
+                        readOnly
                         type="tel"
                         placeholder="Enter phone number"
                         className="border-none p-0 focus:ring-0 focus-visible:ring-0 focus:outline-none flex-1"
@@ -193,52 +315,145 @@ export default function Settings({ User }: Props) {
               )}
             />
           </div>
-          {/* <div className="grid grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-textPrimary font-semibold ">
-                    Password
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="h-11"
-                      placeholder="••••••"
-                      type="password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-textPrimary font-semibold ">
-                    Confirm Password
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="h-11"
-                      placeholder="••••••"
-                      type="password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div> */}
 
-          <Button type="submit" disabled={isPending} className="w-fit">
-            {isPending ?   <Loader2 className="animate-spin" />: "Save"}
-          </Button>
+          {User[0]?.verify_email || isVerfied ? (
+            <div className="grid md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="password"
+                disabled={isEditing}
+                render={({ field }) => {
+                  const [showPassword, setShowPassword] = useState(false);
+
+                  return (
+                    <FormItem>
+                      <FormLabel className="text-textPrimary font-semibold">
+                        Password <span className="text-red-500">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            className="h-11 pr-10"
+                            placeholder="••••••"
+                            type={showPassword ? "text" : "password"}
+                            {...field}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            className="absolute right-3 cursor-pointer top-1/2 -translate-y-1/2 text-gray-500"
+                          >
+                            {showPassword ? (
+                              <EyeOff className="w-5 h-5" />
+                            ) : (
+                              <Eye className="w-5 h-5" />
+                            )}
+                          </button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                disabled={isEditing}
+                render={({ field }) => {
+                  const [showPassword, setShowPassword] = useState(false);
+
+                  return (
+                    <FormItem>
+                      <FormLabel className="text-textPrimary font-semibold">
+                        Confirm Password <span className="text-red-500">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            className="h-11 pr-10"
+                            placeholder="••••••"
+                            type={showPassword ? "text" : "password"}
+                            {...field}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            className="absolute right-3 cursor-pointer top-1/2 -translate-y-1/2 text-gray-500"
+                          >
+                            {showPassword ? (
+                              <EyeOff className="w-5 h-5" />
+                            ) : (
+                              <Eye className="w-5 h-5" />
+                            )}
+                          </button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
+            </div>
+          ) : (
+            <div className="p-2 bg-yellow-50 text-yellow-800 text-xs w-fit rounded-md border border-yellow-200">
+              <p>
+                <strong>Note:</strong> Please click{" "}
+                <span className="text-primary font-medium cursor-pointer hover:underline">
+                  verify
+                </span>{" "}
+                to confirm your email before updating your password.
+              </p>
+            </div>
+          )}
+
+          {(User[0]?.verify_email || isVerfied) && (
+            <div className="mt-2 rounded-lg border border-yellow-300 bg-yellow-50 p-1 md:p-3  text-yellow-800 flex items-start gap-2">
+              <svg
+                className="h-5 w-5 mt-0.5 text-yellow-500"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13 16h-1v-4h-1m1-4h.01M12 9v2m0 4h.01M12 19a7 7 0 100-14 7 7 0 000 14z"
+                />
+              </svg>
+              <p className="text-xs">
+                <span className="font-semibold">Password Tip:</span> Must be at
+                least <strong>8 characters</strong> and include{" "}
+                <strong>uppercase</strong>, <strong>lowercase</strong>,{" "}
+                <strong>number</strong>, and a{" "}
+                <strong>special character</strong>.
+              </p>
+            </div>
+          )}
+          <div>
+            {isEditing ? (
+              <Button type="button" onClick={() => setIsEditing(false)}>
+                Edit
+              </Button>
+            ) : (
+              <div className="space-x-2">
+                {" "}
+                <Button type="submit" disabled={isPending} className="w-fit">
+                  {isPending ? <Loader2 className="animate-spin" /> : "Save"}
+                </Button>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => {
+                    setIsEditing(true);
+                  }}
+                >
+                  Cancel
+                </Button>
+              </div>
+            )}
+          </div>
         </form>
       </Form>
     </div>

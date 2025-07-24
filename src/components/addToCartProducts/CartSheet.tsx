@@ -78,11 +78,20 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
     (acc, item) => acc + item.unit_price * item.quantity,
     0
   );
-  const tax = items?.reduce((acc, item) => {
-    const productTax =
-      (item.unit_price * item.quantity * item.tax_percent) / 100;
-    return acc + Math.round(productTax);
+  
+  // const tax = items?.reduce((acc, item) => {
+  //   const productTax =
+  //     (item.unit_price * item.quantity * item.tax_percent) / 100;
+  //   return acc + Math.round(productTax);
+  // }, 0);
+
+  // update tax calculation
+    const tax = items?.reduce((acc, item) => {
+    const productTotal = item.unit_price * item.quantity;
+    const tax = (productTotal * item.tax_percent) / (100 + item.tax_percent);
+    return acc + Math.round(tax);
   }, 0);
+
   const discount = 0;
   const shipping =
     tax_detail?.min_amount <= subtotal ? 0 : tax_detail?.shipping_fee;
@@ -93,7 +102,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
   return (
     <ScrollArea className="space-y-6 p-4  h-full md:h-screen">
       <h2 className="text-lg font-bold text-title"> Cart</h2>
-      {items?.length === 0  ? (
+      {(items?.length === 0 && items)  ? (
         <EmptyCart onClose={onClose} />
       ) : (
         <>
@@ -134,7 +143,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                             {item?.unit_price}
                             <span className="hidden sm:inline border-l h-3 border-gray-300"></span>
                            
-                            <span className="text-[13px]">Size</span>{" "}
+                            {/* <span className="text-[13px]">Size</span>{" "} */}
                             {item?.units}
                           </p>
 
@@ -194,7 +203,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                           onClick={() =>
                             handleRemoveProduct(item?.cart_id, item?.quantity)
                           }
-                          className="text-gray-500 hover:text-red-500"
+                          className="text-gray-500 cursor-pointer hover:text-red-500"
                         >
                           {removingItemId === item?.cart_id ? (
                             <Loader2 className="w-4 h-4 animate-spin text-red-500" />
@@ -261,7 +270,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                 >
                   {shipping === 0 && (
                     <span className="text-xs  line-through text-lead">
-                      {tax_detail?.shipping_fee}
+                     ₹ {tax_detail?.shipping_fee}
                     </span>
                   )}
                   ₹{shipping === 0 ? shipping : shipping}

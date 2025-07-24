@@ -30,8 +30,8 @@ export const NavData =[
    
      {
         id:'6',
-        name:"Combo's",
-        link:'/products/best-sellers'
+        name:"Offers",
+        link:'/products/offers'
     },
       {
         id:'7',

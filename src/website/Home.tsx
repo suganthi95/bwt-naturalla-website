@@ -32,7 +32,7 @@ export default function Home() {
       {/* best selling section */}
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
         <BestSelling
-          title={"Combo's Product"}
+          title={"Best Selling Product"}
           Products={data?.best_selling}
         />
       </section>

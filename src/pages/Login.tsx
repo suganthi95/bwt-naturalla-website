@@ -15,36 +15,86 @@ import { Icons } from "@/assets/icons";
 import { useLogin } from "@/services/auth";
 import axios from "axios";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Userlogin } from "@/redux/slices/authSlice";
 
 const formSchema = z.object({
-  inputValue:  z.string().min(10, "Phone number is too short"),
+  inputValue: z.string().min(10, "Phone number is too short"),
+  password: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 export default function Login() {
-    const {mutate,isPending} = useLogin()
-    const navigate = useNavigate()
+  const { mutate, isPending } = useLogin();
+  const dispatch = useDispatch();
+  const [isEmailLogin, setIsEmailLogin] = useState(false);
+  const navigate = useNavigate();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       inputValue: "",
+      password: "",
     },
   });
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const numberRegex = /^[0-9]{7,15}$/;
+  useEffect(() => {
+    const value = form.watch("inputValue");
+    if (emailRegex.test(value)) {
+      setIsEmailLogin(true);
+    } else {
+      setIsEmailLogin(false);
+    }
+  }, [form.watch("inputValue")]);
 
   const onSubmit = (values: FormValues) => {
-    mutate(Number(values.inputValue),{
-        onSuccess:()=>{
-navigate('/login-verify',{state:{phone_no:Number(values.inputValue)}})
+    if (emailRegex.test(values.inputValue)) {
+      mutate(
+        {
+          phone_no: Number(values.inputValue),
+          login_through: "email",
+          email: values.inputValue,
+          password: values.password,
         },
-        onError(error) {
-            if(axios.isAxiosError(error)){
-                toast.error(error?.response?.data?.message)
+        {
+          onSuccess: (data) => {
+            navigate("/");
+            toast.success(data?.message);
+            dispatch(Userlogin(data));
+          },
+          onError(error) {
+            if (axios.isAxiosError(error)) {
+              toast.error(error?.response?.data?.message);
             }
-        },
-    })
+          },
+        }
+      );
+    } else {
+      if (!numberRegex.test(values.inputValue)) {
+        toast.error("Please enter a valid phone number");
+        return;
+      }
+
+      mutate(
+        { phone_no: Number(values.inputValue), login_through: "mobile" },
+        {
+          onSuccess: () => {
+            navigate("/login-verify", {
+              state: { phone_no: Number(values.inputValue) },
+            });
+          },
+          onError(error) {
+            if (axios.isAxiosError(error)) {
+              toast.error(error?.response?.data?.message);
+            }
+          },
+        }
+      );
+    }
   };
 
   return (
@@ -66,7 +116,7 @@ navigate('/login-verify',{state:{phone_no:Number(values.inputValue)}})
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-textPrimary font-semibold ">
-                    Email or mobile number
+                    Email or Mobile number
                   </FormLabel>
                   <FormControl>
                     <Input className="h-11" placeholder="" {...field} />
@@ -76,8 +126,58 @@ navigate('/login-verify',{state:{phone_no:Number(values.inputValue)}})
               )}
             />
 
+            {isEmailLogin && (
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => {
+                  const [showPassword, setShowPassword] = useState(false);
+
+                  return (
+                    <FormItem>
+                      <FormLabel className="text-textPrimary flex items-center justify-between font-semibold">
+                        <p>
+                          Password <span className="text-red-500">*</span>
+                        </p>
+                        <span
+                          onClick={() => {
+                            navigate("/forgot-password");
+                          }}
+                          className="text-sm float-right cursor-pointer text-[#007AFF] underline underline-[#007AFF]"
+                        >
+                          Forgot password ?{" "}
+                        </span>
+                      </FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            className="h-11 pr-10"
+                            placeholder="••••••"
+                            type={showPassword ? "text" : "password"}
+                            {...field}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            className="absolute right-3 cursor-pointer top-1/2 -translate-y-1/2 text-gray-500"
+                          >
+                            {showPassword ? (
+                              <EyeOff className="w-5 h-5" />
+                            ) : (
+                              <Eye className="w-5 h-5" />
+                            )}
+                          </button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
+            )}
+
             <Button type="submit" className="w-full">
-             {isPending  ? <Loader2 className="animate-spin"/>: 'Continue'} 
+              {isPending ? <Loader2 className="animate-spin" /> : "Continue"}
             </Button>
           </form>
         </Form>
@@ -85,11 +185,13 @@ navigate('/login-verify',{state:{phone_no:Number(values.inputValue)}})
         <p className="text-center  justify-center flex items-center gap-x-1 text-sm text-textPrimary">
           You don't have an account ?{" "}
           <a href="/sign-up" className="font-bold underline">
-              Register Now
+            Register Now
           </a>
         </p>
       </div>
-      <p className="fixed bottom-2.5 text-sm text-title">Copyrights © All Rights Reserved ® 2025 Naturalla Stores</p>
+      <p className="fixed bottom-2.5 text-xs text-center  md:text-sm text-title">
+        Copyrights © All Rights Reserved ® 2025 Naturalla Stores
+      </p>
     </section>
   );
 }

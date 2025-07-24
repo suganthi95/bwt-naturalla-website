@@ -1,4 +1,3 @@
-import { ASSETS } from "@/assets/assets";
 import { Link } from "react-router-dom";
 import {
   FaInstagram,
@@ -7,18 +6,16 @@ import {
   FaSnapchatGhost,
   FaPinterestP,
 } from "react-icons/fa";
-import { useSelector } from "react-redux";
-import type { RootState } from "@/redux/store";
-
+import { Icons } from "@/assets/icons";
 export default function Footer() {
 
-  const { status } = useSelector((data: RootState) => data.auth);
 
   return (
     <footer className="bg-[#232323] text-white py-12 lato">
       <div className="container mx-auto flex flex-col lg:flex-row flex-wrap gap-8 justify-between">
         <div className="w-full lg:w-[23%] space-y-4">
-          <img src={ASSETS.LOGO_FOOTER} alt="Logo" className="h-10 w-auto" />
+          {/* <img src={ASSETS.LOGO} alt="Logo" className="h-10 md:h-16 w-auto" /> */}
+          <Icons.Footet_Logo/>
           <p className="text-sm leading-relaxed text-justify text-white/70">
             Welcome to <b>Naturalla.store</b>, where nature meets innovation. We
             are a proudly organic and nature-based cosmetics company dedicated
@@ -121,7 +118,7 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link to={status ? "/contact-us" : "/login"} className="text-white/50">
+              <Link to={ "/contact-us" } className="text-white/50">
                 Contact Us
               </Link>
             </li>
