@@ -1,5 +1,5 @@
 export const ASSETS = {
-  LOGO: "https://ik.imagekit.io/3t9llb0gx/Naturella/WhatsApp_Image_2025-06-02_at_15.39.56-removebg-preview.png?updatedAt=1752230839872",
+  LOGO: "https://res.cloudinary.com/dg8grzdsh/image/upload/v1753345228/naturalla-banner-images/iua8fpmjykmuaf3ubutc.webp ",
 
   HERO_IMG:
     "https://ik.imagekit.io/3t9llb0gx/Naturella/Frame%208.png?updatedAt=1749124817087",
