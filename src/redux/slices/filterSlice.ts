@@ -23,8 +23,8 @@ const getStoredPrice = () => {
 const initialState: FilterState = {
   keywords: [],
   searchInput: "",
-  minPrice: getStoredPrice().min_price,
-  maxPrice: getStoredPrice().max_price,
+  minPrice: getStoredPrice()?.min_price,
+  maxPrice: getStoredPrice()?.max_price,
   categories: [],
   sortByPrice: "",
   sortByDate: "",
