@@ -89,10 +89,10 @@ export default function Nav() {
     infinite: true,
     speed: 500,
     slidesToShow: 1,
-        adaptiveHeight: true,
+    adaptiveHeight: true,
     slidesToScroll: 1,
-    prevArrow: <CustomPrevArrow />,
-    nextArrow: <CustomNextArrow />,
+    prevArrow: <CustomPrevArrow isView={messages?.length > 1} />,
+    nextArrow: <CustomNextArrow isView={messages?.length > 1} />,
   };
 
   const [IsMenuopen, setIsMenuopen] = useState<boolean>(false);
@@ -139,16 +139,6 @@ export default function Nav() {
       navigate(`/products/by-search?product_name=${searchTerm}`);
     }
   };
-  // const { scrollY } = useScroll();
-
-  // useMotionValueEvent(scrollY, "change", (latest) => {
-  //   const previous = scrollY.getPrevious() ?? 0;
-  //   if (latest > previous && latest > 200) {
-  //     Sethidden(true);
-  //   } else {
-  //     Sethidden(false);
-  //   }
-  // });
 
   return (
     <motion.header
@@ -1000,22 +990,39 @@ export default function Nav() {
   );
 }
 
-function CustomPrevArrow({ onClick }: { onClick?: () => void }) {
+
+function CustomPrevArrow({
+  onClick,
+  isView,
+}: {
+  onClick?: () => void;
+  isView: boolean;
+}) {
   return (
     <div
       onClick={onClick}
-      className="absolute left-0 top-1/2 -translate-y-1/2 z-10 px-2 cursor-pointer"
+      className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 px-2 cursor-pointer ${
+        isView ? "block" : "hidden"
+      }`}
     >
       <ChevronLeft className="text-white w-4 h-4" />
     </div>
   );
 }
 
-function CustomNextArrow({ onClick }: { onClick?: () => void }) {
+function CustomNextArrow({
+  onClick,
+  isView,
+}: {
+  onClick?: () => void;
+  isView: boolean;
+}) {
   return (
     <div
       onClick={onClick}
-      className="absolute right-0 top-1/2 -translate-y-1/2 z-10 px-2 cursor-pointer"
+      className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 px-2 cursor-pointer ${
+        isView ? "block" : "hidden"
+      }`}
     >
       <ChevronRight className="text-white w-4 h-4" />
     </div>

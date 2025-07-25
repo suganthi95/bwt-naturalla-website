@@ -34,6 +34,7 @@ export default function Home() {
         <BestSelling
           title={"Best Selling Product"}
           Products={data?.best_selling}
+          Isview={true}
         />
       </section>
 
