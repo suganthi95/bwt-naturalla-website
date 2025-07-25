@@ -10,9 +10,8 @@ import { toast } from "sonner";
 interface Props {
   title: string;
   Products: Product[];
-  Isview?: boolean;
 }
-export default function BestSelling({ title, Products, Isview }: Props) {
+export default function RelatedProducts({ title, Products }: Props) {
   const navigate = useNavigate();
   const { mutate } = useAddToCart();
   const dispatch = useDispatch();
@@ -22,18 +21,17 @@ export default function BestSelling({ title, Products, Isview }: Props) {
     <div className="container mx-auto">
       <div className="flex justify-between font-semibold text-xl items-center">
         <p className="text-title text-sm md:text-xl cursor-pointer ">{title}</p>
-        {Isview && (
-          <p
-            className="text-title text-sm md:text-xl cursor-pointer hover:underline underline-primary"
-            onClick={() =>
-              navigate("/products/best-selling?best_selling=true", {
-                state: { title: "Best Selling" },
-              })
-            }
-          >
-            View more
-          </p>
-        )}
+
+        {/* <p
+          className="text-title text-sm md:text-xl cursor-pointer hover:underline underline-primary"
+          onClick={() =>
+            navigate("/products/related-products?best_selling=true", {
+              state: { title: "Related Products" },
+            })
+          }
+        >
+          View more
+        </p> */}
       </div>
 
       <ul className="grid place-items-center grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 md:gap-14 lg:gap-x-10 mt-4 md:mt-8">

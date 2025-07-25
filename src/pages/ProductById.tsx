@@ -9,19 +9,20 @@ import CustomerReview from "@/components/individualProductPage/CustomerReview";
 import { useProductDetailsById } from "@/services/product";
 import { useParams } from "react-router-dom";
 import { ASSETS } from "@/assets/assets";
-import BestSelling from "@/components/home/BestSelling";
 import DOMPurify from "dompurify";
-
 import FullScreenLoader from "@/common/FullScreenLoader";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
+import RelatedProducts from "@/components/home/RelatedProducts";
 
 export default function ProductById() {
-
   const { id } = useParams();
   const { token } = useSelector((data: RootState) => data.auth);
-  const { data, isLoading, isError, isSuccess, error } = useProductDetailsById({ id: id as string, token });
+  const { data, isLoading, isError, isSuccess, error } = useProductDetailsById({
+    id: id as string,
+    token,
+  });
 
   useEffect(() => {
     if (data) {
@@ -69,7 +70,7 @@ export default function ProductById() {
       }
     }
   }, [data]);
-  
+
   const whatsout = [
     {
       id: "1",
@@ -95,15 +96,19 @@ export default function ProductById() {
 
   let product;
 
-  if(isLoading){
-    product = <FullScreenLoader/>
+  if (isLoading) {
+    product = <FullScreenLoader />;
   }
 
-  if(isError){
-    product = <div className="h-screen flex items-center justify-center font-semibold text-red-500">{(error as any).response.data.message}</div>
+  if (isError) {
+    product = (
+      <div className="h-screen flex items-center justify-center font-semibold text-red-500">
+        {(error as any).response.data.message}
+      </div>
+    );
   }
 
-  if(isSuccess){
+  if (isSuccess) {
     product = (
       <main>
         <section className=" mt-10 mb-10  ">
@@ -124,7 +129,9 @@ export default function ProductById() {
                       alt={item.title}
                       className="size-10 md:size-24 mb-2"
                     />
-                    <p className="font-semibold text-sm md:text-b text-title">{item.title}</p>
+                    <p className="font-semibold text-sm md:text-b text-title">
+                      {item.title}
+                    </p>
                   </li>
                 ))}
               </ul>
@@ -146,7 +153,9 @@ export default function ProductById() {
                     <div
                       className="rich-text text-sm md:text-base font-medium text-[#494F49]"
                       dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(data?.long_description || ""),
+                        __html: DOMPurify.sanitize(
+                          data?.long_description || ""
+                        ),
                       }}
                     />
                   </AccordionContent>
@@ -197,7 +206,7 @@ export default function ProductById() {
             </div>
           </div>
         </section>
-        {data?.faq &&
+        {data?.faq && (
           <section className=" mt-10 mb-10 md:mt-20 md:mb-20  ">
             <div className="container mx-auto  flex  w-full">
               <div className="w-full md:px-24">
@@ -206,7 +215,10 @@ export default function ProductById() {
                 </h2>
                 <Accordion type="single" collapsible>
                   {data?.faq.map((item: any, index: number) => (
-                    <AccordionItem key={`product-faq-${index}`} value={`product-faq-${index}`}>
+                    <AccordionItem
+                      key={`product-faq-${index}`}
+                      value={`product-faq-${index}`}
+                    >
                       <AccordionTrigger className="md:text-lg font-semibold text-title cursor-pointer">
                         {item.qn}
                       </AccordionTrigger>
@@ -215,24 +227,23 @@ export default function ProductById() {
                       </AccordionContent>
                     </AccordionItem>
                   ))}
-                  
                 </Accordion>
               </div>
             </div>
           </section>
-        }
-        
+        )}
+
         <section className=" mt-10 mb-10 md:mt-20 md:mb-20  ">
           <CustomerReview Product={data} />
         </section>
         <section className=" mt-10 mb-10 md:mt-20 md:mb-20  ">
-          <BestSelling
+          <RelatedProducts
             title="Related Products"
             Products={data?.relatedProducts}
           />
         </section>
       </main>
-    )
+    );
   }
 
   return product;

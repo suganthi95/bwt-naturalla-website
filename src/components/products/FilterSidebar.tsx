@@ -45,15 +45,19 @@ export default function FilterSidebar({ filterValues }: Props) {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
-  const { categories, keywords, maxPrice, minPrice, sortByDate, sortByPrice } =
+  const { categories, keywords, sortByDate, sortByPrice } =
     useSelector((state: RootState) => state.filter);
   const [badges, setBadges] = useState<string[]>(keywords);
   const defaultMin = filterValues?.price_range[0]?.min_price ?? 164;
   const defaultMax = filterValues?.price_range[0]?.max_price ?? 5000;
+  
   const [priceRange, setPriceRange] = useState<[number, number]>([
-    minPrice,
-    maxPrice,
+    defaultMin,
+    defaultMax,
   ]);
+   
+  
+  
   const [open, setOpen] = useState(false);
   const [min, max] = priceRange;
   const [selectedCategories, setSelectedCategories] =
@@ -86,7 +90,7 @@ export default function FilterSidebar({ filterValues }: Props) {
     setSearchTerm("");
     setBadges([]);
     dispatch(clearFilters());
-    setPriceRange([100, 1000]);
+    setPriceRange([defaultMin, defaultMax]);
     setSelectedCategories([]);
     setSortBy("");
     setSortByDate("");

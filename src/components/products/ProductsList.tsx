@@ -48,6 +48,7 @@ export default function ProductsList({ Products, title }: Props) {
   const [filteredProducts, setFiltered] = useState<Product[]>();
   const { token, status } = useSelector((state: RootState) => state.auth);
   const { data } = useFilterValues(token);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { mutate } = useAddToCart();
@@ -56,6 +57,9 @@ export default function ProductsList({ Products, title }: Props) {
   const [likedProducts, setLikedProducts] = useState<{ [id: number]: boolean }>(
     {}
   );
+  useEffect(() => {
+    localStorage.setItem("priceRange", JSON.stringify(data?.price_range[0]));
+  }, [data]);
 
   useEffect(() => {
     const initialLikes = Products.reduce((acc, product) => {

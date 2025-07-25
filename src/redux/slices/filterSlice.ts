@@ -11,11 +11,20 @@ interface FilterState {
   sorybyAlphabetic: string;
 }
 
+const getStoredPrice = () => {
+  const saved = localStorage.getItem("priceRange");
+  if (saved) {
+    const pasrsed = JSON.parse(saved);
+    if (pasrsed?.min_price !== undefined && pasrsed?.max_price !== undefined) {
+      return pasrsed;
+    }
+  }
+};
 const initialState: FilterState = {
   keywords: [],
   searchInput: "",
-  minPrice: 0,
-  maxPrice: 1000,
+  minPrice: getStoredPrice().min_price,
+  maxPrice: getStoredPrice().max_price,
   categories: [],
   sortByPrice: "",
   sortByDate: "",
@@ -44,7 +53,9 @@ const filterSlice = createSlice({
       }
     },
     removeKeyword: (state, action: PayloadAction<string>) => {
-      state.keywords = state.keywords.filter((k) => k.toLowerCase().trim() !== (action.payload).toLowerCase().trim());
+      state.keywords = state.keywords.filter(
+        (k) => k.toLowerCase().trim() !== action.payload.toLowerCase().trim()
+      );
     },
     setPriceRanges: (
       state,
