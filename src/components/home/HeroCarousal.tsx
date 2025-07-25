@@ -44,7 +44,7 @@ export default function HeroCarousal({ banners }: any) {
 
   return (
     <div className="w-full relative">
-      <Slider {...settings} className=" md:h-[70vh] rounded-2xl overflow-hidden">
+      <Slider {...settings} className=" md:h-[70vh]  overflow-hidden">
         {banners?.map((src: any, index: number) => (
           <img
             key={`banner-image-${index}`}

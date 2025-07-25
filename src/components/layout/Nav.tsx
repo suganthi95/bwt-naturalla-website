@@ -89,7 +89,7 @@ export default function Nav() {
     infinite: true,
     speed: 500,
     slidesToShow: 1,
-        adaptiveHeight: true,
+    adaptiveHeight: true,
     slidesToScroll: 1,
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
@@ -139,16 +139,6 @@ export default function Nav() {
       navigate(`/products/by-search?product_name=${searchTerm}`);
     }
   };
-  // const { scrollY } = useScroll();
-
-  // useMotionValueEvent(scrollY, "change", (latest) => {
-  //   const previous = scrollY.getPrevious() ?? 0;
-  //   if (latest > previous && latest > 200) {
-  //     Sethidden(true);
-  //   } else {
-  //     Sethidden(false);
-  //   }
-  // });
 
   return (
     <motion.header
@@ -160,17 +150,19 @@ export default function Nav() {
       transition={{ duration: 0.35, ease: "easeInOut" }}
       className="sticky top-0 z-50"
     >
-      <div className="w-full bg-primary  mx-auto md:px-4 py-1 overflow-hidden">
-        <Slider {...settings}>
-          {messages?.map((msg: any, index: number) => (
-            <div key={index} className="">
-              <p className="text-center text-menu text-xs   md:text-sm font-semibold truncate">
-                {msg?.promo_offer_txt}
-              </p>
-            </div>
-          ))}
-        </Slider>
-      </div>
+      {messages?.length > 1 && (
+        <div className="w-full bg-primary  mx-auto md:px-4 py-1 overflow-hidden">
+          <Slider {...settings}>
+            {messages?.map((msg: any, index: number) => (
+              <div key={index} className="">
+                <p className="text-center text-menu text-xs   md:text-sm font-semibold truncate">
+                  {msg?.promo_offer_txt}
+                </p>
+              </div>
+            ))}
+          </Slider>
+        </div>
+      )}
 
       <motion.nav className=" py-5 bg-offWhite">
         <div className="container mx-auto ">
