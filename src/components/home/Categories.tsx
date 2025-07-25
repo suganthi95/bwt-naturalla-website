@@ -29,7 +29,7 @@ export default function Categories() {
           img: ASSETS.CAT_SOAP,
           label: "Exclusive Products",
           link: "/products/buy%201%20get%201%20free?category_id=4&subcategory_id=89",
-          offer: "Buy 1 Get 1",
+          offer: "Buy 1 Get 1 Free",
         },
       ].map((item, index) => (
         <li
