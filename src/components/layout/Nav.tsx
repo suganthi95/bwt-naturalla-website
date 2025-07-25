@@ -91,8 +91,8 @@ export default function Nav() {
     slidesToShow: 1,
     adaptiveHeight: true,
     slidesToScroll: 1,
-    prevArrow: <CustomPrevArrow />,
-    nextArrow: <CustomNextArrow />,
+    prevArrow: <CustomPrevArrow isView={messages?.length > 1} />,
+    nextArrow: <CustomNextArrow isView={messages?.length > 1} />,
   };
 
   const [IsMenuopen, setIsMenuopen] = useState<boolean>(false);
@@ -150,19 +150,17 @@ export default function Nav() {
       transition={{ duration: 0.35, ease: "easeInOut" }}
       className="sticky top-0 z-50"
     >
-      {messages?.length > 1 && (
-        <div className="w-full bg-primary  mx-auto md:px-4 py-1 overflow-hidden">
-          <Slider {...settings}>
-            {messages?.map((msg: any, index: number) => (
-              <div key={index} className="">
-                <p className="text-center text-menu text-xs   md:text-sm font-semibold truncate">
-                  {msg?.promo_offer_txt}
-                </p>
-              </div>
-            ))}
-          </Slider>
-        </div>
-      )}
+      <div className="w-full bg-primary  mx-auto md:px-4 py-1 overflow-hidden">
+        <Slider {...settings}>
+          {messages?.map((msg: any, index: number) => (
+            <div key={index} className="">
+              <p className="text-center text-menu text-xs   md:text-sm font-semibold truncate">
+                {msg?.promo_offer_txt}
+              </p>
+            </div>
+          ))}
+        </Slider>
+      </div>
 
       <motion.nav className=" py-5 bg-offWhite">
         <div className="container mx-auto ">
@@ -992,22 +990,39 @@ export default function Nav() {
   );
 }
 
-function CustomPrevArrow({ onClick }: { onClick?: () => void }) {
+
+function CustomPrevArrow({
+  onClick,
+  isView,
+}: {
+  onClick?: () => void;
+  isView: boolean;
+}) {
   return (
     <div
       onClick={onClick}
-      className="absolute left-0 top-1/2 -translate-y-1/2 z-10 px-2 cursor-pointer"
+      className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 px-2 cursor-pointer ${
+        isView ? "block" : "hidden"
+      }`}
     >
       <ChevronLeft className="text-white w-4 h-4" />
     </div>
   );
 }
 
-function CustomNextArrow({ onClick }: { onClick?: () => void }) {
+function CustomNextArrow({
+  onClick,
+  isView,
+}: {
+  onClick?: () => void;
+  isView: boolean;
+}) {
   return (
     <div
       onClick={onClick}
-      className="absolute right-0 top-1/2 -translate-y-1/2 z-10 px-2 cursor-pointer"
+      className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 px-2 cursor-pointer ${
+        isView ? "block" : "hidden"
+      }`}
     >
       <ChevronRight className="text-white w-4 h-4" />
     </div>
