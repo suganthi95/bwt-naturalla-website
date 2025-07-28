@@ -40,15 +40,15 @@ export default function ProductsList({ Products, title }: Props) {
     keywords,
     maxPrice,
     minPrice,
-    searchInput,
     sortByDate,
     sortByPrice,
     sorybyAlphabetic,
   } = useSelector((state: RootState) => state.filter);
-  const [filteredProducts, setFiltered] = useState<Product[]>(Products ?? []);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(Products);
   const { token, status } = useSelector((state: RootState) => state.auth);
   const { data } = useFilterValues(token);
-
+console.log("product",Products);
+console.log('filter',filteredProducts)
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { mutate } = useAddToCart();
@@ -69,57 +69,94 @@ export default function ProductsList({ Products, title }: Props) {
 
     setLikedProducts(initialLikes);
   }, [Products]);
-  // const sortOptions2 = [
-  //   { label: "New to Old", value: "date-desc" },
-  //   { label: "Old to New", value: "date-asc" },
-  // ];
-  useEffect(() => {
-    let filtered = Products;
 
-    if (keywords.length > 0) {
-      const normalizedKeywords = keywords.map((kw) =>
-        kw.toLowerCase().trim().replace(/&/g, "and")
-      );
+  // useEffect(() => {
 
-      filtered = filtered?.filter((item) =>
-        item.benefit_keys?.some((key: string) =>
+
+  //   if (keywords.length > 0) {
+  //     const normalizedKeywords = keywords.map((kw) =>
+  //       kw.toLowerCase().trim().replace(/&/g, "and")
+  //     );
+
+  //     filtered = filtered?.filter((item) =>
+  //       item.benefit_keys?.some((key: string) =>
+  //         normalizedKeywords.includes(
+  //           key.toLowerCase().trim().replace(/&/g, "and")
+  //         )
+  //       )
+  //     );
+  //   }
+
+  //   filtered = filtered?.filter(
+  //     (item) => item.unit_price >= minPrice && item.unit_price <= maxPrice
+  //   );
+
+  //   if (categories.length > 0) {
+  //     filtered = filtered?.filter(
+  //       (item) =>
+  //         item.category_title && categories.includes(item.category_title)
+  //     );
+  //   }
+
+  //   if (sortByDate) {
+  //     filtered = filtered.sort((a, b) => {
+  //       const dateA = new Date(a.created_at).getTime();
+  //       const dateB = new Date(b.created_at).getTime();
+
+  //       return sortByDate === "date-desc" ? dateB - dateA : dateA - dateB;
+  //     });
+  //   }
+
+ 
+  // }, [
+  //   categories,
+  //   searchInput,
+  //   keywords,
+  //   maxPrice,
+  //   minPrice,
+  //   sortByDate,
+  //   sortByPrice,
+  // ]);
+ 
+ useEffect(() => {
+  if (!Products || Products.length === 0) {
+    setFilteredProducts([]);
+    return;
+  }
+
+  const normalizedKeywords = keywords.map((kw) =>
+    kw.toLowerCase().trim().replace(/&/g, "and")
+  );
+
+  const result = Products
+    .filter((product) => {
+      const matchesKeywords =
+        keywords.length === 0 ||
+        product.benefit_keys?.some((key: string) =>
           normalizedKeywords.includes(
             key.toLowerCase().trim().replace(/&/g, "and")
           )
-        )
-      );
-    }
+        );
 
-    filtered = filtered?.filter(
-      (item) => item.unit_price >= minPrice && item.unit_price <= maxPrice
-    );
+      const matchesPrice =
+        product.unit_price >= minPrice && product.unit_price <= maxPrice;
 
-    if (categories.length > 0) {
-      filtered = filtered?.filter(
-        (item) =>
-          item.category_title && categories.includes(item.category_title)
-      );
-    }
+      const matchesCategory =
+        categories.length === 0 ||
+        (product.category_title && categories.includes(product.category_title));
 
-    if (sortByDate) {
-      filtered = filtered.sort((a, b) => {
-        const dateA = new Date(a.created_at).getTime();
-        const dateB = new Date(b.created_at).getTime();
+      return matchesKeywords && matchesPrice && matchesCategory;
+    })
 
-        return sortByDate === "date-desc" ? dateB - dateA : dateA - dateB;
-      });
-    }
-
-    setFiltered(filtered);
-  }, [
-    categories,
-    searchInput,
-    keywords,
-    maxPrice,
-    minPrice,
-    sortByDate,
-    sortByPrice,
-  ]);
+  setFilteredProducts(result);
+}, [
+  Products,
+  keywords,
+  minPrice,
+  maxPrice,
+  categories,
+  sortByDate,
+]);
   return (
     <div className="space-y-4 w-full">
       <div className="flex  flex-col  lg:flex-row justify-between xl:items-center w-full">
@@ -172,7 +209,6 @@ export default function ProductsList({ Products, title }: Props) {
       ) : (
         <ul className="grid grid-cols-2   md:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-4 xl:gap-4">
           {filteredProducts
-            ?.slice()
             ?.sort((a, b) => {
               if (sorybyAlphabetic === "a-z")
                 return a.product_name.localeCompare(b.product_name);
