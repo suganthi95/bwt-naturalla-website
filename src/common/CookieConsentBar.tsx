@@ -20,13 +20,14 @@ export default function CookieConsentBar() {
       <div className="text-black  text-base leading-relaxed mb-4">
         We use cookies to personalize and improve your experience. By clicking{" "}
         <span className="font-semibold">"Accept"</span>, you consent to our use
-        of cookies. Read our{" "}
-        <a
-          href="/cookie-policy"
+        of cookies. 
+        {/* Read our{" "} */}
+        {/* <a
+          href="/"
           className="text-green-700 font-medium underline"
         >
           cookie policy
-        </a>
+        </a> */}
         .
       </div>
       <div className="flex justify-end space-x-3">
