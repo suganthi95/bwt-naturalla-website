@@ -44,8 +44,9 @@ export default function ProductsList({ Products, title }: Props) {
     sortByPrice,
     sorybyAlphabetic,
   } = useSelector((state: RootState) => state.filter);
-  
+
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(Products);
+  console.log("filteredProducts: ", filteredProducts);
   const { token, status } = useSelector((state: RootState) => state.auth);
   const { data } = useFilterValues(token);
 
@@ -70,93 +71,78 @@ export default function ProductsList({ Products, title }: Props) {
     setLikedProducts(initialLikes);
   }, [Products]);
 
-  // useEffect(() => {
+  useEffect(() => {
+    let filtered
+    if (keywords.length > 0) {
+      const normalizedKeywords = keywords.map((kw) =>
+        kw.toLowerCase().trim().replace(/&/g, "and")
+      );
 
-
-  //   if (keywords.length > 0) {
-  //     const normalizedKeywords = keywords.map((kw) =>
-  //       kw.toLowerCase().trim().replace(/&/g, "and")
-  //     );
-
-  //     filtered = filtered?.filter((item) =>
-  //       item.benefit_keys?.some((key: string) =>
-  //         normalizedKeywords.includes(
-  //           key.toLowerCase().trim().replace(/&/g, "and")
-  //         )
-  //       )
-  //     );
-  //   }
-
-  //   filtered = filtered?.filter(
-  //     (item) => item.unit_price >= minPrice && item.unit_price <= maxPrice
-  //   );
-
-  //   if (categories.length > 0) {
-  //     filtered = filtered?.filter(
-  //       (item) =>
-  //         item.category_title && categories.includes(item.category_title)
-  //     );
-  //   }
-
-  //   if (sortByDate) {
-  //     filtered = filtered.sort((a, b) => {
-  //       const dateA = new Date(a.created_at).getTime();
-  //       const dateB = new Date(b.created_at).getTime();
-
-  //       return sortByDate === "date-desc" ? dateB - dateA : dateA - dateB;
-  //     });
-  //   }
-
- 
-  // }, [
-  //   categories,
-  //   searchInput,
-  //   keywords,
-  //   maxPrice,
-  //   minPrice,
-  //   sortByDate,
-  //   sortByPrice,
-  // ]);
- 
- useEffect(() => {
-  // if (!Products || Products.length === 0) {
-  //   setFilteredProducts([]);
-  //   return;
-  // }
-
-  const normalizedKeywords = keywords.map((kw) =>
-    kw.toLowerCase().trim().replace(/&/g, "and")
-  );
-
-  const result = Products?.filter((product) => {
-      const matchesKeywords =
-        keywords.length === 0 ||
-        product?.benefit_keys?.some((key: string) =>
+      filtered = Products?.filter((item) =>
+        item.benefit_keys?.some((key: string) =>
           normalizedKeywords.includes(
             key.toLowerCase().trim().replace(/&/g, "and")
           )
-        );
+        )
+      );
+    }
 
-      const matchesPrice =
-        product.unit_price >= minPrice && product?.unit_price <= maxPrice;
+    filtered = Products?.filter(
+      (item) => item.unit_price >= minPrice && item.unit_price <= maxPrice
+    );
 
-      const matchesCategory =
-        categories.length === 0 ||
-        (product?.category_title && categories.includes(product?.category_title));
+    if (categories.length > 0) {
+      filtered = filtered?.filter(
+        (item) =>
+          item.category_title && categories.includes(item.category_title)
+      );
+    }
 
-      return matchesKeywords && matchesPrice && matchesCategory;
-    })
-    
+    if (sortByDate) {
+      filtered = Products.sort((a, b) => {
+        const dateA = new Date(a.created_at).getTime();
+        const dateB = new Date(b.created_at).getTime();
 
-  setFilteredProducts(result);
-}, [
-  Products,
-  keywords,
-  minPrice,
-  maxPrice,
-  categories,
-  sortByDate,
-]);
+        return sortByDate === "date-desc" ? dateB - dateA : dateA - dateB;
+      });
+    }
+
+    setFilteredProducts(filtered);
+  }, [categories, keywords, maxPrice, minPrice, sortByDate, sortByPrice]);
+
+  //   useEffect(() => {
+  //   const normalizedKeywords = keywords.map((kw) =>
+  //     kw.toLowerCase().trim().replace(/&/g, "and")
+  //   );
+
+  //   const result = Products?.filter((product) => {
+  //       const matchesKeywords =
+  //         keywords.length === 0 ||
+  //         product?.benefit_keys?.some((key: string) =>
+  //           normalizedKeywords.includes(
+  //             key.toLowerCase().trim().replace(/&/g, "and")
+  //           )
+  //         );
+
+  //       const matchesPrice =
+  //         product.unit_price >= minPrice && product?.unit_price <= maxPrice;
+
+  //       const matchesCategory =  categories.length > 0 && categories.includes(product?.category_title);
+
+  //       return  matchesCategory && matchesKeywords && matchesPrice;
+  //     })
+
+  //   setFilteredProducts(result);
+  // }, [
+  //   Products,
+  //   keywords,
+  //   minPrice,
+  //   maxPrice,
+  //   categories,
+  //   sortByDate,
+  // ]);
+  // console.log('products',Products);
+
   return (
     <div className="space-y-4 w-full">
       <div className="flex  flex-col  lg:flex-row justify-between xl:items-center w-full">
