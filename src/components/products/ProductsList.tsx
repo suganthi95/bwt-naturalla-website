@@ -47,8 +47,7 @@ export default function ProductsList({ Products, title }: Props) {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(Products);
   const { token, status } = useSelector((state: RootState) => state.auth);
   const { data } = useFilterValues(token);
-console.log("product",Products);
-console.log('filter',filteredProducts)
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { mutate } = useAddToCart();
