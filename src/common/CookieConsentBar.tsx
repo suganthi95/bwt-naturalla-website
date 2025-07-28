@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { setCookie, getCookie } from "@/utils/cookies";
 import { useState } from "react";
 export default function CookieConsentBar() {
@@ -16,33 +17,30 @@ export default function CookieConsentBar() {
   if (!showBanner) return null;
 
   return (
-    <div className="fixed bottom-5 left-1/2 transform -translate-x-1/2 w-[95%]  z-50 rounded-lg border-2 shadow-lg p-6 bg-white border-green-700">
-      <div className="text-black  text-base leading-relaxed mb-4">
-        We use cookies to personalize and improve your experience. By clicking{" "}
-        <span className="font-semibold">"Accept"</span>, you consent to our use
-        of cookies. 
-        {/* Read our{" "} */}
-        {/* <a
-          href="/"
-          className="text-green-700 font-medium underline"
-        >
-          cookie policy
-        </a> */}
-        .
+    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full  z-50  p-6 bg-white border-green-700">
+      <div className="text-black text-sm  md:text-base leading-relaxed mb-4">
+       <span className="font-bold">Cookie Policy :</span>  Our Websites may use "cookies" to enhance your user experience. Your web
+        browser places cookies on your hard drive for record-keeping purposes
+        and sometimes to track information about you. You may choose to set your
+        web browser to refuse cookies or to alert you when cookies are being
+        sent. If you do so, note that some parts of the Websites may not
+        function properly. This is a standard operating procedure that is used
+        across the internet. For further details, please review our Privacy
+        Policy.
       </div>
       <div className="flex justify-end space-x-3">
-        <button
+        <Button
           onClick={onDecline}
-          className="px-4 py-2 rounded-md bg-gray-200 text-gray-900 font-medium hover:bg-gray-300 transition"
+          className=" p-2 px-4 md:px-6 md:py-4 text-sm md:text-base rounded-full bg-gray-200 text-gray-900 font-medium hover:bg-gray-300 transition"
         >
-          Reject
-        </button>
-        <button
+          Reject Cookies
+        </Button>
+        <Button
           onClick={onAccept}
-          className="px-4 py-2 rounded-md bg-green-700 text-white font-bold shadow-sm hover:bg-green-800 transition"
+          className="p-2 px-4 md:px-6 md:py-4 text-sm md:text-base rounded-full bg-green-700 text-white font-bold shadow-sm hover:bg-green-800 transition"
         >
-          Accept
-        </button>
+          Accept All Cookies
+        </Button>
       </div>
     </div>
   );
