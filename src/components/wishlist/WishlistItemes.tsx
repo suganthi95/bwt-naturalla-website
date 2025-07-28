@@ -28,6 +28,7 @@ export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
 
   const dispatch = useDispatch();
   const { items } = useSelector((state: RootState) => state.wish);
+  console.log('items: ', items);
   const { token, status } = useSelector((state: RootState) => state.auth);
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
   const { mutate } = useAddToCart();
@@ -51,7 +52,7 @@ export default function WishlistItemes({ isError, isLoading, onClose }: Props) {
   return (
     <ScrollArea className="space-y-6 p-4 h-full  md:h-screen">
       <h2 className="text-lg font-bold text-title mb-3">Wishlist</h2>
-      {items?.length === 0 ? (
+      {items?.length === 0 || !items  ? (
         <EmptyWishlist onClose={onClose} />
       ) : (
         <>

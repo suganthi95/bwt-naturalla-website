@@ -45,7 +45,7 @@ export default function ProductsList({ Products, title }: Props) {
     sortByPrice,
     sorybyAlphabetic,
   } = useSelector((state: RootState) => state.filter);
-  const [filteredProducts, setFiltered] = useState<Product[]>();
+  const [filteredProducts, setFiltered] = useState<Product[]>(Products ?? []);
   const { token, status } = useSelector((state: RootState) => state.auth);
   const { data } = useFilterValues(token);
 
