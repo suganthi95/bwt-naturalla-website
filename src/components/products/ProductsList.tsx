@@ -44,6 +44,7 @@ export default function ProductsList({ Products, title }: Props) {
     sortByPrice,
     sorybyAlphabetic,
   } = useSelector((state: RootState) => state.filter);
+  
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(Products);
   const { token, status } = useSelector((state: RootState) => state.auth);
   const { data } = useFilterValues(token);
@@ -118,34 +119,34 @@ export default function ProductsList({ Products, title }: Props) {
   // ]);
  
  useEffect(() => {
-  if (!Products || Products.length === 0) {
-    setFilteredProducts([]);
-    return;
-  }
+  // if (!Products || Products.length === 0) {
+  //   setFilteredProducts([]);
+  //   return;
+  // }
 
   const normalizedKeywords = keywords.map((kw) =>
     kw.toLowerCase().trim().replace(/&/g, "and")
   );
 
-  const result = Products
-    .filter((product) => {
+  const result = Products?.filter((product) => {
       const matchesKeywords =
         keywords.length === 0 ||
-        product.benefit_keys?.some((key: string) =>
+        product?.benefit_keys?.some((key: string) =>
           normalizedKeywords.includes(
             key.toLowerCase().trim().replace(/&/g, "and")
           )
         );
 
       const matchesPrice =
-        product.unit_price >= minPrice && product.unit_price <= maxPrice;
+        product.unit_price >= minPrice && product?.unit_price <= maxPrice;
 
       const matchesCategory =
         categories.length === 0 ||
-        (product.category_title && categories.includes(product.category_title));
+        (product?.category_title && categories.includes(product?.category_title));
 
       return matchesKeywords && matchesPrice && matchesCategory;
     })
+    
 
   setFilteredProducts(result);
 }, [
