@@ -45,8 +45,8 @@ export default function ProductsList({ Products, title }: Props) {
     sorybyAlphabetic,
   } = useSelector((state: RootState) => state.filter);
 
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(Products);
-  console.log("filteredProducts: ", filteredProducts);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>();
+  // console.log("filteredProducts: ", filteredProducts);
   const { token, status } = useSelector((state: RootState) => state.auth);
   const { data } = useFilterValues(token);
 
@@ -72,13 +72,14 @@ export default function ProductsList({ Products, title }: Props) {
   }, [Products]);
 
   useEffect(() => {
-    let filtered
+    let filtered = Products;
     if (keywords.length > 0) {
       const normalizedKeywords = keywords.map((kw) =>
         kw.toLowerCase().trim().replace(/&/g, "and")
       );
+      // console.log("normalizedKeywords: ", normalizedKeywords);
 
-      filtered = Products?.filter((item) =>
+      filtered = filtered?.filter((item) =>
         item.benefit_keys?.some((key: string) =>
           normalizedKeywords.includes(
             key.toLowerCase().trim().replace(/&/g, "and")
@@ -86,10 +87,13 @@ export default function ProductsList({ Products, title }: Props) {
         )
       );
     }
+    // console.log("filtered: ", filtered);
 
-    filtered = Products?.filter(
-      (item) => item.unit_price >= minPrice && item.unit_price <= maxPrice
-    );
+    if (minPrice <= maxPrice) {
+      filtered = filtered?.filter(
+        (item) => item.unit_price >= minPrice && item.unit_price <= maxPrice
+      );
+    } 
 
     if (categories.length > 0) {
       filtered = filtered?.filter(
@@ -97,15 +101,7 @@ export default function ProductsList({ Products, title }: Props) {
           item.category_title && categories.includes(item.category_title)
       );
     }
-
-    if (sortByDate) {
-      filtered = Products.sort((a, b) => {
-        const dateA = new Date(a.created_at).getTime();
-        const dateB = new Date(b.created_at).getTime();
-
-        return sortByDate === "date-desc" ? dateB - dateA : dateA - dateB;
-      });
-    }
+    
 
     setFilteredProducts(filtered);
   }, [categories, keywords, maxPrice, minPrice, sortByDate, sortByPrice]);
