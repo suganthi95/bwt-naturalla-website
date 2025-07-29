@@ -16,6 +16,26 @@
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
+    <url>
+    <loc>https://naturalla.store/products/today-offer?isin_todays_deal=true</loc>
+    <lastmod>2025-07-25</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url> 
+  
+   <url>
+    <loc>https://naturalla.store/products/all</loc>
+    <lastmod>2025-07-25</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>  
+  
+  <url>
+    <loc>https://naturalla.store/products/trending-now?offer_ending_soon=true</loc>
+    <lastmod>2025-07-25</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
   <url>
     <loc>https://naturalla.store/blogs</loc>
     <lastmod>2025-07-25</lastmod>

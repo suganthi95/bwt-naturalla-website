@@ -44,6 +44,7 @@ export default function Products() {
     best_selling ?? "",
     product_name ?? ""
   );
+  
   if (isLoading || isFetching) {
     return <FullScreenLoader />;
   }
