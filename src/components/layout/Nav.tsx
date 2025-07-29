@@ -754,7 +754,7 @@ export default function Nav() {
                       </button>
 
                       <AnimatePresence>
-                        {isDropdownOpen && index !== 5 && (
+                        {isDropdownOpen &&(
                           <motion.div
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: "auto", opacity: 1 }}
