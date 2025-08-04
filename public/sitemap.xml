@@ -7,63 +7,64 @@
 
 <url>
   <loc>https://naturalla.store/</loc>
-  <lastmod>2025-07-24T11:20:04+00:00</lastmod>
+  <lastmod>2025-07-25T00:00:00+00:00</lastmod>
 </url>
 
-  <url>
-    <loc>https://naturalla.store/contact-us</loc>
-    <lastmod>2025-07-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
+<url>
+  <loc>https://naturalla.store/contact-us</loc>
+  <lastmod>2025-07-25T00:00:00+00:00</lastmod>
+  <changefreq>yearly</changefreq>
+  <priority>0.3</priority>
+</url>
+
     <url>
     <loc>https://naturalla.store/products/today-offer?isin_todays_deal=true</loc>
-    <lastmod>2025-07-25</lastmod>
+  <lastmod>2025-07-25T00:00:00+00:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url> 
   
    <url>
     <loc>https://naturalla.store/products/all</loc>
-    <lastmod>2025-07-25</lastmod>
+  <lastmod>2025-07-25T00:00:00+00:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>  
   
   <url>
     <loc>https://naturalla.store/products/trending-now?offer_ending_soon=true</loc>
-    <lastmod>2025-07-25</lastmod>
+  <lastmod>2025-07-25T00:00:00+00:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://naturalla.store/blogs</loc>
-    <lastmod>2025-07-25</lastmod>
+  <lastmod>2025-07-25T00:00:00+00:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://naturalla.store/terms-and-conditions</loc>
-    <lastmod>2025-07-25</lastmod>
+  <lastmod>2025-07-25T00:00:00+00:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
    <url>
     <loc>https://naturalla.store/privacy-policy</loc>
-    <lastmod>2025-07-25</lastmod>
+  <lastmod>2025-07-25T00:00:00+00:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
    <url>
     <loc>https://naturalla.store/returns-and-refunds</loc>
-    <lastmod>2025-07-25</lastmod>
+  <lastmod>2025-07-25T00:00:00+00:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
 
     <url>
     <loc>https://naturalla.store/shipping-policy</loc>
-    <lastmod>2025-07-25</lastmod>
+  <lastmod>2025-07-25T00:00:00+00:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
