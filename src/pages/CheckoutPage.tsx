@@ -406,7 +406,7 @@ export default function CheckoutPage() {
   );
 
   // update tax calculation
-    const tax = items?.reduce((acc, item) => {
+  const tax = items?.reduce((acc, item) => {
     const productTotal = item.unit_price * item.quantity;
     const tax = (productTotal * item.tax_percent) / (100 + item.tax_percent);
     return acc + Math.round(tax);
@@ -834,7 +834,7 @@ export default function CheckoutPage() {
                                       setShowDropdown(true);
                                     }}
                                     onFocus={() => setShowDropdown(true)}
-                                    className="w-full pr-10  cursor-pointer"
+                                    className="w-full pr-10 capitalize cursor-pointer"
                                   />
 
                                   {/* <div
@@ -860,14 +860,17 @@ export default function CheckoutPage() {
                                         filteredCities.map((city) => (
                                           <li
                                             key={city.city}
-                                            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                                            className="p-2 hover:bg-gray-100 capitalize dark:hover:bg-gray-700 cursor-pointer"
                                             onClick={() => {
                                               field.onChange(city.city);
                                               setQuery(city.city);
                                               setShowDropdown(false);
                                             }}
                                           >
-                                            {city.city}
+                                            {city.city
+                                              ?.charAt(0)
+                                              .toUpperCase() +
+                                              city.city?.slice(1)}
                                           </li>
                                         ))
                                       )}
@@ -1217,14 +1220,17 @@ export default function CheckoutPage() {
                                           filteredCities2.map((city) => (
                                             <li
                                               key={city.city}
-                                              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                                              className="p-2 hover:bg-gray-100 capitalize dark:hover:bg-gray-700 cursor-pointer"
                                               onClick={() => {
                                                 field.onChange(city.city);
                                                 setbiilingqueryQuery(city.city);
                                                 setbiilingShowDropdown(false);
                                               }}
                                             >
-                                              {city.city}
+                                              {city.city
+                                                ?.charAt(0)
+                                                .toUpperCase() +
+                                                city.city?.slice(1)}
                                             </li>
                                           ))
                                         )}
