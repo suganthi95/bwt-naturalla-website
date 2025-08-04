@@ -1,1 +1,3 @@
 Sitemap: https://yourstore.com/sitemap.xml
+User-agent: *
+Disallow:
