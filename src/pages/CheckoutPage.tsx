@@ -426,30 +426,31 @@ export default function CheckoutPage() {
     return acc + Math.round(Number(item.coupon_amount) || 0);
   }, 0);
 
-  let discount = 0;
+  // let discount = 0;
 
-  if (
-    CouponDetails?.coupon_type === "invoice_based" &&
-    CouponDetails?.discount_type === "percent"
-  ) {
-    if (subtotal >= CouponDetails.mini_shipping) {
-      const rawDiscount = (subtotal * CouponDetails.discount) / 100;
+  // if (
+  //   CouponDetails?.coupon_type === "invoice_based" &&
+  //   CouponDetails?.discount_type === "percent"
+  // ) {
+  //   if (subtotal >= CouponDetails.mini_shipping) {
+  //     const rawDiscount = (subtotal * CouponDetails.discount) / 100;
 
-      discount =
-        rawDiscount > CouponDetails.max_discount
-          ? CouponDetails.max_discount
-          : rawDiscount;
-    } else {
-      toast.warning(
-        `Apply this coupon on orders above ₹${CouponDetails.mini_shipping}`
-      );
-    }
-  } else if (CouponDetails?.discount_type === "percent") {
-    discount = CouponDetails?.discount ?? 0;
-  }
+  //     discount =
+  //       rawDiscount > CouponDetails.max_discount
+  //         ? CouponDetails.max_discount
+  //         : rawDiscount;
+  //   } else {
+  //     toast.warning(
+  //       `Apply this coupon on orders above ₹${CouponDetails.mini_shipping}`
+  //     );
+  //   }
+  // } else if (CouponDetails?.discount_type === "percent") {
+  //   discount = CouponDetails?.discount ?? 0;
+  // }
 
+  
   // Final total
-  const total = Math.round(subtotal + shipping - discount - CouponDiscount);
+  const total = Math.round(subtotal + shipping  - CouponDiscount);
 
   if (isLoading || isFetching) {
     return <FullScreenLoader />;
@@ -563,7 +564,7 @@ export default function CheckoutPage() {
                                   ₹{product.strike_through_price}
                                 </span>
                                 <span className="ml-2 text-sm md:text-base text-green-600 font-semibold">
-                                  20% off
+                                  {Math.round(Number(product?.discount_percent))}% off
                                 </span>
 
                                 {CouponDetails?.coupon_type ===
@@ -1369,6 +1370,7 @@ export default function CheckoutPage() {
 
                     <Button
                       onClick={handleCheckCoupon}
+                      disabled={!couponCode}
                       className="absolute right-0 top-1/2 -translate-y-1/2 px-4 py-2 text-sm"
                     >
                       {isPending ? (
@@ -1382,9 +1384,9 @@ export default function CheckoutPage() {
                     {CouponDetails?.status && (
                       <button
                         onClick={handleRemoveCoupon}
-                        className="text-xs !py-0 text-red-500 hover:underline cursor-pointer"
+                        className="text-sm !py-0 text-black font-medium hover:underline cursor-pointer"
                       >
-                        Remove Applied Coupon
+                        Remove
                       </button>
                     )}
                   </div>
