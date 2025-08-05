@@ -505,7 +505,7 @@ export default function CheckoutPage() {
                             Number(product.product_id)
                           )
                         ) {
-                          productDiscount = CouponDetails.discount;
+                          productDiscount = CouponDetails.discount * product.quantity;
                         }
                       }
                       // else {
