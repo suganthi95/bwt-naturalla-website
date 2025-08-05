@@ -87,12 +87,6 @@ export default function PaymentMethod() {
     0
   );
 
-  // const tax = items?.reduce((acc, item) => {
-  //   const productTax =
-  //     (item.unit_price * item.quantity * item.tax_percent) / 100;
-  //   return acc + Math.round(productTax);
-  // }, 0);
-  
   // update tax calculation
     const tax = items?.reduce((acc, item) => {
     const productTotal = item.unit_price * item.quantity;
@@ -138,7 +132,7 @@ export default function PaymentMethod() {
   }
 
   // Final total
-  const total = Math.round(subtotal + shipping - discount - CouponDiscount);
+  const total = Math.round(subtotal + shipping  - CouponDiscount);
   const handleCreateOrder = () => {
     if (!items || !shippingAddress) return;
     if (!shippingAddress) {
@@ -422,12 +416,12 @@ export default function PaymentMethod() {
                 ₹{tax}
               </span>
             </div>
-            {discount > 0 && (
+            {/* {discount > 0 && (
               <div className="flex justify-between">
                 <span className="text-lead">Discount</span>
                 <span className="">-₹{discount}</span>
               </div>
-            )}
+            )} */}
 
             {CouponDiscount > 0 && (
               <div className="flex justify-between">
