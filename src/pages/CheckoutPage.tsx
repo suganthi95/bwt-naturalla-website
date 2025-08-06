@@ -285,24 +285,7 @@ export default function CheckoutPage() {
     dispatch(removeItem(cart_id));
   };
 
-  // const checkDeliveryInfo = async () => {
-  //   try {
-  //     setIsloading(true);
-  //     const { data, isError, error } = await refetch();
 
-  //     if (data?.status === true) {
-  //       setMessage(data.message);
-  //     }
-  //     if (isError || error) {
-  //       setMessage("We are not shipping for this Location");
-  //       toast.error("We are not shipping for this Location");
-  //     }
-  //   } catch (error) {
-  //     setMessage("Something went wrong");
-  //   } finally {
-  //     setIsloading(false);
-  //   }
-  // };
 
   const handleCheckCoupon = () => {
     CheckCoupon(
@@ -1447,10 +1430,7 @@ export default function CheckoutPage() {
                           </span>
                         ) : (
                           <span className=" text-red-500 text-xs font-medium italic animate-shake">
-                            {/* {tax_detail?.min_amount &&
-                              subtotal < tax_detail.min_amount &&
-                              `Spend ₹499 more to get free shipping!`}
-                          </span> */}
+                            
                              ( Spend ₹{tax_detail.min_amount - subtotal} more to
                             get free shipping!)
                           </span>
