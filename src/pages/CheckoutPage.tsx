@@ -1448,7 +1448,7 @@ export default function CheckoutPage() {
                         ) : (
                           <span className=" text-red-500 text-xs font-medium italic animate-shake">
                             {tax_detail?.min_amount &&
-                              total < tax_detail.min_amount &&
+                              subtotal < tax_detail.min_amount &&
                               `Spend ₹499 more to get free shipping!`}
                           </span>
                           //   ( Spend ₹{tax_detail.min_amount - total} more to
