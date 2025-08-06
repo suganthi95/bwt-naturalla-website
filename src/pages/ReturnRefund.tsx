@@ -1,6 +1,7 @@
 import FullScreenLoader from "@/common/FullScreenLoader";
 import { fetchRefundPolicy } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 export default function ReturnRefund() {
 
@@ -10,7 +11,57 @@ export default function ReturnRefund() {
     retry: 2,
     select: (data) => data.data[0]
   });
+ useEffect(() => {
+    if (isSuccess && data) {
+      document.title = `${data.page_title} – Naturalla`;
 
+      const setMetaTag = (name: any, content: any) => {
+        let tag = document.querySelector(`meta[name="${name}"]`);
+        if (!tag) {
+          tag = document.createElement("meta");
+          tag.setAttribute("name", name);
+          document.head.appendChild(tag);
+        }
+        tag.setAttribute("content", content);
+      };
+
+      const setOGTag = (property: any, content: any) => {
+        let tag = document.querySelector(`meta[property="${property}"]`);
+        if (!tag) {
+          tag = document.createElement("meta");
+          tag.setAttribute("property", property);
+          document.head.appendChild(tag);
+        }
+        tag.setAttribute("content", content);
+      };
+
+      setMetaTag("title", `${data.page_title} – Naturalla`);
+setMetaTag(
+  "description",
+  "Read Naturalla Returns and Refunds Policy to learn about eligibility, timeframes, and how to initiate a return or request a refund for your order. Discover our simple process for handling returns, exchanges, and refunds to ensure your satisfaction with every purchase."
+);
+setOGTag(
+  "og:description",
+  "Read Naturalla Returns and Refunds Policy to learn about eligibility, timeframes, and how to initiate a return or request a refund for your order. Discover our simple process for handling returns, exchanges, and refunds to ensure your satisfaction with every purchase."
+);
+setMetaTag(
+  "twitter:description",
+  "Read Naturalla Returns and Refunds Policy to learn about eligibility, timeframes, and how to initiate a return or request a refund for your order. Discover our simple process for handling returns, exchanges, and refunds to ensure your satisfaction with every purchase."
+);
+
+
+      setOGTag("og:type", "website");
+      setOGTag("og:url", window.location.href);
+      setOGTag("og:title", `${data.page_title} – Naturalla`);
+      if (data.meta_image_url) {
+        setOGTag("og:image", data.meta_image_url);
+        setMetaTag("twitter:image", data.meta_image_url);
+      }
+      setMetaTag("twitter:card", "summary_large_image");
+      setMetaTag("twitter:url", window.location.href);
+      setMetaTag("twitter:title", `${data.page_title} – Naturalla`);
+    }
+  }, [isSuccess, data]);
   let content;
 
   if(isLoading){

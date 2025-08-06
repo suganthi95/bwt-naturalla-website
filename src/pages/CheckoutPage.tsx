@@ -1,7 +1,7 @@
 import { Icons } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { BadgePercent, Loader2, TicketPercent } from "lucide-react";
+import { BadgePercent, Loader2, ShoppingCart, TicketPercent } from "lucide-react";
 import { useEffect, useState } from "react";
 import z from "zod";
 import { useForm } from "react-hook-form";
@@ -50,6 +50,7 @@ import axios from "axios";
 import type { CouponState } from "@/types/type";
 import FullScreenLoader from "@/common/FullScreenLoader";
 import { useGetAddress } from "@/services/profile";
+import { motion } from "framer-motion";
 
 // Country data
 
@@ -352,6 +353,8 @@ export default function CheckoutPage() {
     });
   };
 
+  
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     addAddress(
       {
@@ -412,6 +415,8 @@ export default function CheckoutPage() {
     return acc + Math.round(tax);
   }, 0);
 
+
+
   // Default shipping
   let shipping = 0;
 
@@ -454,6 +459,31 @@ export default function CheckoutPage() {
 
   if (isLoading || isFetching) {
     return <FullScreenLoader />;
+  }
+  if (items?.length === 0) {
+    return (
+       <div className="flex flex-col items-center justify-center h-[80vh] text-center px-4">
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 200 }}
+        className="bg-primary/10 text-primary p-6 rounded-full mb-6"
+      >
+        <ShoppingCart className="w-10 h-10" />
+      </motion.div>
+      <h2 className="text-2xl font-bold text-neutral-800">
+        Your Cart is Empty
+      </h2>
+      <p className="text-muted-foreground text-sm mt-2 max-w-xs">
+        Looks like you haven’t added anything to your cart yet. Start shopping
+        now!
+      </p>
+    
+      <Button className="mt-6" onClick={() => navigate("/products/all")}>
+        Browse Products
+      </Button>
+    </div>
+    );
   }
 
   return (
@@ -628,7 +658,6 @@ export default function CheckoutPage() {
                               </div>
 
                               <button
-                                disabled={items.length === 1 && quantity < 2}
                                 onClick={() =>
                                   handleRemoveProduct(
                                     product.cart_id,
@@ -1198,18 +1227,7 @@ export default function CheckoutPage() {
                                       className="w-full pr-10  cursor-pointer"
                                     />
 
-                                    {/* <div
-                                    className={`absolute   w-fit left-64  flex items-center cursor-pointer ${showDropdown ? '-bottom-13':'-bottom-13'}`}
-                                    onClick={() =>
-                                      setShowDropdown((prev) => !prev)
-                                    }
-                                  >
-                                    {showDropdown ? (
-                                      <ChevronUp className="w-4 h-4 text-gray-500" />
-                                    ) : (
-                                      <ChevronDown className="w-4 h-4 text-gray-500" />
-                                    )}
-                                  </div> */}
+                                 
 
                                     {biilingshowDropdown && (
                                       <ul className="absolute  z-[999] w-52  bg-white dark:bg-gray-800 border dark:border-gray-700 max-h-80 overflow-auto mt-1 shadow-md rounded">
@@ -1429,11 +1447,13 @@ export default function CheckoutPage() {
                           </span>
                         ) : (
                           <span className=" text-red-500 text-xs font-medium italic animate-shake">
-                            {/* (Spend ₹{tax_detail.min_amount - subtotal} more for
-                            free shipping) */}
-                            ( Spend ₹{tax_detail.min_amount - subtotal} more to
-                            get free shipping!)
+                            {tax_detail?.min_amount &&
+                              total < tax_detail.min_amount &&
+                              `Spend ₹499 more to get free shipping!`}
                           </span>
+                          //   ( Spend ₹{tax_detail.min_amount - total} more to
+                          //   get free shipping!)
+                          // </span>
                         )}
                       </span>
                       <span

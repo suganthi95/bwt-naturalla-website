@@ -157,7 +157,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                                   ₹{item?.strike_through_price}
                                 </span>
                                 <span className="text-sm text-green-600 font-semibold">
-                                  20% off
+                                  {Math.round(Number(item?.discount_percent))}% off
                                 </span>
                               </>
                             )}

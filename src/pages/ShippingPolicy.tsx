@@ -1,30 +1,84 @@
 import FullScreenLoader from "@/common/FullScreenLoader";
 import { fetchShippingPolicy } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 export default function ShippingPolicy() {
-
   const { data, isLoading, isSuccess } = useQuery({
-    queryKey: [ 'fetchTermsConditions' ],
+    queryKey: ["fetchTermsConditions"],
     queryFn: fetchShippingPolicy,
     retry: 2,
-    select: (data) => data.data[0]
+    select: (data) => data.data[0],
   });
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      document.title = `${data.page_title} – Naturalla`;
+
+      const setMetaTag = (name: any, content: any) => {
+        let tag = document.querySelector(`meta[name="${name}"]`);
+        if (!tag) {
+          tag = document.createElement("meta");
+          tag.setAttribute("name", name);
+          document.head.appendChild(tag);
+        }
+        tag.setAttribute("content", content);
+      };
+
+      const setOGTag = (property: any, content: any) => {
+        let tag = document.querySelector(`meta[property="${property}"]`);
+        if (!tag) {
+          tag = document.createElement("meta");
+          tag.setAttribute("property", property);
+          document.head.appendChild(tag);
+        }
+        tag.setAttribute("content", content);
+      };
+
+      setMetaTag("title", `${data.page_title} – Naturalla`);
+      setMetaTag(
+        "description",
+        "Discover Naturalla Shipping Policy for details on delivery options, shipping times, and costs. Learn how we handle domestic and international shipping, order processing, tracking, and customer support for your orders."
+      );
+      setOGTag(
+        "og:description",
+        "Discover Naturalla  Shipping Policy for details on delivery options, shipping times, and costs. Learn how we handle domestic and international shipping, order processing, tracking, and customer support for your orders."
+      );
+      setMetaTag(
+        "twitter:description",
+        "Discover Naturalla  Shipping Policy for details on delivery options, shipping times, and costs. Learn how we handle domestic and international shipping, order processing, tracking, and customer support for your orders."
+      );
+
+      setOGTag("og:type", "website");
+      setOGTag("og:url", window.location.href);
+      setOGTag("og:title", `${data.page_title} – Naturalla`);
+      if (data.meta_image_url) {
+        setOGTag("og:image", data.meta_image_url);
+        setMetaTag("twitter:image", data.meta_image_url);
+      }
+      setMetaTag("twitter:card", "summary_large_image");
+      setMetaTag("twitter:url", window.location.href);
+      setMetaTag("twitter:title", `${data.page_title} – Naturalla`);
+    }
+  }, [isSuccess, data]);
 
   let content;
 
-  if(isLoading){
-    content = <FullScreenLoader/>
+  if (isLoading) {
+    content = <FullScreenLoader />;
   }
 
-  if(isSuccess){
+  if (isSuccess) {
     content = (
       <main className="container mx-auto px-4 py-10 max-w-4xl text-neutral-800 leading-7">
         <h1 className="text-3xl font-bold mb-6">{data.page_title}</h1>
 
-        <div dangerouslySetInnerHTML={{ __html: data.page_content }} className="space-y-4"></div>
+        <div
+          dangerouslySetInnerHTML={{ __html: data.page_content }}
+          className="space-y-4"
+        ></div>
       </main>
-    )
+    );
   }
 
   return content;
