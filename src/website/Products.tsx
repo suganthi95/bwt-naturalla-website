@@ -6,6 +6,8 @@ import {
   useFilterByFeatureProducts,
   useFilterValues,
 } from "@/services/product";
+import { setMetaTags } from "@/utils/seoUtils";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
@@ -44,7 +46,29 @@ export default function Products() {
     best_selling ?? "",
     product_name ?? ""
   );
-  
+
+useEffect(() => {
+  if (location.pathname.includes("today-offer")) {
+    setMetaTags({
+      title: `Today's Deals – Naturalla`,
+      description:
+        "Discover today's exclusive deals on Naturalla. Shop now for limited-time offers and discounts on your favorite products.",
+    });
+  } else if (location.pathname.includes("trending-now")) {
+    setMetaTags({
+      title: `Offers Ending Soon – Naturalla`,
+      description:
+        "Don't miss out on our offers ending soon at Naturalla. Shop now to grab the best deals before they're gone!",
+    });
+  } else if (location.pathname.includes("all")) {
+    setMetaTags({
+      title: `All Products – Naturalla`,
+      description:
+        "Browse all products available at Naturalla. Discover a wide range of beauty and wellness items to suit your needs.",
+    });
+  }
+}, [location.pathname]);
+
   if (isLoading || isFetching) {
     return <FullScreenLoader />;
   }
@@ -57,7 +81,7 @@ export default function Products() {
         <div className="  hidden lg:block w-4/12 xl:w-2/12">
           <FilterSidebar filterValues={data} />
         </div>
-  
+
         <div className=" w-full lg:w-10/12">
           <ProductsList Products={products} title={title ?? ""} />
         </div>

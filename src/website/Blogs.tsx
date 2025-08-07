@@ -5,10 +5,11 @@ import type { RootState } from "@/redux/store";
 import { useGetBlogs, useGetTopBlogs } from "@/services/blogs";
 import type { Blog } from "@/types/type";
 import { ArrowRight, Notebook, Search } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { setMetaTags } from "@/utils/seoUtils";
 export default function Blogs() {
   const [InputValue, setInputValue] = useState<string>("");
 
@@ -21,6 +22,15 @@ export default function Blogs() {
     }
   };
 
+  useEffect(() => {
+    
+      setMetaTags({
+        title: `Blogs – Naturalla`,
+        description:
+        "Stay updated with the latest news, tips, and exclusive offers from Naturalla’s blog, your source for natural skincare inspiration."
+      });
+  }, [location.pathname]);
+
   const navigate = useNavigate();
   const { token } = useSelector((state: RootState) => state.auth);
   const { data, isLoading, isFetching } = useGetBlogs(token ?? "", searchTerm);
@@ -28,7 +38,10 @@ export default function Blogs() {
 
   if (isFetching || isLoading) {
     return <FullScreenLoader />;
-  }
+  } 
+
+
+  
 
   return (
     <section className="container mx-auto mt-10 mb-10 ">

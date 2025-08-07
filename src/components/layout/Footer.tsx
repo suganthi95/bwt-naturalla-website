@@ -3,19 +3,17 @@ import {
   FaInstagram,
   FaTwitter,
   FaFacebookF,
-  FaSnapchatGhost,
   FaPinterestP,
 } from "react-icons/fa";
 import { Icons } from "@/assets/icons";
+import { FaYoutube } from "react-icons/fa6";
 export default function Footer() {
-
-
   return (
     <footer className="bg-[#232323] text-white py-12 lato">
       <div className="container mx-auto flex flex-col lg:flex-row flex-wrap gap-8 justify-between">
         <div className="w-full lg:w-[23%] space-y-4">
           {/* <img src={ASSETS.LOGO} alt="Logo" className="h-10 md:h-16 w-auto" /> */}
-          <Icons.Footet_Logo/>
+          <Icons.Footet_Logo />
           <p className="text-sm leading-relaxed text-justify text-white/70">
             Welcome to <b>Naturalla.store</b>, where nature meets innovation. We
             are a proudly organic and nature-based cosmetics company dedicated
@@ -27,19 +25,44 @@ export default function Footer() {
             Naturalla – Rejoice with Nature's 💕{" "}
           </p>
           <div className="flex space-x-4 pt-2">
-            <a href="#" className="text-white/60 hover:text-white transition">
+            <a
+              href="https://www.instagram.com/naturallastore"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/60 hover:text-white transition"
+            >
               <FaInstagram />
             </a>
-            <a href="#" className="text-white/60 hover:text-white transition">
+            <a
+              href="https://x.com/naturalla_store"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/60 hover:text-white transition"
+            >
               <FaTwitter />
             </a>
-            <a href="#" className="text-white/60 hover:text-white transition">
+            <a
+              href="https://www.facebook.com/naturallastoreofficial"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/60 hover:text-white transition"
+            >
               <FaFacebookF />
             </a>
-            <a href="#" className="text-white/60 hover:text-white transition">
-              <FaSnapchatGhost />
+            <a
+              href="https://www.youtube.com/@naturalla_store"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/60 hover:text-white transition"
+            >
+              <FaYoutube />
             </a>
-            <a href="#" className="text-white/60 hover:text-white transition">
+            <a
+              href="https://www.pinterest.com/naturallastore"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/60 hover:text-white transition"
+            >
               <FaPinterestP />
             </a>
           </div>
@@ -118,14 +141,13 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link to={ "/contact-us" } className="text-white/50">
+              <Link to={"/contact-us"} className="text-white/50">
                 Contact Us
               </Link>
             </li>
           </ul>
         </div>
 
-        {/* Contact Us */}
         <div className="w-full sm:w-1/2 lg:w-[20%] space-y-3">
           <h4 className="text-lg font-semibold">Contact Us</h4>
           <ul className="space-y-2 text-sm text-white/50">

@@ -1,7 +1,7 @@
 import FullScreenLoader from "@/common/FullScreenLoader";
 import { fetchTermsConditions } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect } from "react";
 
 const TermsAndConditions: React.FC = () => {
 
@@ -11,7 +11,51 @@ const TermsAndConditions: React.FC = () => {
     retry: 2,
     select: (data) => data.data[0]
   });
+  useEffect(() => {
+    if (isSuccess && data) {
+      document.title = `${data.page_title} – Naturalla`;
 
+      const setMetaTag = (name:any, content:any) => {
+        let tag = document.querySelector(`meta[name="${name}"]`);
+        if (!tag) {
+          tag = document.createElement("meta");
+          tag.setAttribute("name", name);
+          document.head.appendChild(tag);
+        }
+        tag.setAttribute("content", content);
+      };
+
+      const setOGTag = (property:any, content:any) => {
+        let tag = document.querySelector(`meta[property="${property}"]`);
+        if (!tag) {
+          tag = document.createElement("meta");
+          tag.setAttribute("property", property);
+          document.head.appendChild(tag);
+        }
+        tag.setAttribute("content", content);
+      };
+
+      setMetaTag("title", `${data.page_title} – Naturalla`);
+    
+        setMetaTag("description", "Read Naturalla Privacy Policy to learn how we collect, use, and protect your personal information when you visit or make a purchase from our website.");
+        setOGTag("og:description", "Read Naturalla Privacy Policy to learn how we collect, use, and protect your personal information when you visit or make a purchase from our website.");
+        setMetaTag("twitter:description", "Read Naturalla Privacy Policy to learn how we collect, use, and protect your personal information when you visit or make a purchase from our website.");
+    
+
+      setOGTag("og:type", "website");
+      setOGTag("og:url", window.location.href);
+      setOGTag("og:title", `${data.page_title} – Naturalla`);
+      if (data.meta_image_url) {
+        setOGTag("og:image", data.meta_image_url);
+        setMetaTag("twitter:image", data.meta_image_url);
+      }
+      setMetaTag("twitter:card", "summary_large_image");
+      setMetaTag("twitter:url", window.location.href);
+      setMetaTag("twitter:title", `${data.page_title} – Naturalla`);
+
+     
+    }
+  }, [isSuccess, data]);
   let content;
 
   if(isLoading){
