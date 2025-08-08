@@ -14,10 +14,10 @@ export type OrderPayload = {
   coupon_discount: number | null;
   coupon_id?: number | null;
 
-  tax: number;
-  sub_total: number;
-  order_amount: number;
-  shipping_fee: number;
+  tax: number | null;
+  sub_total: number | null;
+  order_amount: number | null;
+  shipping_fee: number | null;
   cash_on_delivery: boolean;
   payment_provider: string;
   pincode: number;
@@ -270,4 +270,15 @@ export type IssueType = {
   created_at: string;
   created_by: string | null;
   sub_issues: SubIssue[];
+};
+
+export type PriceSummary = {
+  add_for_freeship:number | null
+  grand_total: number | null;
+  sub_total:number | null;
+  tax:number | null;
+  shipping_fee: number | null;
+  discount: number | null;
+  total_mrp: number | null;
+  bag_discount: number | null;
 };

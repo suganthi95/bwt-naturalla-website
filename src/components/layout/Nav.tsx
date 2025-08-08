@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   removeCartItems,
   setCartItems,
+  setCartItemsPrice_Summary,
   setTaxDetails,
 } from "@/redux/slices/cartSlice";
 import type { RootState } from "@/redux/store";
@@ -76,6 +77,7 @@ export default function Nav() {
   const queryClient = useQueryClient();
   useEffect(() => {
     dispatch(setCartItems(data?.data));
+    dispatch(setCartItemsPrice_Summary(data?.price_summary))
     dispatch(setTaxDetails(data?.tax_detail));
   }, [data, isSuccess]);
 

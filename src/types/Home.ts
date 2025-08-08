@@ -59,6 +59,7 @@ export type Product = {
   how_to_use: string;
   ingredients: string;
   strike_through_price: string;
+  is_coupon_applied:boolean;
   product_specification_pdf: string | null;
   is_featured: boolean;
   isin_todays_deal: boolean;

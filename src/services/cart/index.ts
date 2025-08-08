@@ -1,11 +1,22 @@
-import { addOrderAddress, addToCart, checkCoupoCode, createOrder, deleteCartItems, getCartItems, getProviders, updateCartItems, verifyPhonePayPayment, verifyRazorPayPayment } from "@/lib/api";
+import {
+  addOrderAddress,
+  addToCart,
+  checkCoupoCode,
+  createOrder,
+  deleteCartItems,
+  getCartItems,
+  getProviders,
+  updateCartItems,
+  verifyPhonePayPayment,
+  verifyRazorPayPayment,
+} from "@/lib/api";
 import type { OrderAddressPayload, OrderPayload } from "@/types/type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "sonner";
 
 export const useAddToCart = () => {
-    const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["addtocart"],
     mutationFn: ({
@@ -20,30 +31,42 @@ export const useAddToCart = () => {
 
     onSuccess: () => {
       toast.success("Product added to cart!");
-     queryClient.invalidateQueries({queryKey:['getcart']})
+      queryClient.invalidateQueries({ queryKey: ["getcart"] });
     },
 
     onError: (error) => {
-     if(axios.isAxiosError(error)){
-      toast.error(error?.response?.data?.message)
-     }
+      if (axios.isAxiosError(error)) {
+        toast.error(error?.response?.data?.message);
+      }
     },
   });
 };
 
-export const useGetCartItems = (token:string)=>{
-    return useQuery({
-        queryKey:['getcart'],
-        queryFn:()=>getCartItems(token),
-        select:(data)=>data,
-        staleTime:1000*60*5,
-        enabled:!!token,
-        retry:1
-    })
-}
+export const useGetCartItems = (token: string,couponCode?:string) => {
+  return useQuery({
+    queryKey: ["getcart"],
+    queryFn: () => getCartItems(token,couponCode),
+    select: (data) => data,
+    staleTime: 1000 * 60 * 5,
+    enabled: !!token,
+    retry: 1,
+  });
+};
+
+export const useAddCoupondCartItems = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["getcartByCoupon"],
+    mutationFn: (payload: { token: string; couponCode: string }) =>
+      getCartItems(payload.token, payload.couponCode),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getcart"] });
+    },
+  });
+};
 
 export const useUpdateCart = () => {
-    // const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["updatecart"],
     mutationFn: ({
@@ -57,8 +80,7 @@ export const useUpdateCart = () => {
     }) => updateCartItems(cart_id, quantity, token),
 
     onSuccess: () => {
-    //   toast.success("Product added to cart!");
-    //  queryClient.invalidateQueries({queryKey:['getcart']})
+      queryClient.invalidateQueries({ queryKey: ["getcart"] });
     },
 
     onError: (error: any) => {
@@ -69,9 +91,8 @@ export const useUpdateCart = () => {
   });
 };
 
-
 export const useDeleteCart = () => {
-    // const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["deletecart"],
     mutationFn: ({
@@ -85,8 +106,7 @@ export const useDeleteCart = () => {
     }) => deleteCartItems(cart_id, quantity, token),
 
     onSuccess: () => {
-    //   toast.success("Product added to cart!");
-    //  queryClient.invalidateQueries({queryKey:['getcart']})
+      queryClient.invalidateQueries({ queryKey: ["getcart"] });
     },
 
     onError: (error: any) => {
@@ -97,48 +117,64 @@ export const useDeleteCart = () => {
   });
 };
 
-export const useCheckCouponCode = ()=>{
+export const useCheckCouponCode = () => {
   return useMutation({
-    mutationKey:['checkcoupon'],
-    mutationFn:(args:{couponCode:string,token:string})=>checkCoupoCode(args.couponCode,args.token)
-  })
-}
-export const useCreateOrder = ()=>{
-    return useMutation({
-        mutationKey:['createorder'],
-        mutationFn:(args:{OrderPayload:OrderPayload,token:string})=>createOrder(args.OrderPayload,args.token)
-    })
-}
+    mutationKey: ["checkcoupon"],
+    mutationFn: (args: { couponCode: string; token: string }) =>
+      checkCoupoCode(args.couponCode, args.token),
+  });
+};
+export const useCreateOrder = () => {
+  return useMutation({
+    mutationKey: ["createorder"],
+    mutationFn: (args: { OrderPayload: OrderPayload; token: string }) =>
+      createOrder(args.OrderPayload, args.token),
+  });
+};
 
-export const useVerifyPhonepay = (merchantTransactionId:string,token:string)=>{
-    return useQuery({
-        queryKey:['verifyphonepay',merchantTransactionId],
-        queryFn:()=>verifyPhonePayPayment(merchantTransactionId,token),
-        enabled:false,
-        retry:1
-    })
-}
-export const useVerifyrazorpay = ()=>{
-    return useMutation({
-        mutationKey:['verifyrazorpay'],
-        mutationFn:(args:{razorpay_payment_id:string, razorpay_signature:string ,razorpay_order_id:string,token:string})=>verifyRazorPayPayment(args.razorpay_payment_id,args.razorpay_signature,args.razorpay_order_id, args.token),
-    })
-}
+export const useVerifyPhonepay = (
+  merchantTransactionId: string,
+  token: string
+) => {
+  return useQuery({
+    queryKey: ["verifyphonepay", merchantTransactionId],
+    queryFn: () => verifyPhonePayPayment(merchantTransactionId, token),
+    enabled: false,
+    retry: 1,
+  });
+};
+export const useVerifyrazorpay = () => {
+  return useMutation({
+    mutationKey: ["verifyrazorpay"],
+    mutationFn: (args: {
+      razorpay_payment_id: string;
+      razorpay_signature: string;
+      razorpay_order_id: string;
+      token: string;
+    }) =>
+      verifyRazorPayPayment(
+        args.razorpay_payment_id,
+        args.razorpay_signature,
+        args.razorpay_order_id,
+        args.token
+      ),
+  });
+};
 
-export const useGetProviders = (token:string)=>{
-    return useQuery({
-        queryKey:['getproviders'],
-        queryFn:()=>getProviders(token),
-        staleTime:1000*60*5,
-        select:(data)=>data?.data,
-        retry:1
-    })
-}
+export const useGetProviders = (token: string) => {
+  return useQuery({
+    queryKey: ["getproviders"],
+    queryFn: () => getProviders(token),
+    staleTime: 1000 * 60 * 5,
+    select: (data) => data?.data,
+    retry: 1,
+  });
+};
 
-
-export const useAddOrderAddress = ()=>{
- return useMutation({
-  mutationKey:['addorderaddress'],
-  mutationFn:(args:{token:string,payload:OrderAddressPayload})=>addOrderAddress(args.token,args.payload)
- })
-}
+export const useAddOrderAddress = () => {
+  return useMutation({
+    mutationKey: ["addorderaddress"],
+    mutationFn: (args: { token: string; payload: OrderAddressPayload }) =>
+      addOrderAddress(args.token, args.payload),
+  });
+};

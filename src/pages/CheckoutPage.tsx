@@ -1,7 +1,12 @@
 import { Icons } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { BadgePercent, Loader2, ShoppingCart, TicketPercent } from "lucide-react";
+import {
+  BadgePercent,
+  Loader2,
+  ShoppingCart,
+  TicketPercent,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import z from "zod";
 import { useForm } from "react-hook-form";
@@ -22,7 +27,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   useAddOrderAddress,
-  useCheckCouponCode,
   useDeleteCart,
   useGetCartItems,
   useUpdateCart,
@@ -36,23 +40,18 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion2";
 import {
-  addItemTotalAmount,
   decreaseQuantity,
   increaseQuantity,
   removeItem,
+  setCartItemsPrice_Summary,
   setShippingAddress,
-  setTaxDetails,
 } from "@/redux/slices/cartSlice";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import type { RootState } from "@/redux/store";
 import axios from "axios";
-import type { CouponState } from "@/types/type";
-import FullScreenLoader from "@/common/FullScreenLoader";
 import { useGetAddress } from "@/services/profile";
 import { motion } from "framer-motion";
-
-// Country data
 
 const formSchema = z
   .object({
@@ -163,24 +162,19 @@ const formSchema = z
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
-  // const [Pincode, setPincode] = useState("");
   const { token } = useSelector((state: RootState) => state.auth);
+  const [couponCode, setCouponCode] = useState("");
   const { data: addresses } = useGetAddress(token);
-  const { data, isLoading, isFetching } = useGetCartItems(token);
+  const { isLoading, isFetching, refetch } = useGetCartItems(token, couponCode);
   const { mutate: addAddress, isPending: addAddressIspending } =
     useAddOrderAddress();
   const { mutate } = useUpdateCart();
-  const { mutate: CheckCoupon, isPending } = useCheckCouponCode();
   const { mutate: removeCart } = useDeleteCart();
   const dispatch = useDispatch();
-  const { items, tax_detail } = useSelector((state: RootState) => state.cart);
-  // const CouponDetails = useSelector((state: RootState) => state.coupon);
-  // const [Messages, setMessage] = useState("");
-  // const [Isloading, setIsloading] = useState(false);
-
+  const { items, price_summary } = useSelector(
+    (state: RootState) => state.cart
+  );
   const [quantity, setQuantity] = useState(1);
-  const [CouponDetails, setCouponDetails] = useState<CouponState>();
-  const [couponCode, setCouponCode] = useState("");
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
 
   const [query, setQuery] = useState("");
@@ -257,6 +251,7 @@ export default function CheckoutPage() {
     if (quan <= 1) return;
     const newQuantity = quantity - 1;
     setQuantity(newQuantity);
+    setCouponCode("");
     mutate({
       cart_id,
       quantity: -1,
@@ -268,6 +263,7 @@ export default function CheckoutPage() {
   const handleIncrease = (cart_id: number) => {
     const newQuantity = quantity + 1;
     setQuantity(newQuantity);
+    setCouponCode("");
     mutate({
       cart_id,
       quantity: 1,
@@ -285,58 +281,17 @@ export default function CheckoutPage() {
     dispatch(removeItem(cart_id));
   };
 
-
-
-  const handleCheckCoupon = () => {
-    CheckCoupon(
-      {
-        couponCode: couponCode,
-        token: token,
-      },
-      {
-        onSuccess(data) {
-          setCouponDetails(data);
-          toast.success("coupon applied");
-          let isAnyProductMatched = items?.some(
-            (product: Product) =>
-              data?.coupon_type === "product_based" &&
-              Array.isArray(data?.product_ids) &&
-              data?.product_ids.includes(Number(product.product_id))
-          );
-
-          if (!isAnyProductMatched) {
-            toast.warning("Coupon not applicable to any product in your cart.");
-          }
-        },
-        onError(error) {
-          if (axios.isAxiosError(error)) {
-            toast.error(error?.response?.data?.messgae);
-          }
-        },
-      }
-    );
-  };
-  const handleRemoveCoupon = () => {
-    setCouponCode("");
-    setCouponDetails({
-      status: false,
-      coupon_id: null,
-      coupon_type: "",
-      coupon_code: "",
-      start_at: "",
-      end_at: "",
-      discount_type: "",
-      discount: 0,
-      created_at: "",
-      created_by: null,
-      mini_shipping: 0,
-      max_discount: 0,
-      product_id: null,
-      product_ids: [],
-    });
+  const handleCheckCoupon = async () => {
+    const { data } = await refetch();
+    if (data) {
+      dispatch(setCartItemsPrice_Summary(data?.price_summary));
+    }
   };
 
-  
+  const handleRemoveCoupon = async() => {
+        await setCouponCode("");
+        refetch()
+  };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     addAddress(
@@ -386,86 +341,34 @@ export default function CheckoutPage() {
     );
   };
 
-  const subtotal = items?.reduce(
-    (acc: number, item: any) => acc + item.unit_price * item.quantity,
-    0
-  );
-
-  // update tax calculation
-  const tax = items?.reduce((acc, item) => {
-    const productTotal = item.unit_price * item.quantity;
-    const tax = (productTotal * item.tax_percent) / (100 + item.tax_percent);
-    return acc + Math.round(tax);
-  }, 0);
-
-
-
-  // Default shipping
-  let shipping = 0;
-
-  if (tax_detail && typeof tax_detail.min_amount === "number") {
-    if (subtotal >= tax_detail.min_amount) {
-      shipping = 0;
-    } else if (typeof tax_detail.shipping_fee === "number") {
-      shipping = tax_detail.shipping_fee;
-    }
-  }
-  const CouponDiscount = items?.reduce((acc, item) => {
-    return acc + Math.round(Number(item.coupon_amount) || 0);
-  }, 0);
-
   // let discount = 0;
 
-  // if (
-  //   CouponDetails?.coupon_type === "invoice_based" &&
-  //   CouponDetails?.discount_type === "percent"
-  // ) {
-  //   if (subtotal >= CouponDetails.mini_shipping) {
-  //     const rawDiscount = (subtotal * CouponDetails.discount) / 100;
-
-  //     discount =
-  //       rawDiscount > CouponDetails.max_discount
-  //         ? CouponDetails.max_discount
-  //         : rawDiscount;
-  //   } else {
-  //     toast.warning(
-  //       `Apply this coupon on orders above ₹${CouponDetails.mini_shipping}`
-  //     );
-  //   }
-  // } else if (CouponDetails?.discount_type === "percent") {
-  //   discount = CouponDetails?.discount ?? 0;
+  // if (isLoading || isFetching) {
+  //   return <FullScreenLoader />;
   // }
-
-  
-  // Final total
-  const total = Math.round(subtotal + shipping  - CouponDiscount);
-
-  if (isLoading || isFetching) {
-    return <FullScreenLoader />;
-  }
   if (items?.length === 0) {
     return (
-       <div className="flex flex-col items-center justify-center h-[80vh] text-center px-4">
-      <motion.div
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 200 }}
-        className="bg-primary/10 text-primary p-6 rounded-full mb-6"
-      >
-        <ShoppingCart className="w-10 h-10" />
-      </motion.div>
-      <h2 className="text-2xl font-bold text-neutral-800">
-        Your Cart is Empty
-      </h2>
-      <p className="text-muted-foreground text-sm mt-2 max-w-xs">
-        Looks like you haven’t added anything to your cart yet. Start shopping
-        now!
-      </p>
-    
-      <Button className="mt-6" onClick={() => navigate("/products/all")}>
-        Browse Products
-      </Button>
-    </div>
+      <div className="flex flex-col items-center justify-center h-[80vh] text-center px-4">
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 200 }}
+          className="bg-primary/10 text-primary p-6 rounded-full mb-6"
+        >
+          <ShoppingCart className="w-10 h-10" />
+        </motion.div>
+        <h2 className="text-2xl font-bold text-neutral-800">
+          Your Cart is Empty
+        </h2>
+        <p className="text-muted-foreground text-sm mt-2 max-w-xs">
+          Looks like you haven’t added anything to your cart yet. Start shopping
+          now!
+        </p>
+
+        <Button className="mt-6" onClick={() => navigate("/products/all")}>
+          Browse Products
+        </Button>
+      </div>
     );
   }
 
@@ -487,61 +390,8 @@ export default function CheckoutPage() {
                 <AccordionContent>
                   <ul>
                     {items?.map((product: Product) => {
-                      let productDiscount = 0;
-                      const productTax =
-                        (product.unit_price *
-                          product.quantity *
-                          product.tax_percent) /
-                        100;
-                      const isProductInCoupon =
-                        CouponDetails?.coupon_type === "product_based" &&
-                        Array.isArray(CouponDetails.product_ids) &&
-                        CouponDetails.product_ids.includes(
-                          Number(product.product_id)
-                        );
-
-                      if (isProductInCoupon) {
-                        // isAnyProductMatched = true
-                        if (
-                          CouponDetails.product_ids.includes(
-                            Number(product.product_id)
-                          ) &&
-                          CouponDetails.discount_type === "percent"
-                        ) {
-                          productDiscount =
-                            (product.unit_price *
-                              product.quantity *
-                              CouponDetails.discount) /
-                            100;
-                        } else if (
-                          CouponDetails.product_ids.includes(
-                            Number(product.product_id)
-                          )
-                        ) {
-                          productDiscount = CouponDetails.discount * product.quantity;
-                        }
-                      }
-                      // else {
-                      //   toast.warning(
-                      //     "Coupon not applicable to any product in your cart."
-                      //   );
-                      // }
-
                       const finalPrice = Math.round(
-                        product.unit_price * product.quantity - productDiscount
-                      );
-                      dispatch(
-                        addItemTotalAmount({
-                          ...product,
-                          total_amount: finalPrice,
-                          prodcut_tax: productTax,
-                          product_sub_total: Math.round(
-                            product.unit_price - productTax
-                          ),
-                          discount_amount: product.discount_amount,
-                          coupon_amount: productDiscount || null,
-                          coupon_id: CouponDetails?.coupon_id || null,
-                        })
+                        product.unit_price * product.quantity
                       );
 
                       return (
@@ -574,25 +424,27 @@ export default function CheckoutPage() {
                                   ₹ {finalPrice}
                                 </span>
                                 <span className="line-through ml-2 text-sm md:text-base text-gray-400">
-                                  ₹{product.strike_through_price}
+                                  ₹
+                                  {Math.round(
+                                    Number(product.strike_through_price) *
+                                      product.quantity
+                                  )}
                                 </span>
                                 <span className="ml-2 text-sm md:text-base text-green-600 font-semibold">
-                                  {Math.round(Number(product?.discount_percent))}% off
+                                  {Math.round(
+                                    Number(product?.discount_percent)
+                                  )}
+                                  % off
                                 </span>
 
-                                {CouponDetails?.coupon_type ===
-                                  "product_based" &&
-                                  Array.isArray(CouponDetails.product_ids) &&
-                                  CouponDetails.product_ids.includes(
-                                    Number(product.product_id)
-                                  ) && (
-                                    <div className="mt-2 px-3 py-1 rounded-md bg-green-50 border border-green-200 text-green-700 text-sm flex items-center gap-2 w-fit">
-                                      <BadgePercent className="w-4 h-4 text-green-600" />
-                                      <span>
-                                        Coupon offer applied to this item!
-                                      </span>
-                                    </div>
-                                  )}
+                                {product?.is_coupon_applied && (
+                                  <div className="mt-2 px-3 py-1 rounded-md bg-green-50 border border-green-200 text-green-700 text-sm flex items-center gap-2 w-fit">
+                                    <BadgePercent className="w-4 h-4 text-green-600" />
+                                    <span>
+                                      Coupon offer applied to this item!
+                                    </span>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -1210,8 +1062,6 @@ export default function CheckoutPage() {
                                       className="w-full pr-10  cursor-pointer"
                                     />
 
-                                 
-
                                     {biilingshowDropdown && (
                                       <ul className="absolute  z-[999] w-52  bg-white dark:bg-gray-800 border dark:border-gray-700 max-h-80 overflow-auto mt-1 shadow-md rounded">
                                         {filteredCities2.length === 0 ? (
@@ -1351,12 +1201,6 @@ export default function CheckoutPage() {
                   <h1 className="md:text-2xl font-semibold ">Price Details</h1>
                 </AccordionTrigger>
                 <AccordionContent>
-                  {/* {subtotal < 500 && (
-                    <div className="mb-3 p-3 bg-yellow-100 text-yellow-800 rounded-md text-xs font-medium transition-all duration-300 ease-in-out opacity-100">
-                      Minimum order value must be ₹500 to apply the discount.
-                    </div>
-                  )} */}
-
                   <div className="relative flex items-center mb-5">
                     <TicketPercent className="absolute left-3 w-4 h-4 text-gray-400" />
                     <Input
@@ -1374,15 +1218,11 @@ export default function CheckoutPage() {
                       disabled={!couponCode}
                       className="absolute right-0 top-1/2 -translate-y-1/2 px-4 py-2 text-sm"
                     >
-                      {isPending ? (
-                        <Loader2 className="animate-spin" />
-                      ) : (
-                        "Apply  "
-                      )}
+                      {false ? <Loader2 className="animate-spin" /> : "Apply  "}
                     </Button>
                   </div>
                   <div className="flex justify-end -translate-y-3">
-                    {CouponDetails?.status && (
+                    {couponCode && (
                       <button
                         onClick={handleRemoveCoupon}
                         className="text-sm !py-0 text-black font-medium hover:underline cursor-pointer"
@@ -1394,67 +1234,77 @@ export default function CheckoutPage() {
 
                   <div className="space-y-6 text-sm font-medium text-title">
                     <div className="flex justify-between">
-                      <span>Subtotal</span>
-                      <span className="font-semibold">₹{subtotal - tax}</span>
-                    </div>
-                    <div className="flex justify-between items-start text-sm text-muted-foreground">
                       <p className="flex flex-col leading-tight">
-                        <span className="text-foreground font-medium">Tax</span>
-                        <span className="text-xs">Inclusive of 18% tax</span>
-                      </p>
-                      <span className="text-foreground font-semibold text-base">
-                        ₹{tax}
-                      </span>
+                        <span>TotalMRP</span>
+                        <span className="text-xs">Inclusive of all tax</span>
+                      </p>{" "}
+                      {isLoading || isFetching ? (
+                        <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
+                      ) : (
+                        <span className="font-semibold">
+                          ₹{price_summary?.total_mrp}.00
+                        </span>
+                      )}
                     </div>
 
-                    {/* {discount > 0 && (
-                      <div className="flex justify-between">
-                        <span>Discount</span>
-                        <span className="">-₹{discount}</span>
-                      </div>
-                    )} */}
+                    <div className="flex justify-between">
+                      <span>Bag Discount</span>
+                      {isLoading || isFetching ? (
+                        <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
+                      ) : (
+                        <span className="">
+                          -₹{price_summary?.bag_discount}.00
+                        </span>
+                      )}{" "}
+                    </div>
 
-                    {CouponDiscount > 0 && (
+                    {price_summary?.discount && price_summary?.discount > 0 && (
                       <div className="flex justify-between">
                         <span>Discount</span>
-                        <span className="">-₹{CouponDiscount}</span>
+                        <span className="">-₹{price_summary?.discount}.00</span>
                       </div>
                     )}
 
                     <div className="flex justify-between items-center">
                       <span className="flex flex-col">
                         Shipping
-                        {shipping === 0 ? (
+                        {price_summary?.add_for_freeship === 0 ? (
                           <span className=" text-green-600  text-xs mt-1 font-semibold animate-pulse">
                             (Free Delivery 🎉)
                           </span>
                         ) : (
                           <span className=" text-red-500 text-xs font-medium italic animate-shake">
-                            
-                             ( Spend ₹{tax_detail.min_amount - subtotal} more to
+                            ( Spend ₹{price_summary?.add_for_freeship} more to
                             get free shipping!)
                           </span>
                         )}
                       </span>
-                      <span
-                        className={`font-semibold  ${
-                          shipping === 0 ? "text-green-600 " : "text-primary"
-                        } gap-x-1.5 flex items-center`}
-                      >
-                        {shipping === 0 && (
-                          <span className="text-xs  line-through text-lead">
-                            {tax_detail?.shipping_fee}
-                          </span>
-                        )}
-                        ₹{shipping === 0 ? shipping : shipping}
-                      </span>
+                      {isLoading || isFetching ? (
+                        <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
+                      ) : (
+                        <div
+                          className={`font-semibold  ${
+                            price_summary?.shipping_fee === 0
+                              ? "text-green-600 "
+                              : "text-primary"
+                          } gap-x-1.5 flex items-center`}
+                        >
+                          <span>₹{price_summary?.shipping_fee}.00</span>
+                        </div>
+                      )}
                     </div>
                     <hr className="my-2 border-gray-300" />
                     <div className="flex justify-between font-semibold text-base">
                       <span className="font-semibold text-[#0B130B]">
                         Total
                       </span>
-                      <span className="text-[#0B130B] font-bold">₹{total}</span>
+                      {isLoading || isFetching ? (
+                        <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
+                      ) : (
+                        <span className="text-[#0B130B] font-bold">
+                          ₹{price_summary?.grand_total}.00
+                        </span>
+                      )}
                     </div>
                   </div>
                 </AccordionContent>
@@ -1467,11 +1317,11 @@ export default function CheckoutPage() {
                 const valid = await form.trigger();
                 if (valid) {
                   // dispatch(setCartItems(data?.data));
-                  dispatch(setTaxDetails(data?.tax_detail));
+                  // dispatch(setTaxDetails(data?.tax_detail));
                   navigate("/payment", {
                     state: {
-                      product: data,
-                      coupon_id: CouponDetails?.coupon_id,
+                      // product: data,
+                      coupon_id: price_summary?.discount,
                     },
                   });
                 } else {

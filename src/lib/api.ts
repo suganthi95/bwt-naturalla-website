@@ -85,11 +85,9 @@ export const verifyForgorPasswordToken = async (token: string) => {
   return response.data;
 };
 export const resetPassword = async (password: string, token: string) => {
-  const response = await api.put("v1/auth/reset/password",{password,token});
+  const response = await api.put("v1/auth/reset/password", { password, token });
   return response.data;
 };
-
-
 
 export const getPromoLists = async () => {
   const response = await api.get("v1/blog/promo/offers");
@@ -134,14 +132,16 @@ export const addToCart = async (
   return response.data;
 };
 
-export const getCartItems = async (token: string) => {
-  const response = await api.get("v1/cart", {
+export const getCartItems = async (token: string, couponCode ?: string) => {
+  const response = await api.post("v1/cart/with/price ",{coupon_code:couponCode ? couponCode : null}, {
+   
     headers: {
       Authorization: token,
     },
   });
   return response.data;
 };
+
 
 export const updateCartItems = async (
   cart_id: number,

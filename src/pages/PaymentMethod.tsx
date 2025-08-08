@@ -37,7 +37,7 @@ export default function PaymentMethod() {
   // const payment =
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { shippingAddress, items, tax_detail } = useSelector(
+  const { shippingAddress, items, price_summary } = useSelector(
     (state: RootState) => state.cart
   );
 
@@ -46,7 +46,6 @@ export default function PaymentMethod() {
   //   setCartItems(items);
   // }, [items]);
 
-  const CouponDetails = useSelector((state: RootState) => state.coupon);
   const { mutate, isPending } = useCreateOrder();
   const { mutate: verifyRazorpay, isPending: verifyRazorpayPending } =
     useVerifyrazorpay();
@@ -82,57 +81,6 @@ export default function PaymentMethod() {
 
   const selectedRole = watch("payment");
 
-  const subtotal = items?.reduce(
-    (acc: number, item: any) => acc + item?.unit_price * item.quantity,
-    0
-  );
-
-  // update tax calculation
-    const tax = items?.reduce((acc, item) => {
-    const productTotal = item.unit_price * item.quantity;
-    const tax = (productTotal * item.tax_percent) / (100 + item.tax_percent);
-    return acc + Math.round(tax);
-  }, 0);
-
-
-  let shipping = 0;
-
-  if (tax_detail && typeof tax_detail.min_amount === "number") {
-    if (subtotal >= tax_detail.min_amount) {
-      shipping = 0;
-    } else if (typeof tax_detail.shipping_fee === "number") {
-      shipping = tax_detail.shipping_fee;
-    }
-  }
-
-  const CouponDiscount = items?.reduce((acc, item) => {
-    return acc + Math.round(Number(item.coupon_amount) || 0);
-  }, 0);
-
-  let discount = 0;
-
-  if (
-    CouponDetails?.coupon_type === "invoice_based" &&
-    CouponDetails?.discount_type === "percent"
-  ) {
-    if (subtotal >= CouponDetails.mini_shipping) {
-      const rawDiscount = (subtotal * CouponDetails.discount) / 100;
-
-      discount =
-        rawDiscount > CouponDetails.max_discount
-          ? CouponDetails.max_discount
-          : rawDiscount;
-    } else {
-      toast.warning(
-        `Apply this coupon on orders above ₹${CouponDetails.mini_shipping}`
-      );
-    }
-  } else {
-    discount = CouponDetails.discount;
-  }
-
-  // Final total
-  const total = Math.round(subtotal + shipping  - CouponDiscount);
   const handleCreateOrder = () => {
     if (!items || !shippingAddress) return;
     if (!shippingAddress) {
@@ -152,13 +100,13 @@ export default function PaymentMethod() {
         coupon_amount: item.coupon_amount,
       })),
       address: shippingAddress.address,
-      discount_amount: discount,
-      coupon_discount: CouponDiscount,
+      discount_amount: price_summary.discount,
+      coupon_discount: price_summary.discount,
       coupon_id: coupon_id ?? null,
-      tax: tax,
-      sub_total: subtotal - tax,
-      order_amount: total,
-      shipping_fee: shipping,
+      tax: price_summary.tax,
+      sub_total: price_summary.sub_total,
+      order_amount: price_summary.grand_total,
+      shipping_fee: price_summary.shipping_fee,
       cash_on_delivery: false,
       payment_provider: selectedRole,
       pincode: Number(shippingAddress.pinCode),
@@ -196,7 +144,7 @@ export default function PaymentMethod() {
             const options = {
               key: razorpayKey,
               order_id: data.orderId,
-              amount: total,
+              amount: price_summary.grand_total ?? 0,
               currency: "INR" as const,
               name: "Naturella",
               description: "Payment",
@@ -402,78 +350,86 @@ export default function PaymentMethod() {
           {/* <p className="text-muted-foreground">
             {selectedRole ? selectedRole : "No method selected"}
           </p> */}
-          <div className="space-y-6 text-sm font-medium text-title">
-            <div className="flex justify-between">
-              <span className="text-lead">Subtotal</span>
-              <span className="font-semibold">₹{subtotal - tax}</span>
-            </div>
-            <div className="flex justify-between items-start text-sm text-muted-foreground">
-              <p className="flex flex-col leading-tight">
-                <span className="text-foreground font-medium">Tax</span>
-                <span className="text-xs">Inclusive of 18% tax</span>
-              </p>
-              <span className="text-foreground font-semibold text-base">
-                ₹{tax}
-              </span>
-            </div>
-            {/* {discount > 0 && (
-              <div className="flex justify-between">
-                <span className="text-lead">Discount</span>
-                <span className="">-₹{discount}</span>
-              </div>
-            )} */}
+         
 
-            {CouponDiscount > 0 && (
-              <div className="flex justify-between">
-                <span className="text-lead">Discount</span>
-                <span className="">-₹{CouponDiscount}</span>
-              </div>
-            )}
-            <div className="flex justify-between items-center">
-              <span className="flex flex-col">
-                Shipping
-                {shipping === 0 ? (
-                  <span className=" text-green-600  text-xs mt-1 font-semibold animate-pulse">
-                    (Free Delivery 🎉)
-                  </span>
-                ) : (
-                  <span className=" text-red-500 text-xs font-medium italic animate-shake">
-                    (Spend ₹{tax_detail.min_amount - subtotal} more for free
-                    shipping)
-                  </span>
-                )}
-              </span>
-              {/* <span
-                className={`font-semibold ${
-                  shipping === 0 ? "text-green-600" : "text-primary"
-                }`}
-              >
-                ₹{shipping === 0 ? "0" : shipping}
-              </span> */}
-              <span
-                className={`font-semibold  ${
-                  shipping === 0 ? "text-green-600 " : "text-primary"
-                } gap-x-1.5 flex items-center`}
-              >
-                {shipping === 0 && (
-                  <span className="text-xs  line-through text-lead">
-                    {tax_detail?.shipping_fee}
-                  </span>
-                )}
-                ₹{shipping === 0 ? shipping : shipping}
-              </span>
-            </div>
 
-            <hr className="my-2 border-gray-300" />
-            <div className="flex justify-between font-semibold text-base">
-              <span className="font-semibold text-[#0B130B] text-[22px] ">
-                Total
-              </span>
-              <span className="text-[#0B130B] text-[22px] font-bold">
-                ₹{total}
-              </span>
-            </div>
-            <Button
+            <div className="space-y-6 text-sm font-medium text-title">
+                    <div className="flex justify-between">
+                      <p className="flex flex-col leading-tight">
+                        <span>TotalMRP</span>
+                        <span className="text-xs">Inclusive of all tax</span>
+                      </p>{" "}
+                      {isLoading || isFetching ? (
+                        <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
+                      ) : (
+                        <span className="font-semibold">
+                          ₹{price_summary?.total_mrp}.00
+                        </span>
+                      )}
+                    </div>
+                   
+
+                    <div className="flex justify-between">
+                      <span>Bag Discount</span>
+                      {isLoading || isFetching ? (
+                        <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
+                      ) : (
+                        <span className="">
+                          -₹{price_summary?.bag_discount}.00
+                        </span>
+                      )}{" "}
+                    </div>
+
+                    {price_summary?.discount && price_summary?.discount > 0 && (
+                      <div className="flex justify-between">
+                        <span>Discount</span>
+                        <span className="">-₹{price_summary?.discount}.00</span>
+                      </div>
+                    )}
+
+                    <div className="flex justify-between items-center">
+                      <span className="flex flex-col">
+                        Shipping
+                        {price_summary?.add_for_freeship === 0 ? (
+                          <span className=" text-green-600  text-xs mt-1 font-semibold animate-pulse">
+                            (Free Delivery 🎉)
+                          </span>
+                        ) : (
+                          <span className=" text-red-500 text-xs font-medium italic animate-shake">
+                            ( Spend ₹{price_summary?.add_for_freeship} more to get
+                            free shipping!)
+                          </span>
+                        )}
+                      </span>
+                      {isLoading || isFetching ? (
+                        <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
+                      ) : (
+                        <div
+                          className={`font-semibold  ${
+                            price_summary?.shipping_fee === 0
+                              ? "text-green-600 "
+                              : "text-primary"
+                          } gap-x-1.5 flex items-center`}
+                        >
+                          
+                           <span>₹{price_summary?.shipping_fee}.00</span> 
+                        </div>
+                      )}
+                    </div>
+                    <hr className="my-2 border-gray-300" />
+                    <div className="flex justify-between font-semibold text-base">
+                      <span className="font-semibold text-[#0B130B]">
+                        Total
+                      </span>
+                      {isLoading || isFetching ? (
+                        <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
+                      ) : (
+                        <span className="text-[#0B130B] font-bold">
+                          ₹{price_summary?.grand_total}.00
+                        </span>
+                      )}
+                    </div>
+                         <Button
               type="button"
               disabled={!selectedRole || isPending}
               onClick={handleCreateOrder}
@@ -493,7 +449,7 @@ export default function PaymentMethod() {
                 "Pay Now"
               )}
             </Button>
-          </div>
+                  </div>
         </div>
       </section>
     </main>
