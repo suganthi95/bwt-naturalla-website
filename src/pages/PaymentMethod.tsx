@@ -356,7 +356,7 @@ export default function PaymentMethod() {
             <div className="space-y-6 text-sm font-medium text-title">
                     <div className="flex justify-between">
                       <p className="flex flex-col leading-tight">
-                        <span>TotalMRP</span>
+                        <span>Total MRP</span>
                         <span className="text-xs">Inclusive of all tax</span>
                       </p>{" "}
                       {isLoading || isFetching ? (
@@ -382,7 +382,7 @@ export default function PaymentMethod() {
 
                     {price_summary?.discount && price_summary?.discount > 0 && (
                       <div className="flex justify-between">
-                        <span>Discount</span>
+                        <span>Coupon</span>
                         <span className="">-₹{price_summary?.discount}.00</span>
                       </div>
                     )}

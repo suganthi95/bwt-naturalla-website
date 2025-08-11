@@ -43,6 +43,7 @@ import {
   decreaseQuantity,
   increaseQuantity,
   removeItem,
+  setCartItems,
   setCartItemsPrice_Summary,
   setShippingAddress,
 } from "@/redux/slices/cartSlice";
@@ -284,13 +285,15 @@ export default function CheckoutPage() {
   const handleCheckCoupon = async () => {
     const { data } = await refetch();
     if (data) {
+      toast.message(data?.message)
       dispatch(setCartItemsPrice_Summary(data?.price_summary));
+      dispatch(setCartItems(data?.data));
     }
   };
 
-  const handleRemoveCoupon = async() => {
-        await setCouponCode("");
-        refetch()
+  const handleRemoveCoupon = async () => {
+    await setCouponCode("");
+    refetch();
   };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
@@ -1235,7 +1238,7 @@ export default function CheckoutPage() {
                   <div className="space-y-6 text-sm font-medium text-title">
                     <div className="flex justify-between">
                       <p className="flex flex-col leading-tight">
-                        <span>TotalMRP</span>
+                        <span>Total MRP</span>
                         <span className="text-xs">Inclusive of all tax</span>
                       </p>{" "}
                       {isLoading || isFetching ? (
@@ -1260,7 +1263,7 @@ export default function CheckoutPage() {
 
                     {price_summary?.discount && price_summary?.discount > 0 && (
                       <div className="flex justify-between">
-                        <span>Discount</span>
+                        <span>Coupon</span>
                         <span className="">-₹{price_summary?.discount}.00</span>
                       </div>
                     )}
