@@ -45,6 +45,7 @@ import {
   removeItem,
   setCartItems,
   setCartItemsPrice_Summary,
+  setCartProducts_Data,
   setShippingAddress,
 } from "@/redux/slices/cartSlice";
 import { toast } from "sonner";
@@ -285,9 +286,10 @@ export default function CheckoutPage() {
   const handleCheckCoupon = async () => {
     const { data } = await refetch();
     if (data) {
-      toast.message(data?.message)
+      toast.message(data?.message);
       dispatch(setCartItemsPrice_Summary(data?.price_summary));
       dispatch(setCartItems(data?.data));
+      dispatch(setCartProducts_Data(data?.input_data?.product_data));
     }
   };
 

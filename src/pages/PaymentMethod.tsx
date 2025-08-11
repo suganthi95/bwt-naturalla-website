@@ -37,7 +37,7 @@ export default function PaymentMethod() {
   // const payment =
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { shippingAddress, items, price_summary } = useSelector(
+  const { shippingAddress, items, price_summary ,products_data} = useSelector(
     (state: RootState) => state.cart
   );
 
@@ -88,17 +88,18 @@ export default function PaymentMethod() {
     }
 
     const orderPayload = {
-      product_data: items.map((item: any) => ({
-        product_id: item.product_id,
-        quantity: item.quantity,
-        unit_price: item.unit_price,
-        product_sub_total: item.product_sub_total,
-        discount_amount: item.discount_amount,
-        prodcut_tax: item.prodcut_tax,
-        order_amount: item.total_amount,
-        coupon_id: item.coupon_amount > 0 ? item.coupon_id : null,
-        coupon_amount: item.coupon_amount,
-      })),
+      // product_data: items.map((item: any) => ({
+      //   product_id: item.product_id,
+      //   quantity: item.quantity,
+      //   unit_price: item.unit_price,
+      //   product_sub_total: item.product_sub_total,
+      //   discount_amount: item.discount_amount,
+      //   prodcut_tax: item.prodcut_tax,
+      //   order_amount: item.total_amount,
+      //   coupon_id: item.coupon_amount > 0 ? item.coupon_id : null,
+      //   coupon_amount: item.coupon_amount,
+      // })),
+      product_data:products_data,
       address: shippingAddress.address,
       discount_amount: price_summary.discount,
       coupon_discount: price_summary.discount,

@@ -26,6 +26,7 @@ import {
   removeCartItems,
   setCartItems,
   setCartItemsPrice_Summary,
+  setCartProducts_Data,
   setTaxDetails,
 } from "@/redux/slices/cartSlice";
 import type { RootState } from "@/redux/store";
@@ -78,6 +79,7 @@ export default function Nav() {
   useEffect(() => {
     dispatch(setCartItems(data?.data));
     dispatch(setCartItemsPrice_Summary(data?.price_summary))
+    dispatch(setCartProducts_Data(data?.input_data?.product_data))
     dispatch(setTaxDetails(data?.tax_detail));
   }, [data, isSuccess]);
 

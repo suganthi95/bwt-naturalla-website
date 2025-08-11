@@ -282,3 +282,16 @@ export type PriceSummary = {
   total_mrp: number | null;
   bag_discount: number | null;
 };
+
+
+export type OrderItem = {
+  product_id: number;
+  quantity: number;
+  order_amount: number;
+  coupon_id: number | null;
+  unit_price: number;
+  product_sub_total: number;
+  coupon_amount: number | null;
+  discount_amount: number | null;
+  prodcut_tax: number;
+};
