@@ -189,7 +189,7 @@ export default function ProductsList({ Products, title }: Props) {
       {filteredProducts?.length === 0 ? (
         <NoProducts />
       ) : (
-        <ul className="grid grid-cols-2   md:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-4 xl:gap-4">
+        <ul className="grid grid-cols-2   md:grid-cols-3 xl:grid-cols-4 gap-x-3  gap-y-4 xl:gap-4">
           {filteredProducts
             ?.sort((a, b) => {
               if (sorybyAlphabetic === "a-z")
@@ -220,7 +220,7 @@ export default function ProductsList({ Products, title }: Props) {
               return (
                 <li
                   key={index}
-                  className="w-full   md:w-fit space-y-3 xl:p-3 relative overflow-hidden "
+                  className="w-full   group md:w-fit lg:h-[340px] space-y-3 xl:p-3 relative overflow-hidden "
                 >
                   <div
                     className="relative w-full cursor-pointer overflow-hidden transition-all duration-300"
@@ -310,14 +310,14 @@ export default function ProductsList({ Products, title }: Props) {
                       </motion.div>
                     </div>
 
-                    <div className="group relative">
+                    <div className=" relative">
                       <div className=" group-hover:h-44  w-full h-40 sm:h-60 md:w-[240px] md:h-[240px] rounded-xl overflow-hidden transition-all duration-300">
                         <img
                           src={item?.thumbnail_image_url}
                           alt={item?.product_name}
                           className="w-full h-full object-cover rounded-xl transition-transform duration-500 group-hover:rotate-3"
                         />
-                        <div className=" hidden lg:block absolute bg-[#009951] font-bold text-white rounded  group-hover:hidden text-sm  -right-1 top-0  px-4 py-1">
+                        <div className=" hidden lg:block absolute bg-[#009951] font-bold text-white rounded  group-hover:hidden text-sm  right-0 top-0  px-4 py-1">
                           {Math.round(Number(item?.discount_percent))}% OFF
                         </div>{" "}
                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl" />
@@ -407,7 +407,11 @@ export default function ProductsList({ Products, title }: Props) {
                           </motion.div>
                         </div>
                       </div>
-                      <div className="absolute bottom-2  left-1/2 -translate-x-1/2 w-[90%] hidden lg:group-hover:flex opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    
+                    </div>
+                    
+                  </div>
+                     <div className=" hidden lg:group-hover:flex opacity-0  group-hover:opacity-100 transition-opacity duration-300">
                         {item?.current_stock > 0 ? (
                           <button
                             className="flex-1 bg-primary cursor-pointer text-white py-2 rounded-md font-medium hover:bg-primary"
@@ -437,9 +441,6 @@ export default function ProductsList({ Products, title }: Props) {
                           </Button>
                         )}
                       </div>
-                    </div>
-                  </div>
-
                   <div className="block lg:hidden mt-2">
                     {item?.current_stock > 0 ? (
                       <button
