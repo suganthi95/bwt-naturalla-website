@@ -37,7 +37,7 @@ export default function PaymentMethod() {
   // const payment =
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { shippingAddress, items, price_summary ,products_data} = useSelector(
+  const { shippingAddress, items, price_summary, products_data } = useSelector(
     (state: RootState) => state.cart
   );
 
@@ -99,8 +99,10 @@ export default function PaymentMethod() {
       //   coupon_id: item.coupon_amount > 0 ? item.coupon_id : null,
       //   coupon_amount: item.coupon_amount,
       // })),
-      product_data:products_data,
+      product_data: products_data,
       address: shippingAddress.address,
+      total_mrp: price_summary.total_mrp,
+      bag_discount: price_summary.bag_discount,
       discount_amount: price_summary.discount,
       coupon_discount: price_summary.discount,
       coupon_id: coupon_id ?? null,
@@ -351,86 +353,78 @@ export default function PaymentMethod() {
           {/* <p className="text-muted-foreground">
             {selectedRole ? selectedRole : "No method selected"}
           </p> */}
-         
 
+          <div className="space-y-6 text-sm font-medium text-title">
+            <div className="flex justify-between">
+              <p className="flex flex-col leading-tight">
+                <span>Total MRP</span>
+                <span className="text-xs">Inclusive of all tax</span>
+              </p>{" "}
+              {isLoading || isFetching ? (
+                <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
+              ) : (
+                <span className="font-semibold">
+                  ₹{price_summary?.total_mrp}.00
+                </span>
+              )}
+            </div>
 
-            <div className="space-y-6 text-sm font-medium text-title">
-                    <div className="flex justify-between">
-                      <p className="flex flex-col leading-tight">
-                        <span>Total MRP</span>
-                        <span className="text-xs">Inclusive of all tax</span>
-                      </p>{" "}
-                      {isLoading || isFetching ? (
-                        <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
-                      ) : (
-                        <span className="font-semibold">
-                          ₹{price_summary?.total_mrp}.00
-                        </span>
-                      )}
-                    </div>
-                   
+            <div className="flex justify-between">
+              <span>Bag Discount</span>
+              {isLoading || isFetching ? (
+                <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
+              ) : (
+                <span className="">-₹{price_summary?.bag_discount}.00</span>
+              )}{" "}
+            </div>
 
-                    <div className="flex justify-between">
-                      <span>Bag Discount</span>
-                      {isLoading || isFetching ? (
-                        <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
-                      ) : (
-                        <span className="">
-                          -₹{price_summary?.bag_discount}.00
-                        </span>
-                      )}{" "}
-                    </div>
+            {price_summary?.discount && price_summary?.discount > 0 && (
+              <div className="flex justify-between">
+                <span>Coupon</span>
+                <span className="">-₹{price_summary?.discount}.00</span>
+              </div>
+            )}
 
-                    {price_summary?.discount && price_summary?.discount > 0 && (
-                      <div className="flex justify-between">
-                        <span>Coupon</span>
-                        <span className="">-₹{price_summary?.discount}.00</span>
-                      </div>
-                    )}
-
-                    <div className="flex justify-between items-center">
-                      <span className="flex flex-col">
-                        Shipping
-                        {price_summary?.add_for_freeship === 0 ? (
-                          <span className=" text-green-600  text-xs mt-1 font-semibold animate-pulse">
-                            (Free Delivery 🎉)
-                          </span>
-                        ) : (
-                          <span className=" text-red-500 text-xs font-medium italic animate-shake">
-                            ( Spend ₹{price_summary?.add_for_freeship} more to get
-                            free shipping!)
-                          </span>
-                        )}
-                      </span>
-                      {isLoading || isFetching ? (
-                        <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
-                      ) : (
-                        <div
-                          className={`font-semibold  ${
-                            price_summary?.shipping_fee === 0
-                              ? "text-green-600 "
-                              : "text-primary"
-                          } gap-x-1.5 flex items-center`}
-                        >
-                          
-                           <span>₹{price_summary?.shipping_fee}.00</span> 
-                        </div>
-                      )}
-                    </div>
-                    <hr className="my-2 border-gray-300" />
-                    <div className="flex justify-between font-semibold text-base">
-                      <span className="font-semibold text-[#0B130B]">
-                        Total
-                      </span>
-                      {isLoading || isFetching ? (
-                        <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
-                      ) : (
-                        <span className="text-[#0B130B] font-bold">
-                          ₹{price_summary?.grand_total}.00
-                        </span>
-                      )}
-                    </div>
-                         <Button
+            <div className="flex justify-between items-center">
+              <span className="flex flex-col">
+                Shipping
+                {price_summary?.add_for_freeship === 0 ? (
+                  <span className=" text-green-600  text-xs mt-1 font-semibold animate-pulse">
+                    (Free Delivery 🎉)
+                  </span>
+                ) : (
+                  <span className=" text-red-500 text-xs font-medium italic animate-shake">
+                    ( Spend ₹{price_summary?.add_for_freeship} more to get free
+                    shipping!)
+                  </span>
+                )}
+              </span>
+              {isLoading || isFetching ? (
+                <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
+              ) : (
+                <div
+                  className={`font-semibold  ${
+                    price_summary?.shipping_fee === 0
+                      ? "text-green-600 "
+                      : "text-primary"
+                  } gap-x-1.5 flex items-center`}
+                >
+                  <span>₹{price_summary?.shipping_fee}.00</span>
+                </div>
+              )}
+            </div>
+            <hr className="my-2 border-gray-300" />
+            <div className="flex justify-between font-semibold text-base">
+              <span className="font-semibold text-[#0B130B]">Total</span>
+              {isLoading || isFetching ? (
+                <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
+              ) : (
+                <span className="text-[#0B130B] font-bold">
+                  ₹{price_summary?.grand_total}.00
+                </span>
+              )}
+            </div>
+            <Button
               type="button"
               disabled={!selectedRole || isPending}
               onClick={handleCreateOrder}
@@ -450,7 +444,7 @@ export default function PaymentMethod() {
                 "Pay Now"
               )}
             </Button>
-                  </div>
+          </div>
         </div>
       </section>
     </main>

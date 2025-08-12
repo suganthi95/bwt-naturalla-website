@@ -13,7 +13,8 @@ export type OrderPayload = {
   discount_amount: number | null;
   coupon_discount: number | null;
   coupon_id?: number | null;
-
+  total_mrp: number | null;
+  bag_discount: number | null;
   tax: number | null;
   sub_total: number | null;
   order_amount: number | null;
@@ -69,9 +70,9 @@ export interface Category {
   category_title: string;
   category_thumbnail_image: string;
   subcategories: {
-    subcategory_id: number,
-    subcategory_name: string
-  }[]
+    subcategory_id: number;
+    subcategory_name: string;
+  }[];
 }
 
 export interface PriceRange {
@@ -231,9 +232,8 @@ export type Blog = {
   blog_content: string;
   blog_images: number;
   blog_image_url: string;
-  created_time:string
+  created_time: string;
 };
-
 
 export type ContactUsTicket = {
   contactus_id: number;
@@ -258,7 +258,6 @@ export type ContactUsTicket = {
   attachment_data: string[];
 };
 
-
 export type SubIssue = {
   sub_issue: string;
   subissue_id: number;
@@ -273,16 +272,15 @@ export type IssueType = {
 };
 
 export type PriceSummary = {
-  add_for_freeship:number | null
+  add_for_freeship: number | null;
   grand_total: number | null;
-  sub_total:number | null;
-  tax:number | null;
+  sub_total: number | null;
+  tax: number | null;
   shipping_fee: number | null;
   discount: number | null;
   total_mrp: number | null;
   bag_discount: number | null;
 };
-
 
 export type OrderItem = {
   product_id: number;
