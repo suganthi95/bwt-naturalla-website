@@ -157,6 +157,9 @@ export default function Footer() {
             <li>Vilankurichi Road, Coimbatore,</li>
           </ul>
           <p className="text-sm text-white/50">
+            Naturalla Lilyfe Private Limited
+          </p>
+          <p className="text-sm text-white/50">
             <a href="mailto:cs@nllpl.in">cs@nllpl.in</a>
           </p>
           <p className="text-sm text-white/50">
