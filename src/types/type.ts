@@ -142,6 +142,8 @@ export interface AddressPayload {
 }
 
 export type Order = {
+  bag_discount: any;
+  total_mrp: any;
   product: any;
   order_id: number;
   user_id: number;
