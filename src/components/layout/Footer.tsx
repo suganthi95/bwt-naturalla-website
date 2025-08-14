@@ -160,7 +160,6 @@ export default function Footer() {
             <li>Vilankurichi Road, Coimbatore,</li>
             <li>Tamil Nadu 641035</li>
           </ul>
-        
           <p className="text-sm text-white/50">
             <a href="mailto:cs@nllpl.in">cs@nllpl.in</a>
           </p>
