@@ -49,7 +49,7 @@ import {
   setShippingAddress,
 } from "@/redux/slices/cartSlice";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import type { RootState } from "@/redux/store";
 import axios from "axios";
 import { useGetAddress } from "@/services/profile";
@@ -179,7 +179,6 @@ export default function CheckoutPage() {
   );
   const [quantity, setQuantity] = useState(1);
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
-
   const [query, setQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [Statequery, setStateQuery] = useState("");
@@ -203,6 +202,7 @@ export default function CheckoutPage() {
   const filteredStates2 = states.filter((city) =>
     city.name.toLowerCase().includes(biilingStatequery?.toLowerCase())
   );
+const [showEmpty, setShowEmpty] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -226,6 +226,7 @@ export default function CheckoutPage() {
       pinCode: "",
     },
   });
+
 
   useEffect(() => {
     if (addresses) {
@@ -282,6 +283,12 @@ export default function CheckoutPage() {
       token: token,
     });
     dispatch(removeItem(cart_id));
+
+     const remainingItems = items.filter(item => item.cart_id !== cart_id);
+
+  if (remainingItems.length === 0) {
+    setShowEmpty(true);
+  }
   };
 
   const handleCheckCoupon = async () => {
@@ -347,14 +354,12 @@ export default function CheckoutPage() {
     );
   };
 
-  if (isLoading || isFetching) {
+  if (isLoading || isFetching  ) {
     return <FullScreenLoader />;
   }
-
+if(showEmpty && items?.length === 0){
   return (
-    <main>
-      {items?.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-[80vh] text-center px-4">
+     <div className="flex flex-col items-center justify-center h-[80vh] text-center px-4">
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -375,7 +380,11 @@ export default function CheckoutPage() {
             Browse Products
           </Button>
         </div>
-      ) : (
+  )
+}
+  return (
+    <main>
+     
         <section className="container mx-auto  mb-10 md:mb-20">
           <div className="flex  w-full gap-x-10 flex-col lg:flex-row">
             <div className="w-full h-full lg:w-8/12">
@@ -1352,7 +1361,7 @@ export default function CheckoutPage() {
             </div>
           </div>
         </section>
-      )}
+     
     </main>
   );
 }
