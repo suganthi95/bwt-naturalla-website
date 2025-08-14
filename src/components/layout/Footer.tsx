@@ -150,20 +150,25 @@ export default function Footer() {
 
         <div className="w-full sm:w-1/2 lg:w-[20%] space-y-3">
           <h4 className="text-lg font-semibold">Contact Us</h4>
+           <p className="text-sm text-white/50">
+            Naturalla Lilyfe Private Limited
+          </p>
           <ul className="space-y-2 text-sm text-white/50">
             <li>Door No 29 B3,</li>
             <li>SRK COMPLEX, GROUND FLOOR,</li>
             <li>GANDHI STREET, KUMARAN NAGAR,</li>
             <li>Vilankurichi Road, Coimbatore,</li>
+            <li>Tamil Nadu 641035</li>
           </ul>
-          <p className="text-sm text-white/50">
-            Naturalla Lilyfe Private Limited
-          </p>
+        
           <p className="text-sm text-white/50">
             <a href="mailto:cs@nllpl.in">cs@nllpl.in</a>
           </p>
+           <p className="text-sm text-white/50">
+            <a href="tel:+919655033533">+91 96550 33533</a>
+          </p>
           <p className="text-sm text-white/50">
-            <a href="tel:+919655233533">+91-96552 33533</a>
+            <a href="tel:+919655233533">+91 96552 33533</a>
           </p>
         </div>
       </div>

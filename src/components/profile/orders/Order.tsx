@@ -340,14 +340,14 @@ export default function Order({ Orders, handleTab }: Props) {
             <div className="flex justify-between">
               <span className="text-gray-600">Bag Discount</span>
               <span className="text-title font-semibold">
-                - ₹ {order?.bag_discount}.00
+                - ₹{order?.bag_discount}.00
               </span>
             </div>
             {order?.coupon_discount && (
               <div className="flex justify-between">
                 <span className="text-gray-600">Coupon </span>
                 <span className="text-title font-semibold">
-                 - ₹ {order?.coupon_discount}.00
+                 - ₹{order?.coupon_discount}.00
                 </span>
               </div>
             )}
@@ -355,13 +355,13 @@ export default function Order({ Orders, handleTab }: Props) {
             <div className="flex justify-between">
               <span className="text-gray-600">Shipping</span>
               <span className="text-title font-semibold">
-                ₹ {order?.shipping_fee}
+                ₹{order?.shipping_fee}
               </span>
             </div>
             <div className="flex justify-between pt-2 border-t font-medium">
               <span>Total</span>
               <span className="text-textPrimary font-bold">
-                ₹ {order?.order_amount}
+                ₹{order?.order_amount}
               </span>
             </div>
           </div>
