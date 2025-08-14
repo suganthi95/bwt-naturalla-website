@@ -401,8 +401,7 @@ export default function ProductSection({ media, products }: Props) {
                     quantity: quantity,
                     token: token,
                   });
-
-                  navigate("/checkout");
+                  navigate("/checkout" ,{replace:true});
                 } else {
                   toast.error("Please login to continue");
                 }

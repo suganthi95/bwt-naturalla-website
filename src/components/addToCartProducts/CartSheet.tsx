@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import {  useState } from "react";
 import { Icons } from "@/assets/icons";
 import { ScrollArea } from "../ui/scroll-area";
 import { useNavigate } from "react-router-dom";
@@ -26,12 +26,22 @@ interface Props {
   isFetching: boolean;
   Product: Product[];
 }
-export default function CartSheet({ onClose, isError, isLoading }: Props) {
+export default function CartSheet({
+  onClose,
+  isError,
+  isLoading,
+  isFetching,
+}: Props) {
   const navigae = useNavigate();
   const queryClient = useQueryClient();
+  const { token } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const { items, tax_detail } = useSelector((state: RootState) => state.cart);
-  const { token } = useSelector((state: RootState) => state.auth);
+  const { price_summary } = useSelector((state: RootState) => state.cart);
+  // const [priceSummary, setPriceSummary] = useState<PriceSummary>(price_summary);
+  // useEffect(() => {
+  //   setPriceSummary(price_summary);
+  // }, [price_summary]);
   const [quantity, setQuantity] = useState(1);
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
   const { mutate } = useUpdateCart();
@@ -72,13 +82,13 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
     return <CartLoadingSkeleton />;
   }
   if (isError) {
-    return         <EmptyCart onClose={onClose} />;
+    return <EmptyCart onClose={onClose} />;
   }
   const subtotal = items?.reduce(
     (acc, item) => acc + item.unit_price * item.quantity,
     0
   );
-  
+
   // const tax = items?.reduce((acc, item) => {
   //   const productTax =
   //     (item.unit_price * item.quantity * item.tax_percent) / 100;
@@ -86,27 +96,20 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
   // }, 0);
 
   // update tax calculation
-    const tax = items?.reduce((acc, item) => {
-    const productTotal = item.unit_price * item.quantity;
-    const tax = (productTotal * item.tax_percent) / (100 + item.tax_percent);
-    return acc + Math.round(tax);
-  }, 0);
 
-  const discount = 0;
+
   const shipping =
     tax_detail?.min_amount <= subtotal ? 0 : tax_detail?.shipping_fee;
 
-  const total = Math.round((subtotal + shipping ) - discount);
 
- 
   return (
     <ScrollArea className="space-y-6 p-4  h-full md:h-screen">
       <h2 className="text-lg font-bold text-title"> Cart</h2>
-      {(items?.length === 0 || !items)  ? (
+      {items?.length === 0 || !items ? (
         <EmptyCart onClose={onClose} />
       ) : (
         <>
-          {shipping === 0 && (
+          {price_summary.shipping_fee === 0 && (
             <div className="space-y-1.5 mb-4">
               <p className="font-semibold   text-xs md:text-sm">
                 🎉 Congrats!{" "}
@@ -139,17 +142,16 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                           </h3>
 
                           <p className="text-sm flex flex-wrap gap-x-2 items-center mt-0.5 text-[#939393]">
-                            <span className="text-[13px]">1 unit</span> ₹
-                            {item?.unit_price}
+                            <span className="text-[13px]">1 unit</span>
+                             {/* ₹{item?.unit_price} */}
                             <span className="hidden sm:inline border-l h-3 border-gray-300"></span>
-                           
                             {/* <span className="text-[13px]">Size</span>{" "} */}
                             {item?.units}
                           </p>
 
                           <div className="mt-1 flex items-center gap-2 flex-wrap">
                             <span className="text-base font-bold md:text-[22px] text-title">
-                              ₹{Math.round(item?.unit_price * item?.quantity)}
+                              ₹{item?.unit_price}
                             </span>
                             {item?.strike_through_price && (
                               <>
@@ -157,7 +159,8 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                                   ₹{item?.strike_through_price}
                                 </span>
                                 <span className="text-sm text-green-600 font-semibold">
-                                  {Math.round(Number(item?.discount_percent))}% off
+                                  {Math.round(Number(item?.discount_percent))}%
+                                  off
                                 </span>
                               </>
                             )}
@@ -179,7 +182,7 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                             −
                           </Button>
                           <Input
-                          autoFocus={false}
+                            autoFocus={false}
                             type="number"
                             value={item?.quantity}
                             onChange={(e) =>
@@ -222,8 +225,8 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                             exit={{ opacity: 0, y: 5 }}
                             transition={{ duration: 0.3, ease: "easeOut" }}
                           >
-                            Product only {item?.current_stock}{" "}
-                            quantity available
+                            Product only {item?.current_stock} quantity
+                            available
                           </motion.p>
                         )}
                       </AnimatePresence>
@@ -243,10 +246,19 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
             <div className="space-y-2 text-sm font-medium text-title">
               <h3 className="font-semibold text-xl">Price Details</h3>
               <div className="flex justify-between">
-                <span>Subtotal</span>
-                <span className="font-semibold">₹{subtotal - tax}</span>
+                <p className="flex flex-col leading-tight">
+                  <span>Total MRP</span>
+                  <span className="text-xs">Inclusive of all tax</span>
+                </p>
+                {isLoading || isFetching ? (
+                  <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
+                ) : (
+                  <span className="font-semibold">
+                    ₹{price_summary.total_mrp}.00
+                  </span>
+                )}
               </div>
-              <div className="flex justify-between items-start text-sm text-muted-foreground">
+              {/* <div className="flex justify-between items-start text-sm text-muted-foreground">
                 <p className="flex flex-col leading-tight">
                   <span className="text-foreground font-medium">Tax</span>
                   <span className="text-xs">Inclusive of 18% tax</span>
@@ -254,43 +266,58 @@ export default function CartSheet({ onClose, isError, isLoading }: Props) {
                 <span className="text-foreground font-semibold text-base">
                   ₹{tax}
                 </span>
+              </div> */}
+
+              <div className="flex justify-between">
+                <span>Bag Discount</span>
+                {isLoading || isFetching ? (
+                  <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
+                ) : (
+                  <span className="">-₹{price_summary?.bag_discount}.00</span>
+                )}
               </div>
-              {discount > 0 && (
-                <div className="flex justify-between">
-                  <span>Discount</span>
-                  <span className="">-₹{discount}</span>
-                </div>
-              )}
+
               <div className="flex justify-between items-center">
                 <span className="">Shipping</span>
-                <span
-                  className={`font-semibold  ${
-                    shipping === 0 ? "text-green-600 " : "text-primary"
-                  } gap-x-1.5 flex items-center`}
-                >
-                  {shipping === 0 && (
-                    <span className="text-xs  line-through text-lead">
-                     ₹ {tax_detail?.shipping_fee}
-                    </span>
-                  )}
-                  ₹{shipping === 0 ? shipping : shipping}
-                </span>
+                {isLoading || isFetching ? (
+                  <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
+                ) : (
+                  <span
+                    className={`font-semibold  ${
+                      price_summary?.shipping_fee === 0
+                        ? "text-green-600 "
+                        : "text-primary"
+                    } gap-x-1.5 flex items-center`}
+                  >
+                    {shipping === 0 && (
+                      <span className="text-xs  line-through text-lead">
+                        ₹ {price_summary?.shipping_fee}
+                      </span>
+                    )}
+                    ₹{price_summary?.shipping_fee}.00
+                  </span>
+                )}
               </div>
-              {shipping === 0 ? (
+              {price_summary?.add_for_freeship === 0 ? (
                 <span className=" text-green-600 font-semibold text-xs animate-pulse">
                   (Free Delivery 🎉)
                 </span>
               ) : (
                 <span className=" text-red-500 text-xs font-medium italic animate-shake">
-                  (Spend ₹{tax_detail?.min_amount - subtotal} more for free
-                  shipping)
+                  (Spend ₹{price_summary?.add_for_freeship} more for free shipping)
                 </span>
               )}
 
               <hr className="my-2 border-gray-300" />
               <div className="flex justify-between font-semibold text-base">
                 <span className="font-semibold text-[#0B130B]">Total</span>
-                <span className="text-[#0B130B] font-bold">₹{total}</span>
+                {isLoading || isFetching ? (
+                  <div className="h-6 w-20 rounded-md bg-gray-200 animate-pulse" />
+                ) : (
+                  <span className="text-[#0B130B] font-bold">
+                    ₹{price_summary.grand_total}.00
+                  </span>
+                )}
               </div>
               <Button
                 className="w-full h-10  cursor-pointer"

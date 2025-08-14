@@ -13,11 +13,12 @@ export type OrderPayload = {
   discount_amount: number | null;
   coupon_discount: number | null;
   coupon_id?: number | null;
-
-  tax: number;
-  sub_total: number;
-  order_amount: number;
-  shipping_fee: number;
+  total_mrp: number | null;
+  bag_discount: number | null;
+  tax: number | null;
+  sub_total: number | null;
+  order_amount: number | null;
+  shipping_fee: number | null;
   cash_on_delivery: boolean;
   payment_provider: string;
   pincode: number;
@@ -69,9 +70,9 @@ export interface Category {
   category_title: string;
   category_thumbnail_image: string;
   subcategories: {
-    subcategory_id: number,
-    subcategory_name: string
-  }[]
+    subcategory_id: number;
+    subcategory_name: string;
+  }[];
 }
 
 export interface PriceRange {
@@ -141,6 +142,8 @@ export interface AddressPayload {
 }
 
 export type Order = {
+  bag_discount: any;
+  total_mrp: any;
   product: any;
   order_id: number;
   user_id: number;
@@ -231,9 +234,8 @@ export type Blog = {
   blog_content: string;
   blog_images: number;
   blog_image_url: string;
-  created_time:string
+  created_time: string;
 };
-
 
 export type ContactUsTicket = {
   contactus_id: number;
@@ -258,7 +260,6 @@ export type ContactUsTicket = {
   attachment_data: string[];
 };
 
-
 export type SubIssue = {
   sub_issue: string;
   subissue_id: number;
@@ -270,4 +271,27 @@ export type IssueType = {
   created_at: string;
   created_by: string | null;
   sub_issues: SubIssue[];
+};
+
+export type PriceSummary = {
+  add_for_freeship: number | null;
+  grand_total: number | null;
+  sub_total: number | null;
+  tax: number | null;
+  shipping_fee: number | null;
+  discount: number | null;
+  total_mrp: number | null;
+  bag_discount: number | null;
+};
+
+export type OrderItem = {
+  product_id: number;
+  quantity: number;
+  order_amount: number;
+  coupon_id: number | null;
+  unit_price: number;
+  product_sub_total: number;
+  coupon_amount: number | null;
+  discount_amount: number | null;
+  prodcut_tax: number;
 };

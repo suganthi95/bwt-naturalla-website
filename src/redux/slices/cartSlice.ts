@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Product } from "@/types/Home";
-import type { ShippingTaxDetail } from "@/types/type";
+import type { OrderItem, PriceSummary, ShippingTaxDetail } from "@/types/type";
 
 type Address = {
   firstName: string;
@@ -24,6 +24,8 @@ type Address = {
 
 type CartState = {
   items: Product[];
+  price_summary: PriceSummary;
+  products_data:OrderItem[]
   tax_detail: ShippingTaxDetail;
   subtotal: number;
   tax: number;
@@ -35,6 +37,17 @@ type CartState = {
 
 const initialState: CartState = {
   items: [],
+  price_summary:{
+    add_for_freeship:0,
+    bag_discount:0,
+    discount:0,
+    grand_total:0,
+    shipping_fee:0,
+    sub_total:0,
+    tax:0,
+    total_mrp:0
+  },
+  products_data:[],
   tax_detail: {
     shipping_type_id: 0,
     shipping_fee_type: "invoice_based",
@@ -76,8 +89,25 @@ export const cartSlice = createSlice({
       state.items = action.payload;
       Object.assign(state, calculateTotals(state.items));
     },
+    setCartItemsPrice_Summary:(state,action:PayloadAction<PriceSummary>)=>{
+      state.price_summary = action.payload;
+    },
+    setCartProducts_Data:(state,action:PayloadAction<OrderItem[]>)=>{
+      state.products_data = action.payload
+    },
     removeCartItems: (state) => {
       state.items = [];
+      state.price_summary={
+        add_for_freeship:0,
+        bag_discount:0,
+        discount:0,
+        grand_total:0,
+        shipping_fee:0,
+        sub_total:0,
+        tax:0,
+        total_mrp:0
+      }
+      state.products_data = []
       state.subtotal = 0;
       state.tax = 0;
       state.discount = 0;
@@ -163,6 +193,8 @@ export const cartSlice = createSlice({
 
 export const {
   setCartItems,
+  setCartItemsPrice_Summary,
+  setCartProducts_Data,
   addItemTotalAmount,
   removeTaxDetails,
   removeCartItems,
