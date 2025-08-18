@@ -240,7 +240,7 @@ export default function Signup() {
                           <Input
                             className="h-11"
                             placeholder="••••••"
-                            type="password"
+                            type={showPassword ? "text" :"password"}
                             {...field}
                           />
                           <button
@@ -280,7 +280,7 @@ export default function Signup() {
                     <FormLabel className="text-xs text-textPrimary">
                       I agree with the{" "}
                       <a
-                        href="https://stagingnaturalla.netlify.app/privacy-policy"
+                        href="https://naturalla.store/privacy-policy"
                         target="_blank"
                         className="underline"
                       >
@@ -293,7 +293,7 @@ export default function Signup() {
               )}
             />
 
-            <Button type="submit" className="w-full h-11">
+            <Button  type="submit" className="w-full h-11">
               {isPending ? <Loader2 className="animate-spin" /> : "Sign Up"}
             </Button>
           </form>
