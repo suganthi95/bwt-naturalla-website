@@ -280,7 +280,7 @@ export default function Signup() {
                     <FormLabel className="text-xs text-textPrimary">
                       I agree with the{" "}
                       <a
-                        href="https://naturalla.store/privacy-policy"
+                        href="https://staging.naturalla.store/privacy-policy"
                         target="_blank"
                         className="underline"
                       >
