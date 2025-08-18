@@ -157,7 +157,7 @@ export default function Footer() {
             <li>Door No 29 B3,</li>
             <li>SRK COMPLEX, GROUND FLOOR,</li>
             <li>GANDHI STREET, KUMARAN NAGAR,</li>
-            <li>Vilankurichi Road, Coimbatore,</li>
+            <li>Vilankurichi Post, Coimbatore,</li>
             <li>Tamil Nadu 641035</li>
           </ul>
           <p className="text-sm text-white/50">
