@@ -333,6 +333,7 @@ export default function Order({ Orders, handleTab }: Props) {
             <div className="flex justify-between">
               <p className="flex flex-col leading-tight">
                 <span>Total MRP</span>
+
                 <span className="text-xs">Inclusive of all tax</span>
               </p>
               <span className="font-semibold">₹{order?.total_mrp}.00</span>
