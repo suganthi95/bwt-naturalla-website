@@ -33,6 +33,7 @@ export type ProductEffectIcon = {
   icon_url: string;
 };
 export type Product = {
+  minimum_stock_warning: number;
   product_id: number;
   user_id: number;
   quantity: number;

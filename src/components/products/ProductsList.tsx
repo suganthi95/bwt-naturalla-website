@@ -93,7 +93,7 @@ export default function ProductsList({ Products, title }: Props) {
       filtered = filtered?.filter(
         (item) => item.unit_price >= minPrice && item.unit_price <= maxPrice
       );
-    } 
+    }
 
     if (categories.length > 0) {
       filtered = filtered?.filter(
@@ -101,7 +101,6 @@ export default function ProductsList({ Products, title }: Props) {
           item.category_title && categories.includes(item.category_title)
       );
     }
-    
 
     setFilteredProducts(filtered);
   }, [categories, keywords, maxPrice, minPrice, sortByDate, sortByPrice]);
@@ -407,42 +406,44 @@ export default function ProductsList({ Products, title }: Props) {
                           </motion.div>
                         </div>
                       </div>
-                    
                     </div>
-                    
                   </div>
-                     <div className=" hidden lg:group-hover:flex opacity-0  group-hover:opacity-100 transition-opacity duration-300">
-                        {item?.current_stock > 0 ? (
-                          <button
-                            className="flex-1 bg-primary cursor-pointer text-white py-2 rounded-md font-medium hover:bg-primary"
-                            onClick={() => {
-                              if (status) {
-                                mutate({
-                                  product_id: item.product_id,
-                                  quantity: 1,
-                                  token,
-                                });
-                                dispatch(addItem(item));
-                              } else {
-                                toast.error("Please login to continue");
-                                navigate("/login");
-                              }
-                            }}
-                          >
-                            Add to Cart
-                          </button>
-                        ) : (
-                          <Button
-                            disabled
-                            className="bg-red-100 w-full text-red-500 cursor-not-allowed flex items-center gap-2"
-                          >
-                            <Ban className="w-4 h-4" />
-                            Out of Stock
-                          </Button>
-                        )}
-                      </div>
+                  <div className=" hidden lg:group-hover:flex opacity-0  group-hover:opacity-100 transition-opacity duration-300">
+                    {(item.minimum_stock_warning === null &&
+                      item.current_stock <= 1) ||
+                    item.current_stock < item.minimum_stock_warning ? (
+                      <button
+                        className="flex-1 bg-primary cursor-pointer text-white py-2 rounded-md font-medium hover:bg-primary"
+                        onClick={() => {
+                          if (status) {
+                            mutate({
+                              product_id: item.product_id,
+                              quantity: 1,
+                              token,
+                            });
+                            dispatch(addItem(item));
+                          } else {
+                            toast.error("Please login to continue");
+                            navigate("/login");
+                          }
+                        }}
+                      >
+                        Add to Cart
+                      </button>
+                    ) : (
+                      <Button
+                        disabled
+                        className="bg-red-100 w-full text-red-500 cursor-not-allowed flex items-center gap-2"
+                      >
+                        <Ban className="w-4 h-4" />
+                        Out of Stock
+                      </Button>
+                    )}
+                  </div>
                   <div className="block lg:hidden mt-2">
-                    {item?.current_stock > 0 ? (
+                    {(item.minimum_stock_warning === null &&
+                      item.current_stock <= 1) ||
+                    item.current_stock < item.minimum_stock_warning ? (
                       <button
                         className="w-full bg-primary text-white px-4 py-2 rounded-md font-semibold"
                         onClick={() => {

@@ -80,7 +80,6 @@ export default function TodayDeals({ Products }: Props) {
                shadow-md"
                 >
                   {Math.round(Number(item?.discount_percent))}% OFF
-                  
                 </div>
               </div>
 
@@ -100,7 +99,10 @@ export default function TodayDeals({ Products }: Props) {
                     Rs.{item?.strike_through_price}
                   </span>
                 </p>
-                {item?.current_stock > 0 ? (
+
+                {(item.minimum_stock_warning === null &&
+                  item.current_stock <= 1) ||
+                item.current_stock < item.minimum_stock_warning ? (
                   <Button
                     onClick={() => {
                       if (status) {

@@ -52,7 +52,8 @@ export default function BestSelling({ title, Products, Isview }: Props) {
                   }}
                 />
 
-                {Number(item.current_stock) <= 0 && (
+
+                {(item.minimum_stock_warning === null && item.current_stock <= 1) || (item.current_stock < item.minimum_stock_warning) && (
                   <div className="absolute inset-0 bg-black/60  flex items-center justify-center rounded-lg md:rounded-[20px]">
                     <span className="inline-flex items-center gap-1.5 bg-gray-100 text-gray-500 border border-gray-300 px-3 py-1 rounded-full text-xs md:text-sm font-medium">
                       <Ban className="w-4 h-4" />
