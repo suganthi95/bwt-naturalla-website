@@ -25,6 +25,10 @@ export default function ProductById() {
   });
 
   useEffect(() => {
+    window.location.href = `naturalla://product-details/${id}`;
+  }, [id]);
+
+  useEffect(() => {
     if (data) {
       document.title = `${data.product_name} – Naturalla`;
 
