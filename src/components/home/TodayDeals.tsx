@@ -103,7 +103,17 @@ export default function TodayDeals({ Products }: Props) {
                 {(item.minimum_stock_warning === null &&
                   item.current_stock <= 1) ||
                 item.current_stock < item.minimum_stock_warning ? (
-                  <Button
+                 
+
+                       <Button
+                    disabled
+                    className="bg-red-100 text-red-500 cursor-not-allowed flex items-center gap-2"
+                  >
+                    <Ban className="w-4 h-4" />
+                    Out of Stock
+                  </Button>
+                ) : (
+              <Button
                     onClick={() => {
                       if (status) {
                         mutate({
@@ -123,14 +133,6 @@ export default function TodayDeals({ Products }: Props) {
         bg-white text-primary border-primary hover:bg-primary hover:text-white hover:shadow-md hover:scale-105`}
                   >
                     Add to Cart
-                  </Button>
-                ) : (
-                  <Button
-                    disabled
-                    className="bg-red-100 text-red-500 cursor-not-allowed flex items-center gap-2"
-                  >
-                    <Ban className="w-4 h-4" />
-                    Out of Stock
                   </Button>
                 )}
               </div>

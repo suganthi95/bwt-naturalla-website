@@ -409,9 +409,18 @@ export default function ProductsList({ Products, title }: Props) {
                     </div>
                   </div>
                   <div className=" hidden lg:group-hover:flex opacity-0  group-hover:opacity-100 transition-opacity duration-300">
-                    {(item.minimum_stock_warning === null &&
-                      item.current_stock <= 1) ||
-                    item.current_stock < item.minimum_stock_warning ? (
+                    {(item?.minimum_stock_warning === null &&
+                      item?.current_stock <= 1) ||
+                    (item?.current_stock < item?.minimum_stock_warning) ? (
+                     
+                       <Button
+                        disabled
+                        className="bg-red-100 w-full text-red-500 cursor-not-allowed flex items-center gap-2"
+                      >
+                        <Ban className="w-4 h-4" />
+                        Out of Stock
+                      </Button>
+                    ) : (
                       <button
                         className="flex-1 bg-primary cursor-pointer text-white py-2 rounded-md font-medium hover:bg-primary"
                         onClick={() => {
@@ -430,21 +439,22 @@ export default function ProductsList({ Products, title }: Props) {
                       >
                         Add to Cart
                       </button>
-                    ) : (
-                      <Button
-                        disabled
-                        className="bg-red-100 w-full text-red-500 cursor-not-allowed flex items-center gap-2"
-                      >
-                        <Ban className="w-4 h-4" />
-                        Out of Stock
-                      </Button>
                     )}
                   </div>
                   <div className="block lg:hidden mt-2">
                     {(item.minimum_stock_warning === null &&
                       item.current_stock <= 1) ||
                     item.current_stock < item.minimum_stock_warning ? (
-                      <button
+                    
+                          <Button
+                        disabled
+                        className="bg-red-100 text-red-500 w-full cursor-not-allowed flex items-center gap-2"
+                      >
+                        <Ban className="w-4 h-4" />
+                        Out of Stock
+                      </Button>
+                    ) : (
+                    <button
                         className="w-full bg-primary text-white px-4 py-2 rounded-md font-semibold"
                         onClick={() => {
                           if (status) {
@@ -462,14 +472,6 @@ export default function ProductsList({ Products, title }: Props) {
                       >
                         Add to Cart
                       </button>
-                    ) : (
-                      <Button
-                        disabled
-                        className="bg-red-100 text-red-500 w-full cursor-not-allowed flex items-center gap-2"
-                      >
-                        <Ban className="w-4 h-4" />
-                        Out of Stock
-                      </Button>
                     )}
                   </div>
                   <div className="flex flex-col items-center gap-x-1.5">

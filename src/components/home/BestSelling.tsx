@@ -81,7 +81,7 @@ export default function BestSelling({ title, Products, Isview }: Props) {
                     Rs.{item?.strike_through_price}
                   </span>
                 </p>
-                {item.current_stock > 0 ? (
+                {item.current_stock >= item?.minimum_stock_warning ? (
                   <Button
                     onClick={() => {
                       if (status) {

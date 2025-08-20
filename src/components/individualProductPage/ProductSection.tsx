@@ -349,7 +349,7 @@ export default function ProductSection({ media, products }: Props) {
               ({products?.units})
             </p>
           </div>
-          
+
           <div className="flex items-center gap-2 border w-fit p-1 mt-2 px-2 md:px-4 rounded-lg">
             <Button
               variant="outline"
@@ -391,7 +391,17 @@ export default function ProductSection({ media, products }: Props) {
             )}
           </AnimatePresence>
         </div>
-        {products?.current_stock > 0 ? (
+        {(products?.minimum_stock_warning === null &&
+          products?.current_stock <= 1) ||
+        products?.current_stock < products?.minimum_stock_warning ? (
+          <Button
+            disabled
+            className="bg-red-100 text-red-500 cursor-not-allowed flex items-center gap-2"
+          >
+            <Ban className="w-4 h-4" />
+            Out of Stock
+          </Button>
+        ) : (
           <div className="flex items-center gap-x-2">
             <Button
               onClick={() => {
@@ -401,7 +411,7 @@ export default function ProductSection({ media, products }: Props) {
                     quantity: quantity,
                     token: token,
                   });
-                  navigate("/checkout" ,{replace:true});
+                  navigate("/checkout", { replace: true });
                 } else {
                   toast.error("Please login to continue");
                 }
@@ -427,7 +437,6 @@ export default function ProductSection({ media, products }: Props) {
                       onSuccess() {
                         dispatch(addItem(products));
                       },
-                   
                     }
                   );
                 } else {
@@ -439,14 +448,6 @@ export default function ProductSection({ media, products }: Props) {
               Add to Cart
             </Button>
           </div>
-        ) : (
-          <Button
-            disabled
-            className="bg-red-100 text-red-500 cursor-not-allowed flex items-center gap-2"
-          >
-            <Ban className="w-4 h-4" />
-            Out of Stock
-          </Button>
         )}
 
         <div className="flex items-center justify-between border rounded-md px-1 py-1 w-full lg:w-fit">
