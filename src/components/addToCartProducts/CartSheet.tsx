@@ -304,7 +304,8 @@ export default function CartSheet({
                 </span>
               ) : (
                 <span className=" text-red-500 text-xs font-medium italic animate-shake">
-                  (Spend ₹{price_summary?.add_for_freeship} more for free shipping)
+
+                  (Add items worth ₹{price_summary?.add_for_freeship} more to earn free shipping)
                 </span>
               )}
 
