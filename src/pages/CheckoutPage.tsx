@@ -520,9 +520,9 @@ export default function CheckoutPage() {
 
                             {product?.current_stock <= product?.quantity && (
                               <p className="text-xs text-red-600 mt-1">
-                                Only {product?.current_stock} item
+                                Only {product?.current_stock} 
                                 {product?.current_stock === 1 ? "" : "s"} left
-                                in stock.
+                                
                               </p>
                             )}
                           </div>

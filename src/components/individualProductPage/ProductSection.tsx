@@ -386,7 +386,7 @@ export default function ProductSection({ media, products }: Props) {
                 exit={{ opacity: 0, y: 5 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
               >
-                Product only {products?.current_stock} quantity available
+                 only {products?.current_stock} left
               </motion.p>
             )}
           </AnimatePresence>

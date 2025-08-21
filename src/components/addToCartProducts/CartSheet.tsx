@@ -225,8 +225,8 @@ export default function CartSheet({
                             exit={{ opacity: 0, y: 5 }}
                             transition={{ duration: 0.3, ease: "easeOut" }}
                           >
-                            Product only {item?.current_stock} quantity
-                            available
+                             only {item?.current_stock}  left
+                            
                           </motion.p>
                         )}
                       </AnimatePresence>
