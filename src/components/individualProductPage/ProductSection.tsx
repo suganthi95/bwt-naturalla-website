@@ -213,16 +213,16 @@ export default function ProductSection({ media, products }: Props) {
               {products?.short_description}
             </p>
             <ul className="flex items-center flex-wrap gap-2  md:gap-4">
-              {products?.icon_data?.slice(0, 3)?.map((item) => {
+              {products?.icon_data?.map((item) => {
                 return (
                   <li className="flex items-center gap-x-1.5">
                     <img
-                      src={item.icon_url}
+                      src={item?.icon_url}
                       className="size-4 md:size-7"
-                      alt={`icon-${item.icon_id}`}
+                      alt={`icon-${item?.icon_id}`}
                     />
                     <p className="font-medium text-[#656877]">
-                      {item.icon_text}
+                      {item?.icon_text}
                     </p>
                   </li>
                 );
