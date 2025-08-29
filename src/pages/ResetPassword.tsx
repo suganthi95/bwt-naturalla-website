@@ -55,7 +55,9 @@ export default function ResetPassword() {
       confirmPassword: "",
     },
   });
-
+useEffect(() => {
+    window.location.href = `naturalla://reset-password/${token}`;
+}, [ token ])
   if (data?.status === false || isError) {
     navigate("/login");
     if (isAxiosError(error)) {
