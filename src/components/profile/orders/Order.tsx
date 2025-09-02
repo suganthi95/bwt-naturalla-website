@@ -171,7 +171,6 @@ export default function Order({ Orders, handleTab }: Props) {
                         )}
                       </div>
 
-                      {/* Activity Info */}
                       <div className="text-sm sm:text-base">
                         <p className="font-medium">{item?.activity}</p>
                         <p className="text-xs sm:text-sm text-gray-600">

@@ -189,7 +189,7 @@ export default function UserAddress() {
             <p className="mt-2 text-gray-600">{address?.address_phone_no}</p>
             {address?.default_address && (
               <span className="mt-10  bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
-                Default
+                primary
               </span>
             )}
           </div>

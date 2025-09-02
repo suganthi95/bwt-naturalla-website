@@ -26,7 +26,7 @@ const ProfilePictureUpload = ({ dialogOpen }: Props) => {
   const { handleSubmit, setValue } = useForm<FormData>();
 
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
+    const selectedFile = e?.target?.files?.[0];
     if (selectedFile) {
       setValue("profilePicture", selectedFile);
       setPreview(URL.createObjectURL(selectedFile));

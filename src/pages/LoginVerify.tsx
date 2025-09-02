@@ -80,7 +80,7 @@ export default function LoginVerify() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-textPrimary font-semibold ">
-                    Enter mobile otp
+                   Enter OTP sent to Mobile Number - {phone_no}
                   </FormLabel>
                   <FormControl>
                     <Input className="h-11" placeholder="" {...field} />

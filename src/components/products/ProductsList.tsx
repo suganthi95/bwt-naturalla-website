@@ -44,7 +44,7 @@ export default function ProductsList({ Products, title }: Props) {
     sortByPrice,
     sorybyAlphabetic,
   } = useSelector((state: RootState) => state.filter);
-
+ 
   const [filteredProducts, setFilteredProducts] = useState<Product[]>();
   // console.log("filteredProducts: ", filteredProducts);
   const { token, status } = useSelector((state: RootState) => state.auth);
@@ -77,8 +77,6 @@ export default function ProductsList({ Products, title }: Props) {
       const normalizedKeywords = keywords.map((kw) =>
         kw.toLowerCase().trim().replace(/&/g, "and")
       );
-      // console.log("normalizedKeywords: ", normalizedKeywords);
-
       filtered = filtered?.filter((item) =>
         item.benefit_keys?.some((key: string) =>
           normalizedKeywords.includes(
@@ -87,8 +85,6 @@ export default function ProductsList({ Products, title }: Props) {
         )
       );
     }
-    // console.log("filtered: ", filtered);
-
     if (minPrice <= maxPrice) {
       filtered = filtered?.filter(
         (item) => item.unit_price >= minPrice && item.unit_price <= maxPrice
