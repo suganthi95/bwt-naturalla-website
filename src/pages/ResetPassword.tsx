@@ -16,7 +16,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isAxiosError } from "axios";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -55,7 +55,9 @@ export default function ResetPassword() {
       confirmPassword: "",
     },
   });
-
+useEffect(() => {
+    window.location.href = `naturalla://reset-password/${token}`;
+}, [ token ])
   if (data?.status === false || isError) {
     navigate("/login");
     if (isAxiosError(error)) {
