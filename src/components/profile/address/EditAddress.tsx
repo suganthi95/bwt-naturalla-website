@@ -482,7 +482,7 @@ export default function EditAddress({ onClose, address }: Props) {
                   htmlFor="contact"
                   className="text-title font-semibold cursor-pointer"
                 >
-                  Save as default address
+                  Save as primary address
                 </Label>
               </FormItem>
             )}
