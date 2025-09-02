@@ -473,7 +473,7 @@ export default function AddAddress({onClose}:Props) {
                   htmlFor="contact"
                   className="text-title font-semibold cursor-pointer"
                 >
-                  Save as default address
+                  Save as primary address
                 </Label>
               </FormItem>
             )}

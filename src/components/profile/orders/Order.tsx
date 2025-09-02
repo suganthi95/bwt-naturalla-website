@@ -239,20 +239,20 @@ export default function Order({ Orders, handleTab }: Props) {
                 />
               </div>
               <div className="ml-4 flex-grow">
-                <h5 className="font-medium">{item.product_name}</h5>
+                <h5 className="font-medium">{item?.product_name}</h5>
                 <div className="flex justify-between mt-2">
                   <div className="text-gray-600">
                     <p>
                       Qty:{" "}
                       <span className="font-semibold text-textPrimary">
-                        {item.quantity}
+                        {item?.quantity}
                       </span>
                     </p>
                     <p>
                       {" "}
                       Price{" "}
                       <span className="font-semibold text-textPrimary">
-                        Rs. {item.order_amount}
+                        Rs. {item?.unit_price}
                       </span>{" "}
                     </p>
                   </div>
