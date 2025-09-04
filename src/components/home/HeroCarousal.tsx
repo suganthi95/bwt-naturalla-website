@@ -51,7 +51,7 @@ export default function HeroCarousal({ banners }: any) {
             src={src.media_url}
             alt={`hero-${index}`}
             onClick={() => window.open(src?.cta_link, "_self")}
-            className="w-full h-40 md:h-full  xl:h-[35rem] cursor-pointer object-cover"
+            className=" w-full h-[40vh] md:h-[60vh] xl:h-[76vh]   object-cover cursor-pointer "
           />
         ))}
       </Slider>
