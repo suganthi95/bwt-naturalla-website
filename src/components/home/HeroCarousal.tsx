@@ -43,15 +43,15 @@ export default function HeroCarousal({ banners }: any) {
   };
 
   return (
-    <div className="w-full relative">
-      <Slider {...settings} className="  xl:h-[80vh]  overflow-hidden">
+    <div className="w-full mt-2 relative">
+      <Slider {...settings} className="    overflow-hidden">
         {banners?.map((src: any, index: number) => (
           <img
             key={`banner-image-${index}`}
             src={src.media_url}
             alt={`hero-${index}`}
             onClick={() => window.open(src?.cta_link, "_self")}
-            className=" w-full h-[40vh] md:h-[60vh] xl:h-[76vh]   object-cover cursor-pointer "
+            className=" w-full h-full md:h-full    object-cover cursor-pointer "
           />
         ))}
       </Slider>
