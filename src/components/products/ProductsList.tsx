@@ -316,7 +316,7 @@ export default function ProductsList({ Products, title }: Props) {
                           {Math.round(Number(item?.discount_percent))}% OFF
                         </div>{" "}
                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl" />
-                        <div className="absolute  lg:block space-y-3 flex top-3 -right-8 duration-300  transition-all items-center justify-center flex-col group-hover:right-3 z-20">
+                        <div className="absolute hidden   space-y-3 lg:flex top-3 -right-8 duration-300  transition-all items-center justify-center flex-col group-hover:right-3 z-20">
                           <motion.div
                             whileHover={{ scale: [1, 1.2, 1] }}
                             transition={{ duration: 0.6, ease: "easeInOut" }}
