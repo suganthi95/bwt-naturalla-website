@@ -64,7 +64,7 @@ export const ASSETS = {
   ORDER_SUCCESS: "https://ik.imagekit.io/3t9llb0gx/Naturella/pana.png",
   ORDER_FAILURE: "https://ik.imagekit.io/3t9llb0gx/Naturella/rafiki.png",
   RECTANGLE:
-    "https://ik.imagekit.io/3t9llb0gx/Naturella/BG.png?updatedAt=1750132792276",
+    "https://ik.imagekit.io/3t9llb0gx/Naturella/Rectangle%2069.png?updatedAt=1761319202366",
   USER: "https://ik.imagekit.io/3t9llb0gx/Naturella/unsplash_QXevDflbl8A.png?updatedAt=1749619219706",
   PHATHALATES: "https://ik.imagekit.io/3t9llb0gx/Naturella/Group%203589.png",
   PARABENS: "https://ik.imagekit.io/3t9llb0gx/Naturella/Group%203588.png",
