@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { AlertTriangle } from "lucide-react";
 import { useDeleteMyAccount } from "@/services/profile";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
 import { logout } from "@/redux/slices/authSlice";
 import { toast } from "sonner";
@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 export default function DeleteAccountDialog() {
   const { token } = useSelector((state: RootState) => state.auth);
   const navigae = useNavigate();
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const { mutate, isPending } = useDeleteMyAccount();
   const handleDelete = () => {
@@ -32,7 +33,7 @@ export default function DeleteAccountDialog() {
         onSuccess: () => {
           toast.success("Account deleted successfully");
           setIsOpen(false);
-          logout();
+          dispatch(logout());
           navigae("/");
         },
       }
@@ -61,8 +62,12 @@ export default function DeleteAccountDialog() {
           <Button variant="outline" onClick={() => setIsOpen(false)}>
             Cancel
           </Button>
-          <Button variant="destructive" disabled={isPending} onClick={handleDelete}>
-           {isPending ? 'Deleting...':'Delete'} 
+          <Button
+            variant="destructive"
+            disabled={isPending}
+            onClick={handleDelete}
+          >
+            {isPending ? "Deleting..." : "Delete"}
           </Button>
         </DialogFooter>
       </DialogContent>
