@@ -13,6 +13,7 @@ import { useGetOrders, useGetProfileInfo } from "@/services/profile";
 import ProfilePictureUpload from "@/components/profile/ProfilePictureUpload";
 import FullScreenLoader from "@/common/FullScreenLoader";
 import Support from "@/components/profile/support/Support";
+import DeleteAccountDialog from "@/components/profile/DeleteAccountDialog";
 
 export default function Myprofile() {
   const [IsProfileUpdate, setIsProfileUpdate] = useState(false);
@@ -66,11 +67,9 @@ export default function Myprofile() {
                 </p>
               </div>
 
-              {/* <div className="text-center md:text-right mt-2 md:mt-0">
-                <Button onClick={() => setActiveTab("settings")} size="sm">
-                  Edit
-                </Button>
-              </div> */}
+              <div className="text-center md:text-right mt-2 md:mt-0">
+               <DeleteAccountDialog/>
+              </div>
             </div>
           </div>
         </div>

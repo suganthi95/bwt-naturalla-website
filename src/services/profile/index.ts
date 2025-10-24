@@ -1,6 +1,7 @@
 import {
   addAddress,
   deleteAddress,
+  deleteMyAccount,
   editAddress,
   getAddress,
   getDashboard,
@@ -18,6 +19,8 @@ import {
 } from "@/lib/api";
 import type { AddressPayload, Profile } from "@/types/type";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { toast } from "sonner";
 
 export const useGetProfileInfo = (token: string) => {
   return useQuery({
@@ -37,6 +40,17 @@ export const useUpdateProfile = () => {
       updateProfile(args.token, args.payload),
   });
 };
+export const useDeleteMyAccount = () => {
+  return useMutation({
+    mutationKey: ["deletemyaccount"],
+    mutationFn: deleteMyAccount,
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data.message || "Failed to delete account");
+      }
+    },
+  });
+};
 
 export const useVerifyEmail = () => {
   return useMutation({
@@ -48,8 +62,8 @@ export const useVerifyEmail = () => {
 export const useVerifyOtp = () => {
   return useMutation({
     mutationKey: ["verifyotp"],
-    mutationFn: (args: { token: string; email:string; otp: string }) =>
-      verifyOtp(args.token,args.email, args.otp),
+    mutationFn: (args: { token: string; email: string; otp: string }) =>
+      verifyOtp(args.token, args.email, args.otp),
   });
 };
 export const useUpdateProfileImage = () => {

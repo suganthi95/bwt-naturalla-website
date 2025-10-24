@@ -132,16 +132,18 @@ export const addToCart = async (
   return response.data;
 };
 
-export const getCartItems = async (token: string, couponCode ?: string) => {
-  const response = await api.post("v1/cart/with/price ",{coupon_code:couponCode ? couponCode : null}, {
-   
-    headers: {
-      Authorization: token,
-    },
-  });
+export const getCartItems = async (token: string, couponCode?: string) => {
+  const response = await api.post(
+    "v1/cart/with/price ",
+    { coupon_code: couponCode ? couponCode : null },
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
   return response.data;
 };
-
 
 export const updateCartItems = async (
   cart_id: number,
@@ -338,6 +340,14 @@ export const getProfileInfo = async (token: string) => {
 };
 export const updateProfile = async (token: string, payload: Profile) => {
   const response = await api.put("v1/profile/update", payload, {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data;
+};
+export const deleteMyAccount = async ({ token }: { token: string }) => {
+  const response = await api.delete("v1/profile/delete_profile", {
     headers: {
       Authorization: token,
     },

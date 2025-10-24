@@ -23,10 +23,25 @@ import {
 import WriteReview from "./WrtiteReview";
 import UpdateReview from "./UpdateReview";
 import { Button } from "@/components/ui/button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion2";
+import { Badge } from "@/components/ui/badge";
 interface Props {
   Orders: Order[];
   handleTab: (val: string) => void;
 }
+const STAGES = [
+  "Order Confirmed",
+  "Processing",
+  "In Transit",
+  "Delivered",
+  "Cancelled",
+  "RTO",
+];
 export default function Order({ Orders, handleTab }: Props) {
   const [Isopen, setIsopen] = useState(false);
   const [IsReviewopen, setIsReviewopen] = useState(false);
@@ -50,7 +65,16 @@ export default function Order({ Orders, handleTab }: Props) {
 
   const renderSelectedOrder = () => {
     const order = Orders.find((o) => o.order_id === selectedOrder);
+    const currentStatus =
+      Array.isArray(data?.orderTimeLine) && data.orderTimeLine.length > 0
+        ? data.orderTimeLine[0]?.order_status || ""
+        : "";
+
+    const activeIndex = STAGES.findIndex(
+      (stage) => stage.toLowerCase() === currentStatus.toLowerCase()
+    );
     if (!order) return null;
+
     return (
       <div className="bg-white rounded-lg shadow p-6 mb-6">
         <div className="flex justify-between items-center mb-6">
@@ -98,6 +122,103 @@ export default function Order({ Orders, handleTab }: Props) {
           >
             {order.order_status}
           </span>
+        </div>
+
+        <div className="p-4 space-y-4">
+          <div>
+            <h3 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">
+              Order #{order.order_id}
+            </h3>
+            <p className="text-gray-600 text-sm">
+              Placed on {dayjs(order.order_date).format("MMMM DD YYYY")}
+            </p>
+          </div>
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full border rounded-lg"
+          >
+            <AccordionItem value="item-1">
+              <AccordionTrigger className=" px-3 py-2 hover:no-underline">
+                <div className="flex justify-between items-center w-full">
+                  <p className="font-medium text-sm">Status</p>
+                  <Badge
+                    className={`capitalize ${
+                      currentStatus.toLowerCase() === "delivered"
+                        ? "bg-green-100 text-green-600"
+                        : currentStatus.toLowerCase() === "cancelled"
+                        ? "bg-red-100 text-red-600"
+                        : currentStatus.toLowerCase() === "rto"
+                        ? "bg-orange-100 text-orange-600"
+                        : "bg-[#F1E1F9] text-purple-500"
+                    }`}
+                  >
+                    {currentStatus}
+                  </Badge>
+                </div>
+              </AccordionTrigger>
+
+              <AccordionContent className="space-y-3 p-3">
+                <div className="space-y-2">
+                  {STAGES.map((stage, index) => {
+                    const isActive = index === activeIndex;
+                    const isCompleted = index < activeIndex;
+                    const isDisabled = index > activeIndex;
+
+                    return (
+                      <div key={stage} className="flex items-start space-x-2">
+                        <div className="flex flex-col items-center">
+                          <div
+                            className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                              isActive
+                                ? "bg-green-500 border-green-500"
+                                : isCompleted
+                                ? "bg-green-500 border-green-500"
+                                : "bg-gray-200 border-gray-300"
+                            }`}
+                          >
+                            {isActive && (
+                              <div className="w-2 h-2 bg-white rounded-full" />
+                            )}
+                          </div>
+                          {index !== STAGES.length - 1 && (
+                            <div
+                              className={`w-[2px]  h-10  ${
+                                isCompleted || isActive
+                                  ? "bg-green-500"
+                                  : "bg-gray-500"
+                              }`}
+                            />
+                          )}
+                        </div>
+
+                        <div>
+                          <p
+                            className={`text-sm font-medium ${
+                              isActive
+                                ? "text-green-600"
+                                : isDisabled
+                                ? "text-gray-400"
+                                : "text-gray-700"
+                            }`}
+                          >
+                            {stage}
+                          </p>
+                          {isActive && (
+                            <p className="text-xs text-gray-500">
+                              {dayjs(
+                                data?.orderTimeLine[index]?.updated_time
+                              ).format("DD MMM YYYY, HH:mm")}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 h-full gap-6 mb-6">
@@ -347,7 +468,7 @@ export default function Order({ Orders, handleTab }: Props) {
               <div className="flex justify-between">
                 <span className="text-gray-600">Coupon </span>
                 <span className="text-title font-semibold">
-                 - ₹{order?.coupon_discount}.00
+                  - ₹{order?.coupon_discount}.00
                 </span>
               </div>
             )}
