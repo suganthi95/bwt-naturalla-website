@@ -85,7 +85,7 @@ export default function Signup() {
       <div className="max-w-lg w-full mx-auto p-6 space-y-6  bg-white rounded-xl">
         <div className="flex items-center justify-center gap-x-1.5">
           <Icons.Logo />
-          <h1 className="text-2xl text-primary font-bold">naturalla</h1>
+          <h1 className="text-2xl text-primary font-bold"> BWT-store</h1>
         </div>
 
         <div className="text-center">
@@ -280,7 +280,7 @@ export default function Signup() {
                     <FormLabel className="text-xs text-textPrimary">
                       I agree with the{" "}
                       <a
-                        href="https://staging.naturalla.store/privacy-policy"
+                        // href="https://staging.naturalla.store/privacy-policy"
                         target="_blank"
                         className="underline"
                       >
@@ -308,7 +308,7 @@ export default function Signup() {
       </div>
 
       <p className="static md:fixed bottom-2.5 text-xs text-center  md:text-sm text-title">
-        Copyrights © All Rights Reserved ® 2025 Naturalla Stores
+        Copyrights © All Rights Reserved ® 2025  BWT-store Stores
       </p>
     </section>
   );

@@ -25,9 +25,9 @@ export default function Blogs() {
   useEffect(() => {
     
       setMetaTags({
-        title: `Blogs – Naturalla`,
+        title: `Blogs –  BWT-store`,
         description:
-        "Stay updated with the latest news, tips, and exclusive offers from Naturalla’s blog, your source for natural skincare inspiration."
+        "Stay updated with the latest news, tips, and exclusive offers from  BWT-store blog, your source for natural skincare inspiration."
       });
   }, [location.pathname]);
 

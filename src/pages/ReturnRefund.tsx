@@ -13,7 +13,7 @@ export default function ReturnRefund() {
   });
  useEffect(() => {
     if (isSuccess && data) {
-      document.title = `${data.page_title} – Naturalla`;
+      document.title = `${data.page_title} –  BWT-store`;
 
       const setMetaTag = (name: any, content: any) => {
         let tag = document.querySelector(`meta[name="${name}"]`);
@@ -35,31 +35,31 @@ export default function ReturnRefund() {
         tag.setAttribute("content", content);
       };
 
-      setMetaTag("title", `${data.page_title} – Naturalla`);
+      setMetaTag("title", `${data.page_title} –  BWT-store`);
 setMetaTag(
   "description",
-  "Read Naturalla Returns and Refunds Policy to learn about eligibility, timeframes, and how to initiate a return or request a refund for your order. Discover our simple process for handling returns, exchanges, and refunds to ensure your satisfaction with every purchase."
+  "Read  BWT-store Returns and Refunds Policy to learn about eligibility, timeframes, and how to initiate a return or request a refund for your order. Discover our simple process for handling returns, exchanges, and refunds to ensure your satisfaction with every purchase."
 );
 setOGTag(
   "og:description",
-  "Read Naturalla Returns and Refunds Policy to learn about eligibility, timeframes, and how to initiate a return or request a refund for your order. Discover our simple process for handling returns, exchanges, and refunds to ensure your satisfaction with every purchase."
+  "Read  BWT-store Returns and Refunds Policy to learn about eligibility, timeframes, and how to initiate a return or request a refund for your order. Discover our simple process for handling returns, exchanges, and refunds to ensure your satisfaction with every purchase."
 );
 setMetaTag(
   "twitter:description",
-  "Read Naturalla Returns and Refunds Policy to learn about eligibility, timeframes, and how to initiate a return or request a refund for your order. Discover our simple process for handling returns, exchanges, and refunds to ensure your satisfaction with every purchase."
+  "Read  BWT-store Returns and Refunds Policy to learn about eligibility, timeframes, and how to initiate a return or request a refund for your order. Discover our simple process for handling returns, exchanges, and refunds to ensure your satisfaction with every purchase."
 );
 
 
       setOGTag("og:type", "website");
       setOGTag("og:url", window.location.href);
-      setOGTag("og:title", `${data.page_title} – Naturalla`);
+      setOGTag("og:title", `${data.page_title} –  BWT-store`);
       if (data.meta_image_url) {
         setOGTag("og:image", data.meta_image_url);
         setMetaTag("twitter:image", data.meta_image_url);
       }
       setMetaTag("twitter:card", "summary_large_image");
       setMetaTag("twitter:url", window.location.href);
-      setMetaTag("twitter:title", `${data.page_title} – Naturalla`);
+      setMetaTag("twitter:title", `${data.page_title} –  BWT-store`);
     }
   }, [isSuccess, data]);
   let content;

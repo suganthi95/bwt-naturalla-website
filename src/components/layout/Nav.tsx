@@ -158,7 +158,7 @@ export default function Nav() {
         <Slider {...settings}>
           {messages?.map((msg: any, index: number) => (
             <div key={index} className="">
-              <p className="text-center text-menu text-xs   md:text-sm font-semibold truncate">
+              <p className="text-center text-white text-xs   md:text-sm font-semibold truncate">
                 {msg?.promo_offer_txt}
               </p>
             </div>
@@ -166,7 +166,7 @@ export default function Nav() {
         </Slider>
       </div>
 
-      <motion.nav className=" py-5 bg-offWhite">
+      <motion.nav className="  bg-offWhite">
         <div className="container mx-auto ">
           <div className="flex  items-center justify-between  ">
             <div className="flex items-center">
@@ -177,7 +177,7 @@ export default function Nav() {
                 onClick={() => {
                   navigate("/");
                   clearAll();
-                  document.title = "Naturalla – Natural Skincare Products";
+                  document.title = " BWT-store – Natural Skincare Products";
 
                   const setMetaDescription = (content: string) => {
                     let tag = document.querySelector(
@@ -192,12 +192,12 @@ export default function Nav() {
                   };
 
                   setMetaDescription(
-                    "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                    "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
                   );
                 }}
                 src={ASSETS.LOGO}
                 alt="hero-image"
-                className="w-16 md:w-24  cursor-pointer object-cover"
+                className="w-16 md:w-40  cursor-pointer object-cover"
               />
             </div>
             <ul className="xl:flex items-center hidden  justify-center gap-x-7">
@@ -272,7 +272,7 @@ export default function Nav() {
                                         );
                                         clearAll();
                                         document.title =
-                                          "Naturalla – Natural Skincare Products";
+                                          " BWT-store – Natural Skincare Products";
 
                                         const setMetaDescription = (
                                           content: string
@@ -293,7 +293,7 @@ export default function Nav() {
                                         };
 
                                         setMetaDescription(
-                                          "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                                          "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
                                         );
                                         setOpenDropdownId(null);
                                       }}
@@ -313,7 +313,7 @@ export default function Nav() {
 
                                                 clearAll();
                                                 document.title =
-                                                  "Naturalla – Natural Skincare Products";
+                                                  " BWT-store – Natural Skincare Products";
 
                                                 const setMetaDescription = (
                                                   content: string
@@ -342,7 +342,7 @@ export default function Nav() {
                                                 };
 
                                                 setMetaDescription(
-                                                  "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                                                  "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
                                                 );
                                                 setOpenDropdownId(null);
                                               }}
@@ -393,7 +393,7 @@ export default function Nav() {
                             clearAll();
                           }
                           document.title =
-                            "Naturalla – Natural Skincare Products";
+                            " BWT-store – Natural Skincare Products";
 
                           const setMetaDescription = (content: string) => {
                             let tag = document.querySelector(
@@ -408,7 +408,7 @@ export default function Nav() {
                           };
 
                           setMetaDescription(
-                            "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                            "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
                           );
                         }}
                         className={`text-primary font-semibold cursor-pointer tracking-wide py-2 ${
@@ -427,7 +427,7 @@ export default function Nav() {
                           });
                           clearAll();
                           document.title =
-                            "Naturalla – Natural Skincare Products";
+                            " BWT-store – Natural Skincare Products";
 
                           const setMetaDescription = (content: string) => {
                             let tag = document.querySelector(
@@ -442,7 +442,7 @@ export default function Nav() {
                           };
 
                           setMetaDescription(
-                            "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                            "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
                           );
                         }}
                         to={item.link}
@@ -725,7 +725,7 @@ export default function Nav() {
                           );
                           clearAll();
                           document.title =
-                            "Naturalla – Natural Skincare Products";
+                            " BWT-store – Natural Skincare Products";
 
                           const setMetaDescription = (content: string) => {
                             let tag = document.querySelector(
@@ -740,7 +740,7 @@ export default function Nav() {
                           };
 
                           setMetaDescription(
-                            "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                            "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
                           );
                         }}
                         className={`flex justify-between items-center text-base text-neutral-800 w-full ${
@@ -787,7 +787,7 @@ export default function Nav() {
                                       );
                                       clearAll();
                                       document.title =
-                                        "Naturalla – Natural Skincare Products";
+                                        " BWT-store – Natural Skincare Products";
 
                                       const setMetaDescription = (
                                         content: string
@@ -807,7 +807,7 @@ export default function Nav() {
                                       };
 
                                       setMetaDescription(
-                                        "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                                        "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
                                       );
                                       setOpenMobileDropdownId(null);
                                       setIsMenuopen(false);
@@ -828,7 +828,7 @@ export default function Nav() {
 
                                               clearAll();
                                               document.title =
-                                                "Naturalla – Natural Skincare Products";
+                                                " BWT-store – Natural Skincare Products";
 
                                               const setMetaDescription = (
                                                 content: string
@@ -857,7 +857,7 @@ export default function Nav() {
                                               };
 
                                               setMetaDescription(
-                                                "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                                                "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
                                               );
                                               setOpenMobileDropdownId(null);
                                               setIsMenuopen(false);
@@ -918,7 +918,7 @@ export default function Nav() {
                           );
                         }
                         document.title =
-                          "Naturalla – Natural Skincare Products";
+                          " BWT-store – Natural Skincare Products";
 
                         const setMetaDescription = (content: string) => {
                           let tag = document.querySelector(
@@ -933,7 +933,7 @@ export default function Nav() {
                         };
 
                         setMetaDescription(
-                          "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                          "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
                         );
                         setIsMenuopen(false);
                       }}
@@ -957,7 +957,7 @@ export default function Nav() {
                         queryKey: ["filterbyfeature"],
                       });
                       clearAll();
-                      document.title = "Naturalla – Natural Skincare Products";
+                      document.title = " BWT-store – Natural Skincare Products";
 
                       const setMetaDescription = (content: string) => {
                         let tag = document.querySelector(
@@ -972,7 +972,7 @@ export default function Nav() {
                       };
 
                       setMetaDescription(
-                        "Discover Naturalla's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                        "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
                       );
                       setIsMenuopen(false);
                     }}

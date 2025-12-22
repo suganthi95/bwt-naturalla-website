@@ -3,15 +3,15 @@ import { setCookie, getCookie } from "@/utils/cookies";
 import { useState } from "react";
 export default function CookieConsentBar() {
   const [showBanner, setShowBanner] = useState(
-    !getCookie("naturalla-cookie-consent")
+    !getCookie("bwt_store-cookie-consent")
   );
 
   const onAccept = () => {
-    setCookie("naturalla-cookie-consent", "true", { expires: 365 });
+    setCookie("bwt_store-cookie-consent", "true", { expires: 365 });
     setShowBanner(false);
   };
   const onDecline = () => {
-    setCookie("naturalla-cookie-consent", "false", { expires: 365 });
+    setCookie("bwt_store-cookie-consent", "false", { expires: 365 });
     setShowBanner(false);
   };
   if (!showBanner) return null;

@@ -50,21 +50,21 @@ export default function Products() {
 useEffect(() => {
   if (location.pathname.includes("today-offer")) {
     setMetaTags({
-      title: `Today's Deals – Naturalla`,
+      title: `Today's Deals –  BWT-store`,
       description:
-        "Discover today's exclusive deals on Naturalla. Shop now for limited-time offers and discounts on your favorite products.",
+        "Discover today's exclusive deals on  BWT-store. Shop now for limited-time offers and discounts on your favorite products.",
     });
   } else if (location.pathname.includes("trending-now")) {
     setMetaTags({
-      title: `Offers Ending Soon – Naturalla`,
+      title: `Offers Ending Soon –  BWT-store`,
       description:
-        "Don't miss out on our offers ending soon at Naturalla. Shop now to grab the best deals before they're gone!",
+        "Don't miss out on our offers ending soon at  BWT-store. Shop now to grab the best deals before they're gone!",
     });
   } else if (location.pathname.includes("all")) {
     setMetaTags({
-      title: `All Products – Naturalla`,
+      title: `All Products –  BWT-store`,
       description:
-        "Browse all products available at Naturalla. Discover a wide range of beauty and wellness items to suit your needs.",
+        "Browse all products available at  BWT-store. Discover a wide range of beauty and wellness items to suit your needs.",
     });
   }
 }, [location.pathname]);

@@ -66,7 +66,7 @@ export default function LoginVerify() {
       <div className="  md:w-[400px] p-6 space-y-6 shadow-2xl bg-white rounded-xl">
         <div className=" flex items-center justify-center gap-x-1.5">
           <Icons.Logo className="" />
-          <h1 className="text-2xl  text-primary roundica">naturalla</h1>
+          <h1 className="text-2xl  text-primary roundica"> BWT-store</h1>
         </div>
         <div className="grid place-items-center">
           <p className="text-xl font-bold">Login to your account</p>
@@ -101,7 +101,7 @@ export default function LoginVerify() {
           <a className="font-bold text-blue-600 ">Resend</a>
         </p> */}
       </div>
-            <p className="fixed bottom-2.5 text-xs md:text-sm text-title">Copyrights © All Rights Reserved ® 2025 Naturalla Stores</p>
+            <p className="fixed bottom-2.5 text-xs md:text-sm text-title">Copyrights © All Rights Reserved ® 2025  BWT-store Stores</p>
 
     </section>
   );

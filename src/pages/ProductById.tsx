@@ -24,13 +24,13 @@ export default function ProductById() {
     token,
   });
 
-  useEffect(() => {
-    window.location.href = `naturalla://product-details/${id}`;
-  }, [id]);
+  // useEffect(() => {
+  //   window.location.href = `naturalla://product-details/${id}`;
+  // }, [id]);
 
   useEffect(() => {
     if (data) {
-      document.title = `${data.product_name} – Naturalla`;
+      document.title = `${data.product_name} –  BWT-store`;
 
       const setMetaTag = (name: string, content: string) => {
         let tag = document.querySelector(

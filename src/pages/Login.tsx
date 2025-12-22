@@ -11,7 +11,6 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { Icons } from "@/assets/icons";
 import { useLogin } from "@/services/auth";
 import axios from "axios";
 import { toast } from "sonner";
@@ -20,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Userlogin } from "@/redux/slices/authSlice";
+import { ASSETS } from "@/assets/assets";
 
 const formSchema = z.object({
   inputValue: z.string().min(10, "Phone number is too short"),
@@ -100,9 +100,17 @@ export default function Login() {
   return (
     <section className="min-h-screen flex items-center justify-center bg-[#F7F7F7] ">
       <div className="  md:w-[400px] p-6 space-y-6 shadow-2xl bg-white rounded-xl">
-        <div className=" flex items-center justify-center gap-x-1.5">
+        {/* <div className=" flex items-center justify-center gap-x-1.5">
           <Icons.Logo className="" />
-          <h1 className="text-2xl  text-primary roundica">naturalla</h1>
+          <h1 className="text-2xl  text-primary roundica"> BWT-store</h1>
+        </div> */}
+        <div className="grid place-items-center">
+
+        <img
+          src={ASSETS.LOGO}
+          alt="hero-image"
+          className="w-16 md:w-40  cursor-pointer object-cover"
+        />
         </div>
         <div className="grid place-items-center">
           <p className="text-xl font-bold">Login to your account</p>
@@ -190,7 +198,7 @@ export default function Login() {
         </p>
       </div>
       <p className="fixed bottom-2.5 text-xs text-center  md:text-sm text-title">
-        Copyrights © All Rights Reserved ® 2025 Naturalla Stores
+        Copyrights © All Rights Reserved ® 2025 BWT-store Stores
       </p>
     </section>
   );

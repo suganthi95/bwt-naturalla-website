@@ -5,24 +5,24 @@ import {
   FaFacebookF,
   FaPinterestP,
 } from "react-icons/fa";
-import { Icons } from "@/assets/icons";
 import { FaYoutube } from "react-icons/fa6";
+import { ASSETS } from "@/assets/assets";
 export default function Footer() {
   return (
     <footer className="bg-[#232323] text-white py-12 lato">
       <div className="container mx-auto flex flex-col lg:flex-row flex-wrap gap-8 justify-between">
         <div className="w-full lg:w-[23%] space-y-4">
-          {/* <img src={ASSETS.LOGO} alt="Logo" className="h-10 md:h-16 w-auto" /> */}
-          <Icons.Footet_Logo />
+          <img src={ASSETS.LOGO} alt="Logo" className="w-40  object-cover " />
+          {/* <Icons.Footet_Logo /> */}
           <p className="text-sm leading-relaxed text-justify text-white/70">
-            Welcome to <b>Naturalla.store</b>, where nature meets innovation. We
+            Welcome to <b>BWT-store</b>, where nature meets innovation. We
             are a proudly organic and nature-based cosmetics company dedicated
             to crafting high-quality, sustainable beauty products that respect
             both your skin and the planet.
           </p>
 
           <p className="text-white roundica text-xs">
-            Naturalla – Rejoice with Nature's 💕{" "}
+             BWT-store – Rejoice with Nature's 💕{" "}
           </p>
           <div className="flex space-x-4 pt-2">
             <a
@@ -151,7 +151,7 @@ export default function Footer() {
         <div className="w-full sm:w-1/2 lg:w-[20%] space-y-3">
           <h4 className="text-lg font-semibold">Contact Us</h4>
            <p className="text-sm text-white/50">
-            Naturalla Lilyfe Private Limited
+            BWT-store  Private Limited
           </p>
           <ul className="space-y-2 text-sm text-white/50">
             <li>Door No 29 B3,</li>
@@ -173,7 +173,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-white/20 mt-10 pt-4 text-center text-sm text-white/40">
-        © Naturalla.store. All rights reserved.
+        ©  BWT-store. All rights reserved.
       </div>
     </footer>
   );

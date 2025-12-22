@@ -12,7 +12,7 @@ export default function PrivacyPolicy() {
   });
   useEffect(() => {
     if (isSuccess && data) {
-      document.title = `${data.page_title} – Naturalla`;
+      document.title = `${data.page_title} –  BWT-store`;
 
       const setMetaTag = (name: any, content: any) => {
         let tag = document.querySelector(`meta[name="${name}"]`);
@@ -34,30 +34,30 @@ export default function PrivacyPolicy() {
         tag.setAttribute("content", content);
       };
 
-      setMetaTag("title", `${data.page_title} – Naturalla`);
+      setMetaTag("title", `${data.page_title} –  BWT-store`);
       setMetaTag(
         "description",
-        "Read Naturalla Terms and Conditions to understand the rules and guidelines for using our website, making purchases, and interacting with our services. Learn about user rights, payment terms, acceptable use, and your responsibilities as a customer."
+        "Read  BWT-store Terms and Conditions to understand the rules and guidelines for using our website, making purchases, and interacting with our services. Learn about user rights, payment terms, acceptable use, and your responsibilities as a customer."
       );
       setOGTag(
         "og:description",
-        "Read Naturalla  Terms and Conditions to understand the rules and guidelines for using our website, making purchases, and interacting with our services. Learn about user rights, payment terms, acceptable use, and your responsibilities as a customer."
+        "Read  BWT-store  Terms and Conditions to understand the rules and guidelines for using our website, making purchases, and interacting with our services. Learn about user rights, payment terms, acceptable use, and your responsibilities as a customer."
       );
       setMetaTag(
         "twitter:description",
-        "Read Naturalla  Terms and Conditions to understand the rules and guidelines for using our website, making purchases, and interacting with our services. Learn about user rights, payment terms, acceptable use, and your responsibilities as a customer."
+        "Read  BWT-store  Terms and Conditions to understand the rules and guidelines for using our website, making purchases, and interacting with our services. Learn about user rights, payment terms, acceptable use, and your responsibilities as a customer."
       );
 
       setOGTag("og:type", "website");
       setOGTag("og:url", window.location.href);
-      setOGTag("og:title", `${data.page_title} – Naturalla`);
+      setOGTag("og:title", `${data.page_title} –  BWT-store`);
       if (data.meta_image_url) {
         setOGTag("og:image", data.meta_image_url);
         setMetaTag("twitter:image", data.meta_image_url);
       }
       setMetaTag("twitter:card", "summary_large_image");
       setMetaTag("twitter:url", window.location.href);
-      setMetaTag("twitter:title", `${data.page_title} – Naturalla`);
+      setMetaTag("twitter:title", `${data.page_title} –  BWT-store`);
     }
   }, [isSuccess, data]);
   let content;

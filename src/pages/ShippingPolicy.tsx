@@ -13,7 +13,7 @@ export default function ShippingPolicy() {
 
   useEffect(() => {
     if (isSuccess && data) {
-      document.title = `${data.page_title} – Naturalla`;
+      document.title = `${data.page_title} –  BWT-store`;
 
       const setMetaTag = (name: any, content: any) => {
         let tag = document.querySelector(`meta[name="${name}"]`);
@@ -35,30 +35,30 @@ export default function ShippingPolicy() {
         tag.setAttribute("content", content);
       };
 
-      setMetaTag("title", `${data.page_title} – Naturalla`);
+      setMetaTag("title", `${data.page_title} –  BWT-store`);
       setMetaTag(
         "description",
-        "Discover Naturalla Shipping Policy for details on delivery options, shipping times, and costs. Learn how we handle domestic and international shipping, order processing, tracking, and customer support for your orders."
+        "Discover  BWT-store Shipping Policy for details on delivery options, shipping times, and costs. Learn how we handle domestic and international shipping, order processing, tracking, and customer support for your orders."
       );
       setOGTag(
         "og:description",
-        "Discover Naturalla  Shipping Policy for details on delivery options, shipping times, and costs. Learn how we handle domestic and international shipping, order processing, tracking, and customer support for your orders."
+        "Discover  BWT-store  Shipping Policy for details on delivery options, shipping times, and costs. Learn how we handle domestic and international shipping, order processing, tracking, and customer support for your orders."
       );
       setMetaTag(
         "twitter:description",
-        "Discover Naturalla  Shipping Policy for details on delivery options, shipping times, and costs. Learn how we handle domestic and international shipping, order processing, tracking, and customer support for your orders."
+        "Discover  BWT-store  Shipping Policy for details on delivery options, shipping times, and costs. Learn how we handle domestic and international shipping, order processing, tracking, and customer support for your orders."
       );
 
       setOGTag("og:type", "website");
       setOGTag("og:url", window.location.href);
-      setOGTag("og:title", `${data.page_title} – Naturalla`);
+      setOGTag("og:title", `${data.page_title} –  BWT-store`);
       if (data.meta_image_url) {
         setOGTag("og:image", data.meta_image_url);
         setMetaTag("twitter:image", data.meta_image_url);
       }
       setMetaTag("twitter:card", "summary_large_image");
       setMetaTag("twitter:url", window.location.href);
-      setMetaTag("twitter:title", `${data.page_title} – Naturalla`);
+      setMetaTag("twitter:title", `${data.page_title} –  BWT-store`);
     }
   }, [isSuccess, data]);
 
