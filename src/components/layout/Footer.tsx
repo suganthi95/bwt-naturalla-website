@@ -26,7 +26,7 @@ export default function Footer() {
           </p>
           <div className="flex space-x-4 pt-2">
             <a
-              href="https://www.instagram.com/naturallastore"
+              href="https://www.instagram.com"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/60 hover:text-white transition"
@@ -34,7 +34,7 @@ export default function Footer() {
               <FaInstagram />
             </a>
             <a
-              href="https://x.com/naturalla_store"
+              href="https://x.com"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/60 hover:text-white transition"
@@ -42,7 +42,7 @@ export default function Footer() {
               <FaTwitter />
             </a>
             <a
-              href="https://www.facebook.com/naturallastoreofficial"
+              href="https://www.facebook.com"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/60 hover:text-white transition"
@@ -50,7 +50,7 @@ export default function Footer() {
               <FaFacebookF />
             </a>
             <a
-              href="https://www.youtube.com/@naturalla_store"
+              href="https://www.youtube.com"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/60 hover:text-white transition"
@@ -58,7 +58,7 @@ export default function Footer() {
               <FaYoutube />
             </a>
             <a
-              href="https://www.pinterest.com/naturallastore"
+              href="https://www.pinterest.com"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/60 hover:text-white transition"
@@ -154,21 +154,22 @@ export default function Footer() {
             BWT-store  Private Limited
           </p>
           <ul className="space-y-2 text-sm text-white/50">
-            <li>Door No 29 B3,</li>
-            <li>SRK COMPLEX, GROUND FLOOR,</li>
-            <li>GANDHI STREET, KUMARAN NAGAR,</li>
-            <li>Vilankurichi Post, Coimbatore,</li>
-            <li>Tamil Nadu 641035</li>
+            <li>Door No - 14/169/7,</li>
+            <li>2nd Floor, Shree Narayana Towers</li>
+            <li>No 1 Tollgate,</li>
+            <li>Bikshandarkoil, Tiruchirappalli,</li>
+            <li>Tamil Nadu 621216</li>
           </ul>
           <p className="text-sm text-white/50">
-            <a href="mailto:cs@nllpl.in">cs@nllpl.in</a>
+            <a href="mailto:cs@nllpl.in">
+contactus@blackwinstech.com</a>
           </p>
            <p className="text-sm text-white/50">
-            <a href="tel:+919655033533">+91 96550 33533</a>
+            <a href="tel:+919655033533"> +91 72043 35937</a>
           </p>
-          <p className="text-sm text-white/50">
+          {/* <p className="text-sm text-white/50">
             <a href="tel:+919655233533">+91 96552 33533</a>
-          </p>
+          </p> */}
         </div>
       </div>
 
