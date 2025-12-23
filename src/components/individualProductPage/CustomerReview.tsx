@@ -11,7 +11,7 @@ interface Props {
 }
 export default function CustomerReview({ Product }: Props) {
   const [readMore, setReadMore] = useState<Record<number, boolean>>({});
-  var settings = {
+  const settings = {
     dots: true,
     infinite: false,
     speed: 500,

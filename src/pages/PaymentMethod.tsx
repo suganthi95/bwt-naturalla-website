@@ -12,32 +12,23 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
 import type { RootState } from "@/redux/store";
 import {
-  useCreateOrder,
   useGetProviders,
-  useVerifyPhonepay,
-  useVerifyrazorpay,
 } from "@/services/cart";
-import axios from "axios";
-import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useSelector } from "react-redux";
+import {  useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useRazorpay } from "react-razorpay";
-import { removeCartItems } from "@/redux/slices/cartSlice";
-import { removeCoupon } from "@/redux/slices/couponSlice";
-import { removeWishlist } from "@/redux/slices/wishSlice";
+
 
 export default function PaymentMethod() {
-  const { state } = useLocation();
-  const { coupon_id } = state || {};
-  const [loading, setLoading] = useState(false);
-  const { Razorpay: RazorpayConstructor } = useRazorpay();
+  // const { state } = useLocation();
+  // const { coupon_id } = state || {};
+  // const [loading, setLoading] = useState(false);
+  // const { Razorpay: RazorpayConstructor } = useRazorpay();
   // const payment =
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { shippingAddress, items, price_summary, products_data } = useSelector(
+  // const dispatch = useDispatch();
+  const { shippingAddress, items, price_summary } = useSelector(
     (state: RootState) => state.cart
   );
 
@@ -46,12 +37,12 @@ export default function PaymentMethod() {
   //   setCartItems(items);
   // }, [items]);
 
-  const { mutate, isPending } = useCreateOrder();
-  const { mutate: verifyRazorpay, isPending: verifyRazorpayPending } =
-    useVerifyrazorpay();
-  const [shouldPoll, setShouldPoll] = useState(false);
+  // const { mutate, isPending } = useCreateOrder();
+  // const { mutate: verifyRazorpay, isPending: verifyRazorpayPending } =
+  //   useVerifyrazorpay();
+  // const [shouldPoll, setShouldPoll] = useState(false);
   const { token } = useSelector((state: RootState) => state.auth);
-  const localPaymentmethod = localStorage.getItem("payment");
+  // const localPaymentmethod = localStorage.getItem("payment");
   const {
     data: PaymentProviders,
     isLoading,
@@ -60,19 +51,20 @@ export default function PaymentMethod() {
 
   // const [finalData, setFinalData] = useState(null);
 
-  const [merchantTransactionId, SetmerchantTransactionId] = useState(() =>
-    localStorage.getItem("merchantTransactionId")
-  );
-  const { refetch, isError } = useVerifyPhonepay(
-    merchantTransactionId ?? "",
-    token
-  );
-  if (isError) {
-    setLoading(false);
-    localStorage.removeItem("merchantTransactionId");
-    navigate("/order-failure");
-    setShouldPoll(false);
-  }
+  // const [merchantTransactionId, SetmerchantTransactionId] = useState(() =>
+  //   localStorage.getItem("merchantTransactionId")
+  // );
+  
+  // const { refetch, isError } = useVerifyPhonepay(
+  //   merchantTransactionId ?? "",
+  //   token
+  // );
+  // if (isError) {
+  //   setLoading(false);
+  //   localStorage.removeItem("merchantTransactionId");
+  //   navigate("/order-failure");
+  //   setShouldPoll(false);
+  // }
   const { setValue, watch } = useForm({
     defaultValues: {
       payment: "",
@@ -87,184 +79,175 @@ export default function PaymentMethod() {
       toast.warning("You must add your address to complete the payment.");
     }
 
-    const orderPayload = {
-      // product_data: items.map((item: any) => ({
-      //   product_id: item.product_id,
-      //   quantity: item.quantity,
-      //   unit_price: item.unit_price,
-      //   product_sub_total: item.product_sub_total,
-      //   discount_amount: item.discount_amount,
-      //   prodcut_tax: item.prodcut_tax,
-      //   order_amount: item.total_amount,
-      //   coupon_id: item.coupon_amount > 0 ? item.coupon_id : null,
-      //   coupon_amount: item.coupon_amount,
-      // })),
-      product_data: products_data,
-      address: shippingAddress.address,
-      total_mrp: price_summary.total_mrp,
-      bag_discount: price_summary.bag_discount,
-      discount_amount: price_summary.discount,
-      coupon_discount: price_summary.discount,
-      coupon_id: coupon_id ?? null,
-      tax: price_summary.tax,
-      sub_total: price_summary.sub_total,
-      order_amount: price_summary.grand_total,
-      shipping_fee: price_summary.shipping_fee,
-      cash_on_delivery: false,
-      payment_provider: selectedRole,
-      pincode: Number(shippingAddress.pinCode),
-      shipmet_first_name: shippingAddress.firstName,
-      shipment_last_name: shippingAddress.lastName,
-      shipment_email: shippingAddress.email,
-      shipment_phone_no: Number(shippingAddress.phoneNumber),
-      city: shippingAddress.city,
-      state: shippingAddress.state,
-      same_billing_address: shippingAddress.same_billing_address,
-      billing_first_name: shippingAddress.billing_first_name,
-      billing_last_name: shippingAddress.billing_last_name,
-      billing_email: shippingAddress.billing_email,
-      billing_phone_no: Number(shippingAddress.billing_phone_no),
-      billing_city: shippingAddress.billing_city,
-      billing_state: shippingAddress.billing_state,
-      billing_pincode: shippingAddress.billing_pincode,
-      billing_address: shippingAddress.billing_address,
-    };
+    toast.success('order successfully created')
+    navigate('/')
+    // const orderPayload = {
+    //   product_data: products_data,
+    //   address: shippingAddress.address,
+    //   total_mrp: price_summary.total_mrp,
+    //   bag_discount: price_summary.bag_discount,
+    //   discount_amount: price_summary.discount,
+    //   coupon_discount: price_summary.discount,
+    //   coupon_id: coupon_id ?? null,
+    //   tax: price_summary.tax,
+    //   sub_total: price_summary.sub_total,
+    //   order_amount: price_summary.grand_total,
+    //   shipping_fee: price_summary.shipping_fee,
+    //   cash_on_delivery: false,
+    //   payment_provider: selectedRole,
+    //   pincode: Number(shippingAddress.pinCode),
+    //   shipmet_first_name: shippingAddress.firstName,
+    //   shipment_last_name: shippingAddress.lastName,
+    //   shipment_email: shippingAddress.email,
+    //   shipment_phone_no: Number(shippingAddress.phoneNumber),
+    //   city: shippingAddress.city,
+    //   state: shippingAddress.state,
+    //   same_billing_address: shippingAddress.same_billing_address,
+    //   billing_first_name: shippingAddress.billing_first_name,
+    //   billing_last_name: shippingAddress.billing_last_name,
+    //   billing_email: shippingAddress.billing_email,
+    //   billing_phone_no: Number(shippingAddress.billing_phone_no),
+    //   billing_city: shippingAddress.billing_city,
+    //   billing_state: shippingAddress.billing_state,
+    //   billing_pincode: shippingAddress.billing_pincode,
+    //   billing_address: shippingAddress.billing_address,
+    // };
 
-    mutate(
-      {
-        OrderPayload: orderPayload,
-        token: token,
-      },
-      {
-        onSuccess(data) {
-          setShouldPoll(true);
-          if (localPaymentmethod?.toLowerCase() === "razorpay") {
-            localStorage.removeItem("merchantTransactionId");
-            setShouldPoll(false);
-            toast.success("order created");
+    // mutate(
+    //   {
+    //     OrderPayload: orderPayload,
+    //     token: token,
+    //   },
+    //   {
+    //     onSuccess(data) {
+    //       setShouldPoll(true);
+    //       if (localPaymentmethod?.toLowerCase() === "razorpay") {
+    //         localStorage.removeItem("merchantTransactionId");
+    //         setShouldPoll(false);
+    //         toast.success("order created");
 
-            const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
-            const options = {
-              key: razorpayKey,
-              order_id: data.orderId,
-              amount: price_summary.grand_total ?? 0,
-              currency: "INR" as const,
-              name: "Naturella",
-              description: "Payment",
-              image: ASSETS.LOGO,
-              handler: function (response: any) {
-                verifyRazorpay(
-                  {
-                    token: token,
-                    razorpay_payment_id: response.razorpay_payment_id,
-                    razorpay_signature: response.razorpay_signature,
-                    razorpay_order_id: data.orderId,
-                  },
-                  {
-                    onSuccess: () => {
-                      navigate("/order-success");
-                      dispatch(removeCartItems());
-                      dispatch(removeWishlist());
-                      dispatch(removeCoupon());
-                      localStorage.removeItem("merchantTransactionId");
-                      setShouldPoll(false);
-                      // dispatch(removeTaxDetails());
-                    },
-                    onError(error) {
-                      if (axios.isAxiosError(error)) {
-                        toast.error(error?.response?.data?.message);
-                      }
-                    },
-                  }
-                );
-              },
+    //         const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
+    //         const options = {
+    //           key: razorpayKey,
+    //           order_id: data.orderId,
+    //           amount: price_summary.grand_total ?? 0,
+    //           currency: "INR" as const,
+    //           name: "Naturella",
+    //           description: "Payment",
+    //           image: ASSETS.LOGO,
+    //           handler: function (response: any) {
+    //             verifyRazorpay(
+    //               {
+    //                 token: token,
+    //                 razorpay_payment_id: response.razorpay_payment_id,
+    //                 razorpay_signature: response.razorpay_signature,
+    //                 razorpay_order_id: data.orderId,
+    //               },
+    //               {
+    //                 onSuccess: () => {
+    //                   navigate("/order-success");
+    //                   dispatch(removeCartItems());
+    //                   dispatch(removeWishlist());
+    //                   dispatch(removeCoupon());
+    //                   localStorage.removeItem("merchantTransactionId");
+    //                   setShouldPoll(false);
+    //                   // dispatch(removeTaxDetails());
+    //                 },
+    //                 onError(error) {
+    //                   if (axios.isAxiosError(error)) {
+    //                     toast.error(error?.response?.data?.message);
+    //                   }
+    //                 },
+    //               }
+    //             );
+    //           },
 
-              theme: {
-                color: "orange",
-              },
-              modal: {
-                ondismiss: function () {
-                  toast.error("Payment cancelled by user.");
-                  navigate("/order-failure");
-                },
-              },
-            };
+    //           theme: {
+    //             color: "orange",
+    //           },
+    //           modal: {
+    //             ondismiss: function () {
+    //               toast.error("Payment cancelled by user.");
+    //               navigate("/order-failure");
+    //             },
+    //           },
+    //         };
 
-            const rzp = new RazorpayConstructor(options);
-            rzp.open();
-          } else {
-            SetmerchantTransactionId(data.merchantTransactionId);
-            localStorage.setItem(
-              "merchantTransactionId",
-              data.merchantTransactionId
-            );
-            if (data.redirectUrl) {
-              window.location.href = data.redirectUrl;
-              // window.open(data.redirectUrl);
-            } else {
-              toast.error("Missing redirect URL.");
-            }
-          }
-        },
-        onError: (error) => {
-          if (axios.isAxiosError(error)) {
-            toast.error(error?.response?.data?.message);
-          }
-        },
-      }
-    );
+    //         const rzp = new RazorpayConstructor(options);
+    //         rzp.open();
+    //       } else {
+    //         SetmerchantTransactionId(data.merchantTransactionId);
+    //         localStorage.setItem(
+    //           "merchantTransactionId",
+    //           data.merchantTransactionId
+    //         );
+    //         if (data.redirectUrl) {
+    //           window.location.href = data.redirectUrl;
+    //           // window.open(data.redirectUrl);
+    //         } else {
+    //           toast.error("Missing redirect URL.");
+    //         }
+    //       }
+    //     },
+    //     onError: (error) => {
+    //       if (axios.isAxiosError(error)) {
+    //         toast.error(error?.response?.data?.message);
+    //       }
+    //     },
+    //   }
+    // );
   };
 
-  useEffect(() => {
-    if (!merchantTransactionId && !shouldPoll) return;
+  // useEffect(() => {
+  //   if (!merchantTransactionId && !shouldPoll) return;
 
-    setLoading(true);
+  //   setLoading(true);
 
-    const interval = setInterval(async () => {
-      try {
-        const { data, isError } = await refetch();
+  //   const interval = setInterval(async () => {
+  //     try {
+  //       const { data, isError } = await refetch();
 
-        if (isError) {
-          setLoading(false);
-          localStorage.removeItem("merchantTransactionId");
-          navigate("/order-failure");
-          clearInterval(interval);
-          setShouldPoll(false);
-        }
-        if (data.resp.state === "COMPLETED") {
-          clearInterval(interval);
-          localStorage.removeItem("merchantTransactionId");
-          navigate("/order-success", { replace: true });
-          setLoading(false);
-          // setFinalData(data);
-          setShouldPoll(false);
-          dispatch(removeCartItems());
-          dispatch(removeWishlist());
-          dispatch(removeCoupon());
-        } else if (data.resp.state === "FAILED") {
-          setLoading(false);
-          localStorage.removeItem("merchantTransactionId");
-          navigate("/order-failure");
-          clearInterval(interval);
-          setShouldPoll(false);
-        } else if (data.resp.state === "PENDING") {
-          setTimeout(() => {
-            setLoading(false);
-            localStorage.removeItem("merchantTransactionId");
-            navigate("/order-failure");
-            clearInterval(interval);
-            setShouldPoll(false);
-          }, 3000);
-        }
-      } catch (error) {
-        console.error("Polling error:", error);
-      }
-    }, 2000);
+  //       if (isError) {
+  //         setLoading(false);
+  //         localStorage.removeItem("merchantTransactionId");
+  //         navigate("/order-failure");
+  //         clearInterval(interval);
+  //         setShouldPoll(false);
+  //       }
+  //       if (data.resp.state === "COMPLETED") {
+  //         clearInterval(interval);
+  //         localStorage.removeItem("merchantTransactionId");
+  //         navigate("/order-success", { replace: true });
+  //         setLoading(false);
+  //         // setFinalData(data);
+  //         setShouldPoll(false);
+  //         dispatch(removeCartItems());
+  //         dispatch(removeWishlist());
+  //         dispatch(removeCoupon());
+  //       } else if (data.resp.state === "FAILED") {
+  //         setLoading(false);
+  //         localStorage.removeItem("merchantTransactionId");
+  //         navigate("/order-failure");
+  //         clearInterval(interval);
+  //         setShouldPoll(false);
+  //       } else if (data.resp.state === "PENDING") {
+  //         setTimeout(() => {
+  //           setLoading(false);
+  //           localStorage.removeItem("merchantTransactionId");
+  //           navigate("/order-failure");
+  //           clearInterval(interval);
+  //           setShouldPoll(false);
+  //         }, 3000);
+  //       }
+  //     } catch (error) {
+  //       console.error("Polling error:", error);
+  //     }
+  //   }, 2000);
 
-    return () => clearInterval(interval);
-  }, [merchantTransactionId, shouldPoll]);
+  //   return () => clearInterval(interval);
+  // }, [merchantTransactionId, shouldPoll]);
 
-  if (loading || isLoading || isFetching || verifyRazorpayPending) {
+  if ( isLoading || isFetching ) {
     return <FullScreenLoader />;
   }
 
@@ -426,23 +409,19 @@ export default function PaymentMethod() {
             </div>
             <Button
               type="button"
-              disabled={!selectedRole || isPending}
+              // disabled={!selectedRole || isPending}
               onClick={handleCreateOrder}
-              className={`w-full md:h-12  font-semibold transition-all duration-300
-    ${
-      !selectedRole || isPending
-        ? "bg-primary/60 text-white cursor-not-allowed"
-        : "bg-primary text-white hover:bg-primary/90"
-    }`}
+              className={`w-full md:h-12  font-semibold transition-all duration-300`}
             >
-              {isPending ? (
+              {/* {isPending ? (
                 <span className="flex items-center justify-center gap-2">
                   <Loader2 className="h-5 w-5 animate-spin" />
                   Processing...
                 </span>
               ) : (
                 "Pay Now"
-              )}
+              )} */}
+              Pay Now
             </Button>
           </div>
         </div>
