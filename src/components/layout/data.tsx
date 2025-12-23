@@ -14,12 +14,12 @@ export const NavData =[
     },
      {
         id:'3',
-        name:`Men's`,
+        name:`Mens `,
         link:'/products/hair'
     },
      {
         id:'4',
-        name:`Women's`,
+        name:`Womens`,
         link:'/products/skin'
     },
      {

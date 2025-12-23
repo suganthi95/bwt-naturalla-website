@@ -124,7 +124,7 @@ export default function Login() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-textPrimary font-semibold ">
-                    Email or Mobile number
+                    Email 
                   </FormLabel>
                   <FormControl>
                     <Input className="h-11" placeholder="" {...field} />
