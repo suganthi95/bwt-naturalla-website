@@ -28,11 +28,11 @@ export const NavData =[
         link:'/products/body'
     },
    
-     {
-        id:'6',
-        name:"Offers",
-        link:'/products/offers'
-    },
+    //  {
+    //     id:'6',
+    //     name:"Offers",
+    //     link:'/products/offers'
+    // },
       {
         id:'7',
         name:'Trending Now',

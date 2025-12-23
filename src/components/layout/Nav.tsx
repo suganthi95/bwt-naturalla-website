@@ -202,7 +202,7 @@ export default function Nav() {
             </div>
             <ul className="xl:flex items-center hidden  justify-center gap-x-7">
               {NavData.map((item, index) => {
-                const IsDropDown = [2, 3, 4, 5].includes(index);
+                const IsDropDown = [2, 3, 4].includes(index);
 
                 return (
                   <li key={item.id} className="relative">

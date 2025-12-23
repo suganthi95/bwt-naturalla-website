@@ -238,17 +238,7 @@ function ContactUs() {
             </form>
           </Form>
         </div>
-        <div className="map-container rounded-3xl border-[1px] border-slate-300 overflow-hidden shadow-lg">
-          <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3915.744681087338!2d77.01243237480922!3d11.057759089108629!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba857e641a02c71%3A0xb9934842ad5099e9!2sNaturalla%20Store!5e0!3m2!1sen!2sin!4v1753341517013!5m2!1sen!2sin"
-            allowFullScreen
-            width="100%"
-            className="absolute top-0 left-0 w-full h-full border-0"
-            loading="lazy"
-            title="Google Maps Embed"
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
-        </div>
+       
       </div>
     
     </div>

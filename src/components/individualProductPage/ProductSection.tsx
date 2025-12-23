@@ -1,13 +1,12 @@
 import Slider from "react-slick";
 import { useRef, useState, useEffect } from "react";
-import { Ban, Heart, Loader2, Share2 } from "lucide-react";
+import { Ban, Heart, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Icons } from "@/assets/icons";
 import { Input } from "../ui/input";
 import type { Product } from "@/types/Home";
-import { usePincodeEnquiry } from "@/services/product";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -21,7 +20,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useAddToWishList, useDeleteWishlist } from "@/services/whistlist";
 import { addWishItem, removeWishlistItem } from "@/redux/slices/wishSlice";
 import { useAddToCart } from "@/services/cart";
-import axios from "axios";
 import { Truck, BadgeDollarSign } from "lucide-react";
 import ShareButton from "./ShareButton";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
@@ -72,12 +70,12 @@ export default function ProductSection({ media, products }: Props) {
   const [nav2, setNav2] = useState<Slider | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [Pincode, setPincode] = useState("");
+  // const [Pincode, setPincode] = useState("");
 
-  const [Messages, setMessage] = useState("");
+  // const [Messages, setMessage] = useState("");
   const [liked, setLiked] = useState(false);
 
-  const { mutate: pincodeVerify, isPending, isError } = usePincodeEnquiry();
+  // const { mutate: pincodeVerify, isPending, isError } = usePincodeEnquiry();
   const handleDecrease = (cart_id: number) => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
@@ -133,29 +131,29 @@ export default function ProductSection({ media, products }: Props) {
   //     100
   // );
 
-  const checkDeliveryInfo = async () => {
-    try {
-      pincodeVerify(
-        {
-          pincode: Number(Pincode),
-          product_id: products.product_id,
-        },
-        {
-          onSuccess(data) {
-            setMessage(data?.data?.eta);
-          },
-          onError: (error) => {
-            if (axios.isAxiosError(error)) {
-              setMessage(error?.response?.data?.message);
-            }
-          },
-        }
-      );
-    } catch (error) {
-      setMessage("Something went wrong");
-    } finally {
-    }
-  };
+  // const checkDeliveryInfo = async () => {
+  //   try {
+  //     pincodeVerify(
+  //       {
+  //         pincode: Number(Pincode),
+  //         product_id: products.product_id,
+  //       },
+  //       {
+  //         onSuccess(data) {
+  //           setMessage(data?.data?.eta);
+  //         },
+  //         onError: (error) => {
+  //           if (axios.isAxiosError(error)) {
+  //             setMessage(error?.response?.data?.message);
+  //           }
+  //         },
+  //       }
+  //     );
+  //   } catch (error) {
+  //     setMessage("Something went wrong");
+  //   } finally {
+  //   }
+  // };
 
   useEffect(() => {
     setLiked(products?.in_wishlist);
@@ -450,7 +448,7 @@ export default function ProductSection({ media, products }: Props) {
           </div>
         )}
 
-        <div className="flex items-center justify-between border rounded-md px-1 py-1 w-full lg:w-fit">
+        {/* <div className="flex items-center justify-between border rounded-md px-1 py-1 w-full lg:w-fit">
           <div className="relative w-full md:w-[254px]">
             <Input
               type="number"
@@ -466,14 +464,14 @@ export default function ProductSection({ media, products }: Props) {
           >
             {isPending ? <Loader2 className="animate-spin" /> : "Check"}
           </Button>
-        </div>
-        <p
+        </div> */}
+        {/* <p
           className={`text-sm font-medium ${
             isError ? "text-red-500" : "text-green-500"
           }`}
         >
           {Messages && (isError ? Messages : `Delivery by ${Messages}`)}
-        </p>
+        </p> */}
         <div className="flex items-center gap-4 mt-6">
           {policies.map((item, index) => (
             <div
