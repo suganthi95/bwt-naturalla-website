@@ -230,7 +230,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (addresses) {
       const [defaultAddress] = addresses?.filter(
-        (address: any) => address.default_address
+        (address: any) => address?.default_address
       );
 
       form.reset({
@@ -1227,7 +1227,8 @@ export default function CheckoutPage() {
                       disabled={!couponCode}
                       className="absolute right-0 top-1/2 -translate-y-1/2 px-4 py-2 text-sm"
                     >
-                      {false ? <Loader2 className="animate-spin" /> : "Apply  "}
+                      {/* {false ? <Loader2 className="animate-spin" /> : "Apply  "} */}
+                      Apply
                     </Button>
                   </div>
                   <div className="flex justify-end -translate-y-3">

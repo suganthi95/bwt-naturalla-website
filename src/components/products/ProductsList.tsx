@@ -133,6 +133,7 @@ export default function ProductsList({ Products, title }: Props) {
   //   sortByDate,
   // ]);
   // console.log('products',Products);
+console.log('filtered products',filteredProducts);
 
   return (
     <div className="space-y-4 w-full">

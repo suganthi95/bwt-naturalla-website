@@ -46,6 +46,8 @@ export default function Products() {
     best_selling ?? "",
     product_name ?? ""
   );
+  console.log(products);
+  
 
 useEffect(() => {
   if (location.pathname.includes("today-offer")) {

@@ -7,7 +7,6 @@ import TodayDeals from "@/components/home/TodayDeals";
 import TopCategories from "@/components/home/TopCategories";
 import { useGetLandingPageDetails } from "@/services/home";
 import "../App.css";
-import Categories from "@/components/home/Categories";
 export default function Home() {
   const { data } = useGetLandingPageDetails();
   return (
@@ -16,9 +15,9 @@ export default function Home() {
       <section className="  mb-10  mb:mb-20 ">
         <HeroCarousal banners={data?.banners} />
       </section>
-      <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
+      {/* <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
         <Categories/>
-      </section>
+      </section> */}
       {/* todays deal section */}
       <section className=" mt-10 mb-10 md:mt-20 mb:mb-20 ">
         <TodayDeals Products={data?.todays_deal} />
