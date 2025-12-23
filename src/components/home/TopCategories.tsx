@@ -1,102 +1,92 @@
-import { ASSETS } from "@/assets/assets";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import type { Category } from "@/types/type";
 import { useNavigate } from "react-router-dom";
+  import {
+  Footprints,
+  Wind,
+  Leaf,
+  Droplets,
+  Hammer,
+  ShieldCheck,
+  Grip,
+  Feather,
+  Sparkles,
+  Move,
+  Recycle,
+  Activity,
+} from "lucide-react";
 interface Props {
   categories: Category[];
 }
 export default function TopCategories({ categories }: Props) {
   
   const navigate = useNavigate();
-  const Description = [
-    {
-      id: "1",
-      img: ASSETS.CURLEY,
-      text: "Cruelty Free",
-    },
-    {
-      id: "2",
-      img: ASSETS.NONTOXIC,
-      text: "Non Toxic Chemicals",
-    },
-    {
-      id: "3",
-      img: ASSETS.SLIDEICON,
-      text: "GMO Free",
-    },
-    {
-      id: "4",
-      img: ASSETS.SLIDEICON2,
-      text: "Paraben Free",
-    },
-    {
-      id: "5",
-      img: ASSETS.SLIDEICON3,
-      text: "Handmade",
-    },
-    {
-      id: "6",
-      img: ASSETS.SLIDEICON4,
-      text: "100% Natural",
-    },
-    {
-      id: "7",
-      img: ASSETS.NONTOXIC,
-      text: "Non Toxic Chemicals",
-    },
-    {
-      id: "8",
-      img: ASSETS.SLIDEICON,
-      text: "GMO Free",
-    },
-    {
-      id: "9",
-      img: ASSETS.SLIDEICON2,
-      text: "Paraben Free",
-    },
-    {
-      id: "10",
-      img: ASSETS.SLIDEICON3,
-      text: "Handmade",
-    },
-    {
-      id: "11",
-      img: ASSETS.SLIDEICON4,
-      text: "100% Natural",
-    },
 
-     {
-      id: "13",
-      img: ASSETS.CURLEY,
-      text: "Cruelty Free",
-    },
-    {
-      id: "13",
-      img: ASSETS.NONTOXIC,
-      text: "Non Toxic Chemicals",
-    },
-    {
-      id: "14",
-      img: ASSETS.SLIDEICON,
-      text: "GMO Free",
-    },
-    {
-      id: "15",
-      img: ASSETS.SLIDEICON2,
-      text: "Paraben Free",
-    },
-    {
-      id: "16",
-      img: ASSETS.SLIDEICON3,
-      text: "Handmade",
-    },
-    {
-      id: "17",
-      img: ASSETS.SLIDEICON4,
-      text: "100% Natural",
-    },
-  ];
+
+ const Description = [
+  {
+    id: "1",
+    icon: Footprints,
+    text: "All-Day Comfort",
+  },
+  {
+    id: "2",
+    icon: Wind,
+    text: "Breathable Material",
+  },
+  {
+    id: "3",
+    icon: Leaf,
+    text: "Eco-Friendly Materials",
+  },
+  {
+    id: "4",
+    icon: Droplets,
+    text: "Water Resistant",
+  },
+  {
+    id: "5",
+    icon: Hammer,
+    text: "Handcrafted Quality",
+  },
+  {
+    id: "6",
+    icon: ShieldCheck,
+    text: "High Durability",
+  },
+  {
+    id: "7",
+    icon: Grip,
+    text: "Anti-Slip Sole",
+  },
+  {
+    id: "8",
+    icon: Feather,
+    text: "Lightweight Design",
+  },
+  {
+    id: "9",
+    icon: Sparkles,
+    text: "Odor Control",
+  },
+  {
+    id: "10",
+    icon: Move,
+    text: "Flexible Fit",
+  },
+  {
+    id: "11",
+    icon: Recycle,
+    text: "Sustainably Made",
+  },
+  {
+    id: "12",
+    icon: Activity,
+    text: "Ergonomic Comfort Fit",
+  },
+];
+
 
 
 
@@ -154,10 +144,10 @@ export default function TopCategories({ categories }: Props) {
         </div>
       </div> */}
        <div className="logo-carousel  bg-primary">
-      <div className="logo-track justify-around items-center  ">
+      <div className="logo-track justify-around items-center  p-2 ">
         {[...Description, ...Description , ...Description].map((src, idx) => (
           <div className="logo flex items-center gap-x-4 justify-center" key={idx}>
-            <img src={src.img} alt={`Brand ${idx + 1}`} />
+            <src.icon className="text-white"/>
                  <h3 className="text-sm  roundica  sm:text-xl text-[#FFFFFF] font-normal ">
                   {src.text}
                 </h3>
