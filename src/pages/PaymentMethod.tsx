@@ -79,8 +79,7 @@ export default function PaymentMethod() {
       toast.warning("You must add your address to complete the payment.");
     }
 
-    toast.success('order successfully created')
-    navigate('/')
+       navigate("/order-success", { replace: true });
     // const orderPayload = {
     //   product_data: products_data,
     //   address: shippingAddress.address,
