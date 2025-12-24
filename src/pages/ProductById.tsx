@@ -8,7 +8,6 @@ import {
 import CustomerReview from "@/components/individualProductPage/CustomerReview";
 import { useProductDetailsById } from "@/services/product";
 import { useParams } from "react-router-dom";
-import DOMPurify from "dompurify";
 import FullScreenLoader from "@/common/FullScreenLoader";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -141,7 +140,7 @@ export default function ProductById() {
             </div>
           </div>
         </section> */}
-        <section className=" mt-10 mb-10 md:mt-20 md:mb-20  ">
+        {/* <section className=" mt-10 mb-10 md:mt-20 md:mb-20  ">
           <div className="container mx-auto  flex  w-full">
             <div className="w-full md:px-24">
               <h2 className="font-bold text-lg md:text-xl text-title mb-4">
@@ -208,7 +207,7 @@ export default function ProductById() {
               </Accordion>
             </div>
           </div>
-        </section>
+        </section> */}
         {data?.faq && (
           <section className=" mt-10 mb-10 md:mt-20 md:mb-20  ">
             <div className="container mx-auto  flex  w-full">
