@@ -159,11 +159,11 @@ remove the existing content .
             <li>Tamil Nadu 621216</li>
           </ul>
           <p className="text-sm text-white/50">
-            <a href="mailto:cs@nllpl.in">
+            <a href="mailto:contactus@blackwinstech.com">
 contactus@blackwinstech.com</a>
           </p>
            <p className="text-sm text-white/50">
-            <a href="tel:+919655033533"> +91 72043 35937</a>
+            <a href="tel:+917204335937"> +91 72043 35937</a>
           </p>
           {/* <p className="text-sm text-white/50">
             <a href="tel:+919655233533">+91 96552 33533</a>
