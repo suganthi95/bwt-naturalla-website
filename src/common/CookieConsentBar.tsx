@@ -37,7 +37,7 @@ export default function CookieConsentBar() {
         </Button>
         <Button
           onClick={onAccept}
-          className="p-2 px-4 md:px-6 md:py-4 text-sm md:text-base rounded-full bg-green-700 text-white font-bold shadow-sm hover:bg-green-800 transition"
+          className="p-2 px-4 md:px-6 md:py-4 text-sm md:text-base rounded-full bg-primary text-white font-bold shadow-sm  transition"
         >
           Accept All Cookies
         </Button>

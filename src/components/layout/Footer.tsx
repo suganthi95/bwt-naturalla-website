@@ -15,10 +15,8 @@ export default function Footer() {
           <img src={ASSETS.LOGO} alt="Logo" className="w-40  object-cover " />
           {/* <Icons.Footet_Logo /> */}
           <p className="text-sm leading-relaxed text-justify text-white/70">
-            Welcome to <b>BWT-store</b>, where nature meets innovation. We
-            are a proudly organic and nature-based cosmetics company dedicated
-            to crafting high-quality, sustainable beauty products that respect
-            both your skin and the planet.
+          BWT-Store is your go-to online destination for premium sneakers, blending style, comfort, and authenticity in every step.
+remove the existing content .
           </p>
 
           <p className="text-white roundica text-xs">

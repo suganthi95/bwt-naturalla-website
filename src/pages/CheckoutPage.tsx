@@ -7,15 +7,26 @@ import {
   ShoppingCart,
   TicketPercent,
 } from "lucide-react";
-import {  useState } from "react";
+import { useEffect, useState } from "react";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-
-
+import { Label } from "@/components/ui/label";
+import cities from "@/json/city_cleaned.json";
+import states from "@/json/states.json";
 
 import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  useAddOrderAddress,
   useDeleteCart,
   useGetCartItems,
   useUpdateCart,
@@ -35,10 +46,13 @@ import {
   setCartItems,
   setCartItemsPrice_Summary,
   setCartProducts_Data,
+  setShippingAddress,
 } from "@/redux/slices/cartSlice";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import type { RootState } from "@/redux/store";
+import axios from "axios";
+import { useGetAddress } from "@/services/profile";
 import { motion } from "framer-motion";
 import FullScreenLoader from "@/common/FullScreenLoader";
 
@@ -153,10 +167,10 @@ export default function CheckoutPage() {
   const navigate = useNavigate();
   const { token } = useSelector((state: RootState) => state.auth);
   const [couponCode, setCouponCode] = useState("");
-  // const { data: addresses } = useGetAddress(token);
+  const { data: addresses } = useGetAddress(token);
   const { isLoading, isFetching, refetch } = useGetCartItems(token, couponCode);
-  // const { mutate: addAddress, isPending: addAddressIspending } =
-  //   useAddOrderAddress();
+  const { mutate: addAddress, isPending: addAddressIspending } =
+    useAddOrderAddress();
   const { mutate } = useUpdateCart();
   const { mutate: removeCart } = useDeleteCart();
   const dispatch = useDispatch();
@@ -165,29 +179,29 @@ export default function CheckoutPage() {
   );
   const [quantity, setQuantity] = useState(1);
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
-  // const [query, setQuery] = useState("");
-  // const [showDropdown, setShowDropdown] = useState(false);
-  // const [Statequery, setStateQuery] = useState("");
-  // const [showStateDropdown, setShowSatteDropdown] = useState(false);
+  const [query, setQuery] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [Statequery, setStateQuery] = useState("");
+  const [showStateDropdown, setShowSatteDropdown] = useState(false);
 
-  // const [biilingquery, setbiilingqueryQuery] = useState("");
-  // const [biilingshowDropdown, setbiilingShowDropdown] = useState(false);
-  // const [biilingStatequery, setbiilingStateQuery] = useState("");
-  // const [showbiilingStateDropdown, setbiilingShowSatteDropdown] =
+  const [biilingquery, setbiilingqueryQuery] = useState("");
+  const [biilingshowDropdown, setbiilingShowDropdown] = useState(false);
+  const [biilingStatequery, setbiilingStateQuery] = useState("");
+  const [showbiilingStateDropdown, setbiilingShowSatteDropdown] =
     useState(false);
-  //  const filteredCities = cities.filter((city) =>
-  //   city.city.toLowerCase().includes(query?.toLowerCase())
-  // );
-  // const filteredStates = states.filter((city) =>
-  //   city.name.toLowerCase().includes(Statequery?.toLowerCase())
-  // );
+  const filteredCities = cities.filter((city) =>
+    city.city.toLowerCase().includes(query?.toLowerCase())
+  );
+  const filteredStates = states.filter((city) =>
+    city.name.toLowerCase().includes(Statequery?.toLowerCase())
+  );
 
-  // const filteredCities2 = cities.filter((city) =>
-  //   city.city.toLowerCase().includes(biilingquery?.toLowerCase())
-  // );
-  // const filteredStates2 = states.filter((city) =>
-  //   city.name.toLowerCase().includes(biilingStatequery?.toLowerCase())
-  // );
+  const filteredCities2 = cities.filter((city) =>
+    city.city.toLowerCase().includes(biilingquery?.toLowerCase())
+  );
+  const filteredStates2 = states.filter((city) =>
+    city.name.toLowerCase().includes(biilingStatequery?.toLowerCase())
+  );
   const [showEmpty, setShowEmpty] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -213,28 +227,28 @@ export default function CheckoutPage() {
     },
   });
 
-  // useEffect(() => {
-  //   if (addresses) {
-  //     const [defaultAddress] = addresses?.filter(
-  //       (address: any) => address.default_address
-  //     );
+  useEffect(() => {
+    if (addresses) {
+      const [defaultAddress] = addresses?.filter(
+        (address: any) => address.default_address
+      );
 
-  //     form.reset({
-  //       firstName: defaultAddress?.address_first_name ?? "",
-  //       lastName: defaultAddress?.address_last_name ?? "",
-  //       email: defaultAddress?.address_email ?? "",
-  //       phoneNumber: defaultAddress?.address_phone_no ?? "",
-  //       address: defaultAddress?.address ?? "",
-  //       city: defaultAddress?.city ?? "",
-  //       state: defaultAddress?.state ?? "",
-  //       pinCode: defaultAddress?.pincode ?? "",
-  //       same_billing_address: defaultAddress?.default_address ?? true,
-  //     });
+      form.reset({
+        firstName: defaultAddress?.address_first_name ?? "",
+        lastName: defaultAddress?.address_last_name ?? "",
+        email: defaultAddress?.address_email ?? "",
+        phoneNumber: defaultAddress?.address_phone_no ?? "",
+        address: defaultAddress?.address ?? "",
+        city: defaultAddress?.city ?? "",
+        state: defaultAddress?.state ?? "",
+        pinCode: defaultAddress?.pincode ?? "",
+        same_billing_address: defaultAddress?.default_address ?? true,
+      });
 
-  //     setQuery(defaultAddress?.city);
-  //     setStateQuery(defaultAddress?.state);
-  //   }
-  // }, [addresses, form.reset]);
+      setQuery(defaultAddress?.city);
+      setStateQuery(defaultAddress?.state);
+    }
+  }, [addresses, form.reset]);
 
   const handleDecrease = (cart_id: number, quan: number) => {
     if (quan <= 1) return;
@@ -291,53 +305,53 @@ export default function CheckoutPage() {
     refetch();
   };
 
-  // const onSubmit = (values: z.infer<typeof formSchema>) => {
-  //   addAddress(
-  //     {
-  //       token: token ?? "",
-  //       payload: {
-  //         address: values.address,
-  //         address_email: values.email,
-  //         address_first_name: values.firstName,
-  //         address_last_name: values.lastName,
-  //         address_phone_no: Number(values.phoneNumber),
-  //         city: values.city,
-  //         pincode: Number(values.pinCode),
-  //         state: values.state,
-  //       },
-  //     },
-  //     {
-  //       onSuccess(data) {
-  //         toast.message(data?.message);
-  //       },
-  //       onError(error) {
-  //         if (axios.isAxiosError(error))
-  //           toast.error(error?.response?.data?.message);
-  //       },
-  //     }
-  //   );
-  //   dispatch(
-  //     setShippingAddress({
-  //       address: values.address,
-  //       city: values.city,
-  //       email: values.email,
-  //       firstName: values.firstName,
-  //       lastName: values.lastName,
-  //       phoneNumber: values.phoneNumber,
-  //       pinCode: values.pinCode,
-  //       state: values.state,
-  //       billing_address: values.billing_address,
-  //       billing_city: values.billing_city,
-  //       billing_email: values.billing_email,
-  //       billing_first_name: values.billing_first_name,
-  //       billing_last_name: values.billing_last_name,
-  //       billing_phone_no: values.billing_phone_no,
-  //       billing_pincode: values.billing_pincode,
-  //       billing_state: values.billing_state,
-  //       same_billing_address: values.same_billing_address,
-  //     })
-  //   );
-  // };
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    addAddress(
+      {
+        token: token ?? "",
+        payload: {
+          address: values.address,
+          address_email: values.email,
+          address_first_name: values.firstName,
+          address_last_name: values.lastName,
+          address_phone_no: Number(values.phoneNumber),
+          city: values.city,
+          pincode: Number(values.pinCode),
+          state: values.state,
+        },
+      },
+      {
+        onSuccess(data) {
+          toast.message(data?.message);
+        },
+        onError(error) {
+          if (axios.isAxiosError(error))
+            toast.error(error?.response?.data?.message);
+        },
+      }
+    );
+    dispatch(
+      setShippingAddress({
+        address: values.address,
+        city: values.city,
+        email: values.email,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        phoneNumber: values.phoneNumber,
+        pinCode: values.pinCode,
+        state: values.state,
+        billing_address: values.billing_address,
+        billing_city: values.billing_city,
+        billing_email: values.billing_email,
+        billing_first_name: values.billing_first_name,
+        billing_last_name: values.billing_last_name,
+        billing_phone_no: values.billing_phone_no,
+        billing_pincode: values.billing_pincode,
+        billing_state: values.billing_state,
+        same_billing_address: values.same_billing_address,
+      })
+    );
+  };
 
   if (isLoading || isFetching) {
     return <FullScreenLoader />;
@@ -520,7 +534,7 @@ export default function CheckoutPage() {
               </AccordionItem>
             </Accordion>
 
-            {/* <Accordion type="multiple" defaultValue={["item-1"]}>
+            <Accordion type="multiple" defaultValue={["item-1"]}>
               <Form {...form}>
                 <form
                   className="space-y-4  h-full"
@@ -697,7 +711,19 @@ export default function CheckoutPage() {
                                     className="w-full pr-10 capitalize cursor-pointer"
                                   />
 
-                                 
+                                  {/* <div
+                                    className={`absolute   w-fit left-64  flex items-center cursor-pointer ${showDropdown ? '-bottom-13':'-bottom-13'}`}
+                                    onClick={() =>
+                                      setShowDropdown((prev) => !prev)
+                                    }
+                                  >
+                                    {showDropdown ? (
+                                      <ChevronUp className="w-4 h-4 text-gray-500" />
+                                    ) : (
+                                      <ChevronDown className="w-4 h-4 text-gray-500" />
+                                    )}
+                                  </div> */}
+
                                   {showDropdown && (
                                     <ul className="absolute  z-[999] w-52  bg-white dark:bg-gray-800 border dark:border-gray-700 max-h-80 overflow-auto mt-1 shadow-md rounded">
                                       {filteredCities.length === 0 ? (
@@ -753,7 +779,18 @@ export default function CheckoutPage() {
                                     }}
                                     className="w-full pr-10 cursor-pointer"
                                   />
-                                
+                                  {/* <div
+                                    className={`absolute   w-fit left-[480px]  flex items-center cursor-pointer ${showStateDropdown ? '-bottom-17':'-bottom-13'}`}
+                                    onClick={() =>
+                                      setShowSatteDropdown((prev) => !prev)
+                                    }
+                                  >
+                                    {showStateDropdown ? (
+                                      <ChevronUp className="w-4 h-4 text-gray-500" />
+                                    ) : (
+                                      <ChevronDown className="w-4 h-4 text-gray-500" />
+                                    )}
+                                  </div> */}
                                   {showStateDropdown && (
                                     <ul className="absolute  z-[999]  w-52   bg-white dark:bg-gray-800 border dark:border-gray-700 max-h-80 overflow-auto mt-1 shadow-md rounded">
                                       {filteredStates.length === 0 ? (
@@ -801,12 +838,28 @@ export default function CheckoutPage() {
                                       {...field}
                                     />
                                   </FormControl>
-                               
+                                  {/* <p
+                            className={`${
+                              isError ? "text-red-500" : "text-green-500"
+                            } text-xs md:text-sm font-medium absolute -bottom-4 md:-bottom-6 truncate`}
+                          >
+                            {Messages}
+                          </p> */}
                                   <FormMessage />
                                 </FormItem>
                               )}
                             />
-                           
+                            {/* <Button
+                              type="button"
+                              onClick={checkDeliveryInfo}
+                              className="h-9 rounded-l-none  rounded-r-lg cursor-pointer py-4  absolute right-11 md:-right-[60px] top-7 text-sm"
+                            >
+                              {Isloading ? (
+                                <Loader2 className="animate-spin" />
+                              ) : (
+                                "Check"
+                              )}
+                            </Button> */}
                           </div>
                         </div>
                         <div className="mt-4 space-y-2">
@@ -1147,7 +1200,7 @@ export default function CheckoutPage() {
                   )}
                 </form>
               </Form>
-            </Accordion> */}
+            </Accordion>
           </div>
 
           <div className="w-full h-full lg:w-4/12 mt-8 lg:mt-0">
@@ -1174,8 +1227,7 @@ export default function CheckoutPage() {
                       disabled={!couponCode}
                       className="absolute right-0 top-1/2 -translate-y-1/2 px-4 py-2 text-sm"
                     >
-                      {/* {false ? <Loader2 className="animate-spin" /> : "Apply  "} */}
-                      Apply
+                      {false ? <Loader2 className="animate-spin" /> : "Apply  "}
                     </Button>
                   </div>
                   <div className="flex justify-end -translate-y-3">

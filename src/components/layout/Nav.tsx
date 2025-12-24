@@ -177,23 +177,23 @@ export default function Nav() {
                 onClick={() => {
                   navigate("/");
                   clearAll();
-                  document.title = " BWT-store – Natural Skincare Products";
+                  document.title = " BWT-store –  Products";
 
-                  const setMetaDescription = (content: string) => {
-                    let tag = document.querySelector(
-                      'meta[name="description"]'
-                    ) as HTMLMetaElement;
-                    if (!tag) {
-                      tag = document.createElement("meta");
-                      tag.setAttribute("name", "description");
-                      document.head.appendChild(tag);
-                    }
-                    tag.setAttribute("content", content);
-                  };
+                  // const setMetaDescription = (content: string) => {
+                  //   let tag = document.querySelector(
+                  //     'meta[name="description"]'
+                  //   ) as HTMLMetaElement;
+                  //   if (!tag) {
+                  //     tag = document.createElement("meta");
+                  //     tag.setAttribute("name", "description");
+                  //     document.head.appendChild(tag);
+                  //   }
+                  //   tag.setAttribute("content", content);
+                  // };
 
-                  setMetaDescription(
-                    "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
-                  );
+                  // setMetaDescription(
+                  //   "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                  // );
                 }}
                 src={ASSETS.LOGO}
                 alt="hero-image"
@@ -272,29 +272,29 @@ export default function Nav() {
                                         );
                                         clearAll();
                                         document.title =
-                                          " BWT-store – Natural Skincare Products";
+                                          " BWT-store – Products";
 
-                                        const setMetaDescription = (
-                                          content: string
-                                        ) => {
-                                          let tag = document.querySelector(
-                                            'meta[name="description"]'
-                                          ) as HTMLMetaElement;
-                                          if (!tag) {
-                                            tag =
-                                              document.createElement("meta");
-                                            tag.setAttribute(
-                                              "name",
-                                              "description"
-                                            );
-                                            document.head.appendChild(tag);
-                                          }
-                                          tag.setAttribute("content", content);
-                                        };
+                                        // const setMetaDescription = (
+                                        //   content: string
+                                        // ) => {
+                                        //   let tag = document.querySelector(
+                                        //     'meta[name="description"]'
+                                        //   ) as HTMLMetaElement;
+                                        //   if (!tag) {
+                                        //     tag =
+                                        //       document.createElement("meta");
+                                        //     tag.setAttribute(
+                                        //       "name",
+                                        //       "description"
+                                        //     );
+                                        //     document.head.appendChild(tag);
+                                        //   }
+                                        //   tag.setAttribute("content", content);
+                                        // };
 
-                                        setMetaDescription(
-                                          "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
-                                        );
+                                        // setMetaDescription(
+                                        //   "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                                        // );
                                         setOpenDropdownId(null);
                                       }}
                                       className="text-sm font-semibold text-gray-800 cursor-pointer"
@@ -313,37 +313,37 @@ export default function Nav() {
 
                                                 clearAll();
                                                 document.title =
-                                                  " BWT-store – Natural Skincare Products";
+                                                  " BWT-store – Products";
 
-                                                const setMetaDescription = (
-                                                  content: string
-                                                ) => {
-                                                  let tag =
-                                                    document.querySelector(
-                                                      'meta[name="description"]'
-                                                    ) as HTMLMetaElement;
-                                                  if (!tag) {
-                                                    tag =
-                                                      document.createElement(
-                                                        "meta"
-                                                      );
-                                                    tag.setAttribute(
-                                                      "name",
-                                                      "description"
-                                                    );
-                                                    document.head.appendChild(
-                                                      tag
-                                                    );
-                                                  }
-                                                  tag.setAttribute(
-                                                    "content",
-                                                    content
-                                                  );
-                                                };
+                                                // const setMetaDescription = (
+                                                //   content: string
+                                                // ) => {
+                                                //   let tag =
+                                                //     document.querySelector(
+                                                //       'meta[name="description"]'
+                                                //     ) as HTMLMetaElement;
+                                                //   if (!tag) {
+                                                //     tag =
+                                                //       document.createElement(
+                                                //         "meta"
+                                                //       );
+                                                //     tag.setAttribute(
+                                                //       "name",
+                                                //       "description"
+                                                //     );
+                                                //     document.head.appendChild(
+                                                //       tag
+                                                //     );
+                                                //   }
+                                                //   tag.setAttribute(
+                                                //     "content",
+                                                //     content
+                                                //   );
+                                                // };
 
-                                                setMetaDescription(
-                                                  "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
-                                                );
+                                                // setMetaDescription(
+                                                //   "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                                                // );
                                                 setOpenDropdownId(null);
                                               }}
                                               to={`/products/${sub.subcategory_name.toLowerCase()}?category_id=${
@@ -393,23 +393,23 @@ export default function Nav() {
                             clearAll();
                           }
                           document.title =
-                            " BWT-store – Natural Skincare Products";
+                            " BWT-store –  Products";
 
-                          const setMetaDescription = (content: string) => {
-                            let tag = document.querySelector(
-                              'meta[name="description"]'
-                            ) as HTMLMetaElement;
-                            if (!tag) {
-                              tag = document.createElement("meta");
-                              tag.setAttribute("name", "description");
-                              document.head.appendChild(tag);
-                            }
-                            tag.setAttribute("content", content);
-                          };
+                          // const setMetaDescription = (content: string) => {
+                          //   let tag = document.querySelector(
+                          //     'meta[name="description"]'
+                          //   ) as HTMLMetaElement;
+                          //   if (!tag) {
+                          //     tag = document.createElement("meta");
+                          //     tag.setAttribute("name", "description");
+                          //     document.head.appendChild(tag);
+                          //   }
+                          //   tag.setAttribute("content", content);
+                          // };
 
-                          setMetaDescription(
-                            "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
-                          );
+                          // setMetaDescription(
+                          //   "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
+                          // );
                         }}
                         className={`text-primary font-semibold cursor-pointer tracking-wide py-2 ${
                           pathname === "/products/best-selling"
@@ -427,7 +427,7 @@ export default function Nav() {
                           });
                           clearAll();
                           document.title =
-                            " BWT-store – Natural Skincare Products";
+                            " BWT-store –  Products";
 
                           const setMetaDescription = (content: string) => {
                             let tag = document.querySelector(
@@ -442,8 +442,7 @@ export default function Nav() {
                           };
 
                           setMetaDescription(
-                            "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
-                          );
+""                          );
                         }}
                         to={item.link}
                         className={`text-primary font-semibold tracking-wide py-2 ${
@@ -725,7 +724,7 @@ export default function Nav() {
                           );
                           clearAll();
                           document.title =
-                            " BWT-store – Natural Skincare Products";
+                            " BWT-store –  Products";
 
                           const setMetaDescription = (content: string) => {
                             let tag = document.querySelector(
@@ -740,8 +739,7 @@ export default function Nav() {
                           };
 
                           setMetaDescription(
-                            "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
-                          );
+""                          );
                         }}
                         className={`flex justify-between items-center text-base text-neutral-800 w-full ${
                           pathname === item.link
@@ -787,7 +785,7 @@ export default function Nav() {
                                       );
                                       clearAll();
                                       document.title =
-                                        " BWT-store – Natural Skincare Products";
+                                        " BWT-store –  Products";
 
                                       const setMetaDescription = (
                                         content: string
@@ -807,8 +805,7 @@ export default function Nav() {
                                       };
 
                                       setMetaDescription(
-                                        "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
-                                      );
+""                                      );
                                       setOpenMobileDropdownId(null);
                                       setIsMenuopen(false);
                                     }}
@@ -828,7 +825,7 @@ export default function Nav() {
 
                                               clearAll();
                                               document.title =
-                                                " BWT-store – Natural Skincare Products";
+                                                " BWT-store –  Products";
 
                                               const setMetaDescription = (
                                                 content: string
@@ -857,8 +854,7 @@ export default function Nav() {
                                               };
 
                                               setMetaDescription(
-                                                "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
-                                              );
+""                                              );
                                               setOpenMobileDropdownId(null);
                                               setIsMenuopen(false);
                                             }}
@@ -918,7 +914,7 @@ export default function Nav() {
                           );
                         }
                         document.title =
-                          " BWT-store – Natural Skincare Products";
+                          " BWT-store –  Products";
 
                         const setMetaDescription = (content: string) => {
                           let tag = document.querySelector(
@@ -933,8 +929,7 @@ export default function Nav() {
                         };
 
                         setMetaDescription(
-                          "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
-                        );
+""                        );
                         setIsMenuopen(false);
                       }}
                       className={`text-base text-neutral-800 text-left ${
@@ -957,7 +952,7 @@ export default function Nav() {
                         queryKey: ["filterbyfeature"],
                       });
                       clearAll();
-                      document.title = " BWT-store – Natural Skincare Products";
+                      document.title = " BWT-store –  Products";
 
                       const setMetaDescription = (content: string) => {
                         let tag = document.querySelector(
@@ -972,8 +967,7 @@ export default function Nav() {
                       };
 
                       setMetaDescription(
-                        "Discover  BWT-store's natural skincare range crafted for healthier, radiant skin. Free shipping & eco-friendly ingredients."
-                      );
+""                      );
                       setIsMenuopen(false);
                     }}
                     className={`text-base text-neutral-800 ${
