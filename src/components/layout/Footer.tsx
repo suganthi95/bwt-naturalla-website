@@ -22,7 +22,7 @@ export default function Footer() {
           </p>
 
           <p className="text-white roundica text-xs">
-             BWT-store – Rejoice with Nature's 💕{" "}
+             BWT-store – Find Your Path with Every Step 💕{" "}
           </p>
           <div className="flex space-x-4 pt-2">
             <a
