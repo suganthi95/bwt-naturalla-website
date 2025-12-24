@@ -125,11 +125,16 @@ export const useCheckCouponCode = () => {
   });
 };
 export const useCreateOrder = () => {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationKey: ["createorder"],
     mutationFn: (args: { OrderPayload: OrderPayload; token: string }) =>
       createOrder(args.OrderPayload, args.token),
+    onSuccess:()=>{
+    queryClient.invalidateQueries({queryKey:['getprofile']})
+    }
   });
+  
 };
 
 export const useVerifyPhonepay = (
