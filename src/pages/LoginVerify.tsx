@@ -79,8 +79,15 @@ export default function LoginVerify() {
               name="otp"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-textPrimary text-xs md:text-sm font-semibold ">
+                  {/* <FormLabel className="text-textPrimary text-xs md:text-sm font-semibold ">
                    Enter OTP sent to Mobile Number - {phone_no}
+
+                  </FormLabel> */}
+                  <FormLabel className="text-textPrimary font-semibold">
+                    Enter OTP
+                    <span className="ml-1 text-xs text-muted-foreground">
+                      (Demo: 123456)
+                    </span>
                   </FormLabel>
                   <FormControl>
                     <Input className="h-11" placeholder="" {...field} />
@@ -101,8 +108,9 @@ export default function LoginVerify() {
           <a className="font-bold text-blue-600 ">Resend</a>
         </p> */}
       </div>
-            <p className="fixed bottom-2.5 text-xs md:text-sm text-title">Copyrights © All Rights Reserved ® 2025  BWT-store Stores</p>
-
+      <p className="fixed bottom-2.5 text-xs md:text-sm text-title">
+        Copyrights © All Rights Reserved ® 2025 BWT-store Stores
+      </p>
     </section>
   );
 }

@@ -16,7 +16,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import {  useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Userlogin } from "@/redux/slices/authSlice";
 import { ASSETS } from "@/assets/assets";
@@ -31,7 +31,7 @@ type FormValues = z.infer<typeof formSchema>;
 export default function Login() {
   const { mutate, isPending } = useLogin();
   const dispatch = useDispatch();
-  // const [isEmailLogin, setIsEmailLogin] = useState(false);
+  const [isEmailLogin, setIsEmailLogin] = useState(false);
   const navigate = useNavigate();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -41,15 +41,15 @@ export default function Login() {
     },
   });
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  // const numberRegex = /^[0-9]{7,15}$/;
-  // useEffect(() => {
-  //   const value = form.watch("inputValue");
-  //   if (emailRegex.test(value)) {
-  //     setIsEmailLogin(true);
-  //   } else {
-  //     setIsEmailLogin(false);
-  //   }
-  // }, [form.watch("inputValue")]);
+  const numberRegex = /^[0-9]{7,15}$/;
+  useEffect(() => {
+    const value = form.watch("inputValue");
+    if (emailRegex.test(value)) {
+      setIsEmailLogin(true);
+    } else {
+      setIsEmailLogin(false);
+    }
+  }, [form.watch("inputValue")]);
 
   const onSubmit = (values: FormValues) => {
     if (emailRegex.test(values.inputValue)) {
@@ -74,26 +74,26 @@ export default function Login() {
         }
       );
     } else {
-     
-        toast.error("Please enter a valid email");
+      if (!numberRegex.test(values.inputValue)) {
+        toast.error("Please enter a valid phone number");
         return;
-      
+      }
 
-      // mutate(
-      //   { phone_no: Number(values.inputValue), login_through: "mobile" },
-      //   {
-      //     onSuccess: () => {
-      //       navigate("/login-verify", {
-      //         state: { phone_no: Number(values.inputValue) },
-      //       });
-      //     },
-      //     onError(error) {
-      //       if (axios.isAxiosError(error)) {
-      //         toast.error(error?.response?.data?.message);
-      //       }
-      //     },
-      //   }
-      // );
+      mutate(
+        { phone_no: Number(values.inputValue), login_through: "mobile" },
+        {
+          onSuccess: () => {
+            navigate("/login-verify", {
+              state: { phone_no: Number(values.inputValue) },
+            });
+          },
+          onError(error) {
+            if (axios.isAxiosError(error)) {
+              toast.error(error?.response?.data?.message);
+            }
+          },
+        }
+      );
     }
   };
 
@@ -124,7 +124,7 @@ export default function Login() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-textPrimary font-semibold ">
-                    Email 
+                    Email  or Mobile Number
                   </FormLabel>
                   <FormControl>
                     <Input className="h-11" placeholder="" {...field} />
@@ -134,7 +134,7 @@ export default function Login() {
               )}
             />
 
-          
+            {isEmailLogin && (
               <FormField
                 control={form.control}
                 name="password"
@@ -182,6 +182,7 @@ export default function Login() {
                   );
                 }}
               />
+            )}
 
             <Button type="submit" className="w-full">
               {isPending ? <Loader2 className="animate-spin" /> : "Continue"}
@@ -189,12 +190,12 @@ export default function Login() {
           </form>
         </Form>
 
-        {/* <p className="text-center  justify-center flex items-center gap-x-1 text-sm text-textPrimary">
+        <p className="text-center  justify-center flex items-center gap-x-1 text-sm text-textPrimary">
           You don't have an account ?{" "}
           <a href="/sign-up" className="font-bold underline">
             Register Now
           </a>
-        </p> */}
+        </p>
       </div>
       <p className="fixed bottom-2.5 text-xs text-center  md:text-sm text-title">
         Copyrights © All Rights Reserved ® 2025 BWT-store Stores

@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { ASSETS } from "@/assets/assets";
 
 const formSchema = z
   .object({
@@ -83,10 +84,20 @@ export default function Signup() {
   return (
     <section className="min-h-screen flex flex-col items-center justify-center bg-[#F7F7F7] px-4">
       <div className="max-w-lg w-full mx-auto p-6 space-y-6  bg-white rounded-xl">
-        <div className="flex items-center justify-center gap-x-1.5">
+        {/* <div className="flex items-center justify-center gap-x-1.5">
           <Icons.Logo />
           <h1 className="text-2xl text-primary font-bold"> BWT-store</h1>
-        </div>
+        </div> */}
+         <div className="grid place-items-center ">
+        
+                <img
+                  src={ASSETS.LOGO}
+                  alt="hero-image"
+                  className="w-16 md:w-40  cursor-pointer object-cover"
+                />
+                </div>
+              
+        
 
         <div className="text-center">
           <p className="text-xl font-bold">Create your account</p>
