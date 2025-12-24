@@ -14,29 +14,22 @@ import type { RootState } from "@/redux/store";
 import {
   useCreateOrder,
   useGetProviders,
-  useVerifyPhonepay,
-  useVerifyrazorpay,
 } from "@/services/cart";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useRazorpay } from "react-razorpay";
-import { removeCartItems } from "@/redux/slices/cartSlice";
-import { removeCoupon } from "@/redux/slices/couponSlice";
-import { removeWishlist } from "@/redux/slices/wishSlice";
 
 export default function PaymentMethod() {
   const { state } = useLocation();
   const { coupon_id } = state || {};
-  const [loading, setLoading] = useState(false);
-  const { Razorpay: RazorpayConstructor } = useRazorpay();
+  // const [loading, setLoading] = useState(false);
+  // const { Razorpay: RazorpayConstructor } = useRazorpay();
   // const payment =
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { shippingAddress, items, price_summary, products_data } = useSelector(
     (state: RootState) => state.cart
   );
@@ -47,9 +40,9 @@ export default function PaymentMethod() {
   // }, [items]);
 
   const { mutate, isPending } = useCreateOrder();
-  const { mutate: verifyRazorpay, isPending: verifyRazorpayPending } =
-    useVerifyrazorpay();
-  const [shouldPoll, setShouldPoll] = useState(false);
+  // const { mutate: verifyRazorpay, isPending: verifyRazorpayPending } =
+  //   useVerifyrazorpay();
+  // const [shouldPoll, setShouldPoll] = useState(false);
   const { token } = useSelector((state: RootState) => state.auth);
   const localPaymentmethod = localStorage.getItem("payment");
   const {
@@ -60,19 +53,19 @@ export default function PaymentMethod() {
 
   // const [finalData, setFinalData] = useState(null);
 
-  const [merchantTransactionId, SetmerchantTransactionId] = useState(() =>
-    localStorage.getItem("merchantTransactionId")
-  );
-  const { refetch, isError } = useVerifyPhonepay(
-    merchantTransactionId ?? "",
-    token
-  );
-  if (isError) {
-    setLoading(false);
-    localStorage.removeItem("merchantTransactionId");
-    navigate("/order-failure");
-    setShouldPoll(false);
-  }
+  // const [merchantTransactionId, SetmerchantTransactionId] = useState(() =>
+  //   localStorage.getItem("merchantTransactionId")
+  // );
+  // const { refetch, isError } = useVerifyPhonepay(
+  //   merchantTransactionId ?? "",
+  //   token
+  // );
+  // if (isError) {
+  //   setLoading(false);
+  //   localStorage.removeItem("merchantTransactionId");
+  //   navigate("/order-failure");
+  //   setShouldPoll(false);
+  // }
   const { setValue, watch } = useForm({
     defaultValues: {
       payment: "",
@@ -137,72 +130,77 @@ export default function PaymentMethod() {
       },
       {
         onSuccess(data) {
-          setShouldPoll(true);
+          // setShouldPoll(true);
           if (localPaymentmethod?.toLowerCase() === "razorpay") {
-            localStorage.removeItem("merchantTransactionId");
-            setShouldPoll(false);
-            toast.success("order created");
+            // localStorage.removeItem("merchantTransactionId");
+            // setShouldPoll(false);
+            // toast.success("order created");
 
-            const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
-            const options = {
-              key: razorpayKey,
-              order_id: data.orderId,
-              amount: price_summary.grand_total ?? 0,
-              currency: "INR" as const,
-              name: "BWT-storw",
-              description: "Payment",
-              image: ASSETS.LOGO,
-              handler: function (response: any) {
-                verifyRazorpay(
-                  {
-                    token: token,
-                    razorpay_payment_id: response.razorpay_payment_id,
-                    razorpay_signature: response.razorpay_signature,
-                    razorpay_order_id: data.orderId,
-                  },
-                  {
-                    onSuccess: () => {
-                      navigate("/order-success");
-                      dispatch(removeCartItems());
-                      dispatch(removeWishlist());
-                      dispatch(removeCoupon());
-                      localStorage.removeItem("merchantTransactionId");
-                      setShouldPoll(false);
-                      // dispatch(removeTaxDetails());
-                    },
-                    onError(error) {
-                      if (axios.isAxiosError(error)) {
-                        toast.error(error?.response?.data?.message);
-                      }
-                    },
-                  }
-                );
-              },
+            // const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
+            // const options = {
+            //   key: razorpayKey,
+            //   order_id: data.orderId,
+            //   amount: price_summary.grand_total ?? 0,
+            //   currency: "INR" as const,
+            //   name: "BWT-storw",
+            //   description: "Payment",
+            //   image: ASSETS.LOGO,
+            //   handler: function (response: any) {
+            //     verifyRazorpay(
+            //       {
+            //         token: token,
+            //         razorpay_payment_id: response.razorpay_payment_id,
+            //         razorpay_signature: response.razorpay_signature,
+            //         razorpay_order_id: data.orderId,
+            //       },
+            //       {
+            //         onSuccess: () => {
+            //           navigate("/order-success");
+            //           dispatch(removeCartItems());
+            //           dispatch(removeWishlist());
+            //           dispatch(removeCoupon());
+            //           localStorage.removeItem("merchantTransactionId");
+            //           setShouldPoll(false);
+            //           // dispatch(removeTaxDetails());
+            //         },
+            //         onError(error) {
+            //           if (axios.isAxiosError(error)) {
+            //             toast.error(error?.response?.data?.message);
+            //           }
+            //         },
+            //       }
+            //     );
+            //   },
 
-              theme: {
-                color: "orange",
-              },
-              modal: {
-                ondismiss: function () {
-                  toast.error("Payment cancelled by user.");
-                  navigate("/order-failure");
-                },
-              },
-            };
+            //   theme: {
+            //     color: "orange",
+            //   },
+            //   modal: {
+            //     ondismiss: function () {
+            //       toast.error("Payment cancelled by user.");
+            //       navigate("/order-failure");
+            //     },
+            //   },
+            // };
 
-            const rzp = new RazorpayConstructor(options);
-            rzp.open();
+            // const rzp = new RazorpayConstructor(options);
+            // rzp.open();
+                          navigate("/order-success");
+
           } else {
-            SetmerchantTransactionId(data.merchantTransactionId);
+            // SetmerchantTransactionId(data.merchantTransactionId);
             localStorage.setItem(
               "merchantTransactionId",
               data.merchantTransactionId
             );
             if (data.redirectUrl) {
-              window.location.href = data.redirectUrl;
+              // window.location.href = data.redirectUrl;
               // window.open(data.redirectUrl);
+              navigate("/order-success");
             } else {
               toast.error("Missing redirect URL.");
+                            navigate("/order-success");
+
             }
           }
         },
@@ -215,56 +213,56 @@ export default function PaymentMethod() {
     );
   };
 
-  useEffect(() => {
-    if (!merchantTransactionId && !shouldPoll) return;
+  // useEffect(() => {
+  //   if (!merchantTransactionId && !shouldPoll) return;
 
-    setLoading(true);
+  //   setLoading(true);
 
-    const interval = setInterval(async () => {
-      try {
-        const { data, isError } = await refetch();
+  //   const interval = setInterval(async () => {
+  //     try {
+  //       const { data, isError } = await refetch();
 
-        if (isError) {
-          setLoading(false);
-          localStorage.removeItem("merchantTransactionId");
-          navigate("/order-failure");
-          clearInterval(interval);
-          setShouldPoll(false);
-        }
-        if (data.resp.state === "COMPLETED") {
-          clearInterval(interval);
-          localStorage.removeItem("merchantTransactionId");
-          navigate("/order-success", { replace: true });
-          setLoading(false);
-          // setFinalData(data);
-          setShouldPoll(false);
-          dispatch(removeCartItems());
-          dispatch(removeWishlist());
-          dispatch(removeCoupon());
-        } else if (data.resp.state === "FAILED") {
-          setLoading(false);
-          localStorage.removeItem("merchantTransactionId");
-          navigate("/order-failure");
-          clearInterval(interval);
-          setShouldPoll(false);
-        } else if (data.resp.state === "PENDING") {
-          setTimeout(() => {
-            setLoading(false);
-            localStorage.removeItem("merchantTransactionId");
-            navigate("/order-failure");
-            clearInterval(interval);
-            setShouldPoll(false);
-          }, 3000);
-        }
-      } catch (error) {
-        console.error("Polling error:", error);
-      }
-    }, 2000);
+  //       if (isError) {
+  //         setLoading(false);
+  //         localStorage.removeItem("merchantTransactionId");
+  //         navigate("/order-failure");
+  //         clearInterval(interval);
+  //         setShouldPoll(false);
+  //       }
+  //       if (data.resp.state === "COMPLETED") {
+  //         clearInterval(interval);
+  //         localStorage.removeItem("merchantTransactionId");
+  //         navigate("/order-success", { replace: true });
+  //         setLoading(false);
+  //         // setFinalData(data);
+  //         setShouldPoll(false);
+  //         dispatch(removeCartItems());
+  //         dispatch(removeWishlist());
+  //         dispatch(removeCoupon());
+  //       } else if (data.resp.state === "FAILED") {
+  //         setLoading(false);
+  //         localStorage.removeItem("merchantTransactionId");
+  //         navigate("/order-failure");
+  //         clearInterval(interval);
+  //         setShouldPoll(false);
+  //       } else if (data.resp.state === "PENDING") {
+  //         setTimeout(() => {
+  //           setLoading(false);
+  //           localStorage.removeItem("merchantTransactionId");
+  //           navigate("/order-failure");
+  //           clearInterval(interval);
+  //           setShouldPoll(false);
+  //         }, 3000);
+  //       }
+  //     } catch (error) {
+  //       console.error("Polling error:", error);
+  //     }
+  //   }, 2000);
 
-    return () => clearInterval(interval);
-  }, [merchantTransactionId, shouldPoll]);
+  //   return () => clearInterval(interval);
+  // }, [merchantTransactionId, shouldPoll]);
 
-  if (loading || isLoading || isFetching || verifyRazorpayPending) {
+  if (  isLoading || isFetching) {
     return <FullScreenLoader />;
   }
 
