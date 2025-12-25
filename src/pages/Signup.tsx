@@ -82,7 +82,9 @@ export default function Signup() {
   };
 
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center bg-[#F7F7F7] px-4">
+    <section   style={{
+      background:`url('https://ik.imagekit.io/otakqhif9/Blackwins-official-site/bg%20image.jpg')`
+    }} className="min-h-screen flex flex-col items-center justify-center bg-[#F7F7F7] px-4">
       <div className="max-w-lg w-full mx-auto p-6 space-y-6  bg-white rounded-xl">
         {/* <div className="flex items-center justify-center gap-x-1.5">
           <Icons.Logo />
@@ -319,7 +321,7 @@ export default function Signup() {
       </div>
 
       <p className="static md:fixed bottom-2.5 text-xs text-center  md:text-sm text-title">
-        Copyrights © All Rights Reserved ® 2025  BWT-store Stores
+        Copyrights © All Rights Reserved ® 2025  BWT-store 
       </p>
     </section>
   );

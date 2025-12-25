@@ -198,7 +198,7 @@ export default function PaymentMethod() {
               // window.open(data.redirectUrl);
               navigate("/order-success");
             } else {
-              toast.error("Missing redirect URL.");
+              // toast.error("Missing redirect URL.");
                             navigate("/order-success");
 
             }
