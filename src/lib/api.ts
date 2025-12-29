@@ -575,10 +575,10 @@ export const raiseTicket = async (data: any) => {
 export const contactUs = async (data: any) => {
   const formdata = new FormData();
 
-  formdata.append("first_name", data.full_name);
-  formdata.append("last_name", data.full_name);
+  formdata.append("first_name", data.firstName);
+  formdata.append("last_name", data.lastName);
   formdata.append("contact_email", data.email);
-  formdata.append("contact_phone_no", data.phone);
+  formdata.append("contact_phone_no", data.phoneNumber);
   formdata.append("subject", data.subject);
   formdata.append("message_body", data.message);
 
