@@ -25,23 +25,19 @@ import UpdateReview from "./UpdateReview";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
 } from "@/components/ui/accordion2";
-import { Badge } from "@/components/ui/badge";
 interface Props {
   Orders: Order[];
   handleTab: (val: string) => void;
 }
-const STAGES = [
-  "Order Confirmed",
-  "Processing",
-  "In Transit",
-  "Delivered",
-  "Cancelled",
-  "RTO",
-];
+// const STAGES = [
+//   "Order Confirmed",
+//   "Processing",
+//   "In Transit",
+//   "Delivered",
+//   "Cancelled",
+//   "RTO",
+// ];
 export default function Order({ Orders, handleTab }: Props) {
   const [Isopen, setIsopen] = useState(false);
   const [IsReviewopen, setIsReviewopen] = useState(false);
@@ -65,14 +61,14 @@ export default function Order({ Orders, handleTab }: Props) {
 
   const renderSelectedOrder = () => {
     const order = Orders.find((o) => o.order_id === selectedOrder);
-    const currentStatus =
-      Array.isArray(data?.orderTimeLine) && data.orderTimeLine.length > 0
-        ? data.orderTimeLine[0]?.order_status || ""
-        : "";
+    // const currentStatus =
+    //   Array.isArray(data?.orderTimeLine) && data.orderTimeLine.length > 0
+    //     ? data.orderTimeLine[0]?.order_status || ""
+    //     : "";
 
-    const activeIndex = STAGES.findIndex(
-      (stage) => stage.toLowerCase() === currentStatus.toLowerCase()
-    );
+    // const activeIndex = STAGES.findIndex(
+    //   (stage) => stage.toLowerCase() === currentStatus.toLowerCase()
+    // );
     if (!order) return null;
 
     return (
@@ -138,7 +134,7 @@ export default function Order({ Orders, handleTab }: Props) {
             collapsible
             className="w-full border rounded-lg"
           >
-            <AccordionItem value="item-1">
+            {/* <AccordionItem value="item-1">
               <AccordionTrigger className=" px-3 py-2 hover:no-underline">
                 <div className="flex justify-between items-center w-full">
                   <p className="font-medium text-sm">Status</p>
@@ -217,7 +213,7 @@ export default function Order({ Orders, handleTab }: Props) {
                   })}
                 </div>
               </AccordionContent>
-            </AccordionItem>
+            </AccordionItem> */}
           </Accordion>
         </div>
 

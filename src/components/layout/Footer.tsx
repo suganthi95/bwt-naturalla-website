@@ -1,11 +1,4 @@
 import { Link } from "react-router-dom";
-import {
-  FaInstagram,
-  FaTwitter,
-  FaFacebookF,
-  FaPinterestP,
-} from "react-icons/fa";
-import { FaYoutube } from "react-icons/fa6";
 import { ASSETS } from "@/assets/assets";
 export default function Footer() {
   return (
@@ -22,7 +15,7 @@ remove the existing content .
           <p className="text-white roundica text-xs">
              BWT-store – Find Your Path with Every Step 💕{" "}
           </p>
-          <div className="flex space-x-4 pt-2">
+          {/* <div className="flex space-x-4 pt-2">
             <a
               href="https://www.instagram.com"
               target="_blank"
@@ -63,7 +56,7 @@ remove the existing content .
             >
               <FaPinterestP />
             </a>
-          </div>
+          </div> */}
         </div>
         <div className="space-y-7">
           <div className="w-full sm:w-1/2 lg:w-full space-y-3">
