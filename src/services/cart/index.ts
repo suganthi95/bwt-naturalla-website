@@ -42,10 +42,10 @@ export const useAddToCart = () => {
   });
 };
 
-export const useGetCartItems = (token: string,couponCode?:string) => {
+export const useGetCartItems = (token: string, couponCode?: string) => {
   return useQuery({
     queryKey: ["getcart"],
-    queryFn: () => getCartItems(token,couponCode),
+    queryFn: () => getCartItems(token, couponCode),
     select: (data) => data,
     staleTime: 1000 * 60 * 5,
     enabled: !!token,
@@ -125,16 +125,17 @@ export const useCheckCouponCode = () => {
   });
 };
 export const useCreateOrder = () => {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["createorder"],
     mutationFn: (args: { OrderPayload: OrderPayload; token: string }) =>
       createOrder(args.OrderPayload, args.token),
-    onSuccess:()=>{
-    queryClient.invalidateQueries({queryKey:['getprofile']})
-    }
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getprofile"] });
+      queryClient.invalidateQueries({ queryKey: ["getcart"] });
+      queryClient.invalidateQueries({ queryKey: ["getwishlist"] });
+    },
   });
-  
 };
 
 export const useVerifyPhonepay = (
