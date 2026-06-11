@@ -14,25 +14,25 @@ export const NavData =[
     },
      {
         id:'3',
-        name:`Mens `,
+        name:'Hair',
         link:'/products/hair'
     },
      {
         id:'4',
-        name:`Womens`,
+        name:'Skin',
         link:'/products/skin'
     },
      {
         id:'5',
-        name:`Kids`,
+        name:'Body',
         link:'/products/body'
     },
    
-    //  {
-    //     id:'6',
-    //     name:"Offers",
-    //     link:'/products/offers'
-    // },
+     {
+        id:'6',
+        name:"Offers",
+        link:'/products/offers'
+    },
       {
         id:'7',
         name:'Trending Now',
