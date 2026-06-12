@@ -8,11 +8,13 @@ export default function Footer() {
           <img src={ASSETS.LOGO} alt="Logo" className="w-40  object-cover " />
           {/* <Icons.Footet_Logo /> */}
           <p className="text-sm leading-relaxed text-justify text-white/70">
-            Beauty Begins with Healthy Skin.
+            Discover the power of nature with BWT Store. We offer premium
+            natural skincare products designed to nourish, protect, and enhance
+            your skin's natural glow.
           </p>
 
           <p className="text-white roundica text-xs">
-            BWT-store – Find Your Path with Every Step 💕{" "}
+            BWT-store – Beauty Begins with Healthy Skin. 💕{" "}
           </p>
           {/* <div className="flex space-x-4 pt-2">
             <a
